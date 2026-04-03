@@ -138,7 +138,7 @@ See [CANONICAL_README.md](CANONICAL_README.md) for detailed documentation.
 ## Publish
 
 ```
-yarn publish
+pnpm publish
 ```
 
 ## Youtube
