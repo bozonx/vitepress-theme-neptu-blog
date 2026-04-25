@@ -46,7 +46,7 @@ useSwipeDrawer({
     <!-- right col-->
     <div class="flex-1 flex flex-col min-h-screen">
       <header>
-        <TopBar @open-drawer="onOpenDrawer" :isMobile="isMobile">
+        <TopBar @open-drawer="() => sidebarRef?.openDrawer()" :isMobile="isMobile">
           <template #nav-bar-content-before>
             <slot name="nav-bar-content-before" />
           </template>
