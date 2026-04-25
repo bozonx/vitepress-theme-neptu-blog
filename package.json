@@ -1,6 +1,6 @@
 {
   "name": "vitepress-theme-neptu-blog",
-  "version": "0.16.9",
+  "version": "0.17.0",
   "description": "Vitepress custom theme for Neptu blog and others",
   "type": "module",
   "author": "(Ivan Kozyrin <ipkozyrin@gmail.com>)",

@@ -39,12 +39,14 @@ export async function loadPostsData(localeDir, config, ignoreCache = false) {
 
     console.log(`\n...Loaded ${posts.length} posts from ${postsDir}`)
 
-    if (config.site.themeConfig.popularPosts?.enabled) {
+    if (config?.site?.themeConfig?.popularPosts?.enabled) {
       global.blogCache[localeIndex] = await mergeWithAnalytics(posts, config)
     }
 
     return global.blogCache[localeIndex]
   } catch (error) {
-    throw new Error(`Error loading posts for locale ${localeIndex}:`, error)
+    const errorMsg = `Error loading posts for locale ${localeIndex}: ${error.message}`
+    console.error(errorMsg, error)
+    throw new Error(errorMsg, { cause: error })
   }
 }

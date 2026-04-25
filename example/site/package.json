@@ -1,7 +1,7 @@
 {
-  "name": "",
+  "name": "vitepress-theme-neptu-blog-example-site",
   "version": "0.1.0",
-  "description": "",
+  "description": "Example site using vitepress-theme-neptu-blog",
   "type": "module",
   "author": "(Ivan Kozyrin <ipkozyrin@gmail.com>)",
   "license": "MIT",

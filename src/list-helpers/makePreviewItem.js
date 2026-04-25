@@ -9,11 +9,9 @@ import { extractDescriptionFromMd } from '../helpers/mdWorks.js'
 import { PREVIEW_LENGTH } from '../constants.js'
 
 export function makePreviewItem(filePath) {
-  const relativePath = path.relative(
-    path.resolve(filePath, '../../../'),
-    filePath
-  )
-  const lang = filePath.split('/')[0]
+  const baseDir = path.resolve(filePath, '../../../')
+  const relativePath = path.relative(baseDir, filePath)
+  const lang = relativePath.split('/')[0]
 
   const url = '/' + relativePath.replace(/\.md$/, '')
   const rawContent = fs.readFileSync(filePath, DEFAULT_ENCODE)
@@ -26,7 +24,6 @@ export function makePreviewItem(filePath) {
   // Получаем размеры изображения если оно есть
   let coverDimensions = null
   if (frontmatter.cover) {
-    const baseDir = path.resolve(filePath, '../../../')
     coverDimensions = getImageDimensions(frontmatter.cover, baseDir)
   }
 
