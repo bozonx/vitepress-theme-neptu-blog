@@ -48,8 +48,11 @@ export function addHreflang({ page, head, siteConfig }) {
   })
 
   const defaultLocale = siteConfig.userConfig?.themeConfig?.defaultLocale
+  const rootLang = siteConfig.userConfig?.locales?.root?.lang
   const mainLang =
-    localesIndexes.find((lang) => lang === defaultLocale) || localesIndexes[0]
+    localesIndexes.find((lang) => lang === defaultLocale) ||
+    localesIndexes.find((lang) => availableLocales[lang]?.lang === rootLang) ||
+    localesIndexes[0]
 
   if (!mainLang) {
     console.warn(

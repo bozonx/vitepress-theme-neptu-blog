@@ -39,6 +39,10 @@ export const common = {
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
+  // Root locale is required by VitePress i18n routing (`i18nRouting: true`)
+  // to build correct SPA routes when content lives under language-prefixed
+  // folders like `/en/`. Override it in your own config if needed.
+  locales: { root: { lang: 'en-US' } },
 
   // Build params
   maxPostsInRssFeed: 50,
