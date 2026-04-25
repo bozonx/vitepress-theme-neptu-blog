@@ -5,8 +5,8 @@ import { POSTS_DIR } from '../constants.js'
 import { mergeWithAnalytics } from './loadPostsStats.js'
 import { makePreviewItem } from './makePreviewItem.js'
 
-if (!global.blogCache) {
-  global.blogCache = {}
+if (!global.neptuBlogCache) {
+  global.neptuBlogCache = {}
 }
 
 /**
@@ -31,29 +31,31 @@ export async function loadPostsData(localeDir, options = {}) {
 
   if (!localeIndex) return []
 
-  if (global.blogCache[localeIndex]?.length > 0 && !ignoreCache) {
-    return global.blogCache[localeIndex]
+  const postsDir = path.join(localeDir, POSTS_DIR)
+  const cacheKey = path.resolve(postsDir)
+
+  if (global.neptuBlogCache[cacheKey]?.length > 0 && !ignoreCache) {
+    return global.neptuBlogCache[cacheKey]
   }
 
   try {
-    const postsDir = path.join(localeDir, POSTS_DIR)
     const files = await fs.readdir(postsDir)
     const mdFiles = files.filter((file) => file.endsWith('.md'))
     const fullPaths = mdFiles.map((file) => path.join(postsDir, file))
     const posts = fullPaths.map((filePath) => makePreviewItem(filePath))
 
-    global.blogCache[localeIndex] = posts
+    global.neptuBlogCache[cacheKey] = posts
 
     console.log(`\n...Loaded ${posts.length} posts from ${postsDir}`)
 
     if (popularPostsEnabled && googleAnalytics) {
-      global.blogCache[localeIndex] = await mergeWithAnalytics(
+      global.neptuBlogCache[cacheKey] = await mergeWithAnalytics(
         posts,
         googleAnalytics,
       )
     }
 
-    return global.blogCache[localeIndex]
+    return global.neptuBlogCache[cacheKey]
   } catch (error) {
     const errorMsg = `Error loading posts for locale ${localeIndex}: ${error.message}`
     console.error(errorMsg, error)
