@@ -49,6 +49,16 @@ export namespace NeptuBlogTheme {
     t: I18n
 
     search?: (DefaultTheme.Config['search'] & { bodyMarker?: string }) | { provider: string; options?: any; bodyMarker?: string }
+
+    publisher?: {
+      name?: string
+      url?: string
+      logo?: string
+    }
+
+    footer?: {
+      copyright?: string
+    }
   }
 
   export interface I18n {

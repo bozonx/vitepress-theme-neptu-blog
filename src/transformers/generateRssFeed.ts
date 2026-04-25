@@ -37,8 +37,8 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
 
       feeds[localeIndex] = new Feed({
         language: localeIndex,
-        title: locale.title,
-        description: locale.description,
+        title: locale.title || '',
+        description: locale.description || '',
         copyright: locale.themeConfig?.footer?.copyright || '',
         id: localeSiteUrl,
         link: localeSiteUrl,

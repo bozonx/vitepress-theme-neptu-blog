@@ -148,7 +148,7 @@ export function sortPosts(
 
       return +new Date(b.date || 0) - +new Date(a.date || 0)
     } else {
-      return +new Date(b.date) - +new Date(a.date)
+      return +new Date(b.date || 0) - +new Date(a.date || 0)
     }
   })
 }
@@ -213,7 +213,7 @@ export function sortSimilarPosts(
         return bPopularity - aPopularity
       }
 
-      return +new Date(b.date) - +new Date(a.date)
+      return +new Date(b.date || 0) - +new Date(a.date || 0)
     })
     .slice(0, limit)
 }

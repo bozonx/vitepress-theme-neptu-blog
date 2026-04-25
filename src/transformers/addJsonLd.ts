@@ -225,15 +225,19 @@ export function addJsonLd({
 
   let jsonLdData: any = null
   const localeIndex = page.split('/')[0]!
-  const langConfig = siteConfig.site.locales[localeIndex]
+  const langConfig = siteConfig.site.locales[localeIndex] as {
+    title?: string
+    lang?: string
+    themeConfig: ThemeConfig
+  }
 
-  if (!langConfig) return
+  if (!langConfig || !langConfig.themeConfig) return
 
   const siteUrl = siteConfig.userConfig.siteUrl!
   const localeIndexUrl = `${siteUrl}/${localeIndex}`
   const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
   // siteName: fallback resolution matches createPageJsonLd usage.
-  const siteName = langConfig.title
+  const siteName = langConfig.title || ''
   const publisher = langConfig.themeConfig.publisher && {
     '@type': 'Organization',
     name: langConfig.themeConfig.publisher?.name || siteName,
@@ -269,7 +273,7 @@ export function addJsonLd({
       pageUrl,
       localeIndexUrl,
       publisher,
-      langConfig.title!
+      siteName
     )
   } else if (pageData.frontmatter.jsonLd) {
     jsonLdData = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
