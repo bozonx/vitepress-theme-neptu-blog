@@ -21,10 +21,9 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
-      "vitepress-theme-neptu-blog": ["src/index.ts"],
-      "vitepress-theme-neptu-blog/*": ["src/*"]
+      "vitepress-theme-neptu-blog": ["./src/index.ts"],
+      "vitepress-theme-neptu-blog/*": ["./src/*"]
     }
   },
   "include": [

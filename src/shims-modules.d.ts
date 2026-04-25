@@ -20,3 +20,9 @@ declare module 'vitepress/dist/client/theme-default/composables/langs.js' {
     currentLang: any
   }
 }
+
+declare module '*.css' {
+  const content: string;
+  export default content;
+}
+
