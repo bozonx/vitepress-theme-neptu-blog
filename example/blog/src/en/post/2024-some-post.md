@@ -2,8 +2,7 @@
 title: Some post
 description: post descr
 date: 2024-07-03T22:00-03:00
-authorId: some-auth
-title: Some post
+authorId: ivan-k
 previewText: ""
 descrAsPreview: true
 commentUrl: https://t.me/some/123

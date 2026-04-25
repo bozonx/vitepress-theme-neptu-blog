@@ -1,6 +1,6 @@
 ---
 title: Test Canonical Self
-description: Testing canonical: 'self' parameter
+description: "Testing canonical: 'self' parameter"
 date: 2024-01-15
 canonical: "self"
 tags:
