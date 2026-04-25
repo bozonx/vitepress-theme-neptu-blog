@@ -5,7 +5,10 @@ import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import PodcastIcon from './PodcastIcon.vue'
 
-const { frontmatter, theme } = useData()
+import type { ThemeConfig, PostFrontmatter } from '../../types.d.ts'
+
+const { frontmatter, theme } = useData<ThemeConfig>()
+const fm = frontmatter.value as PostFrontmatter
 const btnText = theme.value.t.listenPodcast
 </script>
 
@@ -22,7 +25,7 @@ const btnText = theme.value.t.listenPodcast
       {{ btnText }}
     </template>
 
-    <template v-for="(link, name) in (frontmatter.podcasts || {})">
+    <template v-for="(link, name) in (fm.podcasts || {})">
       <MenuItem v-if="link" :href="link" :hide-external-icon="true">
         <span class="flex">
           <span class="mr-2">

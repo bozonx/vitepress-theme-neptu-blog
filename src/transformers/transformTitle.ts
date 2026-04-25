@@ -1,18 +1,22 @@
 import { mustacheTemplate } from '../helpers/squidlet.ts'
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 /**
  * If page.frontmatter.title is a template string, then replace it with the
  * template string.
  */
-export function transformTitle(pageData: any, { siteConfig }: { siteConfig: any }): void {
+export function transformTitle(
+  pageData: ExtendedPageData,
+  { siteConfig }: { siteConfig: ExtendedSiteConfig }
+): void {
   if (pageData.filePath.indexOf('/') < 0) return
 
   if (!pageData.frontmatter.title) return
 
-  const localeIndex = pageData.filePath.split('/')[0]
+  const localeIndex = pageData.filePath.split('/')[0]!
 
   const options = {
-    theme: siteConfig.site.locales[localeIndex].themeConfig,
+    theme: siteConfig.site.locales[localeIndex]?.themeConfig,
     params: pageData.params || {},
   }
 

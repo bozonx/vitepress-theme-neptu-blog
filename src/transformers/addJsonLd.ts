@@ -7,26 +7,34 @@ import {
   isAuthorPage,
   isPage,
 } from '../helpers/helpers.ts'
+import type {
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  ThemeConfig,
+  Author,
+} from '../types.d.ts'
 
 export interface AddJsonLdContext {
   page: string
   head: any[]
-  pageData: any
-  siteConfig: any
+  pageData: ExtendedPageData
+  siteConfig: ExtendedSiteConfig
 }
 
 function parseYamlToJsonLd(strYaml: string): any {
   try {
     return yaml.parse(strYaml)
   } catch (error) {
-    throw new Error('Error parsing frontmatter.jsonLd:', { cause: error as Error })
+    throw new Error('Error parsing frontmatter.jsonLd:', {
+      cause: error as Error,
+    })
   }
 }
 
 /** Creates JSON-LD structured data for a post. */
 function createPostJsonLd(
-  pageData: any,
-  siteConfig: any,
+  pageData: ExtendedPageData,
+  siteConfig: ExtendedSiteConfig,
   siteUrl: string,
   localeIndexUrl: string,
   localeIndex: string,
@@ -38,8 +46,8 @@ function createPostJsonLd(
   const description = pageData.description
   const author =
     pageData.frontmatter.authorId &&
-    langConfig.themeConfig.authors?.find(
-      (item: any) => item.id === pageData.frontmatter.authorId
+    (langConfig.themeConfig as ThemeConfig).authors?.find(
+      (item: Author) => item.id === pageData.frontmatter.authorId
     )
 
   const authorName = author?.name || author?.id
@@ -54,15 +62,17 @@ function createPostJsonLd(
   const alternateLanguages: Array<{ code: string; url: string }> = []
 
   if (siteConfig.site.locales) {
-    Object.entries(siteConfig.site.locales).forEach(([code, locale]: [string, any]) => {
-      if (code === localeIndex || code === ROOT_LANG) return
-      const alternateUrl = generatePageUrlPath(pagePathWithoutLang)
+    Object.entries(siteConfig.site.locales).forEach(
+      ([code, locale]: [string, any]) => {
+        if (code === localeIndex || code === ROOT_LANG) return
+        const alternateUrl = generatePageUrlPath(pagePathWithoutLang)
 
-      alternateLanguages.push({
-        code: locale.lang || code,
-        url: `${siteUrl}/${code}/${alternateUrl}`,
-      })
-    })
+        alternateLanguages.push({
+          code: locale.lang || code,
+          url: `${siteUrl}/${code}/${alternateUrl}`,
+        })
+      }
+    )
   }
 
   const article: Record<string, any> = {
@@ -94,7 +104,7 @@ function createPostJsonLd(
       pageData.lastUpdated && new Date(pageData.lastUpdated).toISOString(),
     keywords:
       tags && tags.length > 0
-        ? tags.map((tag: any) => tag.name).join(', ')
+        ? (tags as any[]).map((tag: any) => tag.name || tag).join(', ')
         : undefined,
     image:
       cover &&
@@ -121,14 +131,14 @@ function createPostJsonLd(
 }
 
 function createAuthorJsonLd(
-  pageData: any,
-  siteConfig: any,
+  pageData: ExtendedPageData,
+  siteConfig: ExtendedSiteConfig,
   siteUrl: string,
   localeIndex: string,
   langConfig: any
 ): any {
-  const authors = langConfig.themeConfig?.authors
-  const author = authors?.find((item: any) => item.id === pageData.params.id)
+  const authors = (langConfig.themeConfig as ThemeConfig)?.authors
+  const author = authors?.find((item: Author) => item.id === pageData.params?.id)
 
   if (!author) return
 
@@ -166,13 +176,13 @@ function createAuthorJsonLd(
       width: imageWidth,
       caption: authorName,
     },
-    sameAs: links?.map((link: any) => link.url),
+    sameAs: links?.map((link: any) => link.url || link.link),
     ...rest,
   }
 }
 
 function createPageJsonLd(
-  pageData: any,
+  pageData: ExtendedPageData,
   pageUrl: string,
   localeIndexUrl: string,
   publisher: any,
@@ -203,7 +213,12 @@ function createPageJsonLd(
 }
 
 /** Adds JSON-LD structured data to the page head. */
-export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext): void {
+export function addJsonLd({
+  page,
+  head,
+  pageData,
+  siteConfig,
+}: AddJsonLdContext): void {
   if (!page || page.indexOf('/') < 0) {
     return
   }
@@ -214,7 +229,7 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
 
   if (!langConfig) return
 
-  const siteUrl = siteConfig.userConfig.siteUrl
+  const siteUrl = siteConfig.userConfig.siteUrl!
   const localeIndexUrl = `${siteUrl}/${localeIndex}`
   const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
   // siteName: fallback resolution matches createPageJsonLd usage.
@@ -254,7 +269,7 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
       pageUrl,
       localeIndexUrl,
       publisher,
-      langConfig.title
+      langConfig.title!
     )
   } else if (pageData.frontmatter.jsonLd) {
     jsonLdData = parseYamlToJsonLd(pageData.frontmatter.jsonLd)

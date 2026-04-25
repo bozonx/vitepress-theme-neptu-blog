@@ -16,8 +16,8 @@ declare module 'slug' {
 }
 declare module 'vitepress/dist/client/theme-default/composables/langs.js' {
   export function useLangs(options?: { correspondingLink?: boolean }): {
-    localeLinks: any
-    currentLang: any
+    localeLinks: Array<{ text: string; link: string }>
+    currentLang: { label: string; link: string }
   }
 }
 

@@ -13,7 +13,9 @@ import { useScrollY } from '../composables/useScrollY.ts'
 import { useSwipeDrawer } from '../composables/useSwipeDrawer.ts'
 import { resolveBodyMarker } from '../helpers/helpers.ts'
 
-const { theme, frontmatter } = useData()
+import type { ThemeConfig } from '../types.d.ts'
+
+const { theme, frontmatter } = useData<ThemeConfig>()
 const { isMobile } = useBreakpoint()
 const { scrollY } = useScrollY()
 const sidebarRef = ref<InstanceType<typeof SideBar> | null>(null)

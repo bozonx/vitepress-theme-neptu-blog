@@ -1,124 +1,84 @@
-import { isAuthorPage, generatePageUrlPath, isHomePage, isPost } from '../helpers/helpers.ts'
+import { generatePageUrlPath, isPost } from '../helpers/helpers.ts'
+import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author } from '../types.d.ts'
 
 export interface AddOgMetaTagsContext {
-  page: string
   head: any[]
-  pageData: any
-  siteConfig: any
+  pageData: ExtendedPageData
+  siteConfig: ExtendedSiteConfig
 }
 
-export interface OgImage {
-  url: string
-  width?: number
-  height?: number
-  alt?: string
-}
-
-/** Add OpenGraph metatags to the page */
+/** Adds Open Graph and Twitter meta tags to the page head. */
 export function addOgMetaTags({
-  page,
   head,
   pageData,
   siteConfig,
 }: AddOgMetaTagsContext): void {
-  if (!page || page.indexOf('/') < 0) return
-
   const siteUrl = siteConfig.userConfig.siteUrl
-  const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
-  const localeIndex = page.split('/')[0]!
+  if (!siteUrl) return
+
+  const localeIndex = pageData.filePath.split('/')[0]!
   const langConfig = siteConfig.site.locales[localeIndex]
-  const locale = langConfig.lang.replace('-', '_')
-  const isArticle = isPost(pageData.frontmatter)
-  const siteName = langConfig.title
-  const title = pageData.title || siteName
-  const descr =
-    isHomePage(pageData.frontmatter) && !pageData.description
-      ? langConfig.description
-      : pageData.description
+  if (!langConfig) return
+
+  const themeConfig = langConfig.themeConfig as ThemeConfig
+  const pageUrl = `${siteUrl}/${generatePageUrlPath(pageData.relativePath)}`
+  const title = pageData.frontmatter.title || langConfig.title
+  const description = pageData.frontmatter.description || langConfig.description
+  const cover = pageData.frontmatter.cover
+  const imageUrl = cover
+    ? cover.includes('://')
+      ? cover
+      : `${siteUrl}${cover}`
+    : themeConfig.mainHeroImg
+    ? themeConfig.mainHeroImg.includes('://')
+      ? themeConfig.mainHeroImg
+      : `${siteUrl}${themeConfig.mainHeroImg}`
+    : undefined
+
   const author =
     pageData.frontmatter.authorId &&
-    langConfig.themeConfig.authors?.find(
-      (item: any) => item.id === pageData.frontmatter.authorId
-    )?.name
-  const img = resolveOgImage(page, pageData, siteConfig, siteUrl, langConfig)
-
-  const ogType = isArticle ? 'article' : 'website'
-  const twitterCardType = img ? 'summary_large_image' : 'summary'
-
-  head.push(['meta', { property: 'og:site_name', content: siteName }])
-  head.push(['meta', { property: 'og:title', content: title }])
-  descr && head.push(['meta', { property: 'og:description', content: descr }])
-  head.push(['meta', { property: 'og:url', content: pageUrl }])
-  head.push(['meta', { property: 'og:locale', content: locale }])
-  head.push(['meta', { property: 'og:type', content: ogType }])
-  pageData.frontmatter.date &&
-    head.push([
-      'meta',
-      { property: 'article:published_time', content: pageData.frontmatter.date },
-    ])
-
-  pageData.lastUpdated &&
-    head.push([
-      'meta',
-      {
-        property: 'article:modified_time',
-        content: new Date(pageData.lastUpdated).toISOString(),
-      },
-    ])
-
-  author && head.push(['meta', { property: 'article:author', content: author }])
-  pageData.frontmatter.tags &&
-    (pageData.frontmatter.tags || []).forEach((tag: any) => {
-      head.push(['meta', { property: 'article:tag', content: tag.name }])
-    })
-
-  if (img) {
-    head.push(['meta', { property: 'og:image', content: img.url }])
-    img.width &&
-      head.push(['meta', { property: 'og:image:width', content: img.width.toString() }])
-    img.height &&
-      head.push(['meta', { property: 'og:image:height', content: img.height.toString() }])
-    img.alt && head.push(['meta', { property: 'og:image:alt', content: img.alt }])
-  }
-
-  head.push(['meta', { name: 'twitter:card', content: twitterCardType }])
-  head.push(['meta', { name: 'twitter:title', content: title }])
-  img && head.push(['meta', { name: 'twitter:image', content: img.url }])
-  descr && head.push(['meta', { name: 'twitter:description', content: descr }])
-  author && head.push(['meta', { name: 'twitter:creator', content: author }])
-}
-
-export function resolveOgImage(
-  page: string,
-  pageData: any,
-  siteConfig: any,
-  siteUrl: string,
-  langConfig: any
-): OgImage | undefined {
-  if (isAuthorPage(page, siteConfig)) {
-    const authorId = pageData.params.id
-    const author = langConfig.themeConfig.authors.find(
-      (item: any) => item.id === authorId
+    themeConfig.authors?.find(
+      (item: Author) => item.id === pageData.frontmatter.authorId
     )
 
-    if (!author?.image) return
+  const tags = [
+    ['property', 'og:site_name', langConfig.title || ''],
+    ['property', 'og:type', isPost(pageData.frontmatter) ? 'article' : 'website'],
+    ['property', 'og:title', title],
+    ['property', 'og:description', description],
+    ['property', 'og:url', pageUrl],
+    ['property', 'og:locale', langConfig.lang || localeIndex],
+    ['name', 'twitter:card', 'summary_large_image'],
+    ['name', 'twitter:title', title],
+    ['name', 'twitter:description', description],
+  ]
 
-    return {
-      url: author.image.match(/\/\//) ? author.image : siteUrl + author.image,
-      width: author?.imageWidth,
-      height: author?.imageHeight,
-      alt: author?.name,
+  if (imageUrl) {
+    tags.push(['property', 'og:image', imageUrl])
+    tags.push(['name', 'twitter:image', imageUrl])
+  }
+
+  if (isPost(pageData.frontmatter)) {
+    if (pageData.frontmatter.date) {
+      tags.push([
+        'property',
+        'article:published_time',
+        new Date(pageData.frontmatter.date).toISOString(),
+      ])
+    }
+    if (pageData.frontmatter.tags) {
+      (pageData.frontmatter.tags as any[]).forEach((tag: any) => {
+        tags.push(['property', 'article:tag', tag.name || tag])
+      })
+    }
+    if (author) {
+      tags.push(['property', 'article:author', author.name])
     }
   }
 
-  if (!pageData.frontmatter.cover) return
-
-  const coverUrl = siteUrl + pageData.frontmatter.cover
-
-  return {
-    url: coverUrl,
-    width: pageData.frontmatter.coverWidth,
-    height: pageData.frontmatter.coverHeight,
-    alt: pageData.frontmatter.coverAlt,
-  }
+  tags.forEach(([type, name, content]) => {
+    if (content) {
+      head.push(['meta', { [type]: name, content }])
+    }
+  })
 }

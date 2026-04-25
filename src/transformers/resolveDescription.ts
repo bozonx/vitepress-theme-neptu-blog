@@ -4,18 +4,19 @@ import path from 'node:path'
 import { DEFAULT_ENCODE } from '../constants.ts'
 import { isPost, isPage } from '../helpers/helpers.ts'
 import { extractDescriptionFromMd } from '../helpers/mdWorks.ts'
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 /**
  * If description = "" in frontmatter, set description from content for posts
  * and pages.
  */
 export function resolveDescription(
-  pageData: any,
-  { siteConfig }: { siteConfig: any }
+  pageData: ExtendedPageData,
+  { siteConfig }: { siteConfig: ExtendedSiteConfig }
 ): void {
   if (!isPost(pageData.frontmatter) && !isPage(pageData.frontmatter)) return
 
-  const description = pageData.frontmatter.description?.trim() || ''
+  const description = (pageData.frontmatter.description as string)?.trim() || ''
   if (description) return
 
   try {
@@ -26,7 +27,7 @@ export function resolveDescription(
 
     pageData.description = extractDescriptionFromMd(
       rawContent,
-      siteConfig.userConfig.maxDescriptionLength
+      (siteConfig.userConfig as any).maxDescriptionLength
     )
   } catch (error) {
     console.warn(

@@ -5,16 +5,17 @@ import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
 import { parseMdFile, extractDescriptionFromMd } from '../helpers/mdWorks.ts'
 import { transliterate } from '../helpers/transliterate.ts'
 import { getImageDimensions } from '../helpers/imageHelpers.ts'
+import type { PostFrontmatter, Tag } from '../types.d.ts'
 
 export interface PreviewItem {
   url: string
-  date: any
-  authorId: any
-  title: any
-  tags: Array<{ name: string; slug: string }>
+  date: string | Date | undefined
+  authorId: string | undefined
+  title: string | undefined
+  tags: Tag[]
   preview: string | undefined
-  thumbnail: any
-  cover: any
+  thumbnail: string | undefined
+  cover: string | undefined
   coverHeight: number | undefined
   coverWidth: number | undefined
 }
@@ -22,17 +23,17 @@ export interface PreviewItem {
 export function makePreviewItem(filePath: string): PreviewItem {
   const baseDir = path.resolve(filePath, '../../../')
   const relativePath = path.relative(baseDir, filePath)
-  const lang = relativePath.split('/')[0]
+  const lang = relativePath.split('/')[0]!
 
   const url = '/' + relativePath.replace(/\.md$/, '')
   const rawContent = fs.readFileSync(filePath, DEFAULT_ENCODE)
   const { frontmatter, content } = parseMdFile(rawContent)
-  let preview = resolvePreview(frontmatter as any)
+  const fm = frontmatter as PostFrontmatter
+  
+  let preview = resolvePreview(fm)
   // make preview from content as description
   if (!preview)
     preview = extractDescriptionFromMd(content, PREVIEW_LENGTH, false)
-
-  const fm = frontmatter as Record<string, any>
 
   // Получаем размеры изображения если оно есть
   let coverDimensions = null
@@ -61,11 +62,7 @@ export function resolvePreview({
   previewText,
   descrAsPreview,
   description,
-}: {
-  previewText?: string
-  descrAsPreview?: boolean
-  description?: string
-}): string | undefined {
+}: PostFrontmatter): string | undefined {
   if (previewText) {
     return previewText
   } else if (descrAsPreview && description) {

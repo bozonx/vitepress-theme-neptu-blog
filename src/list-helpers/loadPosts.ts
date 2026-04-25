@@ -4,10 +4,11 @@ import path from 'node:path'
 import { POSTS_DIR } from '../constants.ts'
 import { mergeWithAnalytics, type GoogleAnalyticsConfig } from './loadPostsStats.ts'
 import { makePreviewItem } from './makePreviewItem.ts'
+import type { Post } from '../types.d.ts'
 
 declare global {
    
-  var neptuBlogCache: Record<string, any[]> | undefined
+  var neptuBlogCache: Record<string, Post[]> | undefined
 }
 
 if (!globalThis.neptuBlogCache) {
@@ -24,7 +25,7 @@ export interface LoadPostsOptions {
 export async function loadPostsData(
   localeDir: string,
   options: LoadPostsOptions = {}
-): Promise<any[]> {
+): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
     googleAnalytics = null,
@@ -46,7 +47,7 @@ export async function loadPostsData(
     const files = await fs.readdir(postsDir)
     const mdFiles = files.filter((file) => file.endsWith('.md'))
     const fullPaths = mdFiles.map((file) => path.join(postsDir, file))
-    const posts = fullPaths.map((filePath) => makePreviewItem(filePath))
+    const posts = fullPaths.map((filePath) => makePreviewItem(filePath)) as Post[]
 
     cache[cacheKey] = posts
 
@@ -67,7 +68,7 @@ export async function loadPostsData(
 export async function loadPostsDataFromFiles(
   files: string[],
   options: LoadPostsOptions = {}
-): Promise<any[]> {
+): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
     googleAnalytics = null,
@@ -87,7 +88,7 @@ export async function loadPostsDataFromFiles(
   }
 
   try {
-    const posts = fullPaths.map((filePath) => makePreviewItem(filePath))
+    const posts = fullPaths.map((filePath) => makePreviewItem(filePath)) as Post[]
 
     cache[cacheKey] = posts
 

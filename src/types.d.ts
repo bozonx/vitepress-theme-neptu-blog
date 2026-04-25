@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { DefaultTheme } from 'vitepress'
+import { DefaultTheme, PageData, SiteConfig } from 'vitepress'
 
 export namespace NeptuBlogTheme {
   export interface Config extends DefaultTheme.Config {
@@ -43,6 +43,57 @@ export namespace NeptuBlogTheme {
     sidebarLogoSrc?: string
     siteTitle?: string
     sidebarMenuLabel?: string
+
+    siteUrl?: string
+
+    t: I18n
+  }
+
+  export interface I18n {
+    popularPosts: string
+    similarPosts: string
+    shareSocialMedia: string
+    currentLang: string
+    tagBadgeCount: string
+    tagPageHeader: string
+    tags: string
+    allTags: string
+    paginationToStart: string
+    paginationToEnd: string
+    toHome: string
+    toBlog: string
+    author: string
+    year: string
+    showMorePosts: string
+    listenPodcast: string
+    commentCall: string
+    allTagsCall: string
+    popularPostsCall: string
+    postVideoButton: string
+    allPostsOfAuthor: string
+    closeMenu: string
+    allPostsOfYear: string
+    postsCount: string
+    search: string
+    searchInBlog: string
+
+    links: {
+      aboutBlog: string
+      donate: string
+      recent: string
+      popular: string
+      byDate: string
+      links: string
+      authors: string
+      aboutUs: string
+      rssFeed: string
+      atomFeed: string
+    }
+    months: string[]
+    podcasts: Record<string, string>
+    audioFile: Record<string, string>
+    fileDownload: Record<string, string>
+    lightbox: Record<string, string>
   }
 
   export interface GoogleAnalyticsConfig {
@@ -65,6 +116,9 @@ export namespace NeptuBlogTheme {
     image?: string
     description?: string
     links?: SocialLink[]
+    aboutUrl?: string
+    imageHeight?: number
+    imageWidth?: number
   }
 
   export interface TopBarConfig {
@@ -97,6 +151,7 @@ export namespace NeptuBlogTheme {
   export interface SocialLink {
     icon: string
     link: string
+    url?: string
     class?: string
     desktopOnly?: boolean
     mobileOnly?: boolean
@@ -106,6 +161,61 @@ export namespace NeptuBlogTheme {
     url: string
     icon?: string
   }
+
+  export interface Tag {
+    name: string
+    slug: string
+    count?: number
+  }
+
+  export interface PostFrontmatter extends Record<string, any> {
+    layout?: 'post'
+    title?: string
+    description?: string
+    date?: string | Date
+    authorId?: string
+    cover?: string
+    coverHeight?: number
+    coverWidth?: number
+    coverDescr?: string
+    coverAlt?: string
+    tags?: string[]
+    previewText?: string
+    descrAsPreview?: boolean
+    jsonLd?: string
+    searchIncluded?: boolean
+    podcasts?: Record<string, string>
+  }
+
+  export interface Post {
+    url: string
+    title: string
+    date: string | Date
+    excerpt?: string
+    frontmatter: PostFrontmatter
+    tags?: Tag[]
+    analyticsStats?: Record<string, number>
+    authorId?: string
+    thumbnail?: string
+    cover?: string
+  }
+
+  export interface ExtendedPageData extends PageData {
+    frontmatter: PostFrontmatter | Record<string, any>
+  }
+
+  export interface ExtendedSiteConfig extends SiteConfig<Config> {
+    userConfig: {
+      themeConfig: Config
+      siteUrl?: string
+      [key: string]: any
+    }
+  }
 }
 
 export type ThemeConfig = NeptuBlogTheme.Config
+export type Post = NeptuBlogTheme.Post
+export type PostFrontmatter = NeptuBlogTheme.PostFrontmatter
+export type Tag = NeptuBlogTheme.Tag
+export type Author = NeptuBlogTheme.Author
+export type I18n = NeptuBlogTheme.I18n

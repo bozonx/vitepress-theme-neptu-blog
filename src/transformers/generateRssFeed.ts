@@ -14,31 +14,32 @@ import {
   validatePostForRss,
   validateRssConfig,
 } from '../helpers/rssHelpers.ts'
+import type { ExtendedSiteConfig, PostFrontmatter } from '../types.d.ts'
 
 /**
  * Generates RSS and Atom feeds for all locales.
  * pageData.description must be resolved before this transformer runs.
  */
-export async function generateRssFeed(config: any): Promise<void> {
+export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void> {
   try {
     if (!validateRssConfig(config)) {
       throw new Error('Invalid RSS configuration')
     }
 
     const feeds: Record<string, Feed> = {}
-    const siteUrl = config.userConfig.siteUrl
+    const siteUrl = config.userConfig.siteUrl!
 
     for (const localeIndex of Object.keys(config.site.locales)) {
       if (localeIndex === ROOT_LANG) continue
 
-      const locale = config.site.locales[localeIndex]
+      const locale = config.site.locales[localeIndex]!
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
 
       feeds[localeIndex] = new Feed({
         language: localeIndex,
         title: locale.title,
         description: locale.description,
-        copyright: locale.themeConfig.footer.copyright,
+        copyright: locale.themeConfig?.footer?.copyright || '',
         id: localeSiteUrl,
         link: localeSiteUrl,
         favicon: `${siteUrl}/img/favicon-32x32.png`,
@@ -59,42 +60,43 @@ export async function generateRssFeed(config: any): Promise<void> {
 
         const sortedPosts = posts
           .sort(
-            (a: any, b: any) =>
+            (a, b) =>
               +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
           )
-          .slice(0, config.userConfig.maxPostsInRssFeed)
+          .slice(0, (config.userConfig as any).maxPostsInRssFeed)
 
-        for (const { url, frontmatter, src } of sortedPosts as any[]) {
+        for (const { url, frontmatter, src } of sortedPosts) {
+          const fm = frontmatter as PostFrontmatter
           try {
-            if (!validatePostForRss(frontmatter, url)) {
-              console.warn(config, `Skipping post ${url} - validation failed`)
+            if (!validatePostForRss(fm, url)) {
+              console.warn(`Skipping post ${url} - validation failed`)
               continue
             }
 
-            const description = frontmatter.description
-              ? frontmatter.description
+            const description = fm.description
+              ? fm.description
               : extractDescriptionFromMd(
-                  src,
-                  config.userConfig.maxDescriptionLength
+                  src!,
+                  (config.userConfig as any).maxDescriptionLength
                 )
-            const guid = createPostGuid(siteUrl, url, frontmatter.date)
-            const categories = formatTagsForRss(frontmatter.tags, siteUrl)
+            const guid = createPostGuid(siteUrl, url, fm.date)
+            const categories = formatTagsForRss(fm.tags, siteUrl)
 
             feeds[localeIndex]!.addItem({
-              title: frontmatter.title,
+              title: fm.title || '',
               description,
               id: guid,
               link: `${siteUrl}${url}`,
-              date: frontmatter.date && new Date(frontmatter.date),
-              image: frontmatter.cover && `${siteUrl}${frontmatter.cover}`,
+              date: fm.date ? new Date(fm.date) : new Date(),
+              image: fm.cover ? (fm.cover.includes('://') ? fm.cover : `${siteUrl}${fm.cover}`) : undefined,
               author: makeAuthorForRss(
                 config,
-                frontmatter,
+                fm,
                 localeSiteUrl,
                 localeIndex
               ) as any,
               category: categories.length > 0 ? categories : undefined,
-              published: frontmatter.date && new Date(frontmatter.date),
+              published: fm.date ? new Date(fm.date) : new Date(),
             })
           } catch (postError) {
             console.error(`Error processing post ${url}:`, postError)
@@ -124,7 +126,7 @@ export async function generateRssFeed(config: any): Promise<void> {
               `feed-${localeIndex}.${formatInfo.extension}`
             )
 
-            const feedContent = formatInfo.generator(feeds[localeIndex])
+            const feedContent = formatInfo.generator(feeds[localeIndex]!)
 
             fs.writeFileSync(feedPath, feedContent, DEFAULT_ENCODE)
             console.log(`Generated ${formatInfo.title}: ${feedPath}`)

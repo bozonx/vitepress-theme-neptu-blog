@@ -1,9 +1,9 @@
 import { pathTrimExt, arraysIntersection } from './squidlet.ts'
 
-// Loose types for now; will be tightened during full migration.
-export type Frontmatter = Record<string, any>
-export type Post = Record<string, any>
-export type ThemeRef = { value: Record<string, any> } | Record<string, any>
+import type { Post, PostFrontmatter, ThemeConfig } from '../types.d.ts'
+
+export type Frontmatter = PostFrontmatter
+export type ThemeRef = { value: ThemeConfig } | ThemeConfig
 
 const UTIL_LAYOUTS = new Set(['util', 'tag', 'archive', 'author'])
 
@@ -28,11 +28,14 @@ export function isUtilPage(frontmatter: Frontmatter | null | undefined): boolean
   return UTIL_LAYOUTS.has(frontmatter?.layout)
 }
 
-export function isPopularRoute(routPath: string, theme: any): boolean {
-  return routPath.includes(`/${theme.value.popularBaseUrl}/`)
+export function isPopularRoute(routPath: string, theme: ThemeRef): boolean {
+  const themeValue = 'value' in theme ? theme.value : theme
+  return routPath.includes(`/${themeValue.popularBaseUrl}/`)
 }
 
-export function isAuthorPage(filePath: string | null | undefined, siteConfig: any): boolean {
+import type { ExtendedSiteConfig } from '../types.d.ts'
+
+export function isAuthorPage(filePath: string | null | undefined, siteConfig: ExtendedSiteConfig): boolean {
   if (!filePath) return false
 
   const authorsBaseUrl = siteConfig.userConfig.themeConfig.authorsBaseUrl
@@ -215,7 +218,7 @@ export function sortSimilarPosts(
     .slice(0, limit)
 }
 
-export function resolveBodyMarker(theme: any, frontmatter: Frontmatter): string | undefined {
+export function resolveBodyMarker(theme: ThemeConfig, frontmatter: Frontmatter): string | undefined {
   const bodyMarker = theme.search?.bodyMarker
 
   if (!bodyMarker) return undefined
