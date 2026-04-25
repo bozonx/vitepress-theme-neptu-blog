@@ -1,5 +1,5 @@
 ---
-title: "{{params.year}} {{theme.t.year}}"
+title: "{{params?.year}} {{theme.t.year}}"
 layout: util
 head:
   - - meta
@@ -15,7 +15,7 @@ const { params } = useData()
 </script>
 
 <MonthsOfYear
-  :year="params.year"
-  :curPage="params.page"
+  :year="params?.year"
+  :curPage="params?.page"
   :showPopularPostsSwitch="true"
 />

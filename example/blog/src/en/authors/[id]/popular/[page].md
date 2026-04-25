@@ -1,5 +1,5 @@
 ---
-title: "{{theme.authors.find((item) => item.id === params.id)?.
+title: "{{theme.authors.find((item) => item.id === params?.id)?.
 name}}"
 layout: util
 ---
@@ -12,7 +12,7 @@ const { params } = useData()
 </script>
 
 <AuthorDetails
-  :authorId="params.id"
-  :curPage="params.page"
+  :authorId="params?.id"
+  :curPage="params?.page"
   :showPopularPostsSwitch="true"
 />

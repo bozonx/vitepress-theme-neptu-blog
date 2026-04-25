@@ -15,5 +15,5 @@ const { params } = useData()
 </script>
 
 <PopularPostsList
-  :curPage="params.page"
+  :curPage="params?.page"
 />

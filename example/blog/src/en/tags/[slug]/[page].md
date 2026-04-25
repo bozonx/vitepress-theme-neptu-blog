@@ -1,5 +1,5 @@
 ---
-title: "{{theme.t.tagPageHeader}}: {{params.name}}"
+title: "{{theme.t.tagPageHeader}}: {{params?.name}}"
 layout: util
 head:
   - - meta
@@ -15,8 +15,8 @@ const { params } = useData()
 </script>
 
 <TagPostsList
-  :curPage="params.page"
-  :tagName="params.name"
-  :tagSlug="params.slug"
+  :curPage="params?.page"
+  :tagName="params?.name"
+  :tagSlug="params?.slug"
   :showPopularPostsSwitch="true"
 />

@@ -1,5 +1,5 @@
 ---
-title: "{{theme.t.months[params.month - 1]}} {{params.year}}"
+title: "{{theme.t.months[params?.month - 1]}} {{params?.year}}"
 layout: util
 head:
   - - meta
@@ -15,6 +15,6 @@ const { params } = useData()
 </script>
 
 <MonthPostsList
-  :year="params.year"
-  :month="params.month"
+  :year="params?.year"
+  :month="params?.month"
 />

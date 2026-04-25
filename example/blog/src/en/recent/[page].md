@@ -15,5 +15,5 @@ const { params } = useData()
 </script>
 
 <RecentList
-  :curPage="params.page"
+  :curPage="params?.page"
 />
