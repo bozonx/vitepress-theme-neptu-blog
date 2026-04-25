@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { DEFAULT_ENCODE } from '../constants.ts'
-import { isPost, isPage } from '../helpers/helpers.ts'
-import { extractDescriptionFromMd } from '../helpers/mdWorks.ts'
+import { isPost, isPage } from '../utils/shared/index.ts'
+import { extractDescriptionFromMd } from '../utils/node/index.ts'
 import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 /**

@@ -3,7 +3,7 @@ import { useData, useRoute } from 'vitepress'
 import { inject } from 'vue'
 import PreviewList from '../PreviewList.vue'
 import ListPageHeader from '../ListPageHeader.vue'
-import { sortPosts, isPopularRoute } from '../../helpers/helpers'
+import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
 import BtnLink from '../BtnLink.vue'
 
 const props = defineProps<{

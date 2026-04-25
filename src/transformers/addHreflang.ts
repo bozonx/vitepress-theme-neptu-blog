@@ -1,4 +1,4 @@
-import { generatePageUrlPath } from '../helpers/helpers.ts'
+import { generatePageUrlPath } from '../utils/shared/index.ts'
 import { ROOT_LANG } from '../constants.ts'
 import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 

@@ -4,7 +4,7 @@ import path from 'node:path'
 import { createContentLoader } from 'vitepress'
 
 import { DEFAULT_ENCODE, POSTS_DIR, ROOT_LANG } from '../constants.ts'
-import { extractDescriptionFromMd } from '../helpers/mdWorks.ts'
+import { extractDescriptionFromMd } from '../utils/node/index.ts'
 import {
   createPostGuid,
   formatTagsForRss,
@@ -13,7 +13,7 @@ import {
   makeAuthorForRss,
   validatePostForRss,
   validateRssConfig,
-} from '../helpers/rssHelpers.ts'
+} from '../utils/node/index.ts'
 import type { ExtendedSiteConfig, PostFrontmatter } from '../types.d.ts'
 
 /**

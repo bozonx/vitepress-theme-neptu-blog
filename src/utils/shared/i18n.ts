@@ -1,5 +1,5 @@
-import locales from '../configs/blogLocalesBase/index.ts'
-import type { I18n } from '../types.d.ts'
+import locales from '../../configs/blogLocalesBase/index.ts'
+import type { I18n } from '../../types.d.ts'
 
 type LocalesMap = Record<string, { t: I18n; [key: string]: any }>
 

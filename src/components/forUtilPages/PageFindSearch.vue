@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants'
+import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants.ts'
 
 declare global {
   interface Window {

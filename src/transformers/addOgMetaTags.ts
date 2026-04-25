@@ -1,4 +1,4 @@
-import { generatePageUrlPath, isPost } from '../helpers/helpers.ts'
+import { generatePageUrlPath, isPost } from '../utils/shared/index.ts'
 import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author } from '../types.d.ts'
 
 export interface AddOgMetaTagsContext {

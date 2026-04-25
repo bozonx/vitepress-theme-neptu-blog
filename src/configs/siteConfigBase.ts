@@ -1,4 +1,4 @@
-import { omitUndefined } from '../helpers/squidlet.ts'
+import { omitUndefined } from '../utils/shared/index.ts'
 import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
 import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'

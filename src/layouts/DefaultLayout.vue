@@ -11,7 +11,7 @@ import TopBar from '../components/layout/TopBar.vue'
 import { useBreakpoint } from '../composables/useBreakpoint.ts'
 import { useScrollY } from '../composables/useScrollY.ts'
 import { useSwipeDrawer } from '../composables/useSwipeDrawer.ts'
-import { resolveBodyMarker } from '../helpers/helpers.ts'
+import { resolveBodyMarker } from '../utils/shared/index.ts'
 
 import type { ThemeConfig } from '../types.d.ts'
 

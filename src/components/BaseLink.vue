@@ -2,7 +2,7 @@
 // Internal component — consumed by other components only.
 import { useData, useRoute } from 'vitepress'
 import { ref, watch, computed } from 'vue'
-import { resolveI18Href, isExternalUrl } from '../helpers/helpers.ts'
+import { resolveI18Href, isExternalUrl } from '../utils/shared/index.ts'
 
 interface Props {
   customClass?: unknown

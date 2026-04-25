@@ -14,7 +14,7 @@ export {
   common as siteCommonConfig,
   mergeSiteConfig,
 } from './siteConfigBase.ts'
-export { loadBlogLocale } from '../helpers/blogConfigHelper.ts'
-export { loadSiteLocale } from '../helpers/siteConfigHelper.ts'
-export { resolveTranslationsByFilePath } from '../helpers/resolveTranslations.ts'
-export { getImageDimensions } from '../helpers/imageHelpers.ts'
+export { loadBlogLocale } from '../utils/node/index.ts'
+export { loadSiteLocale } from '../utils/node/index.ts'
+export { resolveTranslationsByFilePath } from '../utils/shared/index.ts'
+export { getImageDimensions } from '../utils/node/index.ts'

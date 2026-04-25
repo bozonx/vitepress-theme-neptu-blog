@@ -5,7 +5,7 @@ import {
   resolveArticlePreview,
   isPage,
   isUtilPage,
-} from '../helpers/helpers.ts'
+} from '../utils/shared/index.ts'
 import PostFooter from './post/PostFooter.vue'
 import PostDate from './post/PostDate.vue'
 import PostTopBar from './post/PostTopBar.vue'

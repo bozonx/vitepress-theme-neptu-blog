@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
-import { makeYearsList } from '../../list-helpers/listHelpers'
+import { makeYearsList } from '../../list-helpers/listHelpers.ts'
 import ListItemWithBadge from '../ListItemWithBadge.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 

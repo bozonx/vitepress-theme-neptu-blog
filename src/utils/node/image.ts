@@ -66,8 +66,8 @@ export function getImageSize(buffer: Buffer): ImageSizeResult {
     const dimensions = imageSize(buffer)
 
     return {
-      width: dimensions.width,
-      height: dimensions.height,
+      width: dimensions.width || 0,
+      height: dimensions.height || 0,
       type: dimensions.type,
     }
   } catch (error) {

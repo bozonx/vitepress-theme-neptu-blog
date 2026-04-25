@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { useData } from 'vitepress'
-import { makeTagsList } from '../../list-helpers/listHelpers'
+import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import TagsList from '../TagsList.vue'
 import UtilSubPageHeader from './UtilSubPageHeader.vue'
 

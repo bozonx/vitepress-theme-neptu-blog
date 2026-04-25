@@ -1,6 +1,6 @@
-import { isPost } from '../helpers/helpers.ts'
-import { mdToHtml } from '../helpers/mdWorks.ts'
-import { transliterate } from '../helpers/transliterate.ts'
+import { isPost } from '../utils/shared/index.ts'
+import { mdToHtml } from '../utils/node/index.ts'
+import { transliterate } from '../utils/shared/index.ts'
 import type { ExtendedPageData } from '../types.d.ts'
 
 /** Transform md in frontmatter params of post to html. And resolve preview */

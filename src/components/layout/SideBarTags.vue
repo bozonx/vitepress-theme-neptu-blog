@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { makeTagsList } from '../../list-helpers/listHelpers'
+import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import BtnLink from '../BtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'

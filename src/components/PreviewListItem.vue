@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { makeHumanDate } from '../helpers/helpers.ts'
+import { makeHumanDate } from '../utils/shared/index.ts'
 import PreviewWithImg from './PreviewWithImg.vue'
 import PreviewNoImg from './PreviewNoImg.vue'
 

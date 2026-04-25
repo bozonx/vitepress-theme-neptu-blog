@@ -1,12 +1,12 @@
 import yaml from 'yaml'
-import { omitUndefined } from '../helpers/squidlet.ts'
+import { omitUndefined } from '../utils/shared/index.ts'
 import { ROOT_LANG } from '../constants.ts'
 import {
   isPost,
   generatePageUrlPath,
   isAuthorPage,
   isPage,
-} from '../helpers/helpers.ts'
+} from '../utils/shared/index.ts'
 import type {
   ExtendedPageData,
   ExtendedSiteConfig,

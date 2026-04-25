@@ -23,7 +23,7 @@ import { useData } from 'vitepress'
 import UtilSubPageHeader from './UtilSubPageHeader.vue'
 import BtnLink from '../BtnLink.vue'
 import PreviewList from '../PreviewList.vue'
-import { sortPosts } from '../../helpers/helpers'
+import { sortPosts } from '../../utils/shared/index.ts'
 
 const props = defineProps(['localePosts'])
 const { localeIndex, theme } = useData()

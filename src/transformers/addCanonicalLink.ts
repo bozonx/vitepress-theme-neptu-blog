@@ -1,4 +1,4 @@
-import { generatePageUrlPath } from '../helpers/helpers.ts'
+import { generatePageUrlPath } from '../utils/shared/index.ts'
 
 export interface AddCanonicalLinkContext {
   page: string

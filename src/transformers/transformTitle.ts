@@ -1,4 +1,4 @@
-import { mustacheTemplate } from '../helpers/squidlet.ts'
+import { mustacheTemplate } from '../utils/shared/index.ts'
 import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 /**

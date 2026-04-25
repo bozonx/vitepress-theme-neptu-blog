@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { useSlots, computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import { isExternalUrl } from '../helpers/helpers.ts'
+import { isExternalUrl } from '../utils/shared/index.ts'
 import BaseLink from './BaseLink.vue'
 
 interface Props {
