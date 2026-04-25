@@ -26,6 +26,8 @@ export default async () => {
         enabled: true,
         sortBy: 'pageviews', // 'pageviews', 'uniquePageviews'
       },
+
+      // Add there some variables specified for your blog
     },
     head: [
       // do not recognize telephone numbers on the page

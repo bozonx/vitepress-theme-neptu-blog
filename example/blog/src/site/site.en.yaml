@@ -1,8 +1,8 @@
 body: |
   lang: "en-US"
-  title: ""
-  description: ""
-  siteTitle: ""
+  title: "Example Blog"
+  description: "Example Blog Description"
+  siteTitle: "Example Blog title"
 
   donate:
     url: "${theme.mainSiteUrl}/${localeIndex}/page/donate"

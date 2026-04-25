@@ -1,6 +1,6 @@
 ---
 title: Test Canonical Short
-description: Testing canonical: 's' parameter (short version)
+description: "Testing canonical: 's' parameter (short version)"
 date: 2024-01-15
 canonical: "s"
 tags:

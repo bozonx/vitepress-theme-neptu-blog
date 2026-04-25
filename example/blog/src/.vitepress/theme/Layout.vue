@@ -7,9 +7,9 @@ import { data as enData } from '../../en/loadPosts.data.js'
 
 const posts = { en: enData.posts }
 
-provide('posts', posts)
+provide("posts", posts);
 
-const { Layout } = Theme
+const { Layout } = Theme;
 </script>
 
 <template>
