@@ -48,7 +48,7 @@ export async function generateRssFeed(config) {
         link: localeSiteUrl,
         favicon: `${siteUrl}/img/favicon-32x32.png`,
         image: `${siteUrl}${config.userConfig.themeConfig.sidebarLogoSrc}`,
-        generator: 'VitePress SLS Blog Template',
+        generator: 'VitePress Neptu Blog Theme',
         updated: new Date(),
         feedLinks: {
           rss: `${siteUrl}/feed-${localeIndex}.rss`,

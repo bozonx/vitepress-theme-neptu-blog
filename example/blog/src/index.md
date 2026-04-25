@@ -9,7 +9,7 @@ head:
 <script setup>
 import { useData, inBrowser } from 'vitepress'
 import { onMounted } from 'vue'
-import {resolveNavigatorLang} from 'vitepress-sls-blog-tmpl/utils.js'
+import {resolveNavigatorLang} from 'vitepress-theme-neptu-blog/utils.js'
 
 const { site } = useData()
 const supportedLocales = Object.keys(site.value.locales)

@@ -131,7 +131,7 @@ export function mergeBlogConfig(config) {
     locales: { ...common.locales, ...config.locales },
     vite: {
       ...config.vite,
-      ssr: { noExternal: ['vitepress-sls-blog-tmpl'], ...config.vite?.ssr },
+      ssr: { noExternal: ['vitepress-theme-neptu-blog'], ...config.vite?.ssr },
     },
     sitemap: {
       hostname: config.siteUrl,

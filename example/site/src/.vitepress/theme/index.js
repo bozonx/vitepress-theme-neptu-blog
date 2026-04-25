@@ -1,11 +1,11 @@
 import Tobii from '@midzer/tobii/dist/tobii.modern.js'
 import '@midzer/tobii/dist/tobii.min.css'
-import { tobiiLightboxPlugin } from 'vitepress-sls-blog-tmpl/tobiiLightboxPlugin.js'
+import { tobiiLightboxPlugin } from 'vitepress-theme-neptu-blog/tobiiLightboxPlugin.js'
 import Layout from './Layout.vue'
-import 'vitepress-sls-blog-tmpl/site-tmpl-fix.css'
-import 'vitepress-sls-blog-tmpl/search-modal.css'
-import 'vitepress-sls-blog-tmpl/pagefind-fix.css'
-import { resolveTranslationsByFilePath } from 'vitepress-sls-blog-tmpl/resolveTranslations.js'
+import 'vitepress-theme-neptu-blog/site-theme-fix.css'
+import 'vitepress-theme-neptu-blog/search-modal.css'
+import 'vitepress-theme-neptu-blog/pagefind-fix.css'
+import { resolveTranslationsByFilePath } from 'vitepress-theme-neptu-blog/resolveTranslations.js'
 import './styles.css'
 
 /** @type {import('vitepress').Theme} */

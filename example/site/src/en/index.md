@@ -4,7 +4,7 @@ layout: home
 
 <script setup>
 import { useData } from "vitepress";
-import SiteHome from "vitepress-sls-blog-tmpl/SiteHome.vue";
+import SiteHome from "vitepress-theme-neptu-blog/SiteHome.vue";
 
 const { theme, localeIndex } = useData();
 

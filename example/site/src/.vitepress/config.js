@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { mergeSiteConfig } from 'vitepress-sls-blog-tmpl/siteConfigBase.js'
-import { loadSiteLocale } from 'vitepress-sls-blog-tmpl/siteConfigHelper.js'
+import { mergeSiteConfig } from 'vitepress-theme-neptu-blog/siteConfigBase.js'
+import { loadSiteLocale } from 'vitepress-theme-neptu-blog/siteConfigHelper.js'
 
 export default async () => {
   const config = defineConfig({

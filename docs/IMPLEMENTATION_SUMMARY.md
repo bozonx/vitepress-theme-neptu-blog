@@ -1,14 +1,14 @@
-# Резюме реализации функций VitePress SLS Blog Template
+# Резюме реализации функций VitePress Neptu Blog Theme
 
 ## ✅ Что реализовано
 
 ### 1. Функция `addHreflang`
 
-Функция `addHreflang` успешно реализована и интегрирована в VitePress SLS Blog Template.
+Функция `addHreflang` успешно реализована и интегрирована в VitePress Neptu Blog Theme.
 
 ### 2. Функция `addCanonicalLink`
 
-Функция `addCanonicalLink` успешно реализована и интегрирована в VitePress SLS Blog Template.
+Функция `addCanonicalLink` успешно реализована и интегрирована в VitePress Neptu Blog Theme.
 
 ## 🔧 Основная функциональность
 

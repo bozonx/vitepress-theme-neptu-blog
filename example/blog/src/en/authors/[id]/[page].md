@@ -5,7 +5,7 @@ layout: util
 ---
 
 <script setup>
-import AuthorDetails from 'vitepress-sls-blog-tmpl/AuthorDetails.vue'
+import AuthorDetails from 'vitepress-theme-neptu-blog/AuthorDetails.vue'
 import { useData } from 'vitepress'
 
 const { params } = useData()

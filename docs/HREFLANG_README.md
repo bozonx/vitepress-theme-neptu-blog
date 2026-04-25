@@ -1,4 +1,4 @@
-# Hreflang Meta Tags для VitePress SLS Blog Template
+# Hreflang Meta Tags для VitePress Neptu Blog Theme
 
 ## Описание
 
@@ -161,7 +161,7 @@ transformPageData(pageData, ctx) {
 
 ## Поддержка
 
-Функция полностью интегрирована в VitePress SLS Blog Template и готова к использованию без дополнительной настройки.
+Функция полностью интегрирована в VitePress Neptu Blog Theme и готова к использованию без дополнительной настройки.
 
 ## Примеры вывода
 

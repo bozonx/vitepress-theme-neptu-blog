@@ -1,7 +1,7 @@
 <script setup>
   import DefaultTheme from "vitepress/theme";
-  import PageFindSearch from "vitepress-sls-blog-tmpl/PageFindSearch.vue";
-  import NavSearchButton from "vitepress-sls-blog-tmpl/NavSearchButton.vue";
+  import PageFindSearch from "vitepress-theme-neptu-blog/PageFindSearch.vue";
+  import NavSearchButton from "vitepress-theme-neptu-blog/NavSearchButton.vue";
 
   const { Layout: DefaultLayout } = DefaultTheme;
 </script>

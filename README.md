@@ -1,4 +1,4 @@
-# vitepress-sls-blog-tmpl
+# vitepress-theme-neptu-blog
 
 Vitepress blog template for freedom sites by Ivan K.
 

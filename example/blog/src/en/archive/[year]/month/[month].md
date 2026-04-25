@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import MonthPostsList from 'vitepress-sls-blog-tmpl/MonthPostsList.vue'
+import MonthPostsList from 'vitepress-theme-neptu-blog/MonthPostsList.vue'
 import { useData } from 'vitepress'
 
 const { params } = useData()

@@ -1,11 +1,11 @@
 import Tobii from '@midzer/tobii'
 import '@midzer/tobii/dist/tobii.min.css'
-import { tobiiLightboxPlugin } from 'vitepress-sls-blog-tmpl/tobiiLightboxPlugin.js'
-import 'vitepress-sls-blog-tmpl/blue-theme.css'
+import { tobiiLightboxPlugin } from 'vitepress-theme-neptu-blog/tobiiLightboxPlugin.js'
+import 'vitepress-theme-neptu-blog/blue-theme.css'
 import Layout from './Layout.vue'
-import Theme from 'vitepress-sls-blog-tmpl'
-import 'vitepress-sls-blog-tmpl/tw-styles.css'
-import 'vitepress-sls-blog-tmpl/pagefind-fix.css'
+import Theme from 'vitepress-theme-neptu-blog'
+import 'vitepress-theme-neptu-blog/tw-styles.css'
+import 'vitepress-theme-neptu-blog/pagefind-fix.css'
 
 import './styles.css'
 

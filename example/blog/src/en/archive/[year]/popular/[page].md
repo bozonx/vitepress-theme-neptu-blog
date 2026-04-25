@@ -9,7 +9,7 @@ head:
 
 <script setup>
 import { useData } from 'vitepress'
-import MonthsOfYear from 'vitepress-sls-blog-tmpl/MonthsOfYear.vue'
+import MonthsOfYear from 'vitepress-theme-neptu-blog/MonthsOfYear.vue'
 
 const { params } = useData()
 </script>

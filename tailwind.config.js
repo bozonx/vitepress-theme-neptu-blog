@@ -4,7 +4,7 @@ export default {
   content: [
     // "./src/*.{html,js,vue}",
     "./src/**/*.{html,js,vue}",
-    // '../vitepress-sls-blog-tmpl/src/**/*.{html,js,vue}'
+    // '../vitepress-theme-neptu-blog/src/**/*.{html,js,vue}'
   ],
   theme: {
     extend: {},

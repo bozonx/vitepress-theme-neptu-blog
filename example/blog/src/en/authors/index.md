@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import Authors from 'vitepress-sls-blog-tmpl/Authors.vue'
+import Authors from 'vitepress-theme-neptu-blog/Authors.vue'
 </script>
 
 <Authors />

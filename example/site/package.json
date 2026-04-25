@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "vitepress": "^1.3.0",
-    "vitepress-sls-blog-tmpl": "^0.9.6"
+    "vitepress-theme-neptu-blog": "^0.9.6"
   }
 }

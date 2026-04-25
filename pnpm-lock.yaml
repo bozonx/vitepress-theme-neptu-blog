@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  squidlet-lib: link:../../../.local/share/pnpm/global/5/node_modules/squidlet-lib
+
 importers:
 
   .:
@@ -45,8 +48,8 @@ importers:
         specifier: ^11.0.1
         version: 11.0.1
       squidlet-lib:
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: link:../../../.local/share/pnpm/global/5/node_modules/squidlet-lib
+        version: link:../../../.local/share/pnpm/global/5/node_modules/squidlet-lib
       strip-markdown:
         specifier: ^6.0.0
         version: 6.0.0
@@ -1195,10 +1198,6 @@ packages:
 
   sprintf-js@1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}
-
-  squidlet-lib@0.2.1:
-    resolution: {integrity: sha512-CfieQqXdO4IMAyI+nOyI2TkFNJkKU78xDS7BVUDQ/fAJLqNHprRDMaWjv5eDJp7yJ5pK1FQeIsE4AKZQMsiJcA==}
-    engines: {node: '>=18.17.0'}
 
   stringify-entities@4.0.4:
     resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
@@ -2529,8 +2528,6 @@ snapshots:
   space-separated-tokens@2.0.2: {}
 
   sprintf-js@1.0.3: {}
-
-  squidlet-lib@0.2.1: {}
 
   stringify-entities@4.0.4:
     dependencies:

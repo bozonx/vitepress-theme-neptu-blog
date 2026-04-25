@@ -1,7 +1,7 @@
 {
-  "name": "vitepress-sls-blog-tmpl",
+  "name": "vitepress-theme-neptu-blog",
   "version": "0.16.9",
-  "description": "Vitepress custom theme for blog SLS and others",
+  "description": "Vitepress custom theme for Neptu blog and others",
   "type": "module",
   "author": "(Ivan Kozyrin <ipkozyrin@gmail.com>)",
   "license": "MIT",
@@ -11,7 +11,7 @@
   "exports": {
     ".": "./src/index.js",
     "./tw-styles.css": "./dist/tw-styles.css",
-    "./site-tmpl-fix.css": "./src/site-tmpl-fix.css",
+    "./site-theme-fix.css": "./src/site-theme-fix.css",
     "./search-modal.css": "./src/search-modal.css",
     "./green-theme.css": "./src/green-theme.css",
     "./blue-theme.css": "./src/blue-theme.css",

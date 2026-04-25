@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { defineConfig } from 'vitepress'
-import { mergeBlogConfig } from 'vitepress-sls-blog-tmpl/blogConfigBase.js'
-import { loadBlogLocale } from 'vitepress-sls-blog-tmpl/blogConfigHelper.js'
+import { mergeBlogConfig } from 'vitepress-theme-neptu-blog/blogConfigBase.js'
+import { loadBlogLocale } from 'vitepress-theme-neptu-blog/blogConfigHelper.js'
 
 export const PER_PAGE = 20
 

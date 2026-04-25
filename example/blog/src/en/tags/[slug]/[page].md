@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import TagPostsList from 'vitepress-sls-blog-tmpl/TagPostsList.vue'
+import TagPostsList from 'vitepress-theme-neptu-blog/TagPostsList.vue'
 import { useData } from 'vitepress'
 
 const { params } = useData()
