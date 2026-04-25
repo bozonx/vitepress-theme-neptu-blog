@@ -116,6 +116,10 @@ export const common = {
   },
 }
 
+/**
+ * @param {import('vitepress').UserConfig<import('../types').ThemeConfig>} config
+ * @returns {import('vitepress').UserConfig<import('../types').ThemeConfig>}
+ */
 export function mergeBlogConfig(config) {
   const externalLinkIcon =
     typeof config.themeConfig.externalLinkIcon === 'boolean'
