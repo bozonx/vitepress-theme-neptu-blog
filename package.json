@@ -29,6 +29,7 @@
     ".": "./src/index.js",
     "./package.json": "./package.json",
     "./tw-styles.css": "./dist/tw-styles.css",
+    "./tailwind-source.css": "./src/styles/tailwind-source.css",
     "./site-theme-fix.css": "./src/styles/site-theme-fix.css",
     "./search-modal.css": "./src/styles/search-modal.css",
     "./pagefind-fix.css": "./src/styles/pagefind-fix.css",

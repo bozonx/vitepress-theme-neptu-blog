@@ -1,5 +1,12 @@
 /*
-  This file is used in build command
-*/
-
+ * Prebuilt fallback entry. `pnpm run build` compiles this into
+ * dist/tw-styles.css, exported as `vitepress-theme-neptu-blog/tw-styles.css`.
+ * Use it only if your VitePress site does NOT use Tailwind itself.
+ *
+ * If you DO use Tailwind v4 in your site, import
+ * `vitepress-theme-neptu-blog/tailwind-source.css` from your own Tailwind CSS
+ * instead — that gives you a single, deduplicated stylesheet, customizable
+ * tokens via `@theme {}` and class-extension via your own utilities.
+ */
 @import 'tailwindcss';
+@source '../**/*.{vue,js}';

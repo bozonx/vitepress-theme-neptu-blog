@@ -1,0 +1,24 @@
+/*
+ * Tailwind v4 source-mode entry for users who already use Tailwind in their
+ * own VitePress site. Import this file from your own Tailwind CSS so that
+ * Tailwind scans the theme's .vue/.js sources and includes utilities used
+ * by the theme into your single, deduplicated stylesheet.
+ *
+ * Usage (in your project's app.css):
+ *
+ *   @import "tailwindcss";
+ *   @import "vitepress-theme-neptu-blog/tailwind-source.css";
+ *
+ *   @theme {
+ *     --color-brand-1: oklch(0.5 0.2 240);
+ *     ...your overrides...
+ *   }
+ *
+ * Then import only your own compiled CSS in your theme/index.js. Do NOT also
+ * import "vitepress-theme-neptu-blog/tw-styles.css" — that is the prebuilt
+ * fallback for users without Tailwind in their project.
+ *
+ * `@source` paths are resolved relative to this file. From src/styles/ this
+ * points one level up at src/ and recurses into all .vue / .js files.
+ */
+@source "../**/*.{vue,js}";

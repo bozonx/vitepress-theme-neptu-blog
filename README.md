@@ -8,16 +8,59 @@ See `example` dir
 
 ## Use in dev mode
 
-Clone repo and run inside it.
+This repo is a pnpm workspace. Clone and run:
 
-```
-pnpm link
-pnpm build:tw
+```sh
+pnpm install
+pnpm --filter vitepress-theme-neptu-blog-example-blog dev
 ```
 
-The `build:tw` command only builds tailwind classes that are used in
-this blog template. All other styles as included in layout and
-are built via vitepress of your project
+The example site under `example/blog` is linked to the local theme via
+`workspace:*`, so any change in `src/` is reflected immediately.
+
+## Styling: two ways to consume Tailwind v4
+
+The theme is built with Tailwind v4. You have two mutually exclusive options:
+
+### Option A — Prebuilt CSS (no Tailwind in your site)
+
+Use this if your VitePress site does not use Tailwind itself. The theme
+ships a precompiled, minified stylesheet with exactly the utilities it
+needs:
+
+```js
+// .vitepress/theme/index.js
+import 'vitepress-theme-neptu-blog/tw-styles.css'
+```
+
+The downside: you cannot redefine Tailwind tokens (`--color-brand-1`, etc.)
+or extend utilities used in the theme.
+
+### Option B — Source-mode (recommended if you use Tailwind v4)
+
+If your own site uses Tailwind v4, point your Tailwind at the theme's
+sources so utilities are deduplicated and your `@theme {}` overrides apply
+to the theme too:
+
+```css
+/* your-app.css */
+@import "tailwindcss";
+@import "vitepress-theme-neptu-blog/tailwind-source.css";
+
+@theme {
+  --color-brand-1: oklch(0.55 0.2 240);
+  --font-sans: "Inter Variable", sans-serif;
+}
+```
+
+```js
+// .vitepress/theme/index.js
+import './your-app.css'
+// Do NOT also import 'vitepress-theme-neptu-blog/tw-styles.css'.
+```
+
+The `tailwind-source.css` re-export contains a single `@source` directive
+that tells Tailwind to scan all `.vue` / `.js` files inside the theme.
 
 ## Config
 
