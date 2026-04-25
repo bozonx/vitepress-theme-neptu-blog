@@ -1,11 +1,11 @@
-import { omitUndefined } from '../helpers/squidlet.js'
-import { addOgMetaTags } from '../transformers/addOgMetaTags.js'
-import { resolveDescription } from '../transformers/resolveDescription.js'
-import { addJsonLd } from '../transformers/addJsonLd.js'
-import { addHreflang } from '../transformers/addHreflang.js'
-import { addCanonicalLink } from '../transformers/addCanonicalLink.js'
-import { filterSitemap } from '../transformers/filterSitemap.js'
-import { mdImage } from '../transformers/mdImage.js'
+import { omitUndefined } from '../helpers/squidlet.ts'
+import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
+import { resolveDescription } from '../transformers/resolveDescription.ts'
+import { addJsonLd } from '../transformers/addJsonLd.ts'
+import { addHreflang } from '../transformers/addHreflang.ts'
+import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
+import { filterSitemap } from '../transformers/filterSitemap.ts'
+import { mdImage } from '../transformers/mdImage.ts'
 
 export const common: Record<string, any> = {
   head: [

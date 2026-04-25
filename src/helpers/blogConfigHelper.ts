@@ -1,8 +1,8 @@
-import { parseLocaleSite } from './parseSiteFileTranslations.js'
-import { mdToHtml } from './mdWorks.js'
-import { getImageDimensions } from './imageHelpers.js'
-import { common } from '../configs/blogConfigBase.js'
-import baseLocales from '../configs/blogLocalesBase/index.js'
+import { parseLocaleSite } from './parseSiteFileTranslations.ts'
+import { mdToHtml } from './mdWorks.ts'
+import { getImageDimensions } from './imageHelpers.ts'
+import { common } from '../configs/blogConfigBase.ts'
+import baseLocales from '../configs/blogLocalesBase/index.ts'
 
 export async function loadBlogLocale(localeIndex: string, config: any): Promise<any> {
   const baseLocale = (baseLocales as Record<string, any>)[localeIndex]

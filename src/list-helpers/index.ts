@@ -1,18 +1,18 @@
 // Public list-helpers barrel.
 // Import from `vitepress-theme-neptu-blog/list-helpers`.
 
-export { loadPostsData, loadPostsDataFromFiles } from './loadPosts.js'
-export { mergeWithAnalytics } from './loadPostsStats.js'
-export { makePreviewItem } from './makePreviewItem.js'
+export { loadPostsData, loadPostsDataFromFiles } from './loadPosts.ts'
+export { mergeWithAnalytics } from './loadPostsStats.ts'
+export { makePreviewItem } from './makePreviewItem.ts'
 export {
   makeAllPostsParams,
   makeAuthorsParams,
   makeMonthsParams,
   makeTagsParams,
   makeYearPostsParams,
-} from './makeListParams.js'
+} from './makeListParams.ts'
 export {
   makeTagsList,
   makeMonthsList,
   makePostOfMonthList,
-} from './listHelpers.js'
+} from './listHelpers.ts'

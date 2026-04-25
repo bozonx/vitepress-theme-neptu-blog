@@ -1,6 +1,6 @@
-import { getFormatInfo, getRssFormats } from '../helpers/rssHelpers.js'
-import { isHomePage } from '../helpers/helpers.js'
-import { ROOT_LANG } from '../constants.js'
+import { getFormatInfo, getRssFormats } from '../helpers/rssHelpers.ts'
+import { isHomePage } from '../helpers/helpers.ts'
+import { ROOT_LANG } from '../constants.ts'
 
 export interface AddRssLinksContext {
   page: string

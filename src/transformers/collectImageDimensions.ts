@@ -1,4 +1,4 @@
-import { getImageDimensions } from '../helpers/imageHelpers.js'
+import { getImageDimensions } from '../helpers/imageHelpers.ts'
 
 export function collectImageDimensions(
   pageData: any,

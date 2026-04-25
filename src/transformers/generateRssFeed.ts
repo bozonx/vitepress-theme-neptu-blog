@@ -3,8 +3,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createContentLoader } from 'vitepress'
 
-import { DEFAULT_ENCODE, POSTS_DIR, ROOT_LANG } from '../constants.js'
-import { extractDescriptionFromMd } from '../helpers/mdWorks.js'
+import { DEFAULT_ENCODE, POSTS_DIR, ROOT_LANG } from '../constants.ts'
+import { extractDescriptionFromMd } from '../helpers/mdWorks.ts'
 import {
   createPostGuid,
   formatTagsForRss,
@@ -13,7 +13,7 @@ import {
   makeAuthorForRss,
   validatePostForRss,
   validateRssConfig,
-} from '../helpers/rssHelpers.js'
+} from '../helpers/rssHelpers.ts'
 
 /**
  * Генерирует RSS и Atom feeds для всех локалей.

@@ -3,7 +3,7 @@ import { useData } from 'vitepress'
 import { inject } from 'vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
-import { sortPosts } from '../../helpers/helpers.js'
+import { sortPosts } from '../../helpers/helpers'
 
 const props = defineProps([
   'localePosts',

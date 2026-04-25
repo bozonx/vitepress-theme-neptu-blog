@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { google } from 'googleapis'
-import { POSTS_DIR } from '../constants.js'
+import { POSTS_DIR } from '../constants.ts'
 
 declare global {
   // eslint-disable-next-line no-var

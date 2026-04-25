@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
-import { sortSimilarPosts } from '../../helpers/helpers.js'
+import { sortSimilarPosts } from '../../helpers/helpers'
 
 const props = defineProps(['localePosts'])
 const { frontmatter, theme } = useData()

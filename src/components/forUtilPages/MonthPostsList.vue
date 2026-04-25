@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
-import { makePostOfMonthList } from '../../list-helpers/listHelpers.js'
+import { makePostOfMonthList } from '../../list-helpers/listHelpers'
 import PreviewListItem from '../PreviewListItem.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 

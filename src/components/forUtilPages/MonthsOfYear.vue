@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import { inject } from 'vue'
-import { makeMonthsList } from '../../list-helpers/listHelpers.js'
-import { sortPosts, isPopularRoute } from '../../helpers/helpers.js'
+import { makeMonthsList } from '../../list-helpers/listHelpers'
+import { sortPosts, isPopularRoute } from '../../helpers/helpers'
 import ListItemWithBadge from '../ListItemWithBadge.vue'
 import PreviewList from '../PreviewList.vue'
 import UtilPageHeader from './UtilPageHeader.vue'

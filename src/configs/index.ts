@@ -9,12 +9,12 @@ export {
   common as blogCommonConfig,
   defineBlogConfig,
   mergeBlogConfig,
-} from './blogConfigBase.js'
+} from './blogConfigBase.ts'
 export {
   common as siteCommonConfig,
   mergeSiteConfig,
-} from './siteConfigBase.js'
-export { loadBlogLocale } from '../helpers/blogConfigHelper.js'
-export { loadSiteLocale } from '../helpers/siteConfigHelper.js'
-export { resolveTranslationsByFilePath } from '../helpers/resolveTranslations.js'
-export { getImageDimensions } from '../helpers/imageHelpers.js'
+} from './siteConfigBase.ts'
+export { loadBlogLocale } from '../helpers/blogConfigHelper.ts'
+export { loadSiteLocale } from '../helpers/siteConfigHelper.ts'
+export { resolveTranslationsByFilePath } from '../helpers/resolveTranslations.ts'
+export { getImageDimensions } from '../helpers/imageHelpers.ts'

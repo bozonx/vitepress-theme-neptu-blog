@@ -1,4 +1,4 @@
-import { mustacheTemplate } from '../helpers/squidlet.js'
+import { mustacheTemplate } from '../helpers/squidlet.ts'
 
 /**
  * If page.frontmatter.title is a template string, then replace it with the

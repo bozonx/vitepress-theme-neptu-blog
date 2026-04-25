@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
-import { isPost, isPage } from '../helpers/helpers.js'
+import { isPost, isPage } from '../helpers/helpers.ts'
 import BtnLink from './BtnLink.vue'
 
 const { page, frontmatter, theme } = useData()

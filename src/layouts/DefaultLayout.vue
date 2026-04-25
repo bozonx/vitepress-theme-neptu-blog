@@ -8,10 +8,10 @@ import Footer from '../components/layout/Footer.vue'
 import SideBar from '../components/layout/SideBar.vue'
 import ToTheTop from '../components/layout/ToTheTop.vue'
 import TopBar from '../components/layout/TopBar.vue'
-import { useBreakpoint } from '../composables/useBreakpoint.js'
-import { useScrollY } from '../composables/useScrollY.js'
-import { useSwipeDrawer } from '../composables/useSwipeDrawer.js'
-import { resolveBodyMarker } from '../helpers/helpers.js'
+import { useBreakpoint } from '../composables/useBreakpoint.ts'
+import { useScrollY } from '../composables/useScrollY.ts'
+import { useSwipeDrawer } from '../composables/useSwipeDrawer.ts'
+import { resolveBodyMarker } from '../helpers/helpers.ts'
 
 const { theme, frontmatter } = useData()
 const { isMobile } = useBreakpoint()

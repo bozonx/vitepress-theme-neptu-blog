@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { ref, watchEffect, inject } from 'vue'
 
-import { SIDEBAR_WIDTH } from '../../constants.js'
+import { SIDEBAR_WIDTH } from '../../constants'
 import SideBarFooter from './SideBarFooter.vue'
 import SideBarGroup from './SideBarGroup.vue'
 import SideBarItems from './SideBarItems.vue'

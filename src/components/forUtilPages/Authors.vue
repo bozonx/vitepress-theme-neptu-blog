@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
-import { makeAuthorsList } from '../../list-helpers/listHelpers.js'
+import { makeAuthorsList } from '../../list-helpers/listHelpers'
 import AuthorItem from '../AuthorItem.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 

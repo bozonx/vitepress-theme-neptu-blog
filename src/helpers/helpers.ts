@@ -1,4 +1,4 @@
-import { pathTrimExt, arraysIntersection } from './squidlet.js'
+import { pathTrimExt, arraysIntersection } from './squidlet.ts'
 
 // Loose types for now; will be tightened during full migration.
 export type Frontmatter = Record<string, any>

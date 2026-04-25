@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { DEFAULT_ENCODE } from '../constants.js'
-import { isPost, isPage } from '../helpers/helpers.js'
-import { extractDescriptionFromMd } from '../helpers/mdWorks.js'
+import { DEFAULT_ENCODE } from '../constants.ts'
+import { isPost, isPage } from '../helpers/helpers.ts'
+import { extractDescriptionFromMd } from '../helpers/mdWorks.ts'
 
 /**
  * If description = "" in frontmatter, set description from content for posts

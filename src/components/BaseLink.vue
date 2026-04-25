@@ -2,7 +2,7 @@
 ///// Не используется как отдельный компонент, используется в других компонентах
 import { useData, useRoute } from 'vitepress'
 import { ref, watchEffect, computed } from 'vue'
-import { resolveI18Href, isExternalUrl } from '../helpers/helpers.js'
+import { resolveI18Href, isExternalUrl } from '../helpers/helpers.ts'
 
 interface Props {
   customClass?: unknown

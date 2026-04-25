@@ -1,12 +1,12 @@
 import yaml from 'yaml'
-import { omitUndefined } from '../helpers/squidlet.js'
-import { ROOT_LANG } from '../constants.js'
+import { omitUndefined } from '../helpers/squidlet.ts'
+import { ROOT_LANG } from '../constants.ts'
 import {
   isPost,
   generatePageUrlPath,
   isAuthorPage,
   isPage,
-} from '../helpers/helpers.js'
+} from '../helpers/helpers.ts'
 
 export interface AddJsonLdContext {
   page: string

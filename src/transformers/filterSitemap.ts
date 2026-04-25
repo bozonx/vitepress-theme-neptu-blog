@@ -1,4 +1,4 @@
-import { POSTS_DIR } from '../constants.js'
+import { POSTS_DIR } from '../constants.ts'
 
 const POSTS_DIR_REGEXP = new RegExp(`^\\w+\/(${POSTS_DIR}|page)`)
 

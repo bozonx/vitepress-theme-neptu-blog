@@ -1,4 +1,4 @@
-import { isAuthorPage, generatePageUrlPath, isHomePage, isPost } from '../helpers/helpers.js'
+import { isAuthorPage, generatePageUrlPath, isHomePage, isPost } from '../helpers/helpers.ts'
 
 export interface AddOgMetaTagsContext {
   page: string

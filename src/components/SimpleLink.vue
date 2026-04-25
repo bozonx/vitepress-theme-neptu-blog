@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { useAttrs, computed } from 'vue'
-import { isExternalUrl } from '../helpers/helpers.js'
+import { isExternalUrl } from '../helpers/helpers.ts'
 import BaseLink from './BaseLink.vue'
 
 interface Props {

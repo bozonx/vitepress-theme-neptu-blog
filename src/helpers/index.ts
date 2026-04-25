@@ -6,5 +6,5 @@
 // mdWorks, etc.) live in `vitepress-theme-neptu-blog/configs` because
 // they pull Node-only deps and must not be bundled into the client.
 
-export * from './utils.js'
-export * from './helpers.js'
+export * from './utils.ts'
+export * from './helpers.ts'

@@ -1,4 +1,4 @@
-import en from './en.js'
-import ru from './ru.js'
+import en from './en.ts'
+import ru from './ru.ts'
 
 export default { en, ru }

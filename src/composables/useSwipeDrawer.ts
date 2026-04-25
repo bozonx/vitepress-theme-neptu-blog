@@ -1,7 +1,7 @@
 import { inBrowser } from 'vitepress'
 import { onMounted, onUnmounted } from 'vue'
 
-import { SWIPE_OFFSET } from '../constants.js'
+import { SWIPE_OFFSET } from '../constants.ts'
 
 export interface UseSwipeDrawerOptions {
   /** Gate, e.g. isMobile. */

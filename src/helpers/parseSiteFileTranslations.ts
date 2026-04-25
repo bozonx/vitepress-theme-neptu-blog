@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'yaml'
-import { standardTemplate } from './squidlet.js'
+import { standardTemplate } from './squidlet.ts'
 
-import { DEFAULT_ENCODE } from '../constants.js'
+import { DEFAULT_ENCODE } from '../constants.ts'
 
 export const SITE_DIR_REL_PATH = 'site'
 

@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { POSTS_DIR } from '../constants.js'
-import { mergeWithAnalytics, type GoogleAnalyticsConfig } from './loadPostsStats.js'
-import { makePreviewItem } from './makePreviewItem.js'
+import { POSTS_DIR } from '../constants.ts'
+import { mergeWithAnalytics, type GoogleAnalyticsConfig } from './loadPostsStats.ts'
+import { makePreviewItem } from './makePreviewItem.ts'
 
 declare global {
   // eslint-disable-next-line no-var

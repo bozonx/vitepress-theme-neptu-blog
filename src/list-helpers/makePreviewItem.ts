@@ -1,10 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.js'
-import { parseMdFile, extractDescriptionFromMd } from '../helpers/mdWorks.js'
-import { transliterate } from '../helpers/transliterate.js'
-import { getImageDimensions } from '../helpers/imageHelpers.js'
+import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
+import { parseMdFile, extractDescriptionFromMd } from '../helpers/mdWorks.ts'
+import { transliterate } from '../helpers/transliterate.ts'
+import { getImageDimensions } from '../helpers/imageHelpers.ts'
 
 export interface PreviewItem {
   url: string

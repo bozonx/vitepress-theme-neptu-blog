@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { LIST_ITEM_THUMB_WIDTH } from '../constants.js'
+import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
 const props = defineProps(['item'])
 const { theme, localeIndex } = useData()

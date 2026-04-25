@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import Author from '../Author.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
-import { sortPosts, isPopularRoute } from '../../helpers/helpers.js'
+import { sortPosts, isPopularRoute } from '../../helpers/helpers'
 import UtilPageHeader from './UtilPageHeader.vue'
 
 const props = defineProps<{

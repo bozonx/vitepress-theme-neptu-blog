@@ -1,5 +1,5 @@
-import { ROOT_LANG } from '../constants.js'
-import { generatePageUrlPath } from '../helpers/helpers.js'
+import { ROOT_LANG } from '../constants.ts'
+import { generatePageUrlPath } from '../helpers/helpers.ts'
 
 export interface AddHreflangContext {
   page: string

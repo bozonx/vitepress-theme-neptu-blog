@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 
-import { makeHumanDate } from '../../helpers/helpers.js'
+import { makeHumanDate } from '../../helpers/helpers'
 import BaseLink from '../BaseLink.vue'
 
 const { page, theme, localeIndex } = useData()

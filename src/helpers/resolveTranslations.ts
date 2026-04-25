@@ -1,4 +1,4 @@
-import locales from '../configs/blogLocalesBase/index.js'
+import locales from '../configs/blogLocalesBase/index.ts'
 
 type LocalesMap = Record<string, unknown>
 

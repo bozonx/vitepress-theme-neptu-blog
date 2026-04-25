@@ -1,12 +1,12 @@
-import { standardTemplate } from './squidlet.js'
+import { standardTemplate } from './squidlet.ts'
 import {
   loadConfigYamlFile,
   parseLocaleSite,
-} from '../helpers/parseSiteFileTranslations.js'
-import { isExternalUrl } from './helpers.js'
-import { common } from '../configs/siteConfigBase.js'
-import en from '../configs/siteLocalesBase/en.js'
-import ru from '../configs/siteLocalesBase/ru.js'
+} from '../helpers/parseSiteFileTranslations.ts'
+import { isExternalUrl } from './helpers.ts'
+import { common } from '../configs/siteConfigBase.ts'
+import en from '../configs/siteLocalesBase/en.ts'
+import ru from '../configs/siteLocalesBase/ru.ts'
 
 const baseLocales: Record<string, any> = { en, ru }
 
