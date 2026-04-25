@@ -5,12 +5,12 @@ i18n:
 
 backend:
   name: github
-  repo: bozonx/antifem-blog
+  repo: '...'
   use_graphql: true
   # skip_ci: true
   # site_domain: 5ab4c367-3592-4361-a4b8-ccd46514c967
 
-site_url: https://blog.antifem.org
+site_url: https://blog....
 media_folder: /src/public/media
 public_folder: /media
 
@@ -136,7 +136,7 @@ collections:
       - name: authorId
         label: Author
         widget: select
-        options: ["ivan-k", "ilya-goryunov"]
+        options: ['ivan-k']
         required: false
         preview: false
         i18n: duplicate
@@ -154,6 +154,45 @@ collections:
         required: false
         preview: false
         i18n: true
+      - label: 'Podcast URLs'
+        name: 'podcasts'
+        preview: false
+        required: false
+        i18n: true
+        widget: 'object'
+        fields:
+          - label: 'castbox'
+            name: 'castbox'
+            widget: 'string'
+            required: false
+            i18n: true
+          - label: 'soundstream'
+            name: 'soundstream'
+            widget: 'string'
+            required: false
+            i18n: true
+          - label: 'spotify'
+            name: 'spotify'
+            widget: 'string'
+            required: false
+            i18n: true
+          - label: 'vk'
+            name: 'vk'
+            widget: 'string'
+            required: false
+            i18n: true
+          - label: 'yandexmusic'
+            name: 'yandexmusic'
+            widget: 'string'
+            required: false
+            i18n: true
+          # - { label: "site", name: "site", widget: "string", required: false, i18n: true }
+          # - { label: "deezer", name: "deezer", widget: "string", required: false, i18n: true }
+          # - { label: "pocketcasts", name: "pocketcasts", widget: "string", required: false, i18n: true }
+          # - { label: "applepodcasts", name: "applepodcasts", widget: "string", required: false, i18n: true }
+          # - { label: "overcast", name: "overcast", widget: "string", required: false, i18n: true }
+          # - { label: "zvuk", name: "zvuk", widget: "string", required: false, i18n: true }
+          # - { label: "podcastaddiction", name: "podcastaddiction", widget: "string", required: false, i18n: true }
       - name: tags
         label: Tags
         widget: relation
