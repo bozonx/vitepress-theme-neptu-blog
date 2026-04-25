@@ -1,7 +1,7 @@
 <script setup lang="ts">
-///// Не используется как отдельный компонент, используется в других компонентах
+// Internal component — consumed by other components only.
 import { useData, useRoute } from 'vitepress'
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { resolveI18Href, isExternalUrl } from '../helpers/helpers.ts'
 
 interface Props {
@@ -32,68 +32,56 @@ const target = computed(() => {
   }
   return undefined
 })
-// Функция для нормализации пути - убирает последний элемент если путь заканчивается на /\d+
+// Normalize path — removes the trailing numeric segment if path ends with /\d+
 const normalizePath = (path = '') => {
-  // Проверяем, заканчивается ли путь на слеш и цифры
+  // Check if path ends with a slash followed by digits
   const match = path.match(/^(.+\/)\d+$/)
   return match ? match[1] : path
 }
 
-let prevPath = route.path
 const active = ref(checkActive())
 
 function checkActive(): boolean {
-  prevPath = route.path
-
   switch (props.activeCompareMethod) {
     case 'soft':
-      // Используется startsWith()
       return route.path.startsWith(resolvedHref.value)
 
-    case 'pagination':
-      // Учитывается число на конце
+    case 'pagination': {
       const routeEndsWithDigit = /\d+$/.test(route.path)
 
       if (routeEndsWithDigit) {
-        // Если текущий путь заканчивается цифрой, то href тоже должен заканчиваться цифрой
         const hrefEndsWithDigit = /\d+$/.test(resolvedHref.value)
-        if (!hrefEndsWithDigit) {
-          return false
-        }
+        if (!hrefEndsWithDigit) return false
 
-        // Сравниваем пути без цифр на конце
         const normalizedRoutePath = normalizePath(route.path)
         const normalizedHref = normalizePath(resolvedHref.value)
         return normalizedRoutePath === normalizedHref
-      } else {
-        // Если текущий путь не заканчивается цифрой, используем обычное сравнение
-        return route.path.startsWith(resolvedHref.value)
       }
+      return route.path.startsWith(resolvedHref.value)
+    }
 
-    case 'softPagination':
-      // Убираем цифру в конце path если она есть и сравниваем с route.path
+    case 'softPagination': {
       const normalizedHrefForSoft = normalizePath(resolvedHref.value)
       return route.path.startsWith(normalizedHrefForSoft)
+    }
 
     case 'none':
-      // Отключает определение активного элемента
       return false
 
     case 'strict':
-      // Строгое сравнение один к одному
       return route.path === resolvedHref.value
 
     default:
-      // По умолчанию используем строгое сравнение
       return route.path === resolvedHref.value
   }
 }
 
-watchEffect(async () => {
-  if (route.path !== prevPath) {
+watch(
+  () => route.path,
+  () => {
     active.value = checkActive()
   }
-})
+)
 </script>
 
 <template>

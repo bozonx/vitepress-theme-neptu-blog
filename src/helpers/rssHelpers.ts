@@ -1,4 +1,4 @@
-/** Валидирует обязательные поля frontmatter для RSS */
+/** Validates required frontmatter fields for RSS. */
 export function validatePostForRss(frontmatter: any, url: string): boolean {
   const errors: string[] = []
 
@@ -9,14 +9,14 @@ export function validatePostForRss(frontmatter: any, url: string): boolean {
   if (!frontmatter.date) {
     errors.push('missing date')
   } else {
-    // Проверяем что дата валидна
+    // Validate date value
     const date = new Date(frontmatter.date)
     if (isNaN(date.getTime())) {
       errors.push('invalid date format')
     } else {
-      // Проверяем что дата не в будущем (с небольшим допуском)
+      // Reject dates too far in the future (1 day tolerance)
       const now = new Date()
-      const futureLimit = new Date(now.getTime() + 24 * 60 * 60 * 1000) // +1 день
+      const futureLimit = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       if (date > futureLimit) {
         errors.push('date is too far in the future')
       }
@@ -31,7 +31,7 @@ export function validatePostForRss(frontmatter: any, url: string): boolean {
   return true
 }
 
-/** Создает уникальный GUID для поста */
+/** Creates a unique GUID for a post. */
 export function createPostGuid(siteUrl: string, url: string, date?: string | Date): string {
   const dateStr = date ? new Date(date).toISOString().split('T')[0] : ''
   return `${siteUrl}${url}${dateStr ? `#${dateStr}` : ''}`
@@ -42,7 +42,7 @@ export interface RssCategory {
   domain: string
 }
 
-/** Форматирует теги для использования в RSS категориях */
+/** Formats tags for RSS categories. */
 export function formatTagsForRss(tags: unknown, siteUrl: string): RssCategory[] {
   if (!tags || !Array.isArray(tags)) return []
 
@@ -54,7 +54,7 @@ export function formatTagsForRss(tags: unknown, siteUrl: string): RssCategory[] 
     }))
 }
 
-/** Валидирует конфигурацию для генерации RSS */
+/** Validates RSS generation configuration. */
 export function validateRssConfig(config: any): boolean {
   const errors: string[] = []
 

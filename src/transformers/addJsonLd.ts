@@ -23,7 +23,7 @@ function parseYamlToJsonLd(strYaml: string): any {
   }
 }
 
-/** Создает JSON-LD структуру для поста */
+/** Creates JSON-LD structured data for a post. */
 function createPostJsonLd(
   pageData: any,
   siteConfig: any,
@@ -202,7 +202,7 @@ function createPageJsonLd(
   return page
 }
 
-/** Добавляет JSON-LD структурированные данные на страницу. */
+/** Adds JSON-LD structured data to the page head. */
 export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext): void {
   if (!page || page.indexOf('/') < 0) {
     return

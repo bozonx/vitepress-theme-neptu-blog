@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 const { theme, localeIndex } = useData()
 const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const animationTimeMs = 400
 const drawerOpen = ref(!props.isMobile)
 const animationLeftPx = ref(-SIDEBAR_WIDTH)
@@ -66,7 +66,7 @@ const openDrawer = () => {
 
   drawerOpen.value = true
 
-  // Используем небольшую задержку для гарантированной анимации
+  // Small delay to guarantee CSS transition fires
   setTimeout(() => {
     animationLeftPx.value = 0
     backdropOpacity.value = 1
@@ -94,7 +94,7 @@ defineExpose({
   },
 })
 
-watchEffect(async () => {
+watchEffect(() => {
   drawerOpen.value = !props.isMobile
 })
 </script>
@@ -180,14 +180,13 @@ watchEffect(async () => {
       </div>
     </div>
 
-    <!-- Проверяем наличие контента в слоте sub-sidebar -->
     <div v-if="$slots['sub-sidebar']" class="max-lg:hidden sub-sidebar">
       <slot name="sub-sidebar" />
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .app-drawer {
   border-right: 1px solid var(--drawer-border-color);
   background: var(--drawer-bg);

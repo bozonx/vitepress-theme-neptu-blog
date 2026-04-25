@@ -11,7 +11,7 @@ export interface ImageSizeResult extends ImageDimensions {
   type: string | undefined
 }
 
-/** Получает размеры изображения из файла */
+/** Reads image dimensions from a file. */
 export function getImageDimensions(
   imagePath: string | null | undefined,
   srcDir: string
@@ -20,19 +20,19 @@ export function getImageDimensions(
   else if (imagePath.match(/\/\//)) return null
 
   try {
-    // Полный путь к файлу изображения
+    // Full path to image file
     const fullImagePath = path.join(srcDir, 'public', imagePath)
 
-    // Проверяем существование файла
+    // Check file exists
     if (!fs.existsSync(fullImagePath)) {
       console.warn(`Image file not found: ${fullImagePath}`)
       return null
     }
 
-    // Читаем файл в буфер и передаем буфер в getImageSize
+    // Read file into a buffer
     const buffer = fs.readFileSync(fullImagePath)
 
-    // Проверяем, что буфер не пустой
+    // Ensure buffer is non-empty
     if (!buffer || buffer.length === 0) {
       console.warn(`Empty buffer for image file: ${fullImagePath}`)
       return null
@@ -40,7 +40,7 @@ export function getImageDimensions(
 
     const dimensions = getImageSize(buffer)
 
-    // Проверяем, что размеры валидны
+    // Validate dimensions
     if (!dimensions || !dimensions.width || !dimensions.height) {
       console.warn(`Invalid image dimensions for ${imagePath}`)
       return null

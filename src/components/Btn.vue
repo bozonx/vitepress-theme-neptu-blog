@@ -72,13 +72,6 @@ if (props.href && !props.disabled) {
         <slot>{{ props.text }}</slot>
       </span>
     </span>
-    <!-- <span
-      v-if="theme.externalLinkIcon && isExternal && hasText"
-      class="btn-base__external"
-      aria-hidden="true"
-    >
-      <Icon icon="mdi:arrow-top-right" />
-    </span> -->
   </BaseLink>
 </template>
 

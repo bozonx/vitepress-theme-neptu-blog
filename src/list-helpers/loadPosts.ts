@@ -20,7 +20,7 @@ export interface LoadPostsOptions {
   ignoreCache?: boolean
 }
 
-/** Загружает все посты из директории `<localeDir>/post`. */
+/** Loads all posts from the `<localeDir>/post` directory. */
 export async function loadPostsData(
   localeDir: string,
   options: LoadPostsOptions = {}

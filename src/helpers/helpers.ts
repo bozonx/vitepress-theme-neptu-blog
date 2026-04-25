@@ -61,8 +61,8 @@ export function makeHumanDate(
 }
 
 /**
- * Обрабатывает URL-адреса для многоязычных сайтов, добавляя префикс языка к
- * внутренним ссылкам.
+ * Resolves URLs for multilingual sites by adding a language prefix to
+ * internal links.
  */
 export function resolveI18Href(
   rawHref: string,
@@ -72,16 +72,16 @@ export function resolveI18Href(
   const trimmed = String(rawHref).trim()
 
   if (typeof rawHref !== 'string' || !trimmed) return rawHref
-  // main page
+  // Main page
   else if (trimmed === '/') return '/' + localeIndex
 
   const isExternal = isExternalUrl(trimmed)
 
   if (isExternal || !i18nRouting) return trimmed
-  // already included language
+  // Already includes language prefix
   if (trimmed.indexOf('/') === 0) return trimmed
-  // add language - добавляем слеш между localeIndex и trimmed
-  // Убираем начальный слеш из trimmed если он есть, чтобы избежать двойных слешей
+  // Add language prefix — insert a slash between localeIndex and trimmed.
+  // Remove leading slash from trimmed to avoid double slashes.
   const cleanHref = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
   return `/${localeIndex}/${cleanHref}`
 }
@@ -102,12 +102,12 @@ export function resolveArticlePreview(frontmatter: Frontmatter): string | undefi
   return undefined
 }
 
-/** Генерирует полный URL для текущей страницы from pageData.relativePath */
+/** Generates the full URL path from pageData.relativePath. */
 export function generatePageUrlPath(relativePath: string): string {
-  // Убираем расширение файла
+  // Remove file extension
   const cleanPath = pathTrimExt(relativePath)
 
-  // Убираем индекс из пути
+  // Remove trailing /index
   let finalPath = cleanPath.replace(/\/index$/, '')
 
   if (finalPath === 'index') finalPath = ''
@@ -115,7 +115,7 @@ export function generatePageUrlPath(relativePath: string): string {
   return finalPath
 }
 
-/** Сортирует посты по популярности или по дате */
+/** Sorts posts by popularity or by date. */
 export function sortPosts(
   posts: Post[] | null | undefined,
   sortBy?: string,
@@ -130,7 +130,7 @@ export function sortPosts(
 
   return [...posts].sort((a, b) => {
     if (sortByPopularity && sortBy) {
-      // Сортировка по популярности
+      // Sort by popularity
       const aHasStats = Number.isFinite(a.analyticsStats?.[sortBy])
       const bHasStats = Number.isFinite(b.analyticsStats?.[sortBy])
 
@@ -151,8 +151,8 @@ export function sortPosts(
 }
 
 /**
- * Сортирует посты для отображения похожих постов. Приоритет: количество
- * совпадающих тегов > популярность > дата
+ * Sorts posts to display similar ones. Priority: number of matching
+ * tags > popularity > date
  */
 export function sortSimilarPosts(
   posts: Post[] | null | undefined,
@@ -220,18 +220,14 @@ export function resolveBodyMarker(theme: any, frontmatter: Frontmatter): string 
 
   if (!bodyMarker) return undefined
 
+  // By default util pages are excluded from search
   let allowed = true
 
-  // by default util pages are excluded from search
   if (isUtilPage(frontmatter)) {
     allowed = frontmatter.searchIncluded || false
   } else {
-    // all other pages are included in search by default
-    allowed =
-      typeof frontmatter.searchIncluded === 'undefined' ||
-      frontmatter.searchIncluded === null
-        ? true
-        : frontmatter.searchIncluded || false
+    // All other pages are included in search by default
+    allowed = frontmatter.searchIncluded ?? true
   }
 
   return allowed ? bodyMarker : undefined

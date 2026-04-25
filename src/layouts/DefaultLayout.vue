@@ -19,10 +19,6 @@ const { scrollY } = useScrollY()
 const sidebarRef = ref<InstanceType<typeof SideBar> | null>(null)
 const bodyMarker = resolveBodyMarker(theme.value, frontmatter.value)
 
-function onOpenDrawer() {
-  sidebarRef.value?.openDrawer()
-}
-
 useSwipeDrawer({
   enabled: () => isMobile.value,
   onOpen: () => sidebarRef.value?.openDrawer(),

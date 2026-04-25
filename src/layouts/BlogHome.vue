@@ -9,32 +9,32 @@ const props = defineProps<{
 const { theme } = useData()
 const valueY = ref(0)
 const wrapperRef = ref<HTMLElement | null>(null)
-const BG_HEIGHT_OFFSET = theme.value.homeBgParalaxOffset || 0
+const BG_HEIGHT_OFFSET = theme.value.homeBgParallaxOffset || 0
 
-watchEffect(async () => {
+watchEffect(() => {
   if (!inBrowser) return
 
   const totalHeight = wrapperRef.value?.scrollHeight || 0
   const windowHeight = window.innerHeight
   const totalScroll = totalHeight - windowHeight
 
-  // Проверяем, что есть прокрутка и избегаем деления на ноль
+  // Avoid division by zero when there is no scroll
   if (totalScroll <= 0) {
     valueY.value = 0
     return
   }
 
-  // Прогресс прокрутки от 0 до 1
+  // Scroll progress from 0 to 1
   const scrollProgress = Math.min(Math.max(props.scrollY / totalScroll, 0), 1)
 
-  // Правильная формула параллакса: фон движется медленнее чем контент
-  // Начальная позиция 0, затем сдвигаемся вверх при прокрутке
-  // При полной прокрутке фон должен сдвинуться на полный BG_HEIGHT_OFFSET
-  // чтобы показать всю картинку (размер фона: 100vh + BG_HEIGHT_OFFSET)
+  // Parallax formula: background moves slower than content.
+  // Initial position is 0, then it shifts upward on scroll.
+  // At full scroll the background shifts by the full BG_HEIGHT_OFFSET
+  // so the whole image is revealed (background size: 100vh + BG_HEIGHT_OFFSET).
   //
-  // Логика:
-  // - scrollProgress = 0: фон в позиции 0 (показываем верх фона)
-  // - scrollProgress = 1: фон в позиции -BG_HEIGHT_OFFSET (показываем низ фона)
+  // Logic:
+  // - scrollProgress = 0: background at 0 (top of image visible)
+  // - scrollProgress = 1: background at -BG_HEIGHT_OFFSET (bottom of image visible)
   valueY.value = -(BG_HEIGHT_OFFSET * scrollProgress)
 })
 </script>

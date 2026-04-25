@@ -5,9 +5,9 @@ export interface MdImageOptions {
 }
 
 /**
- * Плагин для обработки изображений в markdown. Автоматически оборачивает
- * изображения в теги <figure> с подписями. Аналогичен @mdit/plugin-figure.
- * Также собирает размеры изображений и добавляет их как атрибуты.
+ * Markdown-it plugin that wraps standalone images in `<figure>` tags with
+ * captions (similar to @mdit/plugin-figure). Also reads image dimensions and
+ * injects width/height attributes.
  */
 export function mdImage(md: any, { srcDir }: MdImageOptions = {}): void {
   md.core.ruler.before('linkify', 'figure', (state: any) => {

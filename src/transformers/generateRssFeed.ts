@@ -16,8 +16,8 @@ import {
 } from '../helpers/rssHelpers.ts'
 
 /**
- * Генерирует RSS и Atom feeds для всех локалей.
- * pageData.description has to be resolved before start this transformer.
+ * Generates RSS and Atom feeds for all locales.
+ * pageData.description must be resolved before this transformer runs.
  */
 export async function generateRssFeed(config: any): Promise<void> {
   try {

@@ -7,12 +7,12 @@ export function handleFastRedirectToRecentPosts(window: Window): void {
 }
 
 /**
- * Resolve language. Compare lang from navigator.language with our languiges
+ * Resolve language by comparing navigator.language with supported locales.
  *
- * - En means en-US
- * - Es means Latin America Spanish - es-419 All other languige we try to compare
- *   as is. If can't find use short form - 'ru'. If can't resolve then return
- *   'en'.
+ * - "en" covers en-US.
+ * - "es" covers Latin American Spanish (es-419).
+ *   All other locales are matched as-is; if no exact match, the short form
+ *   (e.g. "ru") is tried. Falls back to "en".
  */
 export function resolveNavigatorLang(
   supportedLocales: readonly string[] = [],
@@ -32,18 +32,18 @@ export function resolveNavigatorLang(
   }
 
   if (navLangLow.indexOf('-') > 1) {
-    // means lang code and country like en-us
+    // Language code with country, e.g. en-US
     const foundExact = locales.find((item) => item === navLangLow)
 
     if (foundExact) return navLangLow
   }
 
-  // if not found or it is short form 2 letters
+  // No match yet; try the 2-letter short form
   const navLangSlice = navLangLow.slice(0, 2)
   const localesSlice = locales.map((item) => item.slice(0, 2))
   const found = localesSlice.find((item) => item === navLangSlice)
 
   if (found) return found
-  // return default language
+  // Fallback to default language
   return 'en'
 }

@@ -14,7 +14,7 @@ import PostImage from './post/PostImage.vue'
 const { page, frontmatter } = useData()
 const articlePreviewText = ref<any>(null)
 
-watchEffect(async () => {
+watchEffect(() => {
   articlePreviewText.value = resolveArticlePreview(frontmatter.value)
 })
 </script>

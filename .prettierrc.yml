@@ -15,13 +15,6 @@ objectWrap: collapse
 plugins:
   - prettier-plugin-jsdoc
 
-# Конфигурация сортировки импортов
-importOrder:
-  - '^[a-zA-Z]'
-  - '^[@./]'
-importOrderSeparation: true
-importOrderSortSpecifiers: true
-
 # Настройки для JSDoc
 jsdocSpaces: 1
 jsdocDescriptionWithDot: false
