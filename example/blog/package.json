@@ -15,6 +15,22 @@
     "@midzer/tobii": "^2.5.0",
     "pagefind": "^1.4.0",
     "vitepress": "2.0.0-alpha.17",
-    "vitepress-theme-neptu-blog": "0.16.9"
+    "vitepress-theme-neptu-blog": "workspace:*",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "cheerio": "^1.0.0",
+    "feed": "^5.0.0",
+    "googleapis": "^171.0.0",
+    "gray-matter": "^4.0.0",
+    "image-size": "^2.0.0",
+    "rehype-external-links": "^3.0.0",
+    "rehype-stringify": "^10.0.0",
+    "remark": "^15.0.0",
+    "remark-rehype": "^11.0.0",
+    "slug": "^11.0.0",
+    "strip-markdown": "^6.0.0",
+    "tailwindcss": "^4.2.2",
+    "yaml": "^2.0.0"
   }
 }

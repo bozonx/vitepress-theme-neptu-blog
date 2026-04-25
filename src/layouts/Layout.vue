@@ -2,16 +2,16 @@
 import { inBrowser, useData } from 'vitepress'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-import BlogHomeLayout from './BlogHomeLayout.vue'
-import PageContent from './components/PageContent.vue'
-import Aside from './components/layout/Aside.vue'
-import Footer from './components/layout/Footer.vue'
-import NotFound from './components/layout/NotFound.vue'
-import SideBar from './components/layout/SideBar.vue'
-import ToTheTop from './components/layout/ToTheTop.vue'
-import TopBar from './components/layout/TopBar.vue'
-import { MOBILE_BREAKPOINT, SWIPE_OFFSET } from './constants.js'
-import { isHomePage, resolveBodyMarker } from './helpers/helpers.js'
+import BlogHomeLayout from './BlogHome.vue'
+import PageContent from '../components/PageContent.vue'
+import Aside from '../components/layout/Aside.vue'
+import Footer from '../components/layout/Footer.vue'
+import NotFound from '../components/layout/NotFound.vue'
+import SideBar from '../components/layout/SideBar.vue'
+import ToTheTop from '../components/layout/ToTheTop.vue'
+import TopBar from '../components/layout/TopBar.vue'
+import { MOBILE_BREAKPOINT, SWIPE_OFFSET } from '../constants.js'
+import { isHomePage, resolveBodyMarker } from '../helpers/helpers.js'
 
 const { page, theme, frontmatter } = useData()
 const windowWidth = ref(0)

@@ -7,13 +7,13 @@ import FileDownload from './components/docComponents/FileDownload.vue'
 import AudioFile from './components/docComponents/AudioFile.vue'
 import VideoYoutube from './components/docComponents/VideoYoutube.vue'
 import { resolveTranslationsByFilePath } from './helpers/resolveTranslations.js'
-import './vp-common.css'
-import './vp-icons.css'
-import './search-modal.css'
-import './blog-vars.css'
-import './blog-styles.css'
+import './styles/vp-common.css'
+import './styles/vp-icons.css'
+import './styles/search-modal.css'
+import './styles/blog-vars.css'
+import './styles/blog-styles.css'
 
-import Layout from './LayoutIndex.vue'
+import Layout from './layouts/Layout.vue'
 
 export default {
   Layout,
