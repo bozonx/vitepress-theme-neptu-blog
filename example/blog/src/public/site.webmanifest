@@ -1,7 +1,7 @@
 {
-  "name": "",
-  "short_name": "",
-  "description": "",
+  "name": "My Example Blog",
+  "short_name": "My Example Blog",
+  "description": "My Example Blog Description",
   "icons": [
     {
       "src": "/img/android-chrome-192x192.png",

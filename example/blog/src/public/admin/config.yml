@@ -5,12 +5,12 @@ i18n:
 
 backend:
   name: github
-  repo: '...'
+  repo: bozonx/antifem-blog
   use_graphql: true
   # skip_ci: true
   # site_domain: 5ab4c367-3592-4361-a4b8-ccd46514c967
 
-site_url: https://blog....
+site_url: https://blog.antifem.org
 media_folder: /src/public/media
 public_folder: /media
 
@@ -42,16 +42,16 @@ collections:
     label_singular: Post
     description: All the posts
     i18n: true
-    folder: 'src'
-    path: 'post/{{slug}}'
+    folder: "src"
+    path: "post/{{slug}}"
     slug: "{{date | date('YYYY')}}-{{slug}}"
-    preview_path: '/{{locale}}/post/{{slug}}'
+    preview_path: "/{{locale}}/post/{{slug}}"
     media_folder: /src/public/media
     public_folder: /media
     create: true
-    summary: '{{title}} | {{commit_date}} | {{commit_author}}'
+    summary: "{{title}} | {{commit_date}} | {{commit_author}}"
     sortable_fields:
-      fields: ['date', 'title', 'authorId']
+      fields: ["date", "title", "authorId"]
       default:
         field: date
         direction: descending # default: ascending
@@ -66,45 +66,45 @@ collections:
           label: Author
           field: authorId
     fields:
-      - label: 'Title'
-        name: 'title'
-        widget: 'string'
+      - label: "Title"
+        name: "title"
+        widget: "string"
         preview: false
         i18n: true
       - label: Publication date (your locale)
         name: date
         widget: datetime
-        format: 'YYYY-MM-DDTHH:mmZ'
+        format: "YYYY-MM-DDTHH:mmZ"
         preview: false
         i18n: duplicate
-      - label: 'Description (please do less than 500 chars)'
-        name: 'description'
-        widget: 'text'
+      - label: "Description (please do less than 500 chars)"
+        name: "description"
+        widget: "text"
         required: false
         preview: false
         i18n: true
-      - label: 'Replace text for preview for articles and list items'
-        name: 'previewText'
-        widget: 'text'
+      - label: "Replace text for preview for articles and list items"
+        name: "previewText"
+        widget: "text"
         required: false
         preview: false
         i18n: true
-      - label: 'Use description as a preview (if not set previewText)'
-        name: 'descrAsPreview'
-        widget: 'boolean'
+      - label: "Use description as a preview (if not set previewText)"
+        name: "descrAsPreview"
+        widget: "boolean"
         default: true
         required: false
         preview: false
         i18n: duplicate
       - label: "Canonical URL ('self' means self-canonical)"
-        name: 'canonical'
-        widget: 'string'
-        default: 'self'
+        name: "canonical"
+        widget: "string"
+        default: "self"
         required: false
         preview: false
         i18n: true
-      - label: 'JSON-LD in yaml format. Add some fields to the generated JSON-LD or make full JSON-LD'
-        name: 'jsonLd'
+      - label: "JSON-LD in yaml format. Add some fields to the generated JSON-LD or make full JSON-LD"
+        name: "jsonLd"
         widget: code
         required: false
         preview: false
@@ -112,87 +112,48 @@ collections:
         output_code_only: true
         default_language: yaml
         allow_language_selection: false
-      - label: 'Cover'
-        name: 'cover'
-        widget: 'image'
+      - label: "Cover"
+        name: "cover"
+        widget: "image"
         required: false
         i18n: duplicate
-      - label: 'Description of cover image'
-        name: 'coverDescr'
-        widget: 'string'
+      - label: "Description of cover image"
+        name: "coverDescr"
+        widget: "string"
         required: false
         i18n: true
-      - label: 'Alt of cover image'
-        name: 'coverAlt'
-        widget: 'string'
+      - label: "Alt of cover image"
+        name: "coverAlt"
+        widget: "string"
         required: false
         i18n: true
-      - label: 'commentUrl'
-        name: 'commentUrl'
-        widget: 'string'
+      - label: "commentUrl"
+        name: "commentUrl"
+        widget: "string"
         required: false
         preview: false
         i18n: true
       - name: authorId
         label: Author
         widget: select
-        options: ['ivan-k']
+        options: ["ivan-k", "ilya-goryunov"]
         required: false
         preview: false
         i18n: duplicate
-      - label: 'Url to video'
-        name: 'videoLink'
-        widget: 'string'
+      - label: "Url to video"
+        name: "videoLink"
+        widget: "string"
         required: false
         preview: false
         i18n: true
-      - label: 'Language of the video (set only if not equal to the page lang)'
-        name: 'videoLinkLang'
+      - label: "Language of the video (set only if not equal to the page lang)"
+        name: "videoLinkLang"
         widget: select
-        options: ['', 'RU', 'EN']
-        default: ''
+        options: ["", "RU", "EN"]
+        default: ""
         required: false
         preview: false
         i18n: true
-      - label: 'Podcast URLs'
-        name: 'podcasts'
-        preview: false
-        required: false
-        i18n: true
-        widget: 'object'
-        fields:
-          - label: 'castbox'
-            name: 'castbox'
-            widget: 'string'
-            required: false
-            i18n: true
-          - label: 'soundstream'
-            name: 'soundstream'
-            widget: 'string'
-            required: false
-            i18n: true
-          - label: 'spotify'
-            name: 'spotify'
-            widget: 'string'
-            required: false
-            i18n: true
-          - label: 'vk'
-            name: 'vk'
-            widget: 'string'
-            required: false
-            i18n: true
-          - label: 'yandexmusic'
-            name: 'yandexmusic'
-            widget: 'string'
-            required: false
-            i18n: true
-          # - { label: "site", name: "site", widget: "string", required: false, i18n: true }
-          # - { label: "deezer", name: "deezer", widget: "string", required: false, i18n: true }
-          # - { label: "pocketcasts", name: "pocketcasts", widget: "string", required: false, i18n: true }
-          # - { label: "applepodcasts", name: "applepodcasts", widget: "string", required: false, i18n: true }
-          # - { label: "overcast", name: "overcast", widget: "string", required: false, i18n: true }
-          # - { label: "zvuk", name: "zvuk", widget: "string", required: false, i18n: true }
-          # - { label: "podcastaddiction", name: "podcastaddiction", widget: "string", required: false, i18n: true }
       - name: tags
         label: Tags
         widget: relation
@@ -204,39 +165,39 @@ collections:
         value_field: tags.*.name
         multiple: true
         i18n: true
-      - label: 'Body'
-        name: 'body'
-        widget: 'markdown'
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
         i18n: true
 
 singletons:
   - name: tags
     label: Tags
     label_singular: Tag
-    file: 'src/site/tags.{{locale}}.yaml'
+    file: "src/site/tags.{{locale}}.yaml"
     i18n: true
     editor:
       preview: false
     fields:
-      - name: 'tags'
-        widget: 'list'
+      - name: "tags"
+        widget: "list"
         allow_add: true
         i18n: true
         root: true
         fields:
-          - name: 'name'
-            label: 'Name'
+          - name: "name"
+            label: "Name"
             widget: string
             i18n: true
   - name: site
     label: Site translations
-    file: 'src/site/site.{{locale}}.yaml'
+    file: "src/site/site.{{locale}}.yaml"
     i18n: true
     editor:
       preview: false
     fields:
-      - label: 'Body'
-        name: 'body'
+      - label: "Body"
+        name: "body"
         i18n: true
         widget: code
         output_code_only: true
@@ -244,30 +205,30 @@ singletons:
         allow_language_selection: false
   - name: aboutblog
     label: About blog
-    file: 'src/{{locale}}/page/about-blog.md'
-    preview_path: '/{{locale}}/page/{{slug}}'
+    file: "src/{{locale}}/page/about-blog.md"
+    preview_path: "/{{locale}}/page/{{slug}}"
     i18n: true
     fields:
-      - label: 'Description'
-        name: 'description'
-        widget: 'text'
+      - label: "Description"
+        name: "description"
+        widget: "text"
         required: false
         preview: false
         i18n: true
-      - label: 'Body'
-        name: 'body'
-        widget: 'markdown'
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
         i18n: true
   - name: index
     label: Index
-    file: 'src/{{locale}}/index.md'
-    preview_path: '/{{locale}}'
+    file: "src/{{locale}}/index.md"
+    preview_path: "/{{locale}}"
     i18n: true
     editor:
       preview: false
     fields:
-      - label: 'Body'
-        name: 'body'
+      - label: "Body"
+        name: "body"
         i18n: true
         widget: code
         output_code_only: true
