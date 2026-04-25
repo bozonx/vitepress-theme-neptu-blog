@@ -25,7 +25,7 @@ export function isPage(frontmatter: Frontmatter | null | undefined): boolean {
 
 /** True for layout: util / tag / archive / author. */
 export function isUtilPage(frontmatter: Frontmatter | null | undefined): boolean {
-  return UTIL_LAYOUTS.has(frontmatter?.layout)
+  return UTIL_LAYOUTS.has(frontmatter?.layout as string)
 }
 
 export function isPopularRoute(routPath: string, theme: ThemeRef): boolean {
@@ -137,7 +137,7 @@ export function sortPosts(
       const aHasStats = Number.isFinite(a.analyticsStats?.[sortBy])
       const bHasStats = Number.isFinite(b.analyticsStats?.[sortBy])
 
-      if (aHasStats && bHasStats) {
+      if (aHasStats && bHasStats && a.analyticsStats && b.analyticsStats) {
         const aValue = a.analyticsStats[sortBy] as number
         const bValue = b.analyticsStats[sortBy] as number
         return bValue - aValue
@@ -219,7 +219,7 @@ export function sortSimilarPosts(
 }
 
 export function resolveBodyMarker(theme: ThemeConfig, frontmatter: Frontmatter): string | undefined {
-  const bodyMarker = theme.search?.bodyMarker
+  const bodyMarker = (theme.search as any)?.bodyMarker
 
   if (!bodyMarker) return undefined
 

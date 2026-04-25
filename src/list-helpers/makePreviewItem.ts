@@ -18,6 +18,7 @@ export interface PreviewItem {
   cover: string | undefined
   coverHeight: number | undefined
   coverWidth: number | undefined
+  frontmatter: PostFrontmatter
 }
 
 export function makePreviewItem(filePath: string): PreviewItem {
@@ -55,6 +56,7 @@ export function makePreviewItem(filePath: string): PreviewItem {
     cover: fm.cover,
     coverHeight: coverDimensions?.height,
     coverWidth: coverDimensions?.width,
+    frontmatter: fm,
   }
 }
 

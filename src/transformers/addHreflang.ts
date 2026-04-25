@@ -23,7 +23,7 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
   const currentLocale = segments[0]!
   const pathWithoutLocale = segments.slice(1).join('/')
 
-  Object.entries(locales).forEach(([code, locale]) => {
+  Object.entries(locales).forEach(([code, locale]: [string, any]) => {
     const isRoot = code === ROOT_LANG
     const lang = locale.lang || code
     

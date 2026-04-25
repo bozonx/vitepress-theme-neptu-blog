@@ -47,6 +47,8 @@ export namespace NeptuBlogTheme {
     siteUrl?: string
 
     t: I18n
+
+    search?: (DefaultTheme.Config['search'] & { bodyMarker?: string }) | { provider: string; options?: any; bodyMarker?: string }
   }
 
   export interface I18n {
@@ -169,7 +171,7 @@ export namespace NeptuBlogTheme {
   }
 
   export interface PostFrontmatter extends Record<string, any> {
-    layout?: 'post'
+    layout?: 'post' | 'home' | 'page' | 'util' | 'tag' | 'archive' | 'author' | string
     title?: string
     description?: string
     date?: string | Date
@@ -189,9 +191,10 @@ export namespace NeptuBlogTheme {
 
   export interface Post {
     url: string
-    title: string
-    date: string | Date
+    title?: string
+    date?: string | Date
     excerpt?: string
+    preview?: string
     frontmatter: PostFrontmatter
     tags?: Tag[]
     analyticsStats?: Record<string, number>
@@ -219,3 +222,5 @@ export type PostFrontmatter = NeptuBlogTheme.PostFrontmatter
 export type Tag = NeptuBlogTheme.Tag
 export type Author = NeptuBlogTheme.Author
 export type I18n = NeptuBlogTheme.I18n
+export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
+export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
