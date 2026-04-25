@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, defineExpose } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants.js'
 
 const MODAL_ID = 'search-modal'
@@ -74,11 +74,6 @@ const hideSearchModal = () => {
       // Удаляем класс modal-open с body для разблокировки скролла
       document.body.classList.remove('modal-open')
     }, 300) // 300ms = длительность анимации
-
-    // Удаляем запись из истории браузера, если модальное окно было открыто
-    if (history.state && history.state.modalOpen) {
-      history.back()
-    }
   }
 
   if (pageFind.value) {

@@ -7,7 +7,7 @@ import SwitchLang from './SwitchLang.vue'
 
 const { theme } = useData()
 const props = defineProps(['isMobile'])
-const emit = defineEmits(['openSearch'])
+const emit = defineEmits(['openSearch', 'openDrawer'])
 const resolveItemShowClass = (item) => {
   if (item.desktopOnly) return 'max-lg:hidden'
   else if (item.mobileOnly) return 'lg:hidden'
@@ -36,7 +36,7 @@ const links = theme.value.topBar
   >
     <div class="flex-1 flex gap-x-3">
       <Btn
-        @click="$emit('openDrawer')"
+        @click="emit('openDrawer')"
         icon="fa6-solid:bars"
         noBg="true"
         class="lg:hidden topbar-item"
