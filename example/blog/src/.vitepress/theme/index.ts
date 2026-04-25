@@ -1,3 +1,4 @@
+import type { EnhanceAppContext } from 'vitepress'
 import Tobii from "@midzer/tobii";
 import "@midzer/tobii/dist/tobii.min.css";
 import { tobiiLightboxPlugin } from 'vitepress-theme-neptu-blog/components';
@@ -11,7 +12,7 @@ import "./styles.css";
 export default {
   Layout,
   extends: Theme,
-  enhanceApp(ctx) {
+  enhanceApp(ctx: EnhanceAppContext) {
     tobiiLightboxPlugin(ctx, Tobii);
   },
 };

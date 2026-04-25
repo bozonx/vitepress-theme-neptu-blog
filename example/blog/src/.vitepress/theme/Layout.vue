@@ -1,9 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { NavSearchButton } from 'vitepress-theme-neptu-blog/components'
 import { PageFindSearch } from 'vitepress-theme-neptu-blog/components'
 import Theme from 'vitepress-theme-neptu-blog'
 import { provide } from 'vue'
-import { data as enData } from '../../en/loadPosts.data.js'
+// @ts-ignore
+import { data as enData } from '../../en/loadPosts.data'
 
 const posts = { en: enData.posts }
 

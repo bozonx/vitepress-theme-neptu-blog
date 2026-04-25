@@ -5,7 +5,7 @@ import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
 
 export default {
   watch: [`./${POSTS_DIR}/*.md`],
-  async load(watchedFiles) {
+  async load(watchedFiles: string[]) {
     return {
       posts: await loadPostsDataFromFiles(watchedFiles, {
         popularPostsEnabled: popularPosts.enabled,
