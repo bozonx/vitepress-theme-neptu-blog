@@ -1,11 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import Btn from './Btn.vue'
 
-const props = defineProps(['class'])
+interface Props {
+  customClass?: unknown
+}
+
+const props = defineProps<Props>()
 </script>
 
 <template>
-  <Btn v-bind="$attrs" :class="['btn-link', props.class]">
+  <Btn v-bind="$attrs" :customClass="['btn-link', props.customClass]">
     <slot />
   </Btn>
 </template>

@@ -9,7 +9,7 @@
   </BtnLink>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { isPost, isPage } from '../helpers/helpers.js'

@@ -13,7 +13,7 @@ const props = defineProps({
   // Если не правильно опрелилось имя то укажите его здесь самостоятельно
   filename: { type: String, default: '' },
   // CSS классы
-  class: { type: String, default: '' },
+  containerClass: { type: String, default: '' },
   // Отключить кнопку
   disabled: { type: Boolean, default: false },
 })
@@ -115,7 +115,7 @@ const fileIcon = computed(() => {
 <template>
   <div
     class="file-download"
-    :class="class"
+    :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
   >

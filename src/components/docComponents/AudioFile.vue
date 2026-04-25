@@ -13,7 +13,7 @@ const props = defineProps({
   // Если не правильно определилось имя то укажите его здесь самостоятельно
   filename: { type: String, default: '' },
   // CSS классы
-  class: { type: String, default: '' },
+  containerClass: { type: String, default: '' },
   // Отключить кнопки
   disabled: { type: Boolean, default: false },
 })
@@ -374,13 +374,13 @@ onUnmounted(() => {
     audioRef.value.pause()
     audioRef.value.currentTime = 0
   }
-})
+}
 </script>
 
 <template>
   <div
     class="audio-file"
-    :class="class"
+    :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
   >

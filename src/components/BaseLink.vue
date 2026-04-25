@@ -1,22 +1,24 @@
-<script setup>
+<script setup lang="ts">
 ///// Не используется как отдельный компонент, используется в других компонентах
 import { useData, useRoute } from 'vitepress'
 import { ref, watchEffect, computed } from 'vue'
 import { resolveI18Href, isExternalUrl } from '../helpers/helpers.js'
 
+interface Props {
+  customClass?: unknown
+  tag?: string
+  href?: string
+  target?: string
+  disabled?: boolean
+  activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
+}
+
 const { theme, localeIndex } = useData()
 const route = useRoute()
-const props = defineProps([
-  'class',
-  'tag',
-  'href',
-  'target',
-  'disabled',
-  'activeCompareMethod',
-])
+const props = defineProps<Props>()
 // Реактивные вычисляемые свойства
 const resolvedHref = computed(() =>
-  resolveI18Href(props.href, localeIndex.value, theme.value.i18nRouting)
+  resolveI18Href(props.href || '', localeIndex.value, theme.value.i18nRouting)
 )
 const isExternal = computed(() => isExternalUrl(props.href))
 const tag = computed(() => props.tag || 'a')
@@ -40,7 +42,7 @@ const normalizePath = (path = '') => {
 let prevPath = route.path
 const active = ref(checkActive())
 
-function checkActive() {
+function checkActive(): boolean {
   prevPath = route.path
 
   switch (props.activeCompareMethod) {
@@ -100,7 +102,7 @@ watchEffect(async () => {
     :target="target"
     :href="resolvedHref"
     :disabled="props.disabled"
-    :class="[active && 'active', props.class]"
+    :class="[active && 'active', props.customClass]"
   >
     <slot />
   </component>

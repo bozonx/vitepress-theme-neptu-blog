@@ -1,9 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import Badge from './Badge.vue'
 import SimpleLink from './SimpleLink.vue'
 
+interface Props {
+  text?: string
+  count?: number
+}
+
 // Объявляем только те пропсы, которые обрабатываем в этом компоненте
-const props = defineProps(['text', 'count'])
+const props = defineProps<Props>()
 </script>
 
 <template>

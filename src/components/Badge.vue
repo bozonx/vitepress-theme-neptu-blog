@@ -1,5 +1,10 @@
-<script setup>
-const props = defineProps(["count", "title"]);
+<script setup lang="ts">
+interface Props {
+  count?: string | number
+  title?: string
+}
+
+const props = defineProps<Props>()
 </script>
 
 <template>

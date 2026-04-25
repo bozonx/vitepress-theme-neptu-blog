@@ -1,29 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
-import { useSlots } from 'vue'
+import { useSlots, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { isExternalUrl } from '../helpers/helpers.js'
 import BaseLink from './BaseLink.vue'
 
+interface Props {
+  customClass?: unknown
+  href?: string
+  target?: string
+  disabled?: boolean
+  activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
+  icon?: string
+  text?: string
+  iconClass?: string
+  noBg?: boolean | string
+  primary?: boolean | string
+  hideExternalIcon?: boolean
+}
+
 const slots = useSlots()
 const { theme } = useData()
-const props = defineProps([
-  'class',
-  'href',
-  'target',
-  'disabled',
-  'activeCompareMethod',
-
-  'icon',
-  'text',
-  'iconClass',
-  'noBg',
-  'primary',
-  'hideExternalIcon',
-])
-const isExternal = !props.hideExternalIcon && isExternalUrl(props.href)
-const hasText = props.text || slots.default
-const btnProps = {}
+const props = defineProps<Props>()
+const isExternal = computed(() => !props.hideExternalIcon && isExternalUrl(props.href))
+const hasText = computed(() => Boolean(props.text || slots.default))
+const btnProps: Record<string, unknown> = {}
 
 if (props.href && !props.disabled) {
   // means just link
@@ -40,14 +41,14 @@ if (props.href && !props.disabled) {
 <template>
   <BaseLink
     v-bind="btnProps"
-    :class="[
+    :customClass="[
       'flex cursor-pointer items-center rounded-lg',
       !hasText && 'icon-only',
       'btn-base',
       btnProps.disabled && 'disabled',
       props.primary && 'btn--primary',
       props.noBg && 'btn--nobg',
-      props.class,
+      props.customClass,
     ]"
     :activeCompareMethod="props.activeCompareMethod"
   >

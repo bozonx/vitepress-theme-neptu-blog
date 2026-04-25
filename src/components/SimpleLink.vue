@@ -1,23 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
-import { useAttrs } from 'vue'
+import { useAttrs, computed } from 'vue'
 import { isExternalUrl } from '../helpers/helpers.js'
 import BaseLink from './BaseLink.vue'
 
-const props = defineProps(['class', 'hideExternalIcon'])
+interface Props {
+  customClass?: unknown
+  hideExternalIcon?: boolean
+}
+
+const props = defineProps<Props>()
 const $attrs = useAttrs()
 
 const { theme } = useData()
-const isExternal = !props.hideExternalIcon && isExternalUrl($attrs.href)
+const isExternal = computed(
+  () => !props.hideExternalIcon && isExternalUrl($attrs.href as string | undefined)
+)
 </script>
 
 <template>
   <BaseLink
     v-bind="$attrs"
-    :class="[
+    :customClass="[
       'simple-link',
       theme.externalLinkIcon && isExternal && 'vp-external-link-icon',
-      props.class,
+      props.customClass,
     ]"
   >
     <slot />

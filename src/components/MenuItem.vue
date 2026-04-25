@@ -1,13 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import Btn from './Btn.vue'
 
-const props = defineProps(['class'])
+interface Props {
+  customClass?: unknown
+}
+
+const props = defineProps<Props>()
 </script>
 
 <template>
   <Btn
     v-bind="$attrs"
-    :class="['menu-item', props.class]"
+    :customClass="['menu-item', props.customClass]"
     iconClass="muted"
     noBg="true"
   >
