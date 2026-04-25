@@ -3,16 +3,22 @@ import { onMounted, onUnmounted } from 'vue'
 
 import { SWIPE_OFFSET } from '../constants.js'
 
+export interface UseSwipeDrawerOptions {
+  /** Gate, e.g. isMobile. */
+  enabled: () => boolean
+  /** Called when user swipes to open. */
+  onOpen?: () => void
+  /** Called when user swipes to close. */
+  onClose?: () => void
+  /** Left-edge trigger width. */
+  edgePx?: number
+  /** Horizontal px required to trigger. */
+  threshold?: number
+}
+
 /**
  * Horizontal edge-swipe gestures: open drawer on right-swipe from the left
  * edge, close on left-swipe. Only active while `enabled` is truthy.
- *
- * @param {object} opts
- * @param {() => boolean} opts.enabled    Gate, e.g. isMobile.
- * @param {() => void}   opts.onOpen     Called when user swipes to open.
- * @param {() => void}   opts.onClose    Called when user swipes to close.
- * @param {number}       [opts.edgePx=50] Left-edge trigger width.
- * @param {number}       [opts.threshold] Horizontal px required to trigger.
  */
 export function useSwipeDrawer({
   enabled,
@@ -20,9 +26,9 @@ export function useSwipeDrawer({
   onClose,
   edgePx = 50,
   threshold = SWIPE_OFFSET,
-}) {
-  let initialX = null
-  let initialY = null
+}: UseSwipeDrawerOptions): void {
+  let initialX: number | null = null
+  let initialY: number | null = null
   let processed = false
 
   function reset() {
@@ -31,18 +37,20 @@ export function useSwipeDrawer({
     processed = false
   }
 
-  function onTouchStart(e) {
+  function onTouchStart(e: TouchEvent) {
     if (!enabled()) return
     const t = e.touches[0]
+    if (!t) return
     initialX = t.clientX
     initialY = t.clientY
     processed = false
   }
 
-  function onTouchMove(e) {
-    if (!enabled() || initialX === null || processed) return
+  function onTouchMove(e: TouchEvent) {
+    if (!enabled() || initialX === null || initialY === null || processed) return
 
     const t = e.touches[0]
+    if (!t) return
     const dx = t.clientX - initialX
     const dy = t.clientY - initialY
 

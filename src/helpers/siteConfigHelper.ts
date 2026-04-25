@@ -8,9 +8,9 @@ import { common } from '../configs/siteConfigBase.js'
 import en from '../configs/siteLocalesBase/en.js'
 import ru from '../configs/siteLocalesBase/ru.js'
 
-const baseLocales = { en, ru }
+const baseLocales: Record<string, any> = { en, ru }
 
-export async function loadSiteLocale(localeIndex, config) {
+export async function loadSiteLocale(localeIndex: string, config: any): Promise<any> {
   const baseLocale = baseLocales[localeIndex]
   const params = {
     localeIndex,
@@ -18,7 +18,7 @@ export async function loadSiteLocale(localeIndex, config) {
     theme: { ...common.themeConfig, ...config.themeConfig },
     t: baseLocale.t,
   }
-  const site = parseLocaleSite(config.srcDir, params)
+  const site = parseLocaleSite(config.srcDir, params) as any
   const {
     lang,
     title,
@@ -47,7 +47,7 @@ export async function loadSiteLocale(localeIndex, config) {
         ...editLink,
       },
       lastUpdated: {
-        ...common.themeConfig.lastUpdated,
+        ...(common.themeConfig as any).lastUpdated,
         ...baseLocale.themeConfig.lastUpdated,
         ...lastUpdated,
       },
@@ -57,13 +57,13 @@ export async function loadSiteLocale(localeIndex, config) {
   }
 }
 
-export function parseLocaleSidebar(srcDir, params) {
+export function parseLocaleSidebar(srcDir: string, params: any): Record<string, any> {
   const sidebar = loadConfigYamlFile(
     srcDir,
     `sidebar.${params.localeIndex}.yaml`
-  )
+  ) as Record<string, any[]>
 
-  function menuRecursive(items, linkPrePath) {
+  function menuRecursive(items: any[], linkPrePath: string): any[] {
     for (const item of items) {
       item.text = standardTemplate(item.text, params)
 
@@ -83,12 +83,12 @@ export function parseLocaleSidebar(srcDir, params) {
     return items
   }
 
-  const newSidebar = {}
+  const newSidebar: Record<string, any> = {}
 
   for (const key of Object.keys(sidebar)) {
     const linkPrePath = `/${params.localeIndex}/${key}/`
 
-    newSidebar[linkPrePath] = menuRecursive(sidebar[key], linkPrePath)
+    newSidebar[linkPrePath] = menuRecursive(sidebar[key]!, linkPrePath)
   }
 
   return newSidebar

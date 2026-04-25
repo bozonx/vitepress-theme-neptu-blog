@@ -1,15 +1,37 @@
-import fs from 'fs/promises'
+import fs from 'node:fs/promises'
 import { google } from 'googleapis'
 import { POSTS_DIR } from '../constants.js'
 
-if (!global.loadingGaStatsPromise) {
-  global.loadingGaStatsPromise = null
+declare global {
+  // eslint-disable-next-line no-var
+  var loadingGaStatsPromise: Promise<Record<string, AnalyticsStats>> | null | undefined
+}
+
+if (!globalThis.loadingGaStatsPromise) {
+  globalThis.loadingGaStatsPromise = null
 }
 
 // GA4 Data API v1beta
 const GA_VERSION = 'v1beta'
 
-export async function mergeWithAnalytics(posts, gaCfg) {
+export interface GoogleAnalyticsConfig {
+  propertyId?: string | null
+  credentialsPath?: string | null
+  credentialsJson?: string | null
+  dataPeriodDays?: number
+  dataLimit?: number
+}
+
+export interface AnalyticsStats {
+  pageviews: number
+  uniquePageviews: number
+  avgTimeOnPage: number
+}
+
+export async function mergeWithAnalytics(
+  posts: any[],
+  gaCfg: GoogleAnalyticsConfig | null | undefined
+): Promise<any[]> {
   // Валидация конфигурации
   if (!gaCfg?.propertyId) {
     console.warn('⚠️ Google Analytics не настроен: отсутствует propertyId')
@@ -28,17 +50,16 @@ export async function mergeWithAnalytics(posts, gaCfg) {
   }
 
   try {
-    // Получаем статистику из Google Analytics
-    let stats = null
+    let stats: Record<string, AnalyticsStats> | null = null
 
-    if (global.loadingGaStatsPromise) {
+    if (globalThis.loadingGaStatsPromise) {
       console.log('📦 Используем кэшированные данные Google Analytics')
     } else {
       console.log('🔍 Загружаем статистику из Google Analytics...')
-      global.loadingGaStatsPromise = loadGoogleAnalytics(gaCfg)
+      globalThis.loadingGaStatsPromise = loadGoogleAnalytics(gaCfg)
     }
 
-    stats = await global.loadingGaStatsPromise
+    stats = await globalThis.loadingGaStatsPromise!
 
     if (!stats || Object.keys(stats).length === 0) {
       console.warn('⚠️ Нет данных из Google Analytics')
@@ -48,9 +69,8 @@ export async function mergeWithAnalytics(posts, gaCfg) {
 
     let postsWithStatsCount = 0
 
-    // Объединяем посты со статистикой
     const postsWithStats = posts.map((post) => {
-      const analyticsData = stats[post.url]
+      const analyticsData = stats![post.url]
 
       if (analyticsData) postsWithStatsCount++
 
@@ -65,20 +85,20 @@ export async function mergeWithAnalytics(posts, gaCfg) {
   } catch (error) {
     console.error(
       '❌ Ошибка при загрузке данных из Google Analytics:',
-      error.message
+      (error as Error).message
     )
 
     return posts
   }
 }
 
-export async function loadGoogleAnalytics(gaCfg) {
+export async function loadGoogleAnalytics(
+  gaCfg: GoogleAnalyticsConfig
+): Promise<Record<string, AnalyticsStats>> {
   try {
-    // Упрощенный подход к аутентификации
     const scopes = ['https://www.googleapis.com/auth/analytics.readonly']
-    let credentials = null
+    let credentials: { client_email: string; private_key: string } | null = null
 
-    // Получаем учетные данные
     if (gaCfg.credentialsJson) {
       credentials = JSON.parse(gaCfg.credentialsJson)
       console.log('🔑 Используем credentialsJson')
@@ -91,8 +111,7 @@ export async function loadGoogleAnalytics(gaCfg) {
       console.log('🔑 Используем Application Default Credentials')
     }
 
-    // Создаем аутентифицированный клиент
-    const authClient = credentials
+    const authClient: any = credentials
       ? new google.auth.JWT({
           email: credentials.client_email,
           key: credentials.private_key,
@@ -102,7 +121,6 @@ export async function loadGoogleAnalytics(gaCfg) {
 
     console.log('✅ Аутентификация выполнена')
 
-    // Создаем клиент Analytics Data API
     const analyticsdata = google.analyticsdata({
       version: GA_VERSION,
       auth: authClient,
@@ -118,7 +136,6 @@ export async function loadGoogleAnalytics(gaCfg) {
     )
     console.log(`🏷️ Property ID: ${gaCfg.propertyId}`)
 
-    // Подготавливаем параметры запроса
     const requestParams = {
       property: `properties/${gaCfg.propertyId}`,
       requestBody: {
@@ -129,34 +146,31 @@ export async function loadGoogleAnalytics(gaCfg) {
           },
         ],
         metrics: [
-          { name: 'screenPageViews' }, // Просмотры страниц
-          { name: 'totalUsers' }, // Общее количество пользователей
-          { name: 'averageSessionDuration' }, // Средняя продолжительность сессии
-          // { name: 'bounceRate' }, // Показатель отказов
+          { name: 'screenPageViews' },
+          { name: 'totalUsers' },
+          { name: 'averageSessionDuration' },
         ],
         dimensions: [{ name: 'pagePath' }],
         dimensionFilter: {
-          // Используем CONTAINS вместо REGEXP для начала
           filter: {
             fieldName: 'pagePath',
             stringFilter: {
               matchType: 'CONTAINS',
-              value: `/${POSTS_DIR}/`, // Простой поиск по подстроке
+              value: `/${POSTS_DIR}/`,
               caseSensitive: false,
             },
           },
         },
         orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-        limit: gaCfg.dataLimit || 1000, // Ограничиваем количество результатов
+        limit: gaCfg.dataLimit || 1000,
       },
     }
 
     console.log('📊 Отправляем запрос к Google Analytics Data API...')
 
-    // Выполняем запрос к Google Analytics Data API
-    const response = await analyticsdata.properties.runReport(requestParams)
+    const response = await analyticsdata.properties.runReport(requestParams as any)
 
-    const stats = {}
+    const stats: Record<string, AnalyticsStats> = {}
 
     if (!response.data.rows || response.data.rows.length === 0) {
       console.warn('⚠️ Нет данных в ответе от Google Analytics 4')
@@ -171,33 +185,29 @@ export async function loadGoogleAnalytics(gaCfg) {
       `📊 Ответ от Google Analytics: Найдено ${response.data.rows?.length || 0} записей`
     )
     console.log('🔗 Первые 5 URL:')
-    response.data.rows.slice(0, 5).forEach((row, index) => {
+    response.data.rows.slice(0, 5).forEach((row: any, index: number) => {
       console.log(`  ${index + 1}. ${row.dimensionValues[0].value}`)
     })
 
-    // Обрабатываем данные из ответа
-    response.data.rows.forEach((row) => {
+    response.data.rows.forEach((row: any) => {
       const pagePath = row.dimensionValues[0].value
       const metrics = row.metricValues
 
-      // Маппинг метрик GA4 на наши поля
       stats[pagePath] = {
         pageviews: parseInt(metrics[0].value) || 0,
         uniquePageviews: parseInt(metrics[1].value) || 0,
         avgTimeOnPage: parseFloat(metrics[2].value) || 0,
-        // bounceRate: parseFloat(metrics[3].value) || 0,
       }
     })
 
     return stats
-  } catch (error) {
+  } catch (error: any) {
     console.error(
       '❌ Ошибка при запросе к Google Analytics API:',
-      error.message
+      error?.message
     )
 
-    // Дополнительная информация об ошибке для отладки
-    if (error.code === 'ENOENT') {
+    if (error?.code === 'ENOENT') {
       const credentialsSource = gaCfg.credentialsJson
         ? 'credentialsJson'
         : 'credentialsPath'
@@ -207,25 +217,25 @@ export async function loadGoogleAnalytics(gaCfg) {
           ? gaCfg.credentialsPath
           : 'credentialsJson'
       )
-    } else if (error.code === 403) {
+    } else if (error?.code === 403) {
       console.error('❌ Нет доступа к Google Analytics. Проверьте:')
       console.error('   - Правильность propertyId')
       console.error('   - Права доступа Service Account к Google Analytics')
       console.error('   - Включен ли Google Analytics Data API в проекте')
-    } else if (error.code === 400) {
+    } else if (error?.code === 400) {
       console.error('❌ Неверный запрос к Google Analytics API')
-      if (error.details) {
+      if (error?.details) {
         console.error('   Детали ошибки:', error.details)
       }
-    } else if (error.code === 401) {
+    } else if (error?.code === 401) {
       console.error(
         '❌ Ошибка аутентификации. Проверьте учетные данные Service Account'
       )
-    } else if (error.code === 429) {
+    } else if (error?.code === 429) {
       console.error('❌ Превышен лимит запросов к Google Analytics API')
     } else {
-      console.error('❌ Неизвестная ошибка:', error.code || 'N/A')
-      if (error.response?.data) {
+      console.error('❌ Неизвестная ошибка:', error?.code || 'N/A')
+      if (error?.response?.data) {
         console.error(
           '   Ответ API:',
           JSON.stringify(error.response.data, null, 2)
@@ -233,7 +243,6 @@ export async function loadGoogleAnalytics(gaCfg) {
       }
     }
 
-    // Возвращаем пустой объект вместо undefined для консистентности
     return {}
   }
 }

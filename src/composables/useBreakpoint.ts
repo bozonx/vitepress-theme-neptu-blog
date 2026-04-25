@@ -1,9 +1,12 @@
 import { inBrowser } from 'vitepress'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 import { MOBILE_BREAKPOINT } from '../constants.js'
 
-export function useBreakpoint(breakpoint = MOBILE_BREAKPOINT) {
+export function useBreakpoint(breakpoint: number = MOBILE_BREAKPOINT): {
+  windowWidth: Ref<number>
+  isMobile: Ref<boolean>
+} {
   const windowWidth = ref(0)
   const isMobile = ref(true)
 

@@ -1,4 +1,4 @@
-export const DEFAULT_ENCODE = 'utf-8'
+export const DEFAULT_ENCODE = 'utf-8' as const
 // tablet breakpoint
 export const MOBILE_BREAKPOINT = 1024
 // phone breakpoint

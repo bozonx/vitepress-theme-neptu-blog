@@ -7,27 +7,33 @@ import { DEFAULT_ENCODE } from '../constants.js'
 
 export const SITE_DIR_REL_PATH = 'site'
 
-export function parseLocaleSite(srcDir, props) {
+export interface ParseLocaleSiteProps {
+  localeIndex: string
+  [key: string]: unknown
+}
+
+export function parseLocaleSite(srcDir: string, props: ParseLocaleSiteProps): unknown {
   const translations = loadConfigYamlFile(
     srcDir,
     `site.${props.localeIndex}.yaml`
   )
 
-  function transRecursive(items) {
+  function transRecursive(items: unknown): unknown {
     if (Array.isArray(items)) {
       for (const index in items) {
         items[index] = transRecursive(items[index])
       }
 
       return items
-    } else if (typeof items === 'object') {
-      for (const index of Object.keys(items)) {
-        items[index] = transRecursive(items[index])
+    } else if (items && typeof items === 'object') {
+      const obj = items as Record<string, unknown>
+      for (const index of Object.keys(obj)) {
+        obj[index] = transRecursive(obj[index])
       }
 
-      return items
+      return obj
     } else if (typeof items === 'string') {
-      return standardTemplate(items, props)
+      return standardTemplate(items, props as Record<string, unknown>)
     }
 
     return items
@@ -36,10 +42,10 @@ export function parseLocaleSite(srcDir, props) {
   return transRecursive(translations)
 }
 
-export function loadConfigYamlFile(srcDir, fileName) {
+export function loadConfigYamlFile(srcDir: string, fileName: string): unknown {
   const absPath = path.join(srcDir, SITE_DIR_REL_PATH, fileName)
   const content = fs.readFileSync(absPath, DEFAULT_ENCODE)
-  const obj = yaml.parse(content)
+  const obj = yaml.parse(content) as { body: string }
 
   return yaml.parse(obj.body)
 }

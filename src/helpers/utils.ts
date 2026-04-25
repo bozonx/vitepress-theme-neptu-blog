@@ -1,6 +1,6 @@
 /** Common utils for using in blog and site */
 
-export function handleFastRedirectToRecentPosts(window) {
+export function handleFastRedirectToRecentPosts(window: Window): void {
   const locale = window.location.search.slice(1)
 
   if (locale) window.location.replace(`/${locale}/recent/1`)
@@ -14,7 +14,10 @@ export function handleFastRedirectToRecentPosts(window) {
  *   as is. If can't find use short form - 'ru'. If can't resolve then return
  *   'en'.
  */
-export function resolveNavigatorLang(supportedLocales = [], navLang = '') {
+export function resolveNavigatorLang(
+  supportedLocales: readonly string[] = [],
+  navLang: string = ''
+): string {
   const navLangLow = String(navLang).trim().toLowerCase()
   const locales = supportedLocales.map((item) =>
     String(item).trim().toLowerCase()

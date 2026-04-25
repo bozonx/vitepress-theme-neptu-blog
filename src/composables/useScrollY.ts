@@ -1,7 +1,7 @@
 import { inBrowser } from 'vitepress'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
-export function useScrollY() {
+export function useScrollY(): { scrollY: Ref<number> } {
   const scrollY = ref(0)
 
   function onScroll() {

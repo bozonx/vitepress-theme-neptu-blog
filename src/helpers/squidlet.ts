@@ -1,17 +1,15 @@
-/**
- * This file contains utility functions extracted to remove external dependencies.
- */
+/** This file contains utility functions extracted to remove external dependencies. */
 
-/**
- * Split deep path to paths E.g "aa[0].bb[1].cc" => ['aa', 0, 'bb', 1, 'cc']
- */
-export function splitDeepPath(pathTo) {
+export type DeepPathPart = string | number
+
+/** Split deep path to paths E.g "aa[0].bb[1].cc" => ['aa', 0, 'bb', 1, 'cc'] */
+export function splitDeepPath(pathTo: unknown): Array<DeepPathPart | '__NEGATIVE_INDEX__'> {
   if (!pathTo || typeof pathTo !== 'string') return []
 
-  const res = []
+  const res: Array<DeepPathPart | '__NEGATIVE_INDEX__'> = []
   const DEEP_PATH_SEPARATOR = '.'
   const preparedPath = pathTo.replace(/\[/g, DEEP_PATH_SEPARATOR + '[')
-  const splatDots = preparedPath.startsWith(DEEP_PATH_SEPARATOR) 
+  const splatDots = preparedPath.startsWith(DEEP_PATH_SEPARATOR)
     ? preparedPath.slice(1).split(DEEP_PATH_SEPARATOR)
     : preparedPath.split(DEEP_PATH_SEPARATOR)
 
@@ -36,10 +34,8 @@ export function splitDeepPath(pathTo) {
   return res
 }
 
-/**
- * Join deep path parts to string E.g ['aa', 0, 'bb', 1, 'cc'] => "aa[0].bb[1].cc"
- */
-export function joinDeepPath(pathParts) {
+/** Join deep path parts to string E.g ['aa', 0, 'bb', 1, 'cc'] => "aa[0].bb[1].cc" */
+export function joinDeepPath(pathParts: unknown): string {
   if (!Array.isArray(pathParts) || !pathParts.length) return ''
 
   let result = ''
@@ -56,19 +52,15 @@ export function joinDeepPath(pathParts) {
   return result.startsWith(DEEP_PATH_SEPARATOR) ? result.slice(1) : result
 }
 
-/**
- * Check if path is valid (can be parsed correctly)
- */
-export function isPathValid(pathTo) {
+/** Check if path is valid (can be parsed correctly) */
+export function isPathValid(pathTo: unknown): boolean {
   if (!pathTo || typeof pathTo !== 'string') return false
   const splatPath = splitDeepPath(pathTo)
   return splatPath.length > 0
 }
 
-/**
- * Get value deeply from object or array.
- */
-export function deepGet(src, pathTo, defaultValue) {
+/** Get value deeply from object or array. */
+export function deepGet(src: unknown, pathTo: unknown, defaultValue?: unknown): unknown {
   if (src === null || src === undefined) return defaultValue
   if (typeof pathTo !== 'string') return defaultValue
 
@@ -79,8 +71,9 @@ export function deepGet(src, pathTo, defaultValue) {
   const restPath = joinDeepPath(splatPath.slice(1))
 
   if (Array.isArray(src)) {
-    if (typeof firstKey !== 'number' || firstKey === '__NEGATIVE_INDEX__') return defaultValue
-    
+    if (typeof firstKey !== 'number' || (firstKey as unknown) === '__NEGATIVE_INDEX__')
+      return defaultValue
+
     const value = src[firstKey]
     if (restPath) {
       return deepGet(value, restPath, defaultValue)
@@ -89,20 +82,18 @@ export function deepGet(src, pathTo, defaultValue) {
   } else if (src && typeof src === 'object') {
     if (typeof firstKey !== 'string') return defaultValue
 
-    const value = src[firstKey]
+    const value = (src as Record<string, unknown>)[firstKey]
     if (restPath) {
       return deepGet(value, restPath, defaultValue)
     }
     return Object.prototype.hasOwnProperty.call(src, firstKey) ? value : defaultValue
   }
-  
+
   return defaultValue
 }
 
-/**
- * Safe eval for template expressions
- */
-function safeEval(expression, data) {
+/** Safe eval for template expressions */
+function safeEval(expression: string, data: Record<string, unknown>): unknown {
   try {
     const trimmedExpr = expression.trim()
     if (!trimmedExpr) return ''
@@ -115,29 +106,35 @@ function safeEval(expression, data) {
     const result = func(...paramValues)
 
     return result === null || result === undefined ? '' : result
-  } catch (error) {
+  } catch {
     return ''
   }
 }
 
-/**
- * Mustache templates {{value.child}}
- */
-export function mustacheTemplate(tmpl, data, options = { eval: false }) {
+export interface TemplateOptions {
+  eval?: boolean
+}
+
+/** Mustache templates `{{value.child}}` */
+export function mustacheTemplate(
+  tmpl: string | null | undefined,
+  data: Record<string, unknown> | null | undefined,
+  options: TemplateOptions = { eval: false }
+): string {
   if (tmpl === null || tmpl === undefined) return ''
   if (data === null || data === undefined) return tmpl
 
   let res = tmpl
   const mustacheRegex = /\{\{([^}]*)\}\}/g
-  let match
+  let match: RegExpExecArray | null
 
   while ((match = mustacheRegex.exec(tmpl)) !== null) {
-    const originalKey = match[1]
+    const originalKey = match[1] ?? ''
     const key = originalKey.trim()
     const escapedKey = originalKey.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const replaceRegex = new RegExp(`\\{\\{${escapedKey}\\}\\}`, 'g')
 
-    let stringValue
+    let stringValue: string
     if (options.eval) {
       if (!key) {
         stringValue = ''
@@ -158,23 +155,25 @@ export function mustacheTemplate(tmpl, data, options = { eval: false }) {
   return res
 }
 
-/**
- * Standard templates ${value.child}
- */
-export function standardTemplate(tmpl, data, options = { eval: false }) {
+/** Standard templates `${value.child}` */
+export function standardTemplate(
+  tmpl: string | null | undefined,
+  data: Record<string, unknown> | null | undefined,
+  options: TemplateOptions = { eval: false }
+): string {
   if (tmpl === null || tmpl === undefined) return ''
   if (data === null || data === undefined) return tmpl
 
   let res = tmpl
   const templateRegex = /\$\{([^}]*)\}/g
-  let match
+  let match: RegExpExecArray | null
 
   while ((match = templateRegex.exec(tmpl)) !== null) {
-    const key = match[1]
+    const key = match[1] ?? ''
     const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const replaceRegex = new RegExp(`\\$\\{${escapedKey}\\}`, 'g')
 
-    let stringValue
+    let stringValue: string
     if (options.eval) {
       if (!key.trim()) {
         stringValue = ''
@@ -195,14 +194,12 @@ export function standardTemplate(tmpl, data, options = { eval: false }) {
   return res
 }
 
-/**
- * Omit undefined values from object
- */
-export function omitUndefined(obj) {
+/** Omit undefined values from object */
+export function omitUndefined<T extends Record<string, unknown>>(obj: T | null | undefined): Partial<T> {
   if (!obj || Array.isArray(obj) || typeof obj !== 'object') return {}
 
-  const result = {}
-  for (const key of Object.keys(obj)) {
+  const result: Partial<T> = {}
+  for (const key of Object.keys(obj) as Array<keyof T>) {
     if (typeof obj[key] !== 'undefined') {
       result[key] = obj[key]
     }
@@ -210,10 +207,20 @@ export function omitUndefined(obj) {
   return result
 }
 
-/**
- * Smart truncate string
- */
-export function smartTruncate(rawString, length, options = {}) {
+export interface SmartTruncateOptions {
+  mark?: string
+  position?: number
+  respectWords?: boolean
+  removeReturns?: boolean
+  markAtTheEnd?: boolean
+}
+
+/** Smart truncate string */
+export function smartTruncate(
+  rawString: string,
+  length: number,
+  options: SmartTruncateOptions = {}
+): string {
   const {
     mark = '\u2026',
     position = length - 1,
@@ -256,27 +263,21 @@ export function smartTruncate(rawString, length, options = {}) {
   return `${start}${mark}${end}`
 }
 
-/**
- * Remove H1 title from Markdown
- */
-export function removeTitleFromMd(rawMd) {
+/** Remove H1 title from Markdown */
+export function removeTitleFromMd(rawMd: string | null | undefined): string {
   if (!rawMd) return ''
   return rawMd.trim().replace(/^\#\s+.+/, '')
 }
 
-/**
- * Trim extension from filename
- */
-export function pathTrimExt(fileName) {
-  if (typeof fileName !== 'string' || fileName.indexOf('.') < 0) return fileName
+/** Trim extension from filename */
+export function pathTrimExt(fileName: unknown): string {
+  if (typeof fileName !== 'string' || fileName.indexOf('.') < 0) return fileName as string
   const splat = fileName.split('.')
   splat.pop()
   return splat.join('.')
 }
 
-/**
- * Get intersection of two arrays
- */
-export function arraysIntersection(arr1 = [], arr2 = []) {
+/** Get intersection of two arrays */
+export function arraysIntersection<T>(arr1: readonly T[] = [], arr2: readonly T[] = []): T[] {
   return arr1.filter((x) => arr2.includes(x))
 }

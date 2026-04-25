@@ -1,16 +1,21 @@
 import { imageSize } from 'image-size'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 
-/**
- * Получает размеры изображения из файла
- *
- * @param {string} imagePath - Путь к изображению
- * @param {string} srcDir - Директория исходников
- * @returns {{ width: number; height: number } | null} Размеры изображения или
- *   null
- */
-export function getImageDimensions(imagePath, srcDir) {
+export interface ImageDimensions {
+  width: number
+  height: number
+}
+
+export interface ImageSizeResult extends ImageDimensions {
+  type: string | undefined
+}
+
+/** Получает размеры изображения из файла */
+export function getImageDimensions(
+  imagePath: string | null | undefined,
+  srcDir: string
+): ImageDimensions | null {
   if (!imagePath) return null
   else if (imagePath.match(/\/\//)) return null
 
@@ -45,21 +50,14 @@ export function getImageDimensions(imagePath, srcDir) {
   } catch (error) {
     console.warn(
       `Failed to get image dimensions for ${imagePath}:`,
-      error.message
+      (error as Error)?.message
     )
     return null
   }
 }
 
-/**
- * Получает размеры изображения из буфера
- *
- * @param {Buffer} buffer - Буфер с данными изображения
- * @returns {{ width: number; height: number; type: string }} Объект с размерами
- *   и типом изображения
- * @throws {Error} Если не удалось определить размеры изображения
- */
-export function getImageSize(buffer) {
+/** Получает размеры изображения из буфера */
+export function getImageSize(buffer: Buffer): ImageSizeResult {
   try {
     if (!Buffer.isBuffer(buffer)) {
       throw new Error('Input must be a Buffer')
@@ -73,6 +71,6 @@ export function getImageSize(buffer) {
       type: dimensions.type,
     }
   } catch (error) {
-    throw new Error(`Failed to get image dimensions: ${error.message}`)
+    throw new Error(`Failed to get image dimensions: ${(error as Error)?.message}`)
   }
 }

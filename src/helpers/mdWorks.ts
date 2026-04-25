@@ -6,14 +6,14 @@ import remarkRehype from 'remark-rehype'
 import strip from 'strip-markdown'
 import { smartTruncate, removeTitleFromMd } from './squidlet.js'
 
-export function stripMd(mdContent) {
-  if (!mdContent) return mdContent
+export function stripMd(mdContent: string | null | undefined): string {
+  if (!mdContent) return mdContent ?? ''
 
   return remark().use(strip).processSync(mdContent).toString()
 }
 
-export function mdToHtml(mdContent) {
-  if (!mdContent) return mdContent
+export function mdToHtml(mdContent: string | null | undefined): string {
+  if (!mdContent) return mdContent ?? ''
 
   // Проверяем, содержит ли markdown только один абзац
   const paragraphs = mdContent
@@ -38,13 +38,22 @@ export function mdToHtml(mdContent) {
   return processed
 }
 
-export function parseMdFile(rawContent) {
-  const { data, content } = grayMatter(rawContent)
-
-  return { frontmatter: data, content }
+export interface ParsedMd {
+  frontmatter: Record<string, unknown>
+  content: string
 }
 
-export function extractDescriptionFromMd(rawContent, maxLength, markAtTheEnd) {
+export function parseMdFile(rawContent: string): ParsedMd {
+  const { data, content } = grayMatter(rawContent)
+
+  return { frontmatter: data as Record<string, unknown>, content }
+}
+
+export function extractDescriptionFromMd(
+  rawContent: string,
+  maxLength: number,
+  markAtTheEnd?: boolean
+): string {
   const { content } = parseMdFile(rawContent)
   const mdContentNoHeader = removeTitleFromMd(content)
   const striped = stripMd(mdContentNoHeader)
