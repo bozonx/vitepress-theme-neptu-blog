@@ -92,7 +92,6 @@ export default {
       hidePlayer: 'Hide audio player controls',
       hidePlayerTitle: 'Hide player',
       audioFile: 'Audio file',
-      downloadFile: 'Download',
       downloadAudioFile: 'Download',
       currentTime: 'Current time',
       audioProgress: 'Audio progress',

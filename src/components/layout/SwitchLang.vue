@@ -11,7 +11,7 @@ const { theme } = useData()
 const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
 const props = defineProps(['noBg'])
 // redirect from specific tag to tags list
-const resolveLink = (link) => {
+const resolveLink = (link: any) => {
   if (!link) return link
 
   const splat = link.split('/')

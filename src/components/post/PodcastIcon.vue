@@ -1,8 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 
-const props = defineProps(['name', 'alt'])
-const iconifyIcon = {
+const props = defineProps<{
+  name: string
+  alt?: string
+}>()
+const iconifyIcon: Record<string, string> = {
   site: 'mdi:globe',
   castbox: 'simple-icons:castbox',
   spotify: 'mdi:spotify',

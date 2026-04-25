@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../helpers/helpers.js'
@@ -14,7 +14,7 @@ const params = computed(() => ({
   preview: String(props.item?.preview).trim().replace(/\.$/, '') + ' ...',
   authorName:
     theme.value.showAuthorInPostList &&
-    theme.value.authors?.find((item) => item.id === props.item.authorId)?.name,
+    theme.value.authors?.find((item: any) => item.id === props.item.authorId)?.name,
 }))
 </script>
 

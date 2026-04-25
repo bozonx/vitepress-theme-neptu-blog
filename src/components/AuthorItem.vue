@@ -33,7 +33,7 @@
   </a>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.js'
 

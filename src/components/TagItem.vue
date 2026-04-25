@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import BaseLink from './BaseLink.vue'
 import Badge from './Badge.vue'

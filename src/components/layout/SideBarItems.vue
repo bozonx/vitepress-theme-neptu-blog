@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import SideBarHeader from './SideBarHeader.vue'
 import MenuItem from '../MenuItem.vue'
 

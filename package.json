@@ -21,12 +21,12 @@
     "LICENSE"
   ],
   "exports": {
-    ".": "./src/index.js",
+    ".": "./src/index.ts",
     "./package.json": "./package.json",
-    "./components": "./src/components/index.js",
+    "./components": "./src/components/index.ts",
     "./configs": "./src/configs/index.ts",
     "./helpers": "./src/helpers/index.ts",
-    "./layouts": "./src/layouts/index.js",
+    "./layouts": "./src/layouts/index.ts",
     "./list-helpers": "./src/list-helpers/index.ts",
     "./constants": "./src/constants.ts",
     "./tailwind-source.css": "./src/styles/tailwind-source.css",

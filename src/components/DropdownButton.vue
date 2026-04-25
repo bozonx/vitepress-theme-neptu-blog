@@ -1,17 +1,22 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import { Icon } from '@iconify/vue'
 import Btn from './Btn.vue'
 
-const props = defineProps(['dropUp', 'dropLeft', 'title', 'noBg'])
+const props = defineProps<{
+  dropUp?: boolean | string
+  dropLeft?: boolean | string
+  title?: string
+  noBg?: boolean | string
+}>()
 const animationTimeMs = 400
 const mouseLeaveDelayMs = 400
 const listOpen = ref(false)
 const opacity = ref(0)
 const mouseOverWholeEl = ref(false)
-let animationTimeout = null
-let leaveTimeout = null
+let animationTimeout: any = null
+let leaveTimeout: any = null
 
 const toggleList = () => {
   if (listOpen.value) {

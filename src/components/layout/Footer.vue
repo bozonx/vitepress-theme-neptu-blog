@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import BtnLink from "../BtnLink.vue";
 import { useData } from "vitepress";
 

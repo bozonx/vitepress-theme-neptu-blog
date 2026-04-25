@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import TagsList from './TagsList.vue'
 
 const props = defineProps([

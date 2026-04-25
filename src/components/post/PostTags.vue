@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import TagsList from '../TagsList.vue'
 import BtnLink from '../BtnLink.vue'

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
 import UtilPageHeader from './UtilPageHeader.vue'
@@ -12,8 +12,8 @@ const props = defineProps([
   'paginationMaxItems',
 ])
 const { frontmatter, theme, localeIndex } = useData()
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const curPage = Number(props.curPage)
 const sorted = sortPosts(localePosts, theme.value.popularPosts?.sortBy, true)
 </script>

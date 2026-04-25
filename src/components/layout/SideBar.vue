@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { ref, watchEffect, inject } from 'vue'
 
@@ -9,36 +9,40 @@ import SideBarItems from './SideBarItems.vue'
 import { Icon } from '@iconify/vue'
 import SideBarTags from './SideBarTags.vue'
 
-const props = defineProps(['isMobile', 'localePosts'])
+const props = defineProps<{
+  isMobile: boolean
+  localePosts?: any[]
+}>()
 const { theme, localeIndex } = useData()
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
 const animationTimeMs = 400
 const drawerOpen = ref(!props.isMobile)
 const animationLeftPx = ref(-SIDEBAR_WIDTH)
 const backdropOpacity = ref(0)
-let animationTimeout = null
+let animationTimeout: any = null
 
-const links = theme.value.sideBar
+const sideBarConfig = theme.value.sideBar || {}
+const links = sideBarConfig
   ? [
-      ...(theme.value.sideBar.links || []),
+      ...(sideBarConfig.links || []),
 
-      theme.value.sideBar.recent && {
+      sideBarConfig.recent && {
         text: theme.value.t.links.recent,
         href: `${theme.value.recentBaseUrl}/1`,
         icon: theme.value.recentIcon,
       },
-      theme.value.sideBar.popular && {
+      sideBarConfig.popular && {
         text: theme.value.t.links.popular,
         href: `${theme.value.popularBaseUrl}/1`,
         icon: theme.value.popularIcon,
       },
-      theme.value.sideBar.archive && {
+      sideBarConfig.archive && {
         text: theme.value.t.links.byDate,
         href: `${theme.value.archiveBaseUrl}`,
         icon: theme.value.byDateIcon,
       },
-      theme.value.sideBar.authors && {
+      sideBarConfig.authors && {
         text: theme.value.t.links.authors,
         href: `${theme.value.authorsBaseUrl}`,
         icon: theme.value.authorsIcon,
@@ -46,10 +50,10 @@ const links = theme.value.sideBar
     ].filter(Boolean)
   : []
 
-const bottomLinks = theme.value.sideBar
+const bottomLinks = sideBarConfig
   ? [
-      ...(theme.value.sideBar.bottomLinks || []),
-      theme.value.sideBar.donate && {
+      ...(sideBarConfig.bottomLinks || []),
+      sideBarConfig.donate && {
         text: theme.value.t.links.donate,
         href: `${theme.value.donate.url}`,
         icon: theme.value.donate.icon || theme.value.donateIcon,
@@ -136,7 +140,7 @@ watchEffect(async () => {
             />
           </SideBarGroup>
 
-          <SideBarGroup v-if="theme.sideBar.tags">
+          <SideBarGroup v-if="sideBarConfig.tags">
             <SideBarTags :localePosts="localePosts" @itemClick="closeDrawer" />
           </SideBarGroup>
 

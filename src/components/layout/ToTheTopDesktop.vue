@@ -1,15 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import { useData } from "vitepress";
 import { ref, watchEffect } from "vue";
 
-const props = defineProps(["scrollY"]);
+const props = defineProps<{
+  scrollY: number
+}>();
 const { theme } = useData();
 const SCROLL_BREAKPOINT = 1080;
 const animationTimeMs = 1000;
 let showed = ref(false);
 let opacity = ref(0);
-let animationTimeout = null;
+let animationTimeout: any = null;
 
 const show = () => {
   if (showed.value) return;

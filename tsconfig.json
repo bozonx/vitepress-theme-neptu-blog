@@ -22,7 +22,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "vitepress-theme-neptu-blog": ["src/index.js"],
+      "vitepress-theme-neptu-blog": ["src/index.ts"],
       "vitepress-theme-neptu-blog/*": ["src/*"]
     }
   },

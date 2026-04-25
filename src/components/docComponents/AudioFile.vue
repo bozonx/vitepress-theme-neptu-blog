@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import Btn from '../Btn.vue'
@@ -32,7 +32,7 @@ const downloadFilename = computed(() => {
 })
 
 // Валидация URL для безопасности
-const isValidUrl = (url) => {
+const isValidUrl = (url: any) => {
   if (!url || typeof url !== 'string') {
     return false
   }
@@ -65,7 +65,7 @@ const isValidUrl = (url) => {
 }
 
 // Кодирование URL для корректной работы с пробелами и специальными символами
-const encodeAudioUrl = (url) => {
+const encodeAudioUrl = (url: any) => {
   if (!url) return url
 
   try {
@@ -75,7 +75,7 @@ const encodeAudioUrl = (url) => {
       // Кодируем только путь, сохраняя остальные части URL
       urlObj.pathname = urlObj.pathname
         .split('/')
-        .map((segment) => (segment ? encodeURIComponent(segment) : segment))
+        .map((segment: any) => (segment ? encodeURIComponent(segment) : segment))
         .join('/')
       return urlObj.toString()
     }
@@ -83,7 +83,7 @@ const encodeAudioUrl = (url) => {
     // Для относительных путей кодируем весь путь
     return url
       .split('/')
-      .map((segment) => (segment ? encodeURIComponent(segment) : segment))
+      .map((segment: any) => (segment ? encodeURIComponent(segment) : segment))
       .join('/')
   } catch {
     // Если не удалось разобрать URL, возвращаем исходный
@@ -123,7 +123,7 @@ const downloadFile = async () => {
 }
 
 // Состояние аудио плеера
-const audioRef = ref(null)
+const audioRef = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -135,9 +135,9 @@ const isAudioLoaded = ref(false)
 const errorMessage = ref('')
 
 // Debounce функция для оптимизации производительности
-const debounce = (func, wait) => {
-  let timeout
-  return function executedFunction(...args) {
+const debounce = (func: Function, wait: number) => {
+  let timeout: any
+  return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout)
       func(...args)
@@ -204,13 +204,13 @@ const hidePlayer = () => {
   }
 }
 
-const seekTo = (time) => {
+const seekTo = (time: any) => {
   if (audioRef.value && !isDisabled.value) {
     audioRef.value.currentTime = time
   }
 }
 
-const setVolume = (newVolume) => {
+const setVolume = (newVolume: any) => {
   if (audioRef.value) {
     const volumeValue = parseFloat(newVolume)
     audioRef.value.volume = volumeValue
@@ -219,7 +219,7 @@ const setVolume = (newVolume) => {
 }
 
 // Обработка клика по прогресс-бару
-const handleProgressClick = (event) => {
+const handleProgressClick = (event: any) => {
   if (isDisabled.value || !duration.value) return
 
   const progressBar = event.currentTarget
@@ -232,7 +232,7 @@ const handleProgressClick = (event) => {
 }
 
 // Обработка клавиатуры для прогресс-бара
-const handleProgressKeydown = (event) => {
+const handleProgressKeydown = (event: any) => {
   if (isDisabled.value || !duration.value) return
 
   const step = duration.value * 0.05 // 5% от общей длительности
@@ -306,7 +306,7 @@ const handleLoadStart = () => {
   errorMessage.value = ''
 }
 
-const handleError = (event) => {
+const handleError = (event: any) => {
   hasError.value = true
   isLoading.value = false
   isPlaying.value = false
@@ -342,7 +342,7 @@ const handleError = (event) => {
 }
 
 // Форматирование времени
-const formatTime = (time) => {
+const formatTime = (time: any) => {
   if (!time || !isFinite(time)) return '0:00'
 
   const minutes = Math.floor(time / 60)
@@ -374,7 +374,7 @@ onUnmounted(() => {
     audioRef.value.pause()
     audioRef.value.currentTime = 0
   }
-}
+})
 </script>
 
 <template>
@@ -560,7 +560,7 @@ onUnmounted(() => {
           max="1"
           step="0.1"
           v-model="volume"
-          @input="setVolume($event.target.value)"
+          @input="setVolume(($event.target as HTMLInputElement).value)"
           class="volume-slider"
           :aria-label="`${theme.t.audioFile.volumeControl}: ${Math.round(volume * 100)}%`"
           role="slider"
@@ -581,8 +581,8 @@ onUnmounted(() => {
         class="retry-btn"
         @click="
           () => {
-            hasError.value = false
-            errorMessage.value = ''
+            hasError = false
+            errorMessage = ''
           }
         "
         :aria-label="theme.t.audioFile.retryWithValidUrl"

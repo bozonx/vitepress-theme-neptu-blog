@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 
 import Btn from '../Btn.vue'
@@ -18,7 +18,7 @@ const text =
     :icon="theme.youtubeIcon"
     target="_blank"
     class="video-link"
-    hideExternalIcon="true"
+    :hideExternalIcon="true"
   />
 </template>
 

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ToTheTopDesktop from "./ToTheTopDesktop.vue";
 import ToTheTopMobile from "./ToTheTopMobile.vue";
 

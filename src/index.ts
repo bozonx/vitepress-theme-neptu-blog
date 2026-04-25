@@ -15,11 +15,12 @@ import './styles/search-modal.css'
 import './styles/blog-vars.css'
 import './styles/blog-styles.css'
 
+import type { EnhanceAppContext } from 'vitepress'
 import Layout from './layouts/Layout.vue'
 
 export default {
   Layout,
-  enhanceApp(ctx) {
+  enhanceApp(ctx: EnhanceAppContext) {
     ctx.app.config.globalProperties.getLocales = () =>
       resolveTranslationsByFilePath(ctx.router.route.path)
 

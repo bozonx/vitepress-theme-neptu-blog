@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 
 import Btn from '../Btn.vue'
@@ -6,9 +6,14 @@ import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchLang from './SwitchLang.vue'
 
 const { theme } = useData()
-const props = defineProps(['isMobile'])
-const emit = defineEmits(['openSearch', 'openDrawer'])
-const resolveItemShowClass = (item) => {
+const props = defineProps<{
+  isMobile?: boolean
+}>()
+const emit = defineEmits<{
+  (e: 'openSearch'): void
+  (e: 'openDrawer'): void
+}>()
+const resolveItemShowClass = (item: any) => {
   if (item.desktopOnly) return 'max-lg:hidden'
   else if (item.mobileOnly) return 'lg:hidden'
   // both

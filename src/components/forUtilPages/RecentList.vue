@@ -1,21 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 
 const { frontmatter, localeIndex } = useData()
-const props = defineProps([
-  'localePosts',
-  'curPage',
-  'perPage',
-  'paginationMaxItems',
-])
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
-const curPage = Number(props.curPage)
+const props = defineProps<{
+  localePosts?: any[]
+  curPage?: string | number
+  perPage?: number
+  paginationMaxItems?: number
+}>()
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const curPage = Number(props.curPage || 1)
 const sorted = [...(localePosts || [])].sort(
-  (a, b) => new Date(b.date) - new Date(a.date)
+  (a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()
 )
 </script>
 

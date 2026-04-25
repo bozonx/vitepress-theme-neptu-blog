@@ -1,10 +1,41 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 
-const props = defineProps({
-  hero: { type: Object, default: null },
-  features: { type: Array, default: null },
-})
+interface HeroAction {
+  link: string
+  text: string
+  theme?: string
+  target?: string
+  rel?: string
+}
+
+interface HeroImage {
+  src: string
+  alt?: string
+}
+
+interface Hero {
+  name?: string
+  text?: string
+  tagline?: string
+  actions?: HeroAction[]
+  image?: string | HeroImage
+}
+
+interface Feature {
+  title: string
+  details: string
+  icon?: any
+  link?: string
+  linkText?: string
+  rel?: string
+  target?: string
+}
+
+const props = defineProps<{
+  hero?: Hero
+  features?: Feature[]
+}>()
 
 const hero = computed(() => props.hero)
 </script>

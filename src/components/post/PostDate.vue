@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 
 import { makeHumanDate } from '../../helpers/helpers.js'
@@ -42,27 +42,28 @@ const supportedLanguages = [
 ]
 
 // Проверяем, поддерживается ли язык
-const isLanguageSupported = (language) => supportedLanguages.includes(language)
+const isLanguageSupported = (language: any) => supportedLanguages.includes(language)
 
 // Получаем год и месяц для создания ссылок
-const year = new Date(rawDate)?.getUTCFullYear()
-const month = new Date(rawDate)?.getUTCMonth() + 1
+const dateObj = rawDate ? new Date(rawDate) : null
+const year = dateObj ? dateObj.getUTCFullYear() : null
+const month = dateObj ? dateObj.getUTCMonth() + 1 : null
 
 // Используем поддерживаемый язык или fallback на английский
 const effectiveLang = isLanguageSupported(localeIndex.value)
   ? localeIndex.value
   : 'en'
-const localeDate = makeHumanDate(rawDate, effectiveLang)
+const localeDate = makeHumanDate(rawDate, effectiveLang) || ''
 
 // Функция для определения, является ли элемент годом
-const isYear = (item) => {
+const isYear = (item: any) => {
   // Убираем точки и другие символы для проверки года
   const cleanItem = item.replace(/[^\d]/g, '')
   return cleanItem.length === 4 && /^\d{4}$/.test(cleanItem)
 }
 
 // Функция для определения, является ли элемент месяцем
-const isMonth = (item) => {
+const isMonth = (item: any) => {
   // Исключаем служебные слова и короткие элементы
   const excludedWords = [
     'de',
@@ -95,6 +96,7 @@ const isMonth = (item) => {
     'in',
     'on',
     'at',
+    'word-break',
   ]
   const cleanItem = item.replace(/[^\wа-яё]/gi, '').toLowerCase()
 
@@ -107,7 +109,7 @@ const isMonth = (item) => {
 }
 
 // Показываем предупреждение в dev режиме для неподдерживаемых языков
-if (import.meta.env.DEV && !isLanguageSupported(localeIndex.value)) {
+if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
   console.warn(
     `[PostDate] Language "${localeIndex.value}" is not fully supported. Using English fallback. ` +
       `Supported languages: ${supportedLanguages.join(', ')}`

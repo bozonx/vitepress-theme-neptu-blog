@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const props = defineProps(['src', 'description', 'alt', 'height', 'width'])
 </script>
 

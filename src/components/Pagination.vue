@@ -1,16 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import Btn from './Btn.vue'
 
 const route = useRoute()
 const { theme } = useData()
-const props = defineProps([
-  'paginationMaxItems',
-  'curPage',
-  'totalPages',
-  'paginationBaseUrl',
-])
-const items = []
+const props = defineProps<{
+  paginationMaxItems?: number
+  curPage: number
+  totalPages: number
+  paginationBaseUrl?: string
+}>()
+const items: any[] = []
 
 const curPage = props.curPage
 const maxItems = props.paginationMaxItems || theme.value.paginationMaxItems

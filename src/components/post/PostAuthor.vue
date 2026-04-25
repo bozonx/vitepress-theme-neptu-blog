@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 
 import SimpleLink from '../SimpleLink.vue'
 
 const { frontmatter, theme } = useData()
 const themeAuthor = frontmatter.value.authorId
-  ? theme.value.authors?.find((item) => item.id === frontmatter.value.authorId)
+  ? theme.value.authors?.find((item: any) => item.id === frontmatter.value.authorId)
   : undefined
 const authorUrl = themeAuthor?.aboutUrl
   ? themeAuthor.aboutUrl

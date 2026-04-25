@@ -1,8 +1,8 @@
 /** Инициализация и управление лайтбоксом Tobii */
-export function tobiiLightboxPlugin(ctx, Tobii) {
+export function tobiiLightboxPlugin(ctx: any, Tobii: any) {
   if (typeof window === 'undefined') return
 
-  let tobiiInstance = null
+  let tobiiInstance: any = null
 
   // Инициализация Tobii
   const initTobii = () => {
@@ -22,8 +22,9 @@ export function tobiiLightboxPlugin(ctx, Tobii) {
   // Обновляем Tobii при загрузке lazy изображений
   document.addEventListener(
     'load',
-    (event) => {
-      if (event.target.tagName === 'IMG' && event.target.closest('.lightbox')) {
+    (event: any) => {
+      const target = event.target as HTMLElement
+      if (target.tagName === 'IMG' && target.closest('.lightbox')) {
         initTobii()
       }
     },
@@ -36,8 +37,8 @@ export function tobiiLightboxPlugin(ctx, Tobii) {
 
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList') {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
+        mutation.addedNodes.forEach((node: any) => {
+          if (node.nodeType === 1) { // Node.ELEMENT_NODE
             if (
               node.classList?.contains('lightbox') ||
               node.querySelector?.('.lightbox')

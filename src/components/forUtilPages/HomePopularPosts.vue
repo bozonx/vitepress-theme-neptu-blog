@@ -17,7 +17,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { inject } from 'vue'
 import { useData } from 'vitepress'
 import UtilSubPageHeader from './UtilSubPageHeader.vue'
@@ -27,8 +27,8 @@ import { sortPosts } from '../../helpers/helpers.js'
 
 const props = defineProps(['localePosts'])
 const { localeIndex, theme } = useData()
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const sorted = sortPosts(localePosts, theme.value.popularPosts?.sortBy, true)
 const posts = sorted.slice(0, theme.value.perPage)
 const showMorePosts = localePosts.length > theme.value.perPage

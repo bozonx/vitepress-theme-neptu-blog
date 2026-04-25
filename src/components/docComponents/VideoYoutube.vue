@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // Got from https://github.com/lando/vitepress-theme-default-plus/blob/main/components/VPLYouTube.vue
 // also see https://github.com/miletorix/vitepress-youtube-embed/blob/main/packages/src/YouTubeEmbed.vue
 

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { inject } from 'vue'
 import { useData } from 'vitepress'
 import PostSimilarList from './PostSimilarList.vue'
@@ -12,8 +12,8 @@ import BtnLink from '../BtnLink.vue'
 
 const props = defineProps(['localePosts'])
 const { localeIndex, theme } = useData()
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 </script>
 
 <template>

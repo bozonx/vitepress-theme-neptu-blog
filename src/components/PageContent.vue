@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { ref, watchEffect } from 'vue'
 import {
@@ -12,7 +12,7 @@ import PostTopBar from './post/PostTopBar.vue'
 import PostImage from './post/PostImage.vue'
 
 const { page, frontmatter } = useData()
-const articlePreviewText = ref(null)
+const articlePreviewText = ref<any>(null)
 
 watchEffect(async () => {
   articlePreviewText.value = resolveArticlePreview(frontmatter.value)

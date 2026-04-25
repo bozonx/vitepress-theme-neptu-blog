@@ -1,12 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { useData, inBrowser } from 'vitepress'
 import { ref, watchEffect } from 'vue'
 import SwitchLang from '../components/layout/SwitchLang.vue'
 
-const props = defineProps(['scrollY'])
+const props = defineProps<{
+  scrollY: number
+}>()
 const { theme } = useData()
 const valueY = ref(0)
-const wrapperRef = ref(null)
+const wrapperRef = ref<HTMLElement | null>(null)
 const BG_HEIGHT_OFFSET = theme.value.homeBgParalaxOffset || 0
 
 watchEffect(async () => {

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import PostVideoLink from './PostVideoLink.vue'
 import PodcastDropdown from './PodcastDropdown.vue'

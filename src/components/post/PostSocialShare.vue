@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
@@ -6,7 +6,7 @@ import { Icon } from '@iconify/vue'
 
 const { theme, title } = useData()
 const siteFullTitle = encodeURIComponent(title.value)
-const items = ref([])
+const items = ref<any[]>([])
 const attrs = {
   class: 'social-btn',
   target: '_blank',
@@ -16,8 +16,8 @@ const attrs = {
 // Получаем список социальных сетей из конфигурации темы
 const socialItems = (theme.value.socialMediaShares || '')
   .split(',')
-  .filter((item) => Boolean(item))
-  .map((item) => item.trim())
+  .filter((item: any) => Boolean(item))
+  .map((item: any) => item.trim())
 
 const makeItems = () => {
   // Безопасное получение URL документа с fallback
@@ -25,7 +25,7 @@ const makeItems = () => {
   const encodedDocUrl = encodeURIComponent(currentUrl)
 
   // Параметры для каждой социальной сети
-  const itemsParams = {
+  const itemsParams: Record<string, any> = {
     telegram: {
       href: `https://t.me/share/url?url=${encodedDocUrl}&text=${siteFullTitle}`,
       icon: 'logos:telegram',
@@ -59,7 +59,7 @@ const makeItems = () => {
   }
 
   // Возвращаем только те социальные сети, которые указаны в конфигурации
-  return socialItems.map((item) => itemsParams[item]).filter((item) => item) // Убираем undefined элементы
+  return socialItems.map((item: any) => itemsParams[item]).filter((item: any) => item) // Убираем undefined элементы
 }
 
 onMounted(() => {

@@ -13,14 +13,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Btn from './Btn.vue'
 
-const props = defineProps(['links'])
+const props = defineProps<{
+  links: any[]
+}>()
 
 // Функция для получения правильного имени иконки в зависимости от типа
-const getIconName = (type) => {
-  const iconMap = {
+const getIconName = (type: string) => {
+  const iconMap: Record<string, string> = {
     site: 'mdi:web',
     youtube: 'mdi:youtube',
     x: 'mdi:twitter', // X (бывший Twitter)

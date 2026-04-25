@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import Btn from '../Btn.vue'
@@ -7,16 +7,12 @@ import { useData } from 'vitepress'
 const { theme } = useData()
 
 // Пропсы компонента
-const props = defineProps({
-  // URL файла для скачивания
-  url: { type: String, required: true },
-  // Если не правильно опрелилось имя то укажите его здесь самостоятельно
-  filename: { type: String, default: '' },
-  // CSS классы
-  containerClass: { type: String, default: '' },
-  // Отключить кнопку
-  disabled: { type: Boolean, default: false },
-})
+const props = defineProps<{
+  url: string
+  filename?: string
+  containerClass?: string
+  disabled?: boolean
+}>()
 
 // Состояние отключения кнопки
 const isDisabled = ref(props.disabled)
@@ -65,13 +61,13 @@ const downloadFile = async () => {
 }
 
 // Получаем иконку для типа файла
-const getFileTypeIcon = (extension) => {
+const getFileTypeIcon = (extension: any) => {
   // Если расширение не определено, возвращаем иконку по умолчанию
   if (!extension) {
     return 'mdi:file'
   }
 
-  const iconMap = {
+  const iconMap: Record<string, string> = {
     pdf: 'mdi:file-pdf-box',
     doc: 'mdi:file-word-box',
     docx: 'mdi:file-word-box',

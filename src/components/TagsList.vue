@@ -1,22 +1,25 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import TagItem from './TagItem.vue'
 
-const props = defineProps([
-  'tags',
-  'sizeXl',
-  'sizeSm',
-  'class',
-  'activeCompareMethod',
-])
-const emit = defineEmits(['itemClick'])
-const sizeClasses = {
+const props = defineProps<{
+  tags: any[]
+  sizeXl?: boolean | string
+  sizeSm?: boolean | string
+  class?: any
+  activeCompareMethod?: any
+}>()
+const emit = defineEmits<{
+  (e: 'itemClick'): void
+}>()
+const sizeClasses: Record<string, string> = {
   xl: 'gap-x-3 gap-y-4',
   md: 'gap-x-2 gap-y-3',
   sm: 'gap-x-2 gap-y-3',
 }
 const sizeClass = computed(() => {
-  return sizeClasses[(props.sizeXl && 'xl') || (props.sizeSm && 'sm') || 'md']
+  const sizeKey = (props.sizeXl && 'xl') || (props.sizeSm && 'sm') || 'md'
+  return sizeClasses[sizeKey]
 })
 </script>
 

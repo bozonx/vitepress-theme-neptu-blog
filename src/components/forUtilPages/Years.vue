@@ -1,14 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { inject } from 'vue'
 import { makeYearsList } from '../../list-helpers/listHelpers.js'
 import ListItemWithBadge from '../ListItemWithBadge.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 
-const props = defineProps(['localePosts'])
+const props = defineProps<{
+  localePosts?: any[]
+}>()
 const { theme, frontmatter, localeIndex } = useData()
-const allPosts = inject('posts')
-const localePosts = props.localePosts || allPosts[localeIndex.value]
+const allPosts = inject<Record<string, any[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
 const yearsList = makeYearsList(localePosts)
 </script>
 
@@ -19,7 +21,7 @@ const yearsList = makeYearsList(localePosts)
       <li v-if="item.count">
         <ListItemWithBadge
           :href="`${theme.archiveBaseUrl}/${item.year}/1`"
-          :text="item.year"
+          :text="String(item.year)"
           :count="item.count"
         />
       </li>

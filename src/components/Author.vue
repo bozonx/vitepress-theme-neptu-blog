@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SocialMediaLinks from './SocialMediaLinks.vue'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.js'
 

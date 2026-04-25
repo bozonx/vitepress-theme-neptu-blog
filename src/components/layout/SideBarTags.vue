@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { makeTagsList } from '../../list-helpers/listHelpers.js'
 import BtnLink from '../BtnLink.vue'
 import TagsList from '../TagsList.vue'

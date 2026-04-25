@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { useData } from 'vitepress'
 import DropdownButton from '../DropdownButton.vue'
@@ -22,13 +22,13 @@ const btnText = theme.value.t.listenPodcast
       {{ btnText }}
     </template>
 
-    <template v-for="(link, name) in frontmatter.podcasts">
-      <MenuItem v-if="link" :href="link" hideExternalIcon="true">
+    <template v-for="(link, name) in (frontmatter.podcasts || {})">
+      <MenuItem v-if="link" :href="link" :hideExternalIcon="true">
         <span class="flex">
           <span class="mr-2">
-            <PodcastIcon :name="name" :alt="name + ' podcast service icon'" />
+            <PodcastIcon :name="String(name)" :alt="String(name) + ' podcast service icon'" />
           </span>
-          {{ theme.t.podcasts[name] }}
+          {{ (theme.t.podcasts || {})[name] }}
         </span>
       </MenuItem>
     </template>

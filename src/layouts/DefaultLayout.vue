@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData } from 'vitepress'
 import { ref } from 'vue'
 
@@ -16,7 +16,7 @@ import { resolveBodyMarker } from '../helpers/helpers.js'
 const { theme, frontmatter } = useData()
 const { isMobile } = useBreakpoint()
 const { scrollY } = useScrollY()
-const sidebarRef = ref(null)
+const sidebarRef = ref<InstanceType<typeof SideBar> | null>(null)
 const bodyMarker = resolveBodyMarker(theme.value, frontmatter.value)
 
 function onOpenDrawer() {

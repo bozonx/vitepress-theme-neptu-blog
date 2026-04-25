@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
 import { sortSimilarPosts } from '../../helpers/helpers.js'

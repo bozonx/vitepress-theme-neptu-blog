@@ -4,14 +4,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants.js'
+
+declare global {
+  interface Window {
+    PagefindUI: any
+  }
+}
 
 const MODAL_ID = 'search-modal'
 const CLOSE_BUTTON_CLASS = 'search-modal-close-button'
 const MOBILE_CLOSE_BUTTON_CLASS = 'search-modal-mobile-close-button'
-const pageFind = ref(null)
+const pageFind = ref<any>(null)
 // Флаг для отслеживания состояния модального окна
 const isModalOpen = ref(false)
 
@@ -49,8 +55,8 @@ const showSearchModal = () => {
     setTimeout(() => {
       const searchInput = searchModal.querySelector(
         '.pagefind-ui__search-input'
-      )
-      searchInput.focus()
+      ) as HTMLInputElement
+      if (searchInput) searchInput.focus()
     }, 100)
   } else {
     console.warn('Search modal not found')
@@ -101,7 +107,7 @@ const createSearchModal = () => {
   </div>
   `
 
-  searchModal.addEventListener('click', (e) => {
+  searchModal.addEventListener('click', (e: any) => {
     if (
       e.target === searchModal ||
       e.target.classList.contains(CLOSE_BUTTON_CLASS) ||
@@ -112,17 +118,20 @@ const createSearchModal = () => {
     }
   })
 
-  document.getElementById(GLOBAL_MODALS_CONTAINER_ID).appendChild(searchModal)
+  const container = document.getElementById(GLOBAL_MODALS_CONTAINER_ID)
+  if (container) {
+    container.appendChild(searchModal)
+  }
 }
 
-const handleKeydown = (e) => {
+const handleKeydown = (e: any) => {
   if (e.key === 'Escape') {
     if (isModalOpen.value) hideSearchModal()
   }
 }
 
 // Обработчик события popstate для кнопки "Назад" браузера
-const handlePopState = (event) => {
+const handlePopState = (event: any) => {
   // Если модальное окно открыто и пользователь нажал "Назад"
   if (isModalOpen.value && (!event.state || !event.state.modalOpen)) {
     hideSearchModal()

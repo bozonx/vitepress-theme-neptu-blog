@@ -94,7 +94,6 @@ export default {
       hidePlayer: 'Скрыть элементы управления аудио плеером',
       hidePlayerTitle: 'Скрыть плеер',
       audioFile: 'Аудио файл',
-      downloadFile: 'Скачать',
       downloadAudioFile: 'Скачать',
       currentTime: 'Текущее время',
       audioProgress: 'Прогресс аудио',
