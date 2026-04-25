@@ -1,8 +1,10 @@
-import 'vitepress/dist/client/theme-default/styles/components/custom-block.css'
-import 'vitepress/dist/client/theme-default/styles/components/vp-code-group.css'
-import 'vitepress/dist/client/theme-default/styles/components/vp-code.css'
-// see https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/components/vp-doc.css
-import 'vitepress/dist/client/theme-default/styles/components/vp-doc.css'
+// Vendored from vitepress/dist/client/theme-default/styles/components — keeps
+// the theme insulated from VitePress internals (dist/ paths are not public API).
+// Update on VitePress version bump if needed.
+import './styles/vendor/custom-block.css'
+import './styles/vendor/vp-code-group.css'
+import './styles/vendor/vp-code.css'
+import './styles/vendor/vp-doc.css'
 import FileDownload from './components/docComponents/FileDownload.vue'
 import AudioFile from './components/docComponents/AudioFile.vue'
 import VideoYoutube from './components/docComponents/VideoYoutube.vue'

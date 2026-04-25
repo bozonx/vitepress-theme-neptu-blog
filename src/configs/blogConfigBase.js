@@ -37,7 +37,7 @@ export const common = {
   ],
   outDir: '../dist',
   cacheDir: '../.cache',
-  srcExclude: ['/site'],
+  srcExclude: ['site/**', '**/site/**'],
   metaChunk: true,
   ignoreDeadLinks: true,
   lastUpdated: true,

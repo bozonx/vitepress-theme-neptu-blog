@@ -1,9 +1,15 @@
-import path from "path";
-import { loadPostsData } from "vitepress-theme-neptu-blog/loadPosts.js";
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const localeDir = path.dirname(import.meta.url.replace("file://", ""));
-const config = globalThis.VITEPRESS_CONFIG;
+import { loadPostsData } from 'vitepress-theme-neptu-blog/loadPosts.js'
+
+import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
+
+const localeDir = path.dirname(fileURLToPath(import.meta.url))
 
 export default function () {
-  return loadPostsData(localeDir, config);
+  return loadPostsData(localeDir, {
+    popularPostsEnabled: popularPosts.enabled,
+    googleAnalytics,
+  })
 }

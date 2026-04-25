@@ -1,19 +1,22 @@
-import path from "path";
-import { POSTS_DIR } from "vitepress-theme-neptu-blog/constants.js";
-import { loadPostsData } from "vitepress-theme-neptu-blog/loadPosts.js";
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const config = globalThis.VITEPRESS_CONFIG;
-const localeDir = path.dirname(import.meta.url.replace("file://", ""));
+import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants.js'
+import { loadPostsData } from 'vitepress-theme-neptu-blog/loadPosts.js'
+
+import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
+
+const localeDir = path.dirname(fileURLToPath(import.meta.url))
 
 export default {
   watch: [`./${POSTS_DIR}/*.md`],
-  async load(watchedFiles) {
+  async load() {
     return {
-      posts: await loadPostsData(
-        localeDir,
-        config,
-        process.env.NODE_ENV !== "production"
-      ),
-    };
+      posts: await loadPostsData(localeDir, {
+        popularPostsEnabled: popularPosts.enabled,
+        googleAnalytics,
+        ignoreCache: process.env.NODE_ENV !== 'production',
+      }),
+    }
   },
-};
+}

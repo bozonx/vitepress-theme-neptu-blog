@@ -1,9 +1,24 @@
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
 import { defineConfig } from 'vitepress'
 import { mergeBlogConfig } from 'vitepress-theme-neptu-blog/blogConfigBase.js'
 import { loadBlogLocale } from 'vitepress-theme-neptu-blog/blogConfigHelper.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 export const PER_PAGE = 20
+
+export const popularPosts = {
+  enabled: true,
+  sortBy: 'pageviews', // 'pageviews', 'uniquePageviews'
+}
+
+export const googleAnalytics = {
+  propertyId: '123456789',
+  credentialsJson: process.env.GA_CREDENTIALS_JSON,
+  credentialsPath: '.../credentials.json',
+}
 
 export default async () => {
   const config = defineConfig({
@@ -16,16 +31,8 @@ export default async () => {
 
       search: { bodyMarker: 'data-pagefind-body' },
 
-      googleAnalytics: {
-        propertyId: '123456789',
-        credentialsJson: process.env.GA_CREDENTIALS_JSON,
-        credentialsPath: '.../credentials.json',
-      },
-
-      popularPosts: {
-        enabled: true,
-        sortBy: 'pageviews', // 'pageviews', 'uniquePageviews'
-      },
+      googleAnalytics,
+      popularPosts,
 
       // Add there some variables specified for your blog
     },

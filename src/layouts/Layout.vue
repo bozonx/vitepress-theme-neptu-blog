@@ -1,6 +1,6 @@
 <script setup>
-import { inBrowser, useData } from 'vitepress'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { useData } from 'vitepress'
+import { ref } from 'vue'
 
 import BlogHomeLayout from './BlogHome.vue'
 import PageContent from '../components/PageContent.vue'
@@ -10,132 +10,25 @@ import NotFound from '../components/layout/NotFound.vue'
 import SideBar from '../components/layout/SideBar.vue'
 import ToTheTop from '../components/layout/ToTheTop.vue'
 import TopBar from '../components/layout/TopBar.vue'
-import { MOBILE_BREAKPOINT, SWIPE_OFFSET } from '../constants.js'
+import { useBreakpoint } from '../composables/useBreakpoint.js'
+import { useScrollY } from '../composables/useScrollY.js'
+import { useSwipeDrawer } from '../composables/useSwipeDrawer.js'
 import { isHomePage, resolveBodyMarker } from '../helpers/helpers.js'
 
 const { page, theme, frontmatter } = useData()
-const windowWidth = ref(0)
-const isMobile = ref(true)
-const scrollY = ref(0)
-const touchInitialX = ref(null)
-const touchInitialY = ref(null)
+const { isMobile } = useBreakpoint()
+const { scrollY } = useScrollY()
 const sidebarRef = ref(null)
-const gestureProcessed = ref(false)
 const bodyMarker = resolveBodyMarker(theme.value, frontmatter.value)
-let resizeListener
-let scrollListener
-let touchStartListener
-let touchMoveListener
-let touchEndListener
-let touchCancelListener
-let keydownListener
 
 function onOpenDrawer() {
-  sidebarRef.value.openDrawer()
+  sidebarRef.value?.openDrawer()
 }
 
-function startTouch(e) {
-  // Обрабатываем жесты только на мобильных устройствах
-  if (!isMobile.value) return
-
-  const touch = e.touches[0]
-  touchInitialX.value = touch.clientX
-  touchInitialY.value = touch.clientY
-  gestureProcessed.value = false
-}
-
-function moveTouch(e) {
-  // Обрабатываем жесты только на мобильных устройствах
-  if (!isMobile.value || touchInitialX.value === null || gestureProcessed.value)
-    return
-
-  const touch = e.touches[0]
-  const currentX = touch.clientX
-  const currentY = touch.clientY
-  const dx = currentX - touchInitialX.value
-  const dy = currentY - touchInitialY.value
-
-  // Проверяем, что движение достаточно горизонтальное (не вертикальное)
-  if (Math.abs(dy) > Math.abs(dx)) {
-    resetTouch()
-    return
-  }
-
-  if (Math.abs(dx) < SWIPE_OFFSET) {
-    return
-  }
-
-  // Помечаем жест как обработанный, чтобы избежать повторных вызовов
-  gestureProcessed.value = true
-
-  // Определяем направление свайпа
-  if (dx > 0) {
-    // Свайп вправо - открываем меню только если начали с левого края экрана
-    if (touchInitialX.value <= 50 && sidebarRef.value) {
-      // Проверяем, можно ли отменить событие
-      if (e.cancelable) {
-        e.preventDefault()
-      }
-      sidebarRef.value.openDrawer()
-      resetTouch()
-    }
-  } else {
-    // Свайп влево - закрываем меню
-    if (sidebarRef.value) {
-      // Проверяем, можно ли отменить событие
-      if (e.cancelable) {
-        e.preventDefault()
-      }
-      sidebarRef.value.handleLeftSwipe()
-      resetTouch()
-    }
-  }
-}
-
-function resetTouch() {
-  touchInitialX.value = null
-  touchInitialY.value = null
-  gestureProcessed.value = false
-}
-
-onMounted(() => {
-  if (!inBrowser) return
-
-  windowWidth.value = window.innerWidth
-  isMobile.value = windowWidth.value < MOBILE_BREAKPOINT
-
-  resizeListener = window.addEventListener('resize', () => {
-    windowWidth.value = window.innerWidth
-    isMobile.value = windowWidth.value < MOBILE_BREAKPOINT
-  })
-
-  scrollListener = window.addEventListener('scroll', () => {
-    scrollY.value = window.scrollY
-  })
-
-  touchStartListener = window.addEventListener('touchstart', startTouch, {
-    passive: true,
-  })
-  touchMoveListener = window.addEventListener('touchmove', moveTouch, {
-    passive: false,
-  })
-  touchEndListener = window.addEventListener('touchend', resetTouch, {
-    passive: true,
-  })
-  touchCancelListener = window.addEventListener('touchcancel', resetTouch, {
-    passive: true,
-  })
-})
-onUnmounted(() => {
-  if (!inBrowser) return
-
-  window.removeEventListener('resize', resizeListener)
-  window.removeEventListener('scroll', scrollListener)
-  window.removeEventListener('touchstart', touchStartListener)
-  window.removeEventListener('touchmove', touchMoveListener)
-  window.removeEventListener('touchend', touchEndListener)
-  window.removeEventListener('touchcancel', touchCancelListener)
-  window.removeEventListener('keydown', keydownListener)
+useSwipeDrawer({
+  enabled: () => isMobile.value,
+  onOpen: () => sidebarRef.value?.openDrawer(),
+  onClose: () => sidebarRef.value?.handleLeftSwipe(),
 })
 </script>
 

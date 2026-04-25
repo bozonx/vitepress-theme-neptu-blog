@@ -9,9 +9,7 @@ if (!global.loadingGaStatsPromise) {
 // GA4 Data API v1beta
 const GA_VERSION = 'v1beta'
 
-export async function mergeWithAnalytics(posts, config) {
-  const gaCfg = config.site.themeConfig.googleAnalytics
-
+export async function mergeWithAnalytics(posts, gaCfg) {
   // Валидация конфигурации
   if (!gaCfg?.propertyId) {
     console.warn('⚠️ Google Analytics не настроен: отсутствует propertyId')
