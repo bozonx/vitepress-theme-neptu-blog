@@ -1,4 +1,4 @@
-import { standardTemplate } from 'squidlet-lib'
+import { standardTemplate } from './squidlet.js'
 import {
   loadConfigYamlFile,
   parseLocaleSite,

@@ -1,4 +1,4 @@
-import { omitUndefined } from 'squidlet-lib'
+import { omitUndefined } from '../helpers/squidlet.js'
 import { addOgMetaTags } from '../transformers/addOgMetaTags.js'
 import { resolveDescription } from '../transformers/resolveDescription.js'
 import { addJsonLd } from '../transformers/addJsonLd.js'

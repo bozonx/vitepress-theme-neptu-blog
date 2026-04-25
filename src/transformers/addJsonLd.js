@@ -1,5 +1,5 @@
 import yaml from 'yaml'
-import { omitUndefined } from 'squidlet-lib'
+import { omitUndefined } from '../helpers/squidlet.js'
 import { ROOT_LANG } from '../constants.js'
 import {
   isPost,

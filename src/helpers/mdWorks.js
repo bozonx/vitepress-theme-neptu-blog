@@ -4,7 +4,7 @@ import html from 'rehype-stringify'
 import { remark } from 'remark'
 import remarkRehype from 'remark-rehype'
 import strip from 'strip-markdown'
-import { smartTruncate, removeTitleFromMd } from 'squidlet-lib'
+import { smartTruncate, removeTitleFromMd } from './squidlet.js'
 
 export function stripMd(mdContent) {
   if (!mdContent) return mdContent

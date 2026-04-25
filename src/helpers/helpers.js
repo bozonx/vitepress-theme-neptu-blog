@@ -1,4 +1,4 @@
-import { pathTrimExt, arraysIntersection } from 'squidlet-lib'
+import { pathTrimExt, arraysIntersection } from './squidlet.js'
 
 // /**
 //  * Returns [640, 320] from "some-file-name--640x320.avif"
