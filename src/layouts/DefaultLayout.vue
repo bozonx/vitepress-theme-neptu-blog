@@ -29,24 +29,24 @@ useSwipeDrawer({
 <template>
   <div class="min-h-screen lg:flex w-full">
     <!--  left col-->
-    <SideBar ref="sidebarRef" :isMobile="isMobile">
-      <template #sidebar-top v-if="$slots['sidebar-top']">
+    <SideBar ref="sidebarRef" :is-mobile="isMobile">
+      <template v-if="$slots['sidebar-top']" #sidebar-top>
         <slot name="sidebar-top" />
       </template>
-      <template #sidebar-middle v-if="$slots['sidebar-middle']">
+      <template v-if="$slots['sidebar-middle']" #sidebar-middle>
         <slot name="sidebar-middle" />
       </template>
-      <template #sidebar-bottom v-if="$slots['sidebar-bottom']">
+      <template v-if="$slots['sidebar-bottom']" #sidebar-bottom>
         <slot name="sidebar-bottom" />
       </template>
-      <template #sub-sidebar v-if="$slots['sub-sidebar']">
+      <template v-if="$slots['sub-sidebar']" #sub-sidebar>
         <slot name="sub-sidebar" />
       </template>
     </SideBar>
     <!-- right col-->
     <div class="flex-1 flex flex-col min-h-screen">
       <header>
-        <TopBar @open-drawer="() => sidebarRef?.openDrawer()" :isMobile="isMobile">
+        <TopBar :is-mobile="isMobile" @open-drawer="() => sidebarRef?.openDrawer()">
           <template #nav-bar-content-before>
             <slot name="nav-bar-content-before" />
           </template>
@@ -63,7 +63,7 @@ useSwipeDrawer({
 
           <div class="mt-30 pb-12">
             <Footer>
-              <template #footer-before v-if="$slots['footer-before']">
+              <template v-if="$slots['footer-before']" #footer-before>
                 <slot name="footer-before" />
               </template>
             </Footer>
@@ -76,7 +76,7 @@ useSwipeDrawer({
       </div>
     </div>
 
-    <ToTheTop :scrollY="scrollY" :isMobile="isMobile" />
+    <ToTheTop :scroll-y="scrollY" :is-mobile="isMobile" />
   </div>
 </template>
 

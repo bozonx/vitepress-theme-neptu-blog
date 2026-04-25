@@ -2,10 +2,10 @@
   <div class="side-bar-tags">
     <TagsList
       :tags="tags"
-      @itemClick="emit('itemClick')"
-      :sizeSm="true"
+      :size-sm="true"
       class="mb-2 side-bar-tags-list"
-      activeCompareMethod="softPagination"
+      active-compare-method="softPagination"
+      @item-click="emit('itemClick')"
     />
     <div class="mt-2">
       <BtnLink

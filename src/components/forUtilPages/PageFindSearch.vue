@@ -1,5 +1,5 @@
 <template>
-  <div @click="showSearchModal" class="pagefind-search-wrapper">
+  <div class="pagefind-search-wrapper" @click="showSearchModal">
     <slot />
   </div>
 </template>

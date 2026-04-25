@@ -48,7 +48,8 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div :class="[
+  <div
+:class="[
     'bottom-0 fixed transition-opacity to-the-top-desk',
     !showed && 'hidden',
   ]" :style="{ opacity, 'transition-duration': `${animationTimeMs}ms` }" aria-hidden="true">

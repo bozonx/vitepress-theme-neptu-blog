@@ -12,13 +12,13 @@
         :text="theme.t.links.recent"
         :href="`${props.baseUrl}/1`"
         :icon="theme.recentIcon"
-        activeCompareMethod="pagination"
+        active-compare-method="pagination"
       />
       <Btn
         :text="theme.t.links.popular"
         :href="`${popularBaseUrl}/1`"
         :icon="theme.popularIcon"
-        activeCompareMethod="pagination"
+        active-compare-method="pagination"
       />
     </div>
   </div>

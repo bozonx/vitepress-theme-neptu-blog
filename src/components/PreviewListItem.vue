@@ -26,8 +26,8 @@ const params = computed(() => ({
       v-if="item.thumbnail"
       v-bind="params"
       :thumbnail="props.item.thumbnail"
-      :coverHeight="props.item.coverHeight"
-      :coverWidth="props.item.coverWidth"
+      :cover-height="props.item.coverHeight"
+      :cover-width="props.item.coverWidth"
     />
     <PreviewNoImg v-else v-bind="params" />
   </a>

@@ -26,7 +26,7 @@ const className =
   <BaseLink
     :href="href"
     :class="className"
-    :activeCompareMethod="props.activeCompareMethod"
+    :active-compare-method="props.activeCompareMethod"
   >
     <span>{{ props.name }}</span>
     <Badge

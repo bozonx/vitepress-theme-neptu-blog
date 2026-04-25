@@ -14,8 +14,8 @@ const props = defineProps(['src', 'description', 'alt', 'height', 'width'])
     </a>
     <figcaption
       v-if="props.description"
-      v-html="props.description"
       class="vp-doc"
+      v-html="props.description"
     ></figcaption>
   </figure>
 </template>

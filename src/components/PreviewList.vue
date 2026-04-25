@@ -34,10 +34,10 @@ const totalPages = Math.ceil(props.localePosts.length / perPage)
 
     <div v-if="totalPages > 1" class="mt-10">
       <Pagination
-        :curPage="props.curPage"
-        :totalPages="totalPages"
-        :paginationMaxItems="props.paginationMaxItems"
-        :paginationBaseUrl="props.paginationBaseUrl"
+        :cur-page="props.curPage"
+        :total-pages="totalPages"
+        :pagination-max-items="props.paginationMaxItems"
+        :pagination-base-url="props.paginationBaseUrl"
       />
     </div>
   </div>

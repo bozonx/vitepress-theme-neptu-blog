@@ -35,16 +35,16 @@ const author = theme.value.authors.find((item: any) => item.id === props.authorI
   <Author :author="author" class="mb-15" />
 
   <ListPageHeader
-    :baseUrl="`/${localeIndex}/${theme.authorsBaseUrl}/${props.authorId}`"
-    :showPopularPostsSwitch="showPopularPostsSwitch"
+    :base-url="`/${localeIndex}/${theme.authorsBaseUrl}/${props.authorId}`"
+    :show-popular-posts-switch="showPopularPostsSwitch"
   >
     {{ theme.t.allPostsOfAuthor }} ({{ sorted.length }})
   </ListPageHeader>
 
   <PreviewList
-    :localePosts="sorted"
-    :curPage="curPage"
-    :perPage="props.perPage"
-    :paginationMaxItems="props.paginationMaxItems"
+    :locale-posts="sorted"
+    :cur-page="curPage"
+    :per-page="props.perPage"
+    :pagination-max-items="props.paginationMaxItems"
   />
 </template>

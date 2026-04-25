@@ -24,10 +24,10 @@ const items = frontmatter.value.tags
     <h2 class="text-xl font-bold mb-4">{{ theme.t.similarPosts }}</h2>
 
     <PreviewList
-      :localePosts="items"
-      :curPage="1"
-      :perPage="theme.similarPostsCount"
-      :paginationMaxItems="theme.paginationMaxItems"
+      :locale-posts="items"
+      :cur-page="1"
+      :per-page="theme.similarPostsCount"
+      :pagination-max-items="theme.paginationMaxItems"
     />
   </div>
 </template>

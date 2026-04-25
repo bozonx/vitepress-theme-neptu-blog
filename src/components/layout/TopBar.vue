@@ -41,12 +41,12 @@ const links = theme.value.topBar
   >
     <div class="flex-1 flex gap-x-3">
       <Btn
-        @click="emit('openDrawer')"
         icon="fa6-solid:bars"
-        :noBg="true"
+        :no-bg="true"
         class="lg:hidden topbar-item"
-        iconClass="muted"
+        icon-class="muted"
         :text="theme.sidebarMenuLabel"
+        @click="emit('openDrawer')"
       />
 
       <slot name="nav-bar-content-before" />
@@ -56,15 +56,15 @@ const links = theme.value.topBar
       <li v-for="item in links" :class="resolveItemShowClass(item)">
         <Btn
           v-bind="item"
-          :noBg="true"
+          :no-bg="true"
           :class="[item.class, 'topbar-item']"
-          :iconClass="item.iconClass || 'muted'"
+          :icon-class="item.iconClass || 'muted'"
         />
       </li>
     </ul>
 
     <div class="max-lg:hidden">
-      <SwitchLang :noBg="true" />
+      <SwitchLang :no-bg="true" />
     </div>
 
     <div class="max-lg:hidden">
@@ -76,7 +76,7 @@ const links = theme.value.topBar
         v-for="item in theme.topBar.socialLinks"
         :class="resolveItemShowClass(item)"
       >
-        <Btn :noBg="true" v-bind="item" :class="[item.class]" />
+        <Btn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>
   </nav>

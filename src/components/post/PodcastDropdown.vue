@@ -23,7 +23,7 @@ const btnText = theme.value.t.listenPodcast
     </template>
 
     <template v-for="(link, name) in (frontmatter.podcasts || {})">
-      <MenuItem v-if="link" :href="link" :hideExternalIcon="true">
+      <MenuItem v-if="link" :href="link" :hide-external-icon="true">
         <span class="flex">
           <span class="mr-2">
             <PodcastIcon :name="String(name)" :alt="String(name) + ' podcast service icon'" />

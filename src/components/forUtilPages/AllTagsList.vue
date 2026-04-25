@@ -14,5 +14,5 @@ const tagList = makeTagsList(localePosts)
 
 <template>
   <UtilPageHeader>{{ frontmatter.title }}</UtilPageHeader>
-  <TagsList :tags="tagList" :sizeXl="true" class="flex-col" />
+  <TagsList :tags="tagList" :size-xl="true" class="flex-col" />
 </template>

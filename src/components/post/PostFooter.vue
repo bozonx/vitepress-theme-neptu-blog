@@ -28,7 +28,7 @@ const localePosts = props.localePosts || allPosts[localeIndex.value] || []
   </div>
 
   <PostTags class="mt-10" />
-  <PostSimilarList class="mt-14" :localePosts="localePosts" />
+  <PostSimilarList class="mt-14" :locale-posts="localePosts" />
 
   <div class="mt-10">
     <BtnLink

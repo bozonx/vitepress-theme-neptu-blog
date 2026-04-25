@@ -27,7 +27,7 @@ const resolveLink = (link: any) => {
 <template>
   <DropdownButton
     v-if="localeLinks.length && currentLang.label"
-    :noBg="props.noBg"
+    :no-bg="props.noBg"
     :title="theme.langMenuLabel || 'Change language'"
     class="switch-lang-btn"
   >
@@ -52,8 +52,8 @@ const resolveLink = (link: any) => {
       </MenuItem>
       <MenuItem
         v-else
-        target="_self"
         :key="locale.link"
+        target="_self"
         :href="resolveLink(locale.link)"
       >
         {{ locale.text }}

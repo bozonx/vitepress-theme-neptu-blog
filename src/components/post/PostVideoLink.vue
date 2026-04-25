@@ -18,7 +18,7 @@ const text =
     :icon="theme.youtubeIcon"
     target="_blank"
     class="video-link"
-    :hideExternalIcon="true"
+    :hide-external-icon="true"
   />
 </template>
 

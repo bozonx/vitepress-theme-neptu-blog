@@ -38,8 +38,8 @@ const props = defineProps([
       <TagsList
         :tags="tags"
         class="mt-2"
-        :sizeSm="true"
-        activeCompareMethod="none"
+        :size-sm="true"
+        active-compare-method="none"
       />
     </div>
 

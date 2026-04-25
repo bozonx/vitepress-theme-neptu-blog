@@ -6,7 +6,7 @@
       :href="link.url"
       :title="link.title"
       :icon="getIconName(link.type)"
-      iconClass="text-2xl"
+      icon-class="text-2xl"
       target="_blank"
       class="social-link"
     />

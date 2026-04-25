@@ -21,9 +21,9 @@ const sorted = sortPosts(localePosts, theme.value.popularPosts?.sortBy, true)
 <template>
   <UtilPageHeader>{{ frontmatter.title }}</UtilPageHeader>
   <PreviewList
-    :localePosts="sorted"
-    :curPage="curPage"
-    :perPage="props.perPage"
-    :paginationMaxItems="props.paginationMaxItems"
+    :locale-posts="sorted"
+    :cur-page="curPage"
+    :per-page="props.perPage"
+    :pagination-max-items="props.paginationMaxItems"
   />
 </template>

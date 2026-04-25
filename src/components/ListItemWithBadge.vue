@@ -17,6 +17,6 @@ const props = defineProps<Props>()
     class="no-underline text-2xl my-5 inline-flex gap-x-2"
   >
     <span>{{ props.text }}</span>
-    <Badge :count="props.count" v-if="typeof props.count === 'number'" />
+    <Badge v-if="typeof props.count === 'number'" :count="props.count" />
   </SimpleLink>
 </template>

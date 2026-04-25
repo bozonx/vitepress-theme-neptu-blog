@@ -6,6 +6,6 @@ const props = defineProps(["scrollY", "isMobile"]);
 </script>
 
 <template>
-  <ToTheTopMobile v-if="props.isMobile" :scrollY="scrollY" />
-  <ToTheTopDesktop v-else :scrollY="scrollY" />
+  <ToTheTopMobile v-if="props.isMobile" :scroll-y="scrollY" />
+  <ToTheTopDesktop v-else :scroll-y="scrollY" />
 </template>

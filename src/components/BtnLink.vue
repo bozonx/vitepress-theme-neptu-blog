@@ -9,7 +9,7 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <Btn v-bind="$attrs" :customClass="['btn-link', props.customClass]">
+  <Btn v-bind="$attrs" :custom-class="['btn-link', props.customClass]">
     <slot />
   </Btn>
 </template>

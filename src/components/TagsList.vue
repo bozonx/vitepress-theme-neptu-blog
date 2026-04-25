@@ -31,9 +31,9 @@ const sizeClass = computed(() => {
     <li v-for="item in props.tags">
       <TagItem
         v-bind="item"
-        :sizeXl="props.sizeXl"
-        :sizeSm="props.sizeSm"
-        :activeCompareMethod="props.activeCompareMethod"
+        :size-xl="props.sizeXl"
+        :size-sm="props.sizeSm"
+        :active-compare-method="props.activeCompareMethod"
         @click="emit('itemClick')"
       />
     </li>

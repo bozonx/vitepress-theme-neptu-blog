@@ -141,10 +141,10 @@ const fileIcon = computed(() => {
       :disabled="isDisabled"
       :text="theme.t.fileDownload.downloadFile"
       class="download-btn"
-      @click="downloadFile"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"
       role="button"
       tabindex="0"
+      @click="downloadFile"
     />
   </div>
 </template>

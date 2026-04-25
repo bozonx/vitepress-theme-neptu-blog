@@ -72,16 +72,16 @@ const handleWholeMouseLeave = () => {
 
 <template>
   <div
+    v-on-click-outside="closeList"
     class="dropdown-btn"
     @mouseenter="handleWholeMouseEnter"
     @mouseleave="handleWholeMouseLeave"
-    v-on-click-outside="closeList"
   >
     <Btn
-      @click.prevent.stop="toggleList"
-      :noBg="props.noBg"
+      :no-bg="props.noBg"
       :title="props.title"
       class="w-full"
+      @click.prevent.stop="toggleList"
     >
       <span class="flex">
         <slot name="btn-text" />
@@ -98,7 +98,6 @@ const handleWholeMouseLeave = () => {
       </span>
     </Btn>
     <div
-      @click="closeList"
       :style="{ opacity, 'transition-duration': `${animationTimeMs}ms` }"
       :class="[
         `dropdown-list space-y-1 transition-opacity`,
@@ -106,6 +105,7 @@ const handleWholeMouseLeave = () => {
         props.dropLeft && 'dropdown--drop-left',
         !listOpen && 'hidden',
       ]"
+      @click="closeList"
     >
       <slot />
     </div>

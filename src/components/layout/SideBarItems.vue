@@ -16,7 +16,7 @@ const props = defineProps(['items', 'isMobile'])
           :icon="item.icon"
           :class="item.class"
         />
-        <MenuItem v-else v-bind="item" activeCompareMethod="softPagination" />
+        <MenuItem v-else v-bind="item" active-compare-method="softPagination" />
       </li>
     </template>
   </ul>

@@ -6,7 +6,7 @@ import { mergeWithAnalytics, type GoogleAnalyticsConfig } from './loadPostsStats
 import { makePreviewItem } from './makePreviewItem.ts'
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var neptuBlogCache: Record<string, any[]> | undefined
 }
 

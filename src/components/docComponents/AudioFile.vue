@@ -389,6 +389,7 @@ onUnmounted(() => {
       ref="audioRef"
       :src="isPlayerVisible ? encodeAudioUrl(props.url) : undefined"
       :preload="isPlayerVisible ? 'metadata' : 'none'"
+      aria-hidden="true"
       @loadedmetadata="handleLoadedMetadata"
       @timeupdate="handleTimeUpdate"
       @play="handlePlay"
@@ -396,7 +397,6 @@ onUnmounted(() => {
       @ended="handleEnded"
       @loadstart="handleLoadStart"
       @error="handleError"
-      aria-hidden="true"
     />
 
     <!-- Первая строка: кнопка play, название файла, кнопка скачать -->
@@ -407,7 +407,6 @@ onUnmounted(() => {
         :primary="true"
         class="play-btn-header"
         :disabled="isDisabled || hasError"
-        @click="togglePlayPause"
         :title="
           isPlaying ? theme.t.audioFile.pauseAudio : theme.t.audioFile.playAudio
         "
@@ -420,7 +419,8 @@ onUnmounted(() => {
         role="button"
         tabindex="0"
         :icon="isLoading ? 'mdi:loading' : 'mdi:play'"
-        :iconClass="{ spinning: isLoading }"
+        :icon-class="{ spinning: isLoading }"
+        @click="togglePlayPause"
       />
 
       <!-- Информация о файле -->
@@ -444,10 +444,10 @@ onUnmounted(() => {
         :disabled="isDisabled"
         :text="theme.t.audioFile.downloadFile"
         class="download-btn-header"
-        @click="downloadFile"
         :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
         role="button"
         tabindex="0"
+        @click="downloadFile"
       />
     </div>
 
@@ -469,7 +469,6 @@ onUnmounted(() => {
           class="play-btn"
           :primary="true"
           :disabled="isDisabled || hasError"
-          @click="togglePlayPause"
           :title="
             isPlaying
               ? theme.t.audioFile.pauseAudio
@@ -486,30 +485,31 @@ onUnmounted(() => {
           :icon="
             isLoading ? 'mdi:loading' : isPlaying ? 'mdi:pause' : 'mdi:play'
           "
-          :iconClass="{ spinning: isLoading }"
+          :icon-class="{ spinning: isLoading }"
+          @click="togglePlayPause"
         />
 
         <!-- Кнопка остановки -->
         <Btn
           class="stop-btn"
           :disabled="isDisabled || hasError || !isPlaying"
-          @click="stopAudio"
           :title="theme.t.audioFile.stopAudio"
           :aria-label="theme.t.audioFile.stopAudioPlayback"
           role="button"
           tabindex="0"
           icon="mdi:stop"
+          @click="stopAudio"
         />
 
         <!-- Кнопка скрытия плеера -->
         <Btn
           class="hide-btn"
-          @click="hidePlayer"
           :title="theme.t.audioFile.hidePlayerTitle"
           :aria-label="theme.t.audioFile.hidePlayer"
           role="button"
           tabindex="0"
           icon="mdi:chevron-up"
+          @click="hidePlayer"
         />
 
         <!-- Время -->
@@ -532,7 +532,6 @@ onUnmounted(() => {
       <div class="progress-container">
         <div
           class="progress-bar"
-          @click="handleProgressClick"
           role="slider"
           :aria-label="`${theme.t.audioFile.audioProgress}: ${Math.round(progressPercent)}%`"
           :aria-valuemin="0"
@@ -540,6 +539,7 @@ onUnmounted(() => {
           :aria-valuenow="Math.round(progressPercent)"
           :aria-valuetext="`${formatTime(currentTime)} of ${formatTime(duration)}`"
           tabindex="0"
+          @click="handleProgressClick"
           @keydown="handleProgressKeydown"
         >
           <div class="progress-track">
@@ -555,12 +555,11 @@ onUnmounted(() => {
       <div class="volume-control">
         <Icon icon="mdi:volume-high" class="volume-icon" aria-hidden="true" />
         <input
+          v-model="volume"
           type="range"
           min="0"
           max="1"
           step="0.1"
-          v-model="volume"
-          @input="setVolume(($event.target as HTMLInputElement).value)"
           class="volume-slider"
           :aria-label="`${theme.t.audioFile.volumeControl}: ${Math.round(volume * 100)}%`"
           role="slider"
@@ -568,6 +567,7 @@ onUnmounted(() => {
           :aria-valuemax="100"
           :aria-valuenow="Math.round(volume * 100)"
           :aria-valuetext="`${Math.round(volume * 100)}% ${theme.t.audioFile.volumePercent}`"
+          @input="setVolume(($event.target as HTMLInputElement).value)"
         />
       </div>
     </div>
@@ -579,15 +579,15 @@ onUnmounted(() => {
       <Btn
         v-if="!isValidUrl(props.url)"
         class="retry-btn"
+        :aria-label="theme.t.audioFile.retryWithValidUrl"
+        icon="mdi:refresh"
+        :text="theme.t.audioFile.retry"
         @click="
           () => {
             hasError = false
             errorMessage = ''
           }
         "
-        :aria-label="theme.t.audioFile.retryWithValidUrl"
-        icon="mdi:refresh"
-        :text="theme.t.audioFile.retry"
       />
     </div>
   </div>

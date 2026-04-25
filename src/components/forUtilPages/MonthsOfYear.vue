@@ -53,18 +53,18 @@ const sorted = sortPosts(
     </ul>
 
     <ListPageHeader
-      :showPopularPostsSwitch="showPopularPostsSwitch"
-      :baseUrl="`/${localeIndex}/${theme.archiveBaseUrl}/${props.year}`"
+      :show-popular-posts-switch="showPopularPostsSwitch"
+      :base-url="`/${localeIndex}/${theme.archiveBaseUrl}/${props.year}`"
       class="mt-10"
     >
       {{ theme.t.allPostsOfYear }}
     </ListPageHeader>
 
     <PreviewList
-      :localePosts="sorted"
-      :curPage="curPage"
-      :perPage="props.perPage"
-      :paginationMaxItems="props.paginationMaxItems"
+      :locale-posts="sorted"
+      :cur-page="curPage"
+      :per-page="props.perPage"
+      :pagination-max-items="props.paginationMaxItems"
     />
   </div>
 </template>

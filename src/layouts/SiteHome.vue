@@ -89,7 +89,7 @@ const hero = computed(() => props.hero)
               :src="f.icon"
               :alt="f.title"
             />
-            <component v-else-if="f.icon.src" :is="'img'" :src="f.icon.src" :alt="f.icon.alt || f.title" />
+            <component :is="'img'" v-else-if="f.icon.src" :src="f.icon.src" :alt="f.icon.alt || f.title" />
           </div>
           <h2 class="feature-title" v-html="f.title" />
           <p class="feature-details" v-html="f.details" />

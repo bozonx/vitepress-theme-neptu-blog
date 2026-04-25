@@ -11,9 +11,9 @@ const props = defineProps<Props>()
 <template>
   <Btn
     v-bind="$attrs"
-    :customClass="['menu-item', props.customClass]"
-    iconClass="muted"
-    :noBg="true"
+    :custom-class="['menu-item', props.customClass]"
+    icon-class="muted"
+    :no-bg="true"
   >
     <slot />
   </Btn>

@@ -3,7 +3,7 @@ import { google } from 'googleapis'
 import { POSTS_DIR } from '../constants.ts'
 
 declare global {
-  // eslint-disable-next-line no-var
+   
   var loadingGaStatsPromise: Promise<Record<string, AnalyticsStats>> | null | undefined
 }
 

@@ -33,17 +33,17 @@ const sorted = sortPosts(
 
 <template>
   <ListPageHeader
-    :baseUrl="`/${localeIndex}/${theme.tagsBaseUrl}/${props.tagSlug}`"
-    :showPopularPostsSwitch="showPopularPostsSwitch"
+    :base-url="`/${localeIndex}/${theme.tagsBaseUrl}/${props.tagSlug}`"
+    :show-popular-posts-switch="showPopularPostsSwitch"
   >
     {{ frontmatter.title }}
   </ListPageHeader>
 
   <PreviewList
-    :localePosts="sorted"
-    :curPage="curPage"
-    :perPage="props.perPage"
-    :paginationMaxItems="props.paginationMaxItems"
+    :locale-posts="sorted"
+    :cur-page="curPage"
+    :per-page="props.perPage"
+    :pagination-max-items="props.paginationMaxItems"
   />
 
   <div class="mt-8">

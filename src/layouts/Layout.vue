@@ -30,28 +30,28 @@ const layoutKind = computed(() => {
 
   <Content v-else-if="layoutKind === 'raw'" />
 
-  <BlogHome v-else-if="layoutKind === 'home'" :scrollY="scrollY" />
+  <BlogHome v-else-if="layoutKind === 'home'" :scroll-y="scrollY" />
 
   <DefaultLayout v-else>
-    <template #sidebar-top v-if="$slots['sidebar-top']">
+    <template v-if="$slots['sidebar-top']" #sidebar-top>
       <slot name="sidebar-top" />
     </template>
-    <template #sidebar-middle v-if="$slots['sidebar-middle']">
+    <template v-if="$slots['sidebar-middle']" #sidebar-middle>
       <slot name="sidebar-middle" />
     </template>
-    <template #sidebar-bottom v-if="$slots['sidebar-bottom']">
+    <template v-if="$slots['sidebar-bottom']" #sidebar-bottom>
       <slot name="sidebar-bottom" />
     </template>
-    <template #sub-sidebar v-if="$slots['sub-sidebar']">
+    <template v-if="$slots['sub-sidebar']" #sub-sidebar>
       <slot name="sub-sidebar" />
     </template>
-    <template #nav-bar-content-before v-if="$slots['nav-bar-content-before']">
+    <template v-if="$slots['nav-bar-content-before']" #nav-bar-content-before>
       <slot name="nav-bar-content-before" />
     </template>
-    <template #footer-before v-if="$slots['footer-before']">
+    <template v-if="$slots['footer-before']" #footer-before>
       <slot name="footer-before" />
     </template>
-    <template #aside v-if="$slots['aside']">
+    <template v-if="$slots['aside']" #aside>
       <slot name="aside" />
     </template>
   </DefaultLayout>

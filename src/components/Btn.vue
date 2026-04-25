@@ -41,7 +41,7 @@ if (props.href && !props.disabled) {
 <template>
   <BaseLink
     v-bind="btnProps"
-    :customClass="[
+    :custom-class="[
       'flex cursor-pointer items-center rounded-lg',
       !hasText && 'icon-only',
       'btn-base',
@@ -50,7 +50,7 @@ if (props.href && !props.disabled) {
       props.noBg && 'btn--nobg',
       props.customClass,
     ]"
-    :activeCompareMethod="props.activeCompareMethod"
+    :active-compare-method="props.activeCompareMethod"
   >
     <span class="flex items-center gap-x-2 btn-base-inner">
       <span

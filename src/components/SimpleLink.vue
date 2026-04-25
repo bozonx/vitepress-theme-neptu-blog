@@ -21,7 +21,7 @@ const isExternal = computed(
 <template>
   <BaseLink
     v-bind="$attrs"
-    :customClass="[
+    :custom-class="[
       'simple-link',
       theme.externalLinkIcon && isExternal && 'vp-external-link-icon',
       props.customClass,

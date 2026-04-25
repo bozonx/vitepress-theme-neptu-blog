@@ -28,13 +28,13 @@ const socialLinks = [
   <div :class="['w-full flex pt-6 pb-3 pr-2 pl-2', props.class]">
     <ul v-if="socialLinks.length" class="flex space-x-1">
       <li v-for="item in socialLinks">
-        <Btn :noBg="true" v-bind="item" :class="[item.class]" />
+        <Btn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>
 
     <div class="flex-1 flex justify-end">
       <div class="lg:hidden">
-        <SwitchLang @click.stop :dropUp="true" :noBg="true" />
+        <SwitchLang :drop-up="true" :no-bg="true" @click.stop />
       </div>
 
       <div class="lg:hidden">

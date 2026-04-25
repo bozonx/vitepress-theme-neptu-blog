@@ -17,8 +17,8 @@ const props = defineProps([
     <TagsList
       :tags="props.tags"
       class="flex-1"
-      :sizeSm="true"
-      activeCompareMethod="none"
+      :size-sm="true"
+      active-compare-method="none"
     />
 
     <div

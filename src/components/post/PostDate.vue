@@ -123,17 +123,17 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
       <template v-for="item in localeDate.split(' ')">
         <!-- Ссылка на год -->
         <BaseLink
-          :href="`${theme.archiveBaseUrl}/${year}/1`"
           v-if="isYear(item)"
           :key="`year-${item}`"
+          :href="`${theme.archiveBaseUrl}/${year}/1`"
         >
           {{ item }}
         </BaseLink>
         <!-- Ссылка на месяц -->
         <BaseLink
-          :href="`${theme.archiveBaseUrl}/${year}/month/${month}`"
           v-else-if="isMonth(item)"
           :key="`month-${item}`"
+          :href="`${theme.archiveBaseUrl}/${year}/month/${month}`"
         >
           {{ item }}
         </BaseLink>

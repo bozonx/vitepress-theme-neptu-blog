@@ -134,23 +134,23 @@ watchEffect(() => {
 
           <SideBarGroup v-if="links.length">
             <SideBarItems
-              @click="closeDrawer"
               :items="links"
-              :isMobile="props.isMobile"
+              :is-mobile="props.isMobile"
+              @click="closeDrawer"
             />
           </SideBarGroup>
 
           <SideBarGroup v-if="sideBarConfig.tags">
-            <SideBarTags :localePosts="localePosts" @itemClick="closeDrawer" />
+            <SideBarTags :locale-posts="localePosts" @item-click="closeDrawer" />
           </SideBarGroup>
 
           <slot name="sidebar-middle" />
 
           <SideBarGroup v-if="bottomLinks.length" class="mt-2">
             <SideBarItems
-              @click="closeDrawer"
               :items="bottomLinks"
-              :isMobile="props.isMobile"
+              :is-mobile="props.isMobile"
+              @click="closeDrawer"
             />
           </SideBarGroup>
 
@@ -165,15 +165,15 @@ watchEffect(() => {
       </div>
     </div>
     <div
-      @click="closeDrawer"
       :style="{ opacity: backdropOpacity }"
       class="lg:hidden app-drawer-backdrop"
+      @click="closeDrawer"
     >
       <div class="sidebar-closebtn-wrapper">
         <button
-          @click.prevent.stop="closeDrawer"
           :title="theme.t.closeMenu"
           class="py-6 px-6 cursor-pointer text-gray-300 hover:text-white"
+          @click.prevent.stop="closeDrawer"
         >
           <Icon icon="fa6-solid:xmark" class="text-2xl" aria-hidden="true" />
         </button>
