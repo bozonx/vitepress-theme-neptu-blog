@@ -43,7 +43,7 @@ const links = theme.value.topBar
       <Btn
         @click="emit('openDrawer')"
         icon="fa6-solid:bars"
-        noBg="true"
+        :noBg="true"
         class="lg:hidden topbar-item"
         iconClass="muted"
         :text="theme.sidebarMenuLabel"
@@ -56,7 +56,7 @@ const links = theme.value.topBar
       <li v-for="item in links" :class="resolveItemShowClass(item)">
         <Btn
           v-bind="item"
-          noBg="true"
+          :noBg="true"
           :class="[item.class, 'topbar-item']"
           :iconClass="item.iconClass || 'muted'"
         />
@@ -64,7 +64,7 @@ const links = theme.value.topBar
     </ul>
 
     <div class="max-lg:hidden">
-      <SwitchLang noBg="true" />
+      <SwitchLang :noBg="true" />
     </div>
 
     <div class="max-lg:hidden">
@@ -76,7 +76,7 @@ const links = theme.value.topBar
         v-for="item in theme.topBar.socialLinks"
         :class="resolveItemShowClass(item)"
       >
-        <Btn noBg="true" v-bind="item" :class="[item.class]" />
+        <Btn :noBg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>
   </nav>

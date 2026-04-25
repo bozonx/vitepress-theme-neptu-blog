@@ -46,7 +46,7 @@ watchEffect(async () => {
     :style="`background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);`"
   >
     <div class="home-layout-topbar">
-      <SwitchLang dropLeft="true" noBg="true" />
+      <SwitchLang :dropLeft="true" :noBg="true" />
     </div>
     <div class="home-layout-page">
       <Content />

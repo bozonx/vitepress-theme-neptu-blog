@@ -404,7 +404,7 @@ onUnmounted(() => {
       <!-- Кнопка воспроизведения -->
       <Btn
         v-if="!isPlayerVisible"
-        primary="true"
+        :primary="true"
         class="play-btn-header"
         :disabled="isDisabled || hasError"
         @click="togglePlayPause"
@@ -467,7 +467,7 @@ onUnmounted(() => {
         <!-- Кнопка воспроизведения/паузы -->
         <Btn
           class="play-btn"
-          primary="true"
+          :primary="true"
           :disabled="isDisabled || hasError"
           @click="togglePlayPause"
           :title="

@@ -3,7 +3,7 @@
     <TagsList
       :tags="tags"
       @itemClick="emit('itemClick')"
-      sizeSm="true"
+      :sizeSm="true"
       class="mb-2 side-bar-tags-list"
       activeCompareMethod="softPagination"
     />

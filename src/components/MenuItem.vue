@@ -13,7 +13,7 @@ const props = defineProps<Props>()
     v-bind="$attrs"
     :customClass="['menu-item', props.customClass]"
     iconClass="muted"
-    noBg="true"
+    :noBg="true"
   >
     <slot />
   </Btn>

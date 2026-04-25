@@ -45,7 +45,7 @@ const resolveLink = (link: any) => {
       <MenuItem
         v-if="!locale.text"
         :key="locale.link + 'disabled'"
-        disabled="true"
+        :disabled="true"
         :title="theme.t.currentLang"
       >
         {{ currentLang.label }}
