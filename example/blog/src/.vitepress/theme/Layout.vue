@@ -1,6 +1,6 @@
 <script setup>
-import NavSearchButton from 'vitepress-theme-neptu-blog/NavSearchButton.vue'
-import PageFindSearch from 'vitepress-theme-neptu-blog/PageFindSearch.vue'
+import { NavSearchButton } from 'vitepress-theme-neptu-blog/components'
+import { PageFindSearch } from 'vitepress-theme-neptu-blog/components'
 import Theme from 'vitepress-theme-neptu-blog'
 import { provide } from 'vue'
 import { data as enData } from '../../en/loadPosts.data.js'

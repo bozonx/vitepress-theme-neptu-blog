@@ -18,35 +18,39 @@ pnpm --filter vitepress-theme-neptu-blog-example-blog dev
 The example site under `example/blog` is linked to the local theme via
 `workspace:*`, so any change in `src/` is reflected immediately.
 
-## Styling: two ways to consume Tailwind v4
+## Styling: Tailwind v4 source-mode
 
-The theme is built with Tailwind v4. You have two mutually exclusive options:
+The theme is built with Tailwind v4 and ships its sources, not prebuilt
+CSS. Your VitePress site must compile Tailwind itself; the theme exposes
+a single `@source` re-export that tells your Tailwind compiler to scan
+the theme's `.vue` / `.js` files.
 
-### Option A — Prebuilt CSS (no Tailwind in your site)
+### 1. Install the Vite plugin
 
-Use this if your VitePress site does not use Tailwind itself. The theme
-ships a precompiled, minified stylesheet with exactly the utilities it
-needs:
-
-```js
-// .vitepress/theme/index.js
-import 'vitepress-theme-neptu-blog/tw-styles.css'
+```sh
+pnpm add -D @tailwindcss/vite tailwindcss
 ```
 
-The downside: you cannot redefine Tailwind tokens (`--color-brand-1`, etc.)
-or extend utilities used in the theme.
+### 2. Wire it into VitePress
 
-### Option B — Source-mode (recommended if you use Tailwind v4)
+```js
+// .vitepress/config.js
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vitepress'
 
-If your own site uses Tailwind v4, point your Tailwind at the theme's
-sources so utilities are deduplicated and your `@theme {}` overrides apply
-to the theme too:
+export default defineConfig({
+  vite: { plugins: [tailwindcss()] },
+})
+```
+
+### 3. Author your CSS
 
 ```css
-/* your-app.css */
+/* .vitepress/theme/styles.css */
 @import "tailwindcss";
 @import "vitepress-theme-neptu-blog/tailwind-source.css";
 
+/* Optional: customise tokens that the theme reads */
 @theme {
   --color-brand-1: oklch(0.55 0.2 240);
   --font-sans: "Inter Variable", sans-serif;
@@ -55,12 +59,12 @@ to the theme too:
 
 ```js
 // .vitepress/theme/index.js
-import './your-app.css'
-// Do NOT also import 'vitepress-theme-neptu-blog/tw-styles.css'.
+import './styles.css'
 ```
 
-The `tailwind-source.css` re-export contains a single `@source` directive
-that tells Tailwind to scan all `.vue` / `.js` files inside the theme.
+You get a single deduplicated stylesheet, customisable design tokens via
+`@theme {}`, and your own utilities can extend the same Tailwind cascade
+the theme uses. See `example/blog` for a complete reference.
 
 ## Config
 

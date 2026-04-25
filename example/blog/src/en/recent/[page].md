@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import RecentList from 'vitepress-theme-neptu-blog/RecentList.vue'
+import { RecentList } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 
 const { params } = useData()

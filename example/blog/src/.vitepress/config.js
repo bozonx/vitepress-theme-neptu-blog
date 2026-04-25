@@ -1,9 +1,9 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
-import { mergeBlogConfig } from 'vitepress-theme-neptu-blog/blogConfigBase.js'
-import { loadBlogLocale } from 'vitepress-theme-neptu-blog/blogConfigHelper.js'
+import { mergeBlogConfig, loadBlogLocale } from 'vitepress-theme-neptu-blog/configs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -35,6 +35,9 @@ export default async () => {
       popularPosts,
 
       // Add there some variables specified for your blog
+    },
+    vite: {
+      plugins: [tailwindcss()],
     },
     head: [
       // do not recognize telephone numbers on the page

@@ -1,8 +1,8 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants.js'
-import { loadPostsData } from 'vitepress-theme-neptu-blog/loadPosts.js'
+import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants'
+import { loadPostsData } from 'vitepress-theme-neptu-blog/list-helpers'
 
 import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
 

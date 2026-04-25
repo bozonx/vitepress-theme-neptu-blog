@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import AllTagsList from 'vitepress-theme-neptu-blog/AllTagsList.vue'
+import { AllTagsList } from 'vitepress-theme-neptu-blog/components'
 </script>
 
 <AllTagsList />

@@ -1,3 +1,6 @@
+@import 'tailwindcss';
+@import 'vitepress-theme-neptu-blog/tailwind-source.css';
+
 /* :root { */
 /*   --primary-hue: 115; */
 /*   --layout-hue: 115; */

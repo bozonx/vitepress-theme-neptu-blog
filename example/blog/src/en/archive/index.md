@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import Years from 'vitepress-theme-neptu-blog/Years.vue'
+import { Years } from 'vitepress-theme-neptu-blog/components'
 </script>
 
 <Years />

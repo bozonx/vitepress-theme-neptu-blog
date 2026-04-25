@@ -1,4 +1,4 @@
-import { makeTagsParams } from "vitepress-theme-neptu-blog/makeListParams.js";
+import { makeTagsParams } from 'vitepress-theme-neptu-blog/list-helpers';
 import { PER_PAGE } from "../../../.vitepress/config.js";
 import getAllPosts from "../../getAllPosts.js";
 

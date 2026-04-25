@@ -8,7 +8,7 @@ head:
 ---
 
 <script setup>
-import PopularPostsList from 'vitepress-theme-neptu-blog/PopularPostsList.vue'
+import { PopularPostsList } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 
 const { params } = useData()
