@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
-import { mergeBlogConfig, loadBlogLocale } from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfig, loadBlogLocale } from 'vitepress-theme-neptu-blog/configs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -61,7 +61,7 @@ export default async () => {
     ],
   })
 
-  return mergeBlogConfig({
+  return defineBlogConfig({
     ...config,
     locales: { en: await loadBlogLocale('en', config) },
   })

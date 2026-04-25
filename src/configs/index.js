@@ -7,6 +7,7 @@
 
 export {
   common as blogCommonConfig,
+  defineBlogConfig,
   mergeBlogConfig,
 } from './blogConfigBase.js'
 export {

@@ -84,6 +84,18 @@ export default {
 };
 ```
 
+### Optional VitePress build options
+
+The theme does not enable experimental VitePress options by default. If your
+blog has many pages and you want smaller initial HTML payloads, you can enable
+VitePress metadata chunk extraction in your own `.vitepress/config.js`:
+
+```js
+export default {
+  metaChunk: true,
+}
+```
+
 ## Site config
 
 ```

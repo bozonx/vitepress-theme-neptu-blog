@@ -1,18 +1,13 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants'
-import { loadPostsData } from 'vitepress-theme-neptu-blog/list-helpers'
+import { loadPostsDataFromFiles } from 'vitepress-theme-neptu-blog/list-helpers'
 
 import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
 
-const localeDir = path.dirname(fileURLToPath(import.meta.url))
-
 export default {
   watch: [`./${POSTS_DIR}/*.md`],
-  async load() {
+  async load(watchedFiles) {
     return {
-      posts: await loadPostsData(localeDir, {
+      posts: await loadPostsDataFromFiles(watchedFiles, {
         popularPostsEnabled: popularPosts.enabled,
         googleAnalytics,
         ignoreCache: process.env.NODE_ENV !== 'production',

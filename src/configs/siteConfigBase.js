@@ -30,11 +30,9 @@ export const common = {
     ['link', { rel: 'manifest', href: '/site.webmanifest' }],
   ],
   srcExclude: ['site/**', '**/site/**'],
-  metaChunk: true,
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
-  locales: { root: { lang: 'en-US' } },
 
   // max description length for description meta tag,
   //  open graph, json-ld and for rss feed
@@ -65,7 +63,7 @@ export function mergeSiteConfig(config) {
     title: config.title || config.en?.title,
     description: config.description || config.en?.description,
     head: [...common.head, ...(config.head || [])],
-    locales: { ...common.locales, ...config.locales },
+    locales: { ...(common.locales || {}), ...(config.locales || {}) },
     vite: {
       ...config.vite,
       ssr: { noExternal: ['vitepress-theme-neptu-blog'], ...config.vite?.ssr },

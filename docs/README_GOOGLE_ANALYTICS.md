@@ -27,7 +27,7 @@ npm install googleapis
 ```javascript
 // .vitepress/config.js
 export default defineConfig(
-  mergeBlogConfig({
+  defineBlogConfig({
     themeConfig: {
       googleAnalytics: {
         enabled: true, // Включить GA

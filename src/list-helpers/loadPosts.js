@@ -62,3 +62,43 @@ export async function loadPostsData(localeDir, options = {}) {
     throw new Error(errorMsg, { cause: error })
   }
 }
+
+export async function loadPostsDataFromFiles(files, options = {}) {
+  const {
+    popularPostsEnabled = false,
+    googleAnalytics = null,
+    ignoreCache = false,
+  } = options
+  const fullPaths = files
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => path.resolve(file))
+    .sort()
+  const cacheKey = fullPaths.join('|')
+
+  if (!fullPaths.length) return []
+
+  if (global.neptuBlogCache[cacheKey]?.length > 0 && !ignoreCache) {
+    return global.neptuBlogCache[cacheKey]
+  }
+
+  try {
+    const posts = fullPaths.map((filePath) => makePreviewItem(filePath))
+
+    global.neptuBlogCache[cacheKey] = posts
+
+    console.log(`\n...Loaded ${posts.length} posts from watched files`)
+
+    if (popularPostsEnabled && googleAnalytics) {
+      global.neptuBlogCache[cacheKey] = await mergeWithAnalytics(
+        posts,
+        googleAnalytics,
+      )
+    }
+
+    return global.neptuBlogCache[cacheKey]
+  } catch (error) {
+    const errorMsg = `Error loading posts from watched files: ${error.message}`
+    console.error(errorMsg, error)
+    throw new Error(errorMsg, { cause: error })
+  }
+}

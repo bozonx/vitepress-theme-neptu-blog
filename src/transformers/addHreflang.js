@@ -3,8 +3,7 @@ import { generatePageUrlPath } from '../helpers/helpers.js'
 
 /**
  * Добавляет метатеги hreflang в head страницы для SEO и многоязычности
- * Генерирует ссылки на эту же страницу на всех доступных языках Основной язык
- * (x-default) определяется из siteConfig.userConfig.locales.root.lang
+ * Генерирует ссылки на эту же страницу на всех доступных языках
  *
  * @param {Object} context { page, head, pageData, siteConfig }
  */
@@ -48,14 +47,9 @@ export function addHreflang({ page, head, siteConfig }) {
     ])
   })
 
-  // Добавляем x-default hreflang (указывает на основной язык сайта)
-  // Определяем основной язык из конфигурации сайта (siteConfig.userConfig.locales.root.lang)
-  // Если не указан, используем 'en-US' как fallback
-  const defaultLang = siteConfig.userConfig?.locales?.root?.lang || 'en-US'
-  // Находим локаль, соответствующую языку по умолчанию
-  const mainLang = localesIndexes.find(
-    (lang) => availableLocales[lang]?.lang === defaultLang
-  )
+  const defaultLocale = siteConfig.userConfig?.themeConfig?.defaultLocale
+  const mainLang =
+    localesIndexes.find((lang) => lang === defaultLocale) || localesIndexes[0]
 
   if (!mainLang) {
     console.warn(

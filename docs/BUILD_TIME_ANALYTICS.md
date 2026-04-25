@@ -28,7 +28,7 @@
 ```javascript
 // .vitepress/config.js
 export default defineConfig(
-  mergeBlogConfig({
+  defineBlogConfig({
     themeConfig: {
       analytics: {
         // Включить генерацию популярных постов во время сборки

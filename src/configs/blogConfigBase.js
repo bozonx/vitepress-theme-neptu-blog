@@ -36,11 +36,9 @@ export const common = {
     ['link', { rel: 'manifest', href: '/site.webmanifest' }],
   ],
   srcExclude: ['site/**', '**/site/**'],
-  metaChunk: true,
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
-  locales: { root: { lang: 'en-US' } },
 
   // Build params
   maxPostsInRssFeed: 50,
@@ -207,3 +205,5 @@ export function mergeBlogConfig(config) {
     },
   }
 }
+
+export const defineBlogConfig = mergeBlogConfig
