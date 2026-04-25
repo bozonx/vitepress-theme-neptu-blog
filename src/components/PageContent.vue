@@ -1,7 +1,11 @@
 <script setup>
 import { useData } from 'vitepress'
 import { ref, watchEffect } from 'vue'
-import { resolveArticlePreview, isPage } from '../helpers/helpers.js'
+import {
+  resolveArticlePreview,
+  isPage,
+  isUtilPage,
+} from '../helpers/helpers.js'
 import PostFooter from './post/PostFooter.vue'
 import PostDate from './post/PostDate.vue'
 import PostTopBar from './post/PostTopBar.vue'
@@ -16,13 +20,13 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div v-if="isPage(frontmatter)" class="content-page">
-    <div class="simple-page vp-doc">
+  <div v-if="isUtilPage(frontmatter)" class="content-page">
+    <div class="simple-page">
       <Content />
     </div>
   </div>
-  <div v-else-if="frontmatter.layout === 'util'" class="content-page">
-    <div class="simple-page">
+  <div v-else-if="isPage(frontmatter)" class="content-page">
+    <div class="simple-page vp-doc">
       <Content />
     </div>
   </div>

@@ -16,23 +16,36 @@ import { pathTrimExt, arraysIntersection } from './squidlet.js'
 //   return pathSplit[pathSplit.length - 2]
 // }
 
-/** Is it post or util page */
+/**
+ * Layout values supported by the theme.
+ * - `home`            — full-takeover homepage (BlogHome layout)
+ * - `post`            — post article view (DEFAULT when `layout` is omitted)
+ * - `page`            — plain content page (vp-doc), explicit only
+ * - `util`            — utility list page (tags, archive, authors lists)
+ * - `tag` | `archive` | `author` — aliases for `util` (self-documenting)
+ * - `false`           — raw <Content /> with no chrome
+ */
+const UTIL_LAYOUTS = new Set(['util', 'tag', 'archive', 'author'])
+
+/** True for posts: explicit `layout: post` or no layout set. */
 export function isPost(frontmatter) {
   if (!frontmatter) return
-
-  return Boolean(frontmatter.date)
+  if (frontmatter.layout === 'post') return true
+  return frontmatter.layout == null
 }
 
 export function isHomePage(frontmatter) {
-  if (!frontmatter) return
-
-  return frontmatter.layout === 'home'
+  return frontmatter?.layout === 'home'
 }
 
+/** Plain content page (no post chrome, no util chrome). Explicit only. */
 export function isPage(frontmatter) {
-  if (!frontmatter) return
+  return frontmatter?.layout === 'page'
+}
 
-  return typeof frontmatter.layout === 'undefined' && !frontmatter.date
+/** True for layout: util / tag / archive / author. */
+export function isUtilPage(frontmatter) {
+  return UTIL_LAYOUTS.has(frontmatter?.layout)
 }
 
 export function isPopularRoute(routPath, theme) {
@@ -278,7 +291,7 @@ export function resolveBodyMarker(theme, frontmatter) {
   let allowed = true
 
   // by default util pages are excluded from search
-  if (frontmatter.layout === 'util') {
+  if (isUtilPage(frontmatter)) {
     allowed = frontmatter.searchIncluded || false
   } else {
     // all other pages are included in search by default
