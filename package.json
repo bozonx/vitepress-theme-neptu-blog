@@ -60,11 +60,17 @@
     "strip-markdown": "^6.0.0",
     "yaml": "^2.0.0"
   },
+  "scripts": {
+    "typecheck": "vue-tsc --noEmit"
+  },
   "devDependencies": {
+    "@types/node": "^22.0.0",
     "prettier": "^3.8.1",
     "prettier-plugin-jsdoc": "^1.8.0",
     "tailwindcss": "^4.2.2",
+    "typescript": "^5.6.0",
     "vitepress": "2.0.0-alpha.17",
-    "vue": "^3.5.32"
+    "vue": "^3.5.32",
+    "vue-tsc": "^2.1.0"
   }
 }

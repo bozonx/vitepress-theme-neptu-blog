@@ -1,0 +1,70 @@
+TypeScript migration progress
+=============================
+
+Strategy: Strict + as-source distribution (matches VitePress 2 default theme).
+- tsconfig.json: strict, allowJs (gradual), noEmit, moduleResolution: bundler.
+- vue-tsc --noEmit is the type checker (run `pnpm typecheck`).
+- exports map in package.json keeps pointing to source files; extensions are
+  updated from .js -> .ts as each module is migrated.
+
+Migration order (leaves -> roots):
+
+Phase 1: pure utility JS (no Vue, no internal deps)
+  [ ] src/constants.js                 -> .ts
+  [ ] src/helpers/transliterate.js     -> .ts
+  [ ] src/helpers/utils.js             -> .ts
+  [ ] src/helpers/imageHelpers.js      -> .ts
+  [ ] src/helpers/mdWorks.js           -> .ts
+  [ ] src/helpers/parseSiteFileTranslations.js -> .ts
+  [ ] src/helpers/resolveTranslations.js -> .ts
+  [ ] src/helpers/squidlet.js          -> .ts
+  [ ] src/helpers/blogConfigHelper.js  -> .ts
+  [ ] src/helpers/siteConfigHelper.js  -> .ts
+  [ ] src/helpers/rssHelpers.js        -> .ts
+  [ ] src/helpers/helpers.js           -> .ts
+  [ ] src/helpers/index.js             -> .ts
+
+Phase 2: composables
+  [ ] src/composables/useBreakpoint.js -> .ts
+  [ ] src/composables/useScrollY.js    -> .ts
+  [ ] src/composables/useSwipeDrawer.js -> .ts
+
+Phase 3: list-helpers
+  [ ] src/list-helpers/listHelpers.js
+  [ ] src/list-helpers/loadPosts.js
+  [ ] src/list-helpers/loadPostsStats.js
+  [ ] src/list-helpers/makeListParams.js
+  [ ] src/list-helpers/makePreviewItem.js
+  [ ] src/list-helpers/index.js
+
+Phase 4: transformers (build-time, Node)
+  [ ] src/transformers/*.js (12 files) -> .ts
+
+Phase 5: configs
+  [ ] src/configs/blogConfigBase.js
+  [ ] src/configs/siteConfigBase.js
+  [ ] src/configs/index.js
+
+Phase 6: Vue SFC -> <script setup lang="ts">
+  Order: leaves first (Badge, BaseLink, SimpleLink, MenuItem, ...), then
+  composite components, then layout/* and components/post/*,
+  then components/forUtilPages/*, finally layouts/*.
+
+Phase 7: theme entry & types
+  [ ] src/types.d.ts -> consolidate; keep as ambient or convert to types.ts
+  [ ] src/index.js   -> index.ts (typed via `Theme` from 'vitepress')
+  [ ] src/components/index.js, src/layouts/index.js, src/configs/index.js,
+      src/helpers/index.js, src/list-helpers/index.js -> .ts
+
+Phase 8: cleanup
+  [ ] Update package.json `exports` extensions (.js -> .ts where applicable).
+  [ ] Set "types" to src/types.ts (or generated entry).
+  [ ] Run `pnpm typecheck` clean.
+  [ ] Smoke-build example/blog and example/site.
+
+Rules during migration:
+- No behavioural changes; only typing.
+- Public API of each module preserved (named exports, signatures).
+- Use `import type` for type-only imports.
+- For SFC: defineProps<...>(), withDefaults(), defineEmits<...>().
+- For Node-only modules (transformers, helpers used in config.ts), no DOM types.
