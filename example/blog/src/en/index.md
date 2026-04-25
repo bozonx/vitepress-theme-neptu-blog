@@ -1,7 +1,6 @@
 ---
 layout: home
 ---
-
 <script setup>
 import HomeHero from 'vitepress-theme-neptu-blog/HomeHero.vue'
 import HomeTags from 'vitepress-theme-neptu-blog/HomeTags.vue'
@@ -12,9 +11,12 @@ import { useData } from 'vitepress'
 const { theme, localeIndex } = useData()
 
 const hero = {
-  firstLine: "Antifeminist movement blog",
+  firstLine: "Example blog",
   secondLine: "Articles, new&nbsp;of&nbsp;the&nbsp;movement",
-  img: theme.value.mainHeroImg,
+  img: {
+    src: theme.value.mainHeroImg,
+    alt: "Example blog logo",
+  },
   buttons: [
     {
       text: theme.value.t.toBlog,
