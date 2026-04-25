@@ -27,7 +27,8 @@ export default async () => {
     repo: 'https://github.com/...',
     themeConfig: {
       perPage: PER_PAGE,
-      sidebarLogoSrc: '/img/sidebar-logo.webp',
+      sidebarLogoSrc: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=100&auto=format&fit=crop',
+      mainHeroImg: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
 
       search: { bodyMarker: 'data-pagefind-body' },
 

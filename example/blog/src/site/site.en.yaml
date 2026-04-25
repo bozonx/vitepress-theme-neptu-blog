@@ -20,7 +20,7 @@ body: |
     - id: "ivan-k"
       name: "Ivan K"
       description: "some descr"
-      image: "https://....webp"
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
       # optional. If set then it will be used instead of author page link
       # aboutUrl: "https://....com"
       links:
