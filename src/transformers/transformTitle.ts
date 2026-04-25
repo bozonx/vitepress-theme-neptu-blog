@@ -4,8 +4,7 @@ import { mustacheTemplate } from '../helpers/squidlet.js'
  * If page.frontmatter.title is a template string, then replace it with the
  * template string.
  */
-export function transformTitle(pageData, { siteConfig }) {
-  // skip root pages
+export function transformTitle(pageData: any, { siteConfig }: { siteConfig: any }): void {
   if (pageData.filePath.indexOf('/') < 0) return
 
   if (!pageData.frontmatter.title) return

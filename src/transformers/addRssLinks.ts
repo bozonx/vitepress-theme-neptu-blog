@@ -2,25 +2,25 @@ import { getFormatInfo, getRssFormats } from '../helpers/rssHelpers.js'
 import { isHomePage } from '../helpers/helpers.js'
 import { ROOT_LANG } from '../constants.js'
 
-/**
- * Добавляет RSS feed ссылки в head главной страницы
- *
- * @param {Object} context { page, head, pageData, siteConfig }
- */
-export function addRssLinks({ page, head, pageData, siteConfig }) {
-  // only for index pages line ru/, en/
+export interface AddRssLinksContext {
+  page: string
+  head: any[]
+  pageData: any
+  siteConfig: any
+}
+
+/** Добавляет RSS feed ссылки в head главной страницы */
+export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksContext): void {
   if (!isHomePage(pageData.frontmatter)) return
 
   const siteUrl = siteConfig.userConfig.siteUrl
-  const localeIndex = page.split('/')[0]
+  const localeIndex = page.split('/')[0]!
   const supportedLocales = Object.keys(siteConfig.site.locales).filter(
     (locale) => locale !== ROOT_LANG
   )
 
-  // Получаем настройки форматов RSS
   const rssFormats = getRssFormats(siteConfig)
 
-  // Добавляем RSS ссылки для текущего языка
   for (const format of rssFormats) {
     const feedUrl = `${siteUrl}/feed-${localeIndex}.${format}`
     const formatInfo = getFormatInfo(format)
@@ -37,10 +37,8 @@ export function addRssLinks({ page, head, pageData, siteConfig }) {
     ])
   }
 
-  // Добавляем альтернативные языки (опционально)
   for (const locale of supportedLocales) {
     if (locale !== localeIndex) {
-      // Добавляем только основной формат для альтернативных языков
       const feedUrl = `${siteUrl}/feed-${locale}.rss`
 
       head.push([

@@ -7,14 +7,8 @@ import { addCanonicalLink } from '../transformers/addCanonicalLink.js'
 import { filterSitemap } from '../transformers/filterSitemap.js'
 import { mdImage } from '../transformers/mdImage.js'
 
-export const common = {
-  //// You have to set an absolute path to the "src" directory of your blog
-  // srcDir: path.resolve(__dirname, '../'),
-  //// You have to set the url with protocol, hostname and port of
-  //// your site
-  // siteUrl: 'https://example.com',
+export const common: Record<string, any> = {
   head: [
-    // tell IE to use the most modern engine
     ['meta', { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }],
 
     ['link', { rel: 'icon', sizes: '16x16', href: '/img/favicon-16x16.png' }],
@@ -33,14 +27,8 @@ export const common = {
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
-  // Root locale is required by VitePress i18n routing (`i18nRouting: true`)
-  // to build correct SPA routes when content lives under language-prefixed
-  // folders like `/en/`. Override it in your own config if needed.
   locales: { root: { lang: 'en-US' } },
 
-  // max description length for description meta tag,
-  //  open graph, json-ld and for rss feed
-  // for RSS max is 500 characters
   maxDescriptionLength: 300,
 
   themeConfig: {
@@ -51,11 +39,7 @@ export const common = {
   },
 }
 
-/**
- * @param {import('vitepress').UserConfig<import('../types').ThemeConfig>} config
- * @returns {import('vitepress').UserConfig<import('../types').ThemeConfig>}
- */
-export function mergeSiteConfig(config) {
+export function mergeSiteConfig(config: any): any {
   const externalLinkIcon =
     typeof config.themeConfig.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
@@ -74,23 +58,20 @@ export function mergeSiteConfig(config) {
     },
     sitemap: {
       hostname: config.siteUrl,
-      // fix sitemap - remove root from it
-      transformItems: (items) => {
-        return filterSitemap(items)
+      transformItems: (items: any[]) => {
+        return filterSitemap(items as any)
       },
-
       ...config.sitemap,
     },
     markdown: {
       ...config.markdown,
       image: { lazyLoading: true, ...config.markdown?.image },
-      // Отключаем rel="noreferrer" для внешних ссылок
       externalLinks: omitUndefined({
         target: '_blank',
         class: externalLinkIcon ? 'vp-external-link-icon' : undefined,
         rel: [],
       }),
-      config: (md) => {
+      config: (md: any) => {
         md.use(mdImage, { srcDir: config.srcDir })
 
         if (config.markdown?.config) {
@@ -105,7 +86,7 @@ export function mergeSiteConfig(config) {
       ...config.themeConfig,
     },
 
-    async transformPageData(pageData, ctx) {
+    async transformPageData(pageData: any, ctx: any) {
       resolveDescription(pageData, ctx)
 
       if (config.transformPageData) {
@@ -113,7 +94,7 @@ export function mergeSiteConfig(config) {
       }
     },
 
-    async transformHead(ctx) {
+    async transformHead(ctx: any) {
       addOgMetaTags(ctx)
       addJsonLd(ctx)
       addHreflang(ctx)

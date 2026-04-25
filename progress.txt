@@ -1,70 +1,100 @@
 TypeScript migration progress
 =============================
 
-Strategy: Strict + as-source distribution (matches VitePress 2 default theme).
-- tsconfig.json: strict, allowJs (gradual), noEmit, moduleResolution: bundler.
-- vue-tsc --noEmit is the type checker (run `pnpm typecheck`).
-- exports map in package.json keeps pointing to source files; extensions are
-  updated from .js -> .ts as each module is migrated.
+Strategy: Strict + as-source distribution.
+- tsconfig.json: strict, allowJs, noEmit, moduleResolution: bundler.
+- vue-tsc --noEmit is the type checker (`pnpm typecheck`).
+- exports map points to source files; extensions update from .js -> .ts as
+  each module is migrated.
 
-Migration order (leaves -> roots):
+Status (as of last update):
 
-Phase 1: pure utility JS (no Vue, no internal deps)
-  [ ] src/constants.js                 -> .ts
-  [ ] src/helpers/transliterate.js     -> .ts
-  [ ] src/helpers/utils.js             -> .ts
-  [ ] src/helpers/imageHelpers.js      -> .ts
-  [ ] src/helpers/mdWorks.js           -> .ts
-  [ ] src/helpers/parseSiteFileTranslations.js -> .ts
-  [ ] src/helpers/resolveTranslations.js -> .ts
-  [ ] src/helpers/squidlet.js          -> .ts
-  [ ] src/helpers/blogConfigHelper.js  -> .ts
-  [ ] src/helpers/siteConfigHelper.js  -> .ts
-  [ ] src/helpers/rssHelpers.js        -> .ts
-  [ ] src/helpers/helpers.js           -> .ts
-  [ ] src/helpers/index.js             -> .ts
+[x] Phase 1: helpers + constants
+    - src/constants.ts
+    - src/helpers/{transliterate,utils,resolveTranslations,squidlet,
+      imageHelpers,mdWorks,parseSiteFileTranslations,helpers,
+      blogConfigHelper,siteConfigHelper,rssHelpers,index}.ts
 
-Phase 2: composables
-  [ ] src/composables/useBreakpoint.js -> .ts
-  [ ] src/composables/useScrollY.js    -> .ts
-  [ ] src/composables/useSwipeDrawer.js -> .ts
+[x] Phase 2: composables
+    - src/composables/{useBreakpoint,useScrollY,useSwipeDrawer}.ts
 
-Phase 3: list-helpers
-  [ ] src/list-helpers/listHelpers.js
-  [ ] src/list-helpers/loadPosts.js
-  [ ] src/list-helpers/loadPostsStats.js
-  [ ] src/list-helpers/makeListParams.js
-  [ ] src/list-helpers/makePreviewItem.js
-  [ ] src/list-helpers/index.js
+[x] Phase 3: list-helpers
+    - src/list-helpers/{listHelpers,loadPosts,loadPostsStats,
+      makeListParams,makePreviewItem,index}.ts
 
-Phase 4: transformers (build-time, Node)
-  [ ] src/transformers/*.js (12 files) -> .ts
+[x] Phase 4: transformers (12 files .ts)
+    - addCanonicalLink, addHreflang, addJsonLd, addOgMetaTags, addRssLinks,
+      collectImageDimensions, filterSitemap, generateRssFeed, mdImage,
+      resolveDescription, transformPageMeta, transformTitle.
+    NOTE: in addJsonLd.ts a previously-undefined `siteName` reference was
+    given a sensible local definition (`const siteName = langConfig.title`)
+    matching the convention in createPageJsonLd. This avoids a latent
+    ReferenceError when langConfig.themeConfig.publisher exists but
+    .name does not. No behaviour change for valid configs.
 
-Phase 5: configs
-  [ ] src/configs/blogConfigBase.js
-  [ ] src/configs/siteConfigBase.js
-  [ ] src/configs/index.js
+[x] Phase 5: configs
+    - src/configs/{blogConfigBase,siteConfigBase,index}.ts
+    - src/configs/blogLocalesBase/{en,ru,index}.ts (renamed)
+    - src/configs/siteLocalesBase/{en,ru}.ts (renamed)
 
-Phase 6: Vue SFC -> <script setup lang="ts">
-  Order: leaves first (Badge, BaseLink, SimpleLink, MenuItem, ...), then
-  composite components, then layout/* and components/post/*,
-  then components/forUtilPages/*, finally layouts/*.
+[ ] Phase 6: Vue SFC -> <script setup lang="ts">
+    Order:
+      1. Pre-fix the 2 known errors:
+         - src/components/docComponents/AudioFile.vue:383 (:class="class")
+         - src/components/docComponents/FileDownload.vue:118 (:class="class")
+         Rename the prop from `class` to e.g. `containerClass` (and adjust
+         every consumer if the prop is documented externally).
+      2. Leaves first: Badge, BaseLink, SimpleLink, BtnLink, MenuItem,
+         Btn, ListItemWithBadge, ListPageHeader, EditLink, TagItem,
+         AuthorItem, Author, Pagination, PreviewNoImg, PreviewWithImg,
+         PreviewListItem, PreviewList, PageContent, SocialMediaLinks,
+         TagsList, DropdownButton, Badge, README.md (skip).
+      3. components/post/* (13 SFC).
+      4. components/layout/* (15 SFC) — incl. SwitchAppearance,
+         SwitchLang, SideBar*, ToTheTop*, TopBar, Footer, NotFound, Aside.
+      5. components/forUtilPages/* (17 SFC).
+      6. components/docComponents/{AudioFile,FileDownload,VideoYoutube}.vue
+         + tobiiLightboxPlugin.ts.
+      7. layouts/{Layout,DefaultLayout,BlogHome,SiteHome}.vue + index.ts.
 
-Phase 7: theme entry & types
-  [ ] src/types.d.ts -> consolidate; keep as ambient or convert to types.ts
-  [ ] src/index.js   -> index.ts (typed via `Theme` from 'vitepress')
-  [ ] src/components/index.js, src/layouts/index.js, src/configs/index.js,
-      src/helpers/index.js, src/list-helpers/index.js -> .ts
+    SFC migration recipe:
+      - Add lang="ts" to <script setup>.
+      - Replace defineProps({...}) with defineProps<...>() and use
+        withDefaults() for defaults.
+      - Replace defineEmits([...]) with defineEmits<...>().
+      - Annotate refs/computed return shapes only when inference is wrong.
+      - Use `import type { Ref, ComputedRef } from 'vue'` as needed.
+      - useData<ThemeConfig>() from 'vitepress' for theme typing.
+      - Remove the avoidable `:class="class"` reserved-word pitfall.
 
-Phase 8: cleanup
-  [ ] Update package.json `exports` extensions (.js -> .ts where applicable).
-  [ ] Set "types" to src/types.ts (or generated entry).
-  [ ] Run `pnpm typecheck` clean.
-  [ ] Smoke-build example/blog and example/site.
+[ ] Phase 7: theme entry & types
+    - Promote src/types.d.ts -> src/types.ts and re-export from index.ts.
+    - src/components/index.js -> .ts
+    - src/layouts/index.js -> .ts (also needs entries from layouts/*.vue
+      after they migrate)
+    - src/index.js -> .ts, typed via `Theme` from 'vitepress'.
+    - Update package.json:
+        ".":            "./src/index.ts"
+        "./components": "./src/components/index.ts"
+        "./layouts":    "./src/layouts/index.ts"
+        "types":        "./src/types.ts"
+
+[ ] Phase 8: cleanup
+    - Confirm all imports use `.js` specifiers (TS resolves to .ts;
+      Vite serves correctly).
+    - `pnpm typecheck` clean.
+    - Smoke build example/blog and example/site:
+        pnpm --filter vitepress-theme-neptu-blog-example-blog build
+        pnpm --filter vitepress-theme-neptu-blog-example-site build
+    - Optionally tighten loose `any`s in helpers/*.ts and
+      transformers/*.ts using shapes derived from VitePress + frontmatter.
 
 Rules during migration:
-- No behavioural changes; only typing.
+- No behaviour changes; only typing.
 - Public API of each module preserved (named exports, signatures).
 - Use `import type` for type-only imports.
 - For SFC: defineProps<...>(), withDefaults(), defineEmits<...>().
-- For Node-only modules (transformers, helpers used in config.ts), no DOM types.
+- For Node-only modules, no DOM types.
+
+Known pre-existing issues to fix in Phase 6:
+- AudioFile.vue and FileDownload.vue use `:class="class"`. Rename prop.

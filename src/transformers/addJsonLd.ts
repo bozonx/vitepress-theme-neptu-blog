@@ -8,31 +8,38 @@ import {
   isPage,
 } from '../helpers/helpers.js'
 
-function parseYamlToJsonLd(strYaml) {
+export interface AddJsonLdContext {
+  page: string
+  head: any[]
+  pageData: any
+  siteConfig: any
+}
+
+function parseYamlToJsonLd(strYaml: string): any {
   try {
     return yaml.parse(strYaml)
   } catch (error) {
-    throw new Error('Error parsing frontmatter.jsonLd:', error)
+    throw new Error('Error parsing frontmatter.jsonLd:', { cause: error as Error })
   }
 }
 
 /** Создает JSON-LD структуру для поста */
 function createPostJsonLd(
-  pageData,
-  siteConfig,
-  siteUrl,
-  localeIndexUrl,
-  localeIndex,
-  langConfig,
-  pageUrl,
-  publisher
-) {
+  pageData: any,
+  siteConfig: any,
+  siteUrl: string,
+  localeIndexUrl: string,
+  localeIndex: string,
+  langConfig: any,
+  pageUrl: string,
+  publisher: any
+): any {
   const title = pageData.title
   const description = pageData.description
   const author =
     pageData.frontmatter.authorId &&
     langConfig.themeConfig.authors?.find(
-      (item) => item.id === pageData.frontmatter.authorId
+      (item: any) => item.id === pageData.frontmatter.authorId
     )
 
   const authorName = author?.name || author?.id
@@ -44,13 +51,11 @@ function createPostJsonLd(
   const lang = langConfig.lang
   const [, ...restPath] = pageData.relativePath.split('/')
   const pagePathWithoutLang = restPath.join('/')
-  const alternateLanguages = []
+  const alternateLanguages: Array<{ code: string; url: string }> = []
 
-  // Собираем альтернативные языковые версии
   if (siteConfig.site.locales) {
-    Object.entries(siteConfig.site.locales).forEach(([code, locale]) => {
+    Object.entries(siteConfig.site.locales).forEach(([code, locale]: [string, any]) => {
       if (code === localeIndex || code === ROOT_LANG) return
-      // Генерируем URL для альтернативной языковой версии
       const alternateUrl = generatePageUrlPath(pagePathWithoutLang)
 
       alternateLanguages.push({
@@ -60,8 +65,7 @@ function createPostJsonLd(
     })
   }
 
-  // Создаем базовую структуру статьи
-  const article = {
+  const article: Record<string, any> = {
     '@type': 'BlogPosting',
     headline: title,
     description: description,
@@ -90,7 +94,7 @@ function createPostJsonLd(
       pageData.lastUpdated && new Date(pageData.lastUpdated).toISOString(),
     keywords:
       tags && tags.length > 0
-        ? tags.map((tag) => tag.name).join(', ')
+        ? tags.map((tag: any) => tag.name).join(', ')
         : undefined,
     image:
       cover &&
@@ -106,10 +110,8 @@ function createPostJsonLd(
       }),
   }
 
-  // Если указан frontmatter.jsonLd, парсим его и переопределяем поля
   if (pageData.frontmatter.jsonLd) {
     const customJsonLd = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
-    // Переопределяем поля из customJsonLd
     if (customJsonLd && typeof customJsonLd === 'object') {
       Object.assign(article, customJsonLd)
     }
@@ -119,14 +121,14 @@ function createPostJsonLd(
 }
 
 function createAuthorJsonLd(
-  pageData,
-  siteConfig,
-  siteUrl,
-  localeIndex,
-  langConfig
-) {
+  pageData: any,
+  siteConfig: any,
+  siteUrl: string,
+  localeIndex: string,
+  langConfig: any
+): any {
   const authors = langConfig.themeConfig?.authors
-  const author = authors?.find((item) => item.id === pageData.params.id)
+  const author = authors?.find((item: any) => item.id === pageData.params.id)
 
   if (!author) return
 
@@ -164,19 +166,19 @@ function createAuthorJsonLd(
       width: imageWidth,
       caption: authorName,
     },
-    sameAs: links?.map((link) => link.url),
+    sameAs: links?.map((link: any) => link.url),
     ...rest,
   }
 }
 
 function createPageJsonLd(
-  pageData,
-  pageUrl,
-  localeIndexUrl,
-  publisher,
-  siteName
-) {
-  const page = {
+  pageData: any,
+  pageUrl: string,
+  localeIndexUrl: string,
+  publisher: any,
+  siteName: string
+): any {
+  const page: Record<string, any> = {
     '@type': 'WebPage',
     name: pageData.title,
     url: pageUrl,
@@ -190,10 +192,8 @@ function createPageJsonLd(
     publisher,
   }
 
-  // Если указан frontmatter.jsonLd, парсим его и переопределяем поля
   if (pageData.frontmatter.jsonLd) {
     const customJsonLd = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
-    // Переопределяем поля из customJsonLd
     if (customJsonLd && typeof customJsonLd === 'object') {
       Object.assign(page, customJsonLd)
     }
@@ -202,26 +202,14 @@ function createPageJsonLd(
   return page
 }
 
-/**
- * Добавляет JSON-LD структурированные данные на страницу. pageData.description
- * has to be resolved before start this transformer. Где добавляет:
- *
- * - Во всех постах добавляется BlogPosting + дополнительные поля из
- *   frontmatter.jsonLd в виде yaml
- * - На странице автора добавляется Person. Данные берутся из\
- *   Site/site.[localeIndex].yaml authors
- * - На всех остальных страницах где указан frontmatter.jsonLd в виде yaml
- *
- * @param {Object} context { page, head, pageData, siteConfig }
- */
-export function addJsonLd({ page, head, pageData, siteConfig }) {
-  // Пропускаем корневые страницы и страницы без языкового префикса
+/** Добавляет JSON-LD структурированные данные на страницу. */
+export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext): void {
   if (!page || page.indexOf('/') < 0) {
     return
   }
 
-  let jsonLdData = null
-  const localeIndex = page.split('/')[0]
+  let jsonLdData: any = null
+  const localeIndex = page.split('/')[0]!
   const langConfig = siteConfig.site.locales[localeIndex]
 
   if (!langConfig) return
@@ -229,7 +217,8 @@ export function addJsonLd({ page, head, pageData, siteConfig }) {
   const siteUrl = siteConfig.userConfig.siteUrl
   const localeIndexUrl = `${siteUrl}/${localeIndex}`
   const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
-  // Формируем информацию об издателе для JSON-LD
+  // siteName: fallback resolution matches createPageJsonLd usage.
+  const siteName = langConfig.title
   const publisher = langConfig.themeConfig.publisher && {
     '@type': 'Organization',
     name: langConfig.themeConfig.publisher?.name || siteName,
@@ -268,7 +257,6 @@ export function addJsonLd({ page, head, pageData, siteConfig }) {
       langConfig.title
     )
   } else if (pageData.frontmatter.jsonLd) {
-    // all other pages witch have frontmatter.jsonLd
     jsonLdData = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
   } else {
     return
@@ -277,7 +265,6 @@ export function addJsonLd({ page, head, pageData, siteConfig }) {
   if (typeof jsonLdData !== 'object' || Object.keys(jsonLdData).length === 0)
     return
 
-  // Добавляем JSON-LD скрипт
   head.push([
     'script',
     { type: 'application/ld+json' },

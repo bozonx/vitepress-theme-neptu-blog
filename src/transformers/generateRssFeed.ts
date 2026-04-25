@@ -1,6 +1,6 @@
 import { Feed } from 'feed'
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import { createContentLoader } from 'vitepress'
 
 import { DEFAULT_ENCODE, POSTS_DIR, ROOT_LANG } from '../constants.js'
@@ -16,20 +16,16 @@ import {
 } from '../helpers/rssHelpers.js'
 
 /**
- * Генерирует RSS и Atom feeds для всех локалей. pageData.description has to be
- * resolved before start this transformer
- *
- * @param {Object} config - Конфигурация VitePress
- * @returns {Promise<void>}
+ * Генерирует RSS и Atom feeds для всех локалей.
+ * pageData.description has to be resolved before start this transformer.
  */
-export async function generateRssFeed(config) {
+export async function generateRssFeed(config: any): Promise<void> {
   try {
-    // Валидируем конфигурацию
     if (!validateRssConfig(config)) {
       throw new Error('Invalid RSS configuration')
     }
 
-    const feeds = {}
+    const feeds: Record<string, Feed> = {}
     const siteUrl = config.userConfig.siteUrl
 
     for (const localeIndex of Object.keys(config.site.locales)) {
@@ -38,7 +34,6 @@ export async function generateRssFeed(config) {
       const locale = config.site.locales[localeIndex]
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
 
-      // Создаем базовый feed
       feeds[localeIndex] = new Feed({
         language: localeIndex,
         title: locale.title,
@@ -62,20 +57,17 @@ export async function generateRssFeed(config) {
           { includeSrc: true }
         ).load()
 
-        // Сортируем посты по дате (новые сначала) и ограничиваем количество
         const sortedPosts = posts
           .sort(
-            (a, b) =>
+            (a: any, b: any) =>
               +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
           )
           .slice(0, config.userConfig.maxPostsInRssFeed)
 
-        for (const { url, frontmatter, src } of sortedPosts) {
+        for (const { url, frontmatter, src } of sortedPosts as any[]) {
           try {
-            // Валидируем обязательные поля
             if (!validatePostForRss(frontmatter, url)) {
               console.warn(config, `Skipping post ${url} - validation failed`)
-
               continue
             }
 
@@ -85,29 +77,23 @@ export async function generateRssFeed(config) {
                   src,
                   config.userConfig.maxDescriptionLength
                 )
-            // Создаем уникальный GUID для поста
             const guid = createPostGuid(siteUrl, url, frontmatter.date)
-            // Подготавливаем категории из тегов
             const categories = formatTagsForRss(frontmatter.tags, siteUrl)
 
-            // Добавляем пост в feed
-            feeds[localeIndex].addItem({
+            feeds[localeIndex]!.addItem({
               title: frontmatter.title,
               description,
               id: guid,
               link: `${siteUrl}${url}`,
               date: frontmatter.date && new Date(frontmatter.date),
               image: frontmatter.cover && `${siteUrl}${frontmatter.cover}`,
-              // Добавляем автора если есть
               author: makeAuthorForRss(
                 config,
                 frontmatter,
                 localeSiteUrl,
                 localeIndex
-              ),
-              // Добавляем категории
+              ) as any,
               category: categories.length > 0 ? categories : undefined,
-              // Добавляем дополнительные поля
               published: frontmatter.date && new Date(frontmatter.date),
             })
           } catch (postError) {
@@ -124,15 +110,12 @@ export async function generateRssFeed(config) {
       }
     }
 
-    // Получаем настройки форматов RSS из конфигурации
     const rssFormats = getRssFormats(config)
 
-    // Генерируем файлы для каждой локали
     for (const localeIndex of Object.keys(feeds)) {
       try {
         const feedDir = path.join(config.outDir)
 
-        // Генерируем файлы для каждого настроенного формата
         for (const format of rssFormats) {
           try {
             const formatInfo = getFormatInfo(format)
@@ -141,10 +124,8 @@ export async function generateRssFeed(config) {
               `feed-${localeIndex}.${formatInfo.extension}`
             )
 
-            // Генерируем контент для выбранного формата
             const feedContent = formatInfo.generator(feeds[localeIndex])
 
-            // Записываем файл
             fs.writeFileSync(feedPath, feedContent, DEFAULT_ENCODE)
             console.log(`Generated ${formatInfo.title}: ${feedPath}`)
           } catch (formatError) {
@@ -161,7 +142,6 @@ export async function generateRssFeed(config) {
         )
       }
     }
-    // success
   } catch (error) {
     console.error('Error generating RSS feeds:', error)
     throw error

@@ -12,15 +12,8 @@ import { addCanonicalLink } from '../transformers/addCanonicalLink.js'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.js'
 import { mdImage } from '../transformers/mdImage.js'
 
-export const common = {
-  //// You have to set an absolute path to the "src" directory of your blog
-  // srcDir: path.resolve(__dirname, '../'),
-  //// You have to set the url with protocol, hostname and port of
-  //// your site
-  // siteUrl: 'https://example.com',
-
+export const common: Record<string, any> = {
   head: [
-    // tell IE to use the most modern engine
     ['meta', { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }],
 
     ['link', { rel: 'icon', sizes: '16x16', href: '/img/favicon-16x16.png' }],
@@ -39,17 +32,10 @@ export const common = {
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
-  // Root locale is required by VitePress i18n routing (`i18nRouting: true`)
-  // to build correct SPA routes when content lives under language-prefixed
-  // folders like `/en/`. Override it in your own config if needed.
   locales: { root: { lang: 'en-US' } },
 
-  // Build params
   maxPostsInRssFeed: 50,
   rssFormats: ['rss', 'atom', 'json'],
-  // max description length for description meta tag,
-  //  open graph, json-ld and for rss feed
-  // for RSS max is 500 characters
   maxDescriptionLength: 300,
 
   themeConfig: {
@@ -62,33 +48,18 @@ export const common = {
     similarPostsCount: 5,
     homeBgParalaxOffset: 300,
     paginationMaxItems: 5,
-    // show author in post list
     showAuthorInPostList: true,
 
-    // bodyMarker is set on the element that contains the content of the page.
-    // For Pagefind use 'data-pagefind-body'
-    // Then all the pages excluding util pages will have this marker.
-    // To change this behavior, set in the frontmatter or the page
-    //   searchIncluded: false or true
-    // search: { bodyMarker: 'data-pagefind-body' },
-
-    // use for popular posts
     googleAnalytics: {
-      propertyId: null, // GA4 Property ID (например: "123456789")
-      // You can use env variable GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
-      credentialsPath: null, // Путь к JSON файлу Service Account
-      // JSON string Service Account. eg process.env.GA_CREDENTIALS_JSON
+      propertyId: null,
+      credentialsPath: null,
       credentialsJson: null,
-      // period for getting analytics data
       dataPeriodDays: 30,
-      // limit for getting analytics data.
-      // This data will be fetched once for all the languages.
       dataLimit: 1000,
     },
     popularPosts: {
-      // Включить генерацию популярных постов во время сборки
       enabled: false,
-      sortBy: 'pageviews', // 'pageviews', 'uniquePageviews', 'avgTimeOnPage'
+      sortBy: 'pageviews',
     },
 
     tagsBaseUrl: 'tags',
@@ -102,7 +73,6 @@ export const common = {
     popularIcon: 'fa6-solid:star',
     byDateIcon: 'fa6-solid:calendar-days',
     authorsIcon: 'mdi:users',
-    // social icons
     socialLinksIcon: 'heroicons:megaphone-16-solid',
     rssIcon: 'bi:rss-fill',
     atomIcon: 'vscode-icons:file-type-atom',
@@ -110,16 +80,10 @@ export const common = {
     telegramIcon: 'fa6-brands:telegram',
     chatIcon: 'fa6-solid:message',
     tagsIcon: 'fa6-solid:tag',
-    ///// not used
-    // docIcon: 'iconoir:book-solid',
   },
 }
 
-/**
- * @param {import('vitepress').UserConfig<import('../types').ThemeConfig>} config
- * @returns {import('vitepress').UserConfig<import('../types').ThemeConfig>}
- */
-export function mergeBlogConfig(config) {
+export function mergeBlogConfig(config: any): any {
   const externalLinkIcon =
     typeof config.themeConfig.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
@@ -138,23 +102,20 @@ export function mergeBlogConfig(config) {
     },
     sitemap: {
       hostname: config.siteUrl,
-      // fix sitemap - remove root from it
-      transformItems: (items) => {
-        return filterSitemap(items)
+      transformItems: (items: any[]) => {
+        return filterSitemap(items as any)
       },
-
       ...config.sitemap,
     },
     markdown: {
       ...config.markdown,
       image: { lazyLoading: true, ...config.markdown?.image },
-      // Отключаем rel="noreferrer" для внешних ссылок
       externalLinks: omitUndefined({
         target: '_blank',
         class: externalLinkIcon ? 'vp-external-link-icon' : undefined,
         rel: [],
       }),
-      config: (md) => {
+      config: (md: any) => {
         md.use(mdImage, { srcDir: config.srcDir })
 
         if (config.markdown?.config) {
@@ -177,7 +138,7 @@ export function mergeBlogConfig(config) {
       },
     },
 
-    async transformPageData(pageData, ctx) {
+    async transformPageData(pageData: any, ctx: any) {
       collectImageDimensions(pageData, ctx)
       transformTitle(pageData, ctx)
       transformPageMeta(pageData, ctx)
@@ -188,7 +149,7 @@ export function mergeBlogConfig(config) {
       }
     },
 
-    async transformHead(ctx) {
+    async transformHead(ctx: any) {
       addOgMetaTags(ctx)
       addJsonLd(ctx)
       addHreflang(ctx)
@@ -200,7 +161,7 @@ export function mergeBlogConfig(config) {
       }
     },
 
-    buildEnd: async (cfg) => {
+    buildEnd: async (cfg: any) => {
       await generateRssFeed(cfg)
 
       if (config.buildEnd) {

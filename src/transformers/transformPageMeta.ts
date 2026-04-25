@@ -3,12 +3,12 @@ import { mdToHtml } from '../helpers/mdWorks.js'
 import { transliterate } from '../helpers/transliterate.js'
 
 /** Transform md in frontmatter params of post to html. And resolve preview */
-export function transformPageMeta(pageData, ctx) {
+export function transformPageMeta(pageData: any, _ctx: any): void {
   if (!isPost(pageData.frontmatter)) return
 
   pageData.frontmatter.coverDescr = mdToHtml(pageData.frontmatter.coverDescr)
 
-  pageData.frontmatter.tags = pageData.frontmatter.tags?.map((item) => ({
+  pageData.frontmatter.tags = pageData.frontmatter.tags?.map((item: string) => ({
     name: item,
     slug: transliterate(item),
   }))

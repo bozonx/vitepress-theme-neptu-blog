@@ -24,7 +24,7 @@
     ".": "./src/index.js",
     "./package.json": "./package.json",
     "./components": "./src/components/index.js",
-    "./configs": "./src/configs/index.js",
+    "./configs": "./src/configs/index.ts",
     "./helpers": "./src/helpers/index.ts",
     "./layouts": "./src/layouts/index.js",
     "./list-helpers": "./src/list-helpers/index.ts",
