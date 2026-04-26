@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "types": ["node"],
+    "types": ["node", "vitest/globals"],
     "jsx": "preserve",
     "strict": true,
     "noImplicitOverride": true,
@@ -30,7 +30,9 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.js",
-    "src/**/*.vue"
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "vitest.config.ts"
   ],
   "exclude": ["node_modules", "dist", "example"]
 }

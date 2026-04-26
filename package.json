@@ -70,20 +70,30 @@
   "scripts": {
     "typecheck": "vue-tsc --noEmit",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/vue": "^8.1.0",
     "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "@vue/test-utils": "^2.4.8",
     "eslint": "^10.2.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-vue": "^10.9.0",
+    "happy-dom": "^20.9.0",
     "prettier": "^3.8.3",
     "prettier-plugin-jsdoc": "^1.8.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.0",
     "vitepress": "2.0.0-alpha.17",
+    "vitest": "^4.1.5",
+    "vitest-browser-vue": "^2.1.0",
     "vue": "^3.5.33",
     "vue-eslint-parser": "^10.4.0",
     "vue-tsc": "^3.2.7"
