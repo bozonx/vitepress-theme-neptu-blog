@@ -4,8 +4,14 @@ import { useData } from 'vitepress'
 import SimpleLink from '../SimpleLink.vue'
 
 const { frontmatter, theme } = useData()
+interface Author {
+  id: string
+  name?: string
+  aboutUrl?: string
+}
+
 const themeAuthor = frontmatter.value.authorId
-  ? theme.value.authors?.find((item: any) => item.id === frontmatter.value.authorId)
+  ? theme.value.authors?.find((item: Author) => item.id === frontmatter.value.authorId)
   : undefined
 const authorUrl = themeAuthor?.aboutUrl
   ? themeAuthor.aboutUrl

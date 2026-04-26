@@ -7,7 +7,7 @@ interface Props {
   count?: number
 }
 
-// Объявляем только те пропсы, которые обрабатываем в этом компоненте
+// Declare only the props handled by this component
 const props = defineProps<Props>()
 </script>
 

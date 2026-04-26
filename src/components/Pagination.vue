@@ -10,10 +10,17 @@ const props = defineProps<{
   totalPages: number
   paginationBaseUrl?: string
 }>()
-const items: any[] = []
+interface PaginationItem {
+  name?: number
+  href: string
+  title?: string
+  icon?: string
+}
+
+const items: PaginationItem[] = []
 
 const curPage = props.curPage
-const maxItems = props.paginationMaxItems || theme.value.paginationMaxItems
+const maxItems = props.paginationMaxItems || theme.value.paginationMaxItems || 7
 const totalPages = props.totalPages
 const baseUrl =
   props.paginationBaseUrl || route.path.split('/').slice(0, -1).join('/')
@@ -23,52 +30,48 @@ const baseUrl =
 // const maxItems = 7;
 // const totalPages = 4;
 
-if (curPage >= 1 && totalPages > 1 && curPage <= totalPages) {
+if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
   const halfPages = (maxItems - 1) / 2
   let minusPages = halfPages
   let plusPages = halfPages
 
-  // Распределяем нечетное количество страниц: больше страниц справа от текущей
+  // Distribute odd number of pages: more pages to the right of the current one
   if (halfPages !== Math.ceil(halfPages)) {
     minusPages = Math.floor(halfPages)
     plusPages = Math.ceil(halfPages)
   }
 
-  let startPage = curPage - minusPages
-  let endPage = curPage + plusPages
+  let startPage = Math.max(1, curPage - minusPages)
+  let endPage = Math.min(totalPages, curPage + plusPages)
 
-  // Корректируем границы если выходим за пределы
+  // Adjust boundaries if they go out of range
   if (startPage < 1) {
-    // Если начинаем раньше первой страницы, сдвигаем вправо
     const shift = 1 - startPage
     startPage = 1
     endPage = Math.min(endPage + shift, totalPages)
   } else if (endPage > totalPages) {
-    // Если заканчиваем после последней страницы, сдвигаем влево
     const shift = endPage - totalPages
     endPage = totalPages
     startPage = Math.max(startPage - shift, 1)
   }
 
-  // Показываем кнопку "в начало" если не показываем первую страницу
+  // Show "to start" button if the first page is not visible
   if (startPage > 1) {
     items.push({
-      // name: '<<',
       icon: 'mdi:page-first',
       href: `${baseUrl}/1`,
       title: theme.value.t.paginationToStart,
     })
   }
 
-  // Добавляем номера страниц
+  // Add page numbers
   for (let i = startPage; i <= endPage; i++) {
     items.push({ name: i, href: `${baseUrl}/${i}` })
   }
 
-  // Показываем кнопку "в конец" если не показываем последнюю страницу
+  // Show "to end" button if the last page is not visible
   if (endPage < totalPages) {
     items.push({
-      // name: '>>',
       icon: 'mdi:page-last',
       href: `${baseUrl}/${totalPages}`,
       title: theme.value.t.paginationToEnd,
@@ -79,7 +82,7 @@ if (curPage >= 1 && totalPages > 1 && curPage <= totalPages) {
 
 <template>
   <ul v-if="items.length" class="flex justify-center gap-x-1">
-    <li v-for="item of items" class="flex align-center">
+    <li v-for="item of items" :key="item.href" class="flex align-center">
       <Btn
         :href="item.href"
         :title="item.title"

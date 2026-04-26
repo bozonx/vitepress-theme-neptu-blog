@@ -9,7 +9,7 @@ export interface AddRssLinksContext {
   siteConfig: any
 }
 
-/** Добавляет RSS feed ссылки в head главной страницы */
+/** Adds RSS feed links to the head of the home page */
 export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksContext): void {
   if (!isHomePage(pageData.frontmatter)) return
 

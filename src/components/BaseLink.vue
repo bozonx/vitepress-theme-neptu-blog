@@ -16,7 +16,7 @@ interface Props {
 const { theme, localeIndex } = useData()
 const route = useRoute()
 const props = defineProps<Props>()
-// Реактивные вычисляемые свойства
+// Reactive computed properties
 const resolvedHref = computed(() =>
   resolveI18Href(props.href || '', localeIndex.value, theme.value.i18nRouting)
 )

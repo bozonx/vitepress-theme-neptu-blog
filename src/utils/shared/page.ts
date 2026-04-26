@@ -31,13 +31,21 @@ export function isPopularRoute(routPath: string, theme: ThemeRef): boolean {
   return routPath.includes(`/${themeValue.popularBaseUrl}/`)
 }
 
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
 export function isAuthorPage(filePath: string | null | undefined, siteConfig: ExtendedSiteConfig): boolean {
   if (!filePath) return false
 
   const authorsBaseUrl = siteConfig.userConfig.themeConfig.authorsBaseUrl
 
+  if (!authorsBaseUrl) return false
+
+  const escaped = escapeRegExp(authorsBaseUrl)
+
   return (
-    !!filePath.match(new RegExp(`^\\w+\/${authorsBaseUrl}\/`)) &&
+    !!filePath.match(new RegExp(`^\\w+\/${escaped}\/`)) &&
     !filePath.endsWith(`${authorsBaseUrl}/index.md`)
   )
 }
@@ -55,19 +63,14 @@ export function resolveArticlePreview(frontmatter: Frontmatter): string | undefi
 }
 
 export function resolveBodyMarker(theme: ThemeConfig, frontmatter: Frontmatter): string | undefined {
-  const bodyMarker = (theme.search as any)?.bodyMarker
+  const bodyMarker = (theme.search as { bodyMarker?: string })?.bodyMarker
 
   if (!bodyMarker) return undefined
 
   // By default util pages are excluded from search
-  let allowed = true
-
-  if (isUtilPage(frontmatter)) {
-    allowed = frontmatter.searchIncluded || false
-  } else {
-    // All other pages are included in search by default
-    allowed = frontmatter.searchIncluded ?? true
-  }
+  const allowed = isUtilPage(frontmatter)
+    ? frontmatter.searchIncluded || false
+    : (frontmatter.searchIncluded ?? true)
 
   return allowed ? bodyMarker : undefined
 }

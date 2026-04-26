@@ -12,7 +12,7 @@ import PostTopBar from './post/PostTopBar.vue'
 import PostImage from './post/PostImage.vue'
 
 const { page, frontmatter } = useData()
-const articlePreviewText = ref<any>(null)
+const articlePreviewText = ref<string | null>(null)
 
 watchEffect(() => {
   articlePreviewText.value = resolveArticlePreview(frontmatter.value)

@@ -6,7 +6,7 @@ import { useData } from 'vitepress'
 
 const { theme } = useData()
 
-// Пропсы компонента
+// Component props
 const props = defineProps<{
   url: string
   filename?: string
@@ -14,16 +14,16 @@ const props = defineProps<{
   disabled?: boolean
 }>()
 
-// Состояние отключения кнопки
+// Button disabled state
 const isDisabled = ref(props.disabled)
 
-// Вычисляемое имя файла для скачивания (используется в download атрибуте)
+// Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {
   if (props.filename) {
     return props.filename
   }
 
-  // Извлекаем полное имя файла с расширением из URL
+  // Extract full filename with extension from URL
   return props.url.split('/').pop() || 'file'
 })
 
@@ -31,7 +31,7 @@ const extensionName = computed(() => {
   const filename = downloadFilename.value
   const extension = filename.split('.').pop()
 
-  // Если расширение есть и оно не равно самому имени файла (т.е. есть точка)
+  // If extension exists and differs from the filename itself (i.e., contains a dot)
   if (extension && extension !== filename) {
     return extension.toLowerCase()
   }
@@ -43,26 +43,26 @@ const downloadFile = async () => {
   if (isDisabled.value) return
 
   try {
-    // Создаем временную ссылку для скачивания
+    // Create a temporary link for downloading
     const link = document.createElement('a')
     link.href = props.url
     link.download = downloadFilename.value
     link.target = '_blank'
 
-    // Добавляем ссылку в DOM, кликаем и удаляем
+    // Append link to DOM, click it, then remove
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
   } catch (error) {
     console.error('Error downloading file:', error)
-    // В случае ошибки открываем файл в новой вкладке
+    // On error, open the file in a new tab
     window.open(props.url, '_blank')
   }
 }
 
-// Получаем иконку для типа файла
-const getFileTypeIcon = (extension: any) => {
-  // Если расширение не определено, возвращаем иконку по умолчанию
+// Resolve icon for file type
+const getFileTypeIcon = (extension: string | undefined) => {
+  // If extension is not defined, return the default icon
   if (!extension) {
     return 'mdi:file'
   }
@@ -102,7 +102,7 @@ const getFileTypeIcon = (extension: any) => {
   return iconMap[extension] || 'mdi:file'
 }
 
-// Иконка для отображения
+// Icon to display
 const fileIcon = computed(() => {
   return getFileTypeIcon(extensionName.value)
 })

@@ -7,7 +7,7 @@ export interface AddCanonicalLinkContext {
   siteConfig: any
 }
 
-/** Добавляет каноническую ссылку в head страницы если указан параметр canonical в frontmatter. */
+/** Adds a canonical link to the page head if the canonical parameter is specified in frontmatter. */
 export function addCanonicalLink({
   page,
   head,

@@ -7,23 +7,23 @@
 </template>
 
 <script setup lang="ts">
-// Компонент для отображения боковой панели (aside)
-// Показывается только на широких экранах (1550px и выше)
-// Ширина соответствует стандартному рекламному блоку Google (300px)
-// Отображается только если есть контент в слоте по умолчанию
+// Component for rendering the aside panel
+// Visible only on wide screens (1550px and above)
+// Width matches the standard Google ad block (300px)
+// Visible only if default slot content exists
 </script>
 
 <style scoped>
 .aside-container {
-  /* Скрываем на экранах меньше 1550px */
+  /* Hide on screens below 1550px */
   display: none;
 }
 
-/* Показываем только на широких экранах */
+/* Show only on wide screens */
 @media (min-width: 1550px) {
   .aside-container {
     display: block;
-    width: 300px; /* Стандартная ширина рекламного блока Google */
+    width: 300px; /* Standard Google ad block width */
     min-width: 300px;
     max-width: 300px;
     padding: 0 16px;
@@ -34,6 +34,6 @@
 .aside-content {
   width: 100%;
   position: sticky;
-  top: 100px; /* Отступ от верха для лучшего позиционирования */
+  top: 100px; /* Top offset for better positioning */
 }
 </style>

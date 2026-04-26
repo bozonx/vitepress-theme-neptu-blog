@@ -6,8 +6,17 @@ import ListPageHeader from '../ListPageHeader.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
 import BtnLink from '../BtnLink.vue'
 
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  localePosts?: any[]
+  localePosts?: PostLite[]
   curPage?: string | number
   perPage?: number
   paginationMaxItems?: number
@@ -17,12 +26,12 @@ const props = defineProps<{
 }>()
 const { theme, localeIndex, frontmatter } = useData()
 const route = useRoute()
-const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const curPage = Number(props.curPage)
-// Фильтруем посты по тегу
-const filtered = localePosts.filter((item: any) =>
-  item.tags?.map((item: any) => item.name).includes(props.tagName)
+// Filter posts by tag
+const filtered = localePosts.filter((item) =>
+  item.tags?.map((tag) => tag.name).includes(props.tagName)
 )
 const sorted = sortPosts(
   filtered,

@@ -25,7 +25,7 @@ interface Hero {
 interface Feature {
   title: string
   details: string
-  icon?: any
+  icon?: string | { src: string; alt?: string }
   link?: string
   linkText?: string
   rel?: string

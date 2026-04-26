@@ -1,20 +1,43 @@
 interface TagInfo {
   name: string
   slug?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface PostLite {
   date?: string | number | Date
   tags?: TagInfo[]
   authorId?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 interface AuthorLite {
   id: string
   name?: string
-  [key: string]: any
+  [key: string]: unknown
+}
+
+/** Safely extract the year from a date. Returns NaN only for truly missing dates. */
+function safeGetYear(date: string | number | Date | undefined): number | undefined {
+  if (!date) return undefined
+  const parsed = new Date(date)
+  const year = parsed.getUTCFullYear()
+  return Number.isFinite(year) ? year : undefined
+}
+
+/** Safely extract the month (1-based) from a date. */
+function safeGetMonth(date: string | number | Date | undefined): number | undefined {
+  if (!date) return undefined
+  const parsed = new Date(date)
+  const month = parsed.getUTCMonth() + 1
+  return Number.isFinite(month) ? month : undefined
+}
+
+/** Safely parse a date into a timestamp. Returns 0 for invalid values. */
+function safeDateTime(date: string | number | Date | undefined): number {
+  if (!date) return 0
+  const time = new Date(date).getTime()
+  return Number.isFinite(time) ? time : 0
 }
 
 export function makeTagsList(allPosts: PostLite[] = []): Array<TagInfo & { count: number }> {
@@ -45,7 +68,8 @@ export function makeYearsList(
   const years: Record<number, number> = {}
 
   for (const item of allPosts) {
-    const postYear = new Date(item.date!).getUTCFullYear()
+    const postYear = safeGetYear(item.date)
+    if (postYear === undefined) continue
 
     if (typeof years[postYear] === 'undefined') {
       years[postYear] = 1
@@ -71,11 +95,11 @@ export function makeMonthsList(
   const months: Record<number, number> = {}
 
   for (const item of allPosts) {
-    const postYear = new Date(item.date!).getUTCFullYear()
-
+    const postYear = safeGetYear(item.date)
     if (postYear !== curYear) continue
 
-    const postMonth = new Date(item.date!).getUTCMonth() + 1
+    const postMonth = safeGetMonth(item.date)
+    if (postMonth === undefined) continue
 
     if (typeof months[postMonth] === 'undefined') {
       months[postMonth] = 1
@@ -103,14 +127,12 @@ export function makePostOfMonthList(
   const curMonth = Number(month)
 
   return allPosts
-    .sort((a, b) => +new Date(b.date!) - +new Date(a.date!))
+    .sort((a, b) => safeDateTime(b.date) - safeDateTime(a.date))
     .filter((item) => {
-      const postYear = new Date(item.date!).getUTCFullYear()
-
+      const postYear = safeGetYear(item.date)
       if (postYear !== curYear) return false
 
-      const postMonth = new Date(item.date!).getUTCMonth() + 1
-
+      const postMonth = safeGetMonth(item.date)
       if (postMonth !== curMonth) return false
 
       return true

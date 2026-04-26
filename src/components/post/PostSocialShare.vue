@@ -6,26 +6,33 @@ import { Icon } from '@iconify/vue'
 
 const { theme, title } = useData()
 const siteFullTitle = encodeURIComponent(title.value)
-const items = ref<any[]>([])
+interface ShareItem {
+  href: string
+  icon: string
+  title: string
+  attrs: Record<string, string>
+}
+
+const items = ref<ShareItem[]>([])
 const attrs = {
   class: 'social-btn',
   target: '_blank',
   rel: 'nofollow noopener',
 }
 
-// Получаем список социальных сетей из конфигурации темы
+// Get social networks list from theme config
 const socialItems = (theme.value.socialMediaShares || '')
   .split(',')
-  .filter((item: any) => Boolean(item))
-  .map((item: any) => item.trim())
+  .filter((item: string) => Boolean(item))
+  .map((item: string) => item.trim())
 
 const makeItems = () => {
-  // Безопасное получение URL документа с fallback
+  // Safely get the document URL with a fallback
   const currentUrl = typeof document !== 'undefined' ? document.URL : ''
   const encodedDocUrl = encodeURIComponent(currentUrl)
 
-  // Параметры для каждой социальной сети
-  const itemsParams: Record<string, any> = {
+  // Parameters for each social network
+  const itemsParams: Record<string, ShareItem> = {
     telegram: {
       href: `https://t.me/share/url?url=${encodedDocUrl}&text=${siteFullTitle}`,
       icon: 'logos:telegram',
@@ -58,8 +65,8 @@ const makeItems = () => {
     },
   }
 
-  // Возвращаем только те социальные сети, которые указаны в конфигурации
-  return socialItems.map((item: any) => itemsParams[item]).filter((item: any) => item) // Убираем undefined элементы
+  // Return only social networks specified in config
+  return socialItems.map((item: string) => itemsParams[item]).filter((item: ShareItem | undefined): item is ShareItem => Boolean(item))
 }
 
 onMounted(() => {

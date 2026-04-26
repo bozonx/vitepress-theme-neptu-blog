@@ -3,11 +3,20 @@ import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
 import { sortSimilarPosts } from '../../utils/shared/index.ts'
 
-const props = defineProps(['localePosts'])
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{ localePosts?: PostLite[] }>()
 const { frontmatter, theme } = useData()
 const route = useRoute()
 
-// Получаем похожие посты используя хэлпер
+// Get similar posts using the helper
 const items = frontmatter.value.tags
   ? sortSimilarPosts(
       props.localePosts || [],

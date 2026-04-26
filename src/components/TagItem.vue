@@ -4,14 +4,17 @@ import BaseLink from './BaseLink.vue'
 import Badge from './Badge.vue'
 
 const { theme } = useData()
-const props = defineProps([
-  'name',
-  'count',
-  'slug',
-  'sizeXl',
-  'sizeSm',
-  'activeCompareMethod',
-])
+
+interface Props {
+  name: string
+  count?: number
+  slug?: string
+  sizeXl?: boolean | string
+  sizeSm?: boolean | string
+  activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
+}
+
+const props = defineProps<Props>()
 const href = `${theme.value.tagsBaseUrl}/${props.slug}/1`
 const className =
   'text-center rounded-full text-lg py-1 px-4 ' +

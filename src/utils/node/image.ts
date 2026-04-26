@@ -56,7 +56,7 @@ export function getImageDimensions(
   }
 }
 
-/** Получает размеры изображения из буфера */
+/** Gets image dimensions from a buffer */
 export function getImageSize(buffer: Buffer): ImageSizeResult {
   try {
     if (!Buffer.isBuffer(buffer)) {
@@ -71,6 +71,6 @@ export function getImageSize(buffer: Buffer): ImageSizeResult {
       type: dimensions.type,
     }
   } catch (error) {
-    throw new Error(`Failed to get image dimensions: ${(error as Error)?.message}`)
+    throw new Error(`Failed to get image dimensions: ${(error as Error)?.message}`, { cause: error })
   }
 }

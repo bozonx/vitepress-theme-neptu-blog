@@ -25,9 +25,18 @@ import BtnLink from '../BtnLink.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts } from '../../utils/shared/index.ts'
 
-const props = defineProps(['localePosts'])
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{ localePosts?: PostLite[] }>()
 const { localeIndex, theme } = useData()
-const allPosts = inject<Record<string, any[]>>('posts', {})
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const sorted = sortPosts(localePosts, theme.value.popularPosts?.sortBy, true)
 const posts = sorted.slice(0, theme.value.perPage)
@@ -35,7 +44,7 @@ const showMorePosts = localePosts.length > theme.value.perPage
 </script>
 
 <style>
-/* Эффект матового стекла для популярных постов */
+/* Frosted glass effect for popular posts */
 .home-popular-posts {
   position: relative;
 }
@@ -53,7 +62,7 @@ const showMorePosts = localePosts.length > theme.value.perPage
   animation: glassmorphism-fade-in 0.6s ease-out;
 }
 
-/* Эффекты при наведении */
+/* Hover effects */
 .dark .home-popular-posts .card-item:hover,
 .home-popular-posts .card-item:hover {
   background: rgba(0, 0, 0, 0.4);

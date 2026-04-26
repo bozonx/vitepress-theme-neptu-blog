@@ -7,7 +7,7 @@ import BaseLink from '../BaseLink.vue'
 const { page, theme, localeIndex } = useData()
 const rawDate = page.value.frontmatter.date
 
-// Список поддерживаемых языков (европейские + ближневосточные)
+// List of supported languages (European + Middle Eastern)
 const supportedLanguages = [
   'en',
   'ru',
@@ -41,30 +41,30 @@ const supportedLanguages = [
   'tr',
 ]
 
-// Проверяем, поддерживается ли язык
-const isLanguageSupported = (language: any) => supportedLanguages.includes(language)
+// Check if the language is supported
+const isLanguageSupported = (language: string) => supportedLanguages.includes(language)
 
-// Получаем год и месяц для создания ссылок
+// Extract year and month for link generation
 const dateObj = rawDate ? new Date(rawDate) : null
 const year = dateObj ? dateObj.getUTCFullYear() : null
 const month = dateObj ? dateObj.getUTCMonth() + 1 : null
 
-// Используем поддерживаемый язык или fallback на английский
+// Use supported language or fallback to English
 const effectiveLang = isLanguageSupported(localeIndex.value)
   ? localeIndex.value
   : 'en'
 const localeDate = makeHumanDate(rawDate, effectiveLang) || ''
 
-// Функция для определения, является ли элемент годом
-const isYear = (item: any) => {
-  // Убираем точки и другие символы для проверки года
+// Determine whether a token represents a year
+const isYear = (item: string) => {
+  // Strip non-digit characters for year validation
   const cleanItem = item.replace(/[^\d]/g, '')
   return cleanItem.length === 4 && /^\d{4}$/.test(cleanItem)
 }
 
-// Функция для определения, является ли элемент месяцем
-const isMonth = (item: any) => {
-  // Исключаем служебные слова и короткие элементы
+// Determine whether a token represents a month name
+const isMonth = (item: string) => {
+  // Exclude prepositions and short tokens
   const excludedWords = [
     'de',
     'г',
@@ -100,7 +100,7 @@ const isMonth = (item: any) => {
   ]
   const cleanItem = item.replace(/[^\wа-яё]/gi, '').toLowerCase()
 
-  // Проверяем, что это не служебное слово и достаточно длинное
+  // Ensure it is not a preposition and is long enough
   return (
     cleanItem.length >= 3 &&
     !excludedWords.includes(cleanItem) &&
@@ -108,7 +108,7 @@ const isMonth = (item: any) => {
   )
 }
 
-// Показываем предупреждение в dev режиме для неподдерживаемых языков
+// Warn in dev mode for unsupported languages
 if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
   console.warn(
     `[PostDate] Language "${localeIndex.value}" is not fully supported. Using English fallback. ` +
@@ -120,25 +120,23 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
 <template>
   <div v-if="rawDate" class="text-base muted post-date">
     <time :datetime="rawDate" class="space-x-1">
-      <template v-for="item in localeDate.split(' ')">
-        <!-- Ссылка на год -->
+      <template v-for="item in localeDate.split(' ')" :key="item">
+        <!-- Year link -->
         <BaseLink
           v-if="isYear(item)"
-          :key="`year-${item}`"
           :href="`${theme.archiveBaseUrl}/${year}/1`"
         >
           {{ item }}
         </BaseLink>
-        <!-- Ссылка на месяц -->
+        <!-- Month link -->
         <BaseLink
           v-else-if="isMonth(item)"
-          :key="`month-${item}`"
           :href="`${theme.archiveBaseUrl}/${year}/month/${month}`"
         >
           {{ item }}
         </BaseLink>
-        <!-- Обычный текст -->
-        <span v-else :key="`text-${item}`">{{ item }}</span>
+        <!-- Plain text -->
+        <span v-else>{{ item }}</span>
       </template>
     </time>
   </div>

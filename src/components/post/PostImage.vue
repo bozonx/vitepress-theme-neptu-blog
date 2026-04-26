@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const props = defineProps(['src', 'description', 'alt', 'height', 'width'])
+const props = defineProps<{
+  src?: string
+  description?: string
+  alt?: string
+  height?: number | string
+  width?: number | string
+}>()
 </script>
 
 <template>

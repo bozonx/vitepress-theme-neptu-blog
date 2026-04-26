@@ -25,7 +25,7 @@ const btnText = theme.value.t.listenPodcast
       {{ btnText }}
     </template>
 
-    <template v-for="(link, name) in (fm.podcasts || {})">
+    <template v-for="(link, name) in (fm.podcasts || {})" :key="String(name)">
       <MenuItem v-if="link" :href="link" :hide-external-icon="true">
         <span class="flex">
           <span class="mr-2">

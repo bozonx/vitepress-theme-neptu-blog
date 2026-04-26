@@ -65,7 +65,7 @@ watchEffect(() => {
   background-repeat: no-repeat;
   background-position-x: center;
   background-attachment: fixed;
-  /* Плавная анимация для параллакс эффекта */
+  /* Smooth animation for parallax effect */
   transition: background-position-y 0.1s ease-out;
 }
 

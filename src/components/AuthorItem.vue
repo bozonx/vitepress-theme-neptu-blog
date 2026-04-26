@@ -6,7 +6,7 @@
     <h2 class="card-item-header">{{ props.item.name }}</h2>
 
     <div class="md:flex w-full">
-      <!-- Картинка автора -->
+      <!-- Author image -->
       <div v-if="props.item.image" class="card-item-img-col">
         <img
           :src="props.item.image"
@@ -19,7 +19,7 @@
         />
       </div>
 
-      <!-- Описание автора -->
+      <!-- Author description -->
       <div class="max-md:mt-5 flex-1 author-content">
         <p v-if="props.item.description" class="card-item-description">
           {{ props.item.description }}
@@ -37,6 +37,16 @@
 import { useData } from 'vitepress'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
-const props = defineProps(['item'])
+interface AuthorItem {
+  id: string
+  name?: string
+  image?: string
+  imageHeight?: number
+  imageWidth?: number
+  description?: string
+  count?: number
+}
+
+const props = defineProps<{ item: AuthorItem }>()
 const { theme, localeIndex } = useData()
 </script>

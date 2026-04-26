@@ -3,10 +3,21 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
 import PreviewWithImg from './PreviewWithImg.vue'
-import PreviewNoImg from './PreviewNoImg.vue'
 
 const { lang, theme } = useData()
-const props = defineProps(['item'])
+interface PreviewItem {
+  url: string
+  title: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string; count?: number }>
+  preview?: string
+  authorId?: string
+  thumbnail?: string
+  coverHeight?: number | string
+  coverWidth?: number | string
+}
+
+const props = defineProps<{ item: PreviewItem }>()
 const params = computed(() => ({
   tags: props.item.tags,
   date: props.item.date,
@@ -14,7 +25,9 @@ const params = computed(() => ({
   preview: String(props.item?.preview).trim().replace(/\.$/, '') + ' ...',
   authorName:
     theme.value.showAuthorInPostList &&
-    theme.value.authors?.find((item: any) => item.id === props.item.authorId)?.name,
+    theme.value.authors?.find(
+      (item: { id?: string; name?: string }) => item.id === props.item.authorId
+    )?.name,
 }))
 </script>
 
@@ -23,12 +36,10 @@ const params = computed(() => ({
     <h2 class="card-item-header">{{ props.item.title }}</h2>
 
     <PreviewWithImg
-      v-if="item.thumbnail"
       v-bind="params"
       :thumbnail="props.item.thumbnail"
       :cover-height="props.item.coverHeight"
       :cover-width="props.item.coverWidth"
     />
-    <PreviewNoImg v-else v-bind="params" />
   </a>
 </template>

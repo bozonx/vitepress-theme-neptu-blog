@@ -25,7 +25,16 @@ import BtnLink from '../BtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'
 
-const props = defineProps(['localePosts'])
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{ localePosts?: PostLite[] }>()
 const { theme, localeIndex } = useData()
 const allTags = makeTagsList(props.localePosts)
 const tags = allTags

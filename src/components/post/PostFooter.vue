@@ -10,9 +10,18 @@ import PostTags from './PostTags.vue'
 import EditLink from '../EditLink.vue'
 import BtnLink from '../BtnLink.vue'
 
-const props = defineProps(['localePosts'])
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{ localePosts?: PostLite[] }>()
 const { localeIndex, theme } = useData()
-const allPosts = inject<Record<string, any[]>>('posts', {})
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 </script>
 

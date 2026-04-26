@@ -2,7 +2,10 @@
 import ToTheTopDesktop from "./ToTheTopDesktop.vue";
 import ToTheTopMobile from "./ToTheTopMobile.vue";
 
-const props = defineProps(["scrollY", "isMobile"]);
+const props = defineProps<{
+  scrollY: number
+  isMobile: boolean
+}>();
 </script>
 
 <template>

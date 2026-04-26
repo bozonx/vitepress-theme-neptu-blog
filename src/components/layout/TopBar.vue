@@ -13,7 +13,17 @@ const emit = defineEmits<{
   (e: 'openSearch'): void
   (e: 'openDrawer'): void
 }>()
-const resolveItemShowClass = (item: any) => {
+interface LinkItem {
+  desktopOnly?: boolean
+  mobileOnly?: boolean
+  class?: string
+  iconClass?: string
+  text?: string
+  href?: string
+  icon?: string
+}
+
+const resolveItemShowClass = (item: LinkItem) => {
   if (item.desktopOnly) return 'max-lg:hidden'
   else if (item.mobileOnly) return 'lg:hidden'
   // both
@@ -53,7 +63,7 @@ const links = theme.value.topBar
     </div>
 
     <ul v-if="links.length" class="flex space-x-1">
-      <li v-for="item in links" :class="resolveItemShowClass(item)">
+      <li v-for="(item, index) in links" :key="item.href || index" :class="resolveItemShowClass(item)">
         <Btn
           v-bind="item"
           :no-bg="true"
@@ -73,7 +83,8 @@ const links = theme.value.topBar
 
     <ul v-if="theme.topBar?.socialLinks?.length" class="flex space-x-1">
       <li
-        v-for="item in theme.topBar.socialLinks"
+        v-for="(item, index) in theme.topBar.socialLinks"
+        :key="item.href || index"
         :class="resolveItemShowClass(item)"
       >
         <Btn :no-bg="true" v-bind="item" :class="[item.class]" />

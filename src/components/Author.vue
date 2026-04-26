@@ -2,7 +2,7 @@
   <div
     class="author-container flex flex-col md:flex-row gap-x-6 gap-y-1 items-start"
   >
-    <!-- Картинка автора -->
+    <!-- Author image -->
     <figure v-if="author?.image" class="author-image-container">
       <a :href="author.image" class="lightbox">
         <img
@@ -16,7 +16,7 @@
       </a>
     </figure>
 
-    <!-- Контент автора -->
+    <!-- Author content -->
     <div class="author-content flex-1">
       <div class="mb-6 vp-doc" v-html="author?.description"></div>
       <SocialMediaLinks v-if="author?.links" :links="author.links" />
@@ -28,7 +28,16 @@
 import SocialMediaLinks from './SocialMediaLinks.vue'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
-const props = defineProps(['author'])
+interface Author {
+  name?: string
+  image?: string
+  imageHeight?: number
+  imageWidth?: number
+  description?: string
+  links?: Array<{ type: string; url: string }>
+}
+
+const props = defineProps<{ author?: Author }>()
 </script>
 
 <style scoped>
@@ -37,7 +46,7 @@ const props = defineProps(['author'])
   margin: auto;
 }
 
-/* На экранах md и больше */
+/* On md screens and larger */
 @media (min-width: 768px) {
   .author-image-container {
     width: 280px;

@@ -7,8 +7,22 @@ import PreviewList from '../PreviewList.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
 import UtilPageHeader from './UtilPageHeader.vue'
 
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+interface Author {
+  id: string
+  name?: string
+}
+
 const props = defineProps<{
-  localePosts?: any[]
+  localePosts?: PostLite[]
   curPage?: string | number
   perPage?: number
   paginationMaxItems?: number
@@ -17,17 +31,17 @@ const props = defineProps<{
 }>()
 const { localeIndex, theme, frontmatter } = useData()
 const route = useRoute()
-const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const curPage = Number(props.curPage)
-// Фильтруем посты по автору
-const filtered = localePosts.filter((post: any) => post.authorId === props.authorId)
+// Filter posts by author
+const filtered = localePosts.filter((post) => post.authorId === props.authorId)
 const sorted = sortPosts(
   filtered,
   theme.value.popularPosts?.sortBy,
   isPopularRoute(route.path, theme)
 )
-const author = theme.value.authors.find((item: any) => item.id === props.authorId)
+const author = theme.value.authors.find((item: Author) => item.id === props.authorId)
 </script>
 
 <template>

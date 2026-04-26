@@ -13,7 +13,7 @@ interface Props {
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
   icon?: string
   text?: string
-  iconClass?: any
+  iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
   noBg?: boolean | string
   primary?: boolean | string
   hideExternalIcon?: boolean

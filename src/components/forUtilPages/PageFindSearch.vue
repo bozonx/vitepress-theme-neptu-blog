@@ -17,31 +17,31 @@ declare global {
 const MODAL_ID = 'search-modal'
 const CLOSE_BUTTON_CLASS = 'search-modal-close-button'
 const MOBILE_CLOSE_BUTTON_CLASS = 'search-modal-mobile-close-button'
-const pageFind = ref<any>(null)
-// Флаг для отслеживания состояния модального окна
+const pageFind = ref<InstanceType<typeof window.PagefindUI> | null>(null)
+// Flag for tracking modal state
 const isModalOpen = ref(false)
 
-// Внешняя функция для показа модального окна поиска
+// External function to show the search modal
 const show = () => {
   showSearchModal()
 }
 
-// Экспортируем функцию show для использования извне
+// Expose show for external usage
 defineExpose({ show })
 
 const showSearchModal = () => {
   const searchModal = document.getElementById(MODAL_ID)
 
   if (searchModal) {
-    // Показываем модальное окно и добавляем классы для анимации
+    // Show modal and add animation classes
     searchModal.style.display = 'flex'
     searchModal.classList.add('active', 'fade-in')
     isModalOpen.value = true
 
-    // Добавляем класс modal-open к body для блокировки скролла
+    // Add modal-open class to body to lock scroll
     document.body.classList.add('modal-open')
 
-    // Добавляем запись в историю браузера для обработки кнопки "Назад"
+    // Push browser history entry for Back button handling
     history.pushState({ modalOpen: true }, '', window.location.href)
 
     if (window.PagefindUI) {
@@ -67,19 +67,19 @@ const hideSearchModal = () => {
   const searchModal = document.getElementById(MODAL_ID)
 
   if (searchModal) {
-    // Добавляем анимацию исчезновения
+    // Add fade-out animation
     searchModal.classList.remove('fade-in')
     searchModal.classList.add('fade-out')
 
-    // Ждем завершения анимации перед скрытием
+    // Wait for animation to finish before hiding
     setTimeout(() => {
       searchModal.style.display = 'none'
       searchModal.classList.remove('active', 'fade-out')
       isModalOpen.value = false
 
-      // Удаляем класс modal-open с body для разблокировки скролла
+      // Remove modal-open class from body to unlock scroll
       document.body.classList.remove('modal-open')
-    }, 300) // 300ms = длительность анимации
+    }, 300)
   }
 
   if (pageFind.value) {
@@ -94,7 +94,7 @@ const createSearchModal = () => {
   searchModal.id = MODAL_ID
   searchModal.className = 'search-modal'
 
-  // Добавляем содержимое модального окна
+  // Add modal content
   searchModal.innerHTML = `
   <div class="search-modal-inner-wrapper">
     <button class="${CLOSE_BUTTON_CLASS}">×</button>
@@ -130,9 +130,9 @@ const handleKeydown = (e: any) => {
   }
 }
 
-// Обработчик события popstate для кнопки "Назад" браузера
-const handlePopState = (event: any) => {
-  // Если модальное окно открыто и пользователь нажал "Назад"
+// Handle popstate for the browser Back button
+const handlePopState = (event: PopStateEvent) => {
+  // If modal is open and user pressed Back
   if (isModalOpen.value && (!event.state || !event.state.modalOpen)) {
     hideSearchModal()
   }

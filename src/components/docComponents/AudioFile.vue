@@ -6,56 +6,56 @@ import { useData } from 'vitepress'
 
 const { theme } = useData()
 
-// Пропсы компонента
+// Component props
 const props = defineProps({
-  // URL аудио файла
+  // Audio file URL
   url: { type: String, required: true },
-  // Если не правильно определилось имя то укажите его здесь самостоятельно
+  // If the filename is not detected correctly, specify it manually
   filename: { type: String, default: '' },
-  // CSS классы
+  // CSS classes
   containerClass: { type: String, default: '' },
-  // Отключить кнопки
+  // Disable buttons
   disabled: { type: Boolean, default: false },
 })
 
-// Состояние отключения кнопок
+// Button disabled state
 const isDisabled = ref(props.disabled)
 
-// Вычисляемое имя файла для скачивания (используется в download атрибуте)
+// Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {
   if (props.filename) {
     return props.filename
   }
 
-  // Извлекаем полное имя файла с расширением из URL
+  // Extract full filename with extension from URL
   return props.url.split('/').pop() || 'audio file'
 })
 
-// Валидация URL для безопасности
-const isValidUrl = (url: any) => {
+// URL validation for security
+const isValidUrl = (url: unknown) => {
   if (!url || typeof url !== 'string') {
     return false
   }
 
   try {
-    // Сначала пробуем стандартную валидацию
+    // Try standard validation first
     new URL(url)
     return true
   } catch {
-    // Если не прошла стандартная валидация, проверяем на относительные пути и URL с пробелами
-    // Разрешаем относительные пути (начинающиеся с /)
+    // If standard validation failed, check for relative paths and URLs with spaces
+    // Allow relative paths (starting with /)
     if (url.startsWith('/')) {
       return true
     }
 
-    // Разрешаем URL с пробелами (закодированные или нет)
-    // Проверяем базовую структуру URL
+    // Allow URLs with spaces (encoded or not)
+    // Check basic URL structure
     const urlPattern = /^(https?:\/\/|\.\/|\/|data:|blob:)/i
     if (urlPattern.test(url)) {
       return true
     }
 
-    // Проверяем, что это не пустая строка и содержит хотя бы точку (для файлов)
+    // Ensure it is not an empty string and contains at least a dot (for files)
     if (url.includes('.') && url.length > 3) {
       return true
     }
@@ -64,29 +64,29 @@ const isValidUrl = (url: any) => {
   }
 }
 
-// Кодирование URL для корректной работы с пробелами и специальными символами
-const encodeAudioUrl = (url: any) => {
+// URL encoding to handle spaces and special characters correctly
+const encodeAudioUrl = (url: string) => {
   if (!url) return url
 
   try {
-    // Если это полный URL, кодируем только имя файла
+    // For full URLs, encode only the filename
     if (url.startsWith('http://') || url.startsWith('https://')) {
       const urlObj = new URL(url)
-      // Кодируем только путь, сохраняя остальные части URL
+      // Encode only the path, preserving other URL parts
       urlObj.pathname = urlObj.pathname
         .split('/')
-        .map((segment: any) => (segment ? encodeURIComponent(segment) : segment))
+        .map((segment: string) => (segment ? encodeURIComponent(segment) : segment))
         .join('/')
       return urlObj.toString()
     }
 
-    // Для относительных путей кодируем весь путь
+    // For relative paths, encode the entire path
     return url
       .split('/')
       .map((segment: any) => (segment ? encodeURIComponent(segment) : segment))
       .join('/')
   } catch {
-    // Если не удалось разобрать URL, возвращаем исходный
+    // If URL parsing failed, return the original
     return url
   }
 }
@@ -95,7 +95,7 @@ const downloadFile = async () => {
   if (isDisabled.value) return
 
   try {
-    // Проверяем валидность URL
+    // Validate URL
     if (!isValidUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidUrlProvided
@@ -103,13 +103,13 @@ const downloadFile = async () => {
       return
     }
 
-    // Создаем временную ссылку для скачивания
+    // Create a temporary link for downloading
     const link = document.createElement('a')
     link.href = encodeAudioUrl(props.url)
     link.download = downloadFilename.value
     link.target = '_blank'
 
-    // Добавляем ссылку в DOM, кликаем и удаляем
+    // Append link to DOM, click it, then remove
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -117,12 +117,12 @@ const downloadFile = async () => {
     hasError.value = true
     errorMessage.value = theme.value.t.audioFile.errorDownloadingFile
     console.error('Error downloading file:', error)
-    // В случае ошибки открываем файл в новой вкладке
+    // On error, open the file in a new tab
     window.open(encodeAudioUrl(props.url), '_blank')
   }
 }
 
-// Состояние аудио плеера
+// Audio player state
 const audioRef = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
 const currentTime = ref(0)
@@ -134,7 +134,7 @@ const isPlayerVisible = ref(false)
 const isAudioLoaded = ref(false)
 const errorMessage = ref('')
 
-// Debounce функция для оптимизации производительности
+// Debounce function for performance optimization
 const debounce = (func: Function, wait: number) => {
   let timeout: any
   return function executedFunction(...args: any[]) {
@@ -147,12 +147,12 @@ const debounce = (func: Function, wait: number) => {
   }
 }
 
-// Методы управления аудио плеером
+// Audio player control methods
 const togglePlayPause = async () => {
   if (isDisabled.value || hasError.value) return
 
   try {
-    // Проверяем валидность URL перед воспроизведением
+    // Validate URL before playback
     if (!isValidUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidAudioUrlProvided
@@ -162,10 +162,10 @@ const togglePlayPause = async () => {
 
     if (!audioRef.value) return
 
-    // Если плеер не виден, показываем его и начинаем воспроизведение
+    // If player is not visible, show it and start playback
     if (!isPlayerVisible.value) {
       isPlayerVisible.value = true
-      // Ждем следующий тик для анимации появления плеера
+      // Wait for next tick for player appearance animation
       await nextTick()
       if (audioRef.value) {
         await audioRef.value.play()
@@ -173,7 +173,7 @@ const togglePlayPause = async () => {
       return
     }
 
-    // Если плеер виден, переключаем воспроизведение/паузу
+    // If player is visible, toggle play/pause
     if (isPlaying.value) {
       audioRef.value.pause()
     } else {
@@ -194,7 +194,7 @@ const stopAudio = () => {
   }
 }
 
-// Метод для скрытия плеера
+// Hide player
 const hidePlayer = () => {
   isPlayerVisible.value = false
   if (audioRef.value) {
@@ -204,13 +204,13 @@ const hidePlayer = () => {
   }
 }
 
-const seekTo = (time: any) => {
+const seekTo = (time: number) => {
   if (audioRef.value && !isDisabled.value) {
     audioRef.value.currentTime = time
   }
 }
 
-const setVolume = (newVolume: any) => {
+const setVolume = (newVolume: number | string) => {
   if (audioRef.value) {
     const volumeValue = parseFloat(newVolume)
     audioRef.value.volume = volumeValue
@@ -218,8 +218,8 @@ const setVolume = (newVolume: any) => {
   }
 }
 
-// Обработка клика по прогресс-бару
-const handleProgressClick = (event: any) => {
+// Progress bar click handler
+const handleProgressClick = (event: MouseEvent) => {
   if (isDisabled.value || !duration.value) return
 
   const progressBar = event.currentTarget
@@ -231,11 +231,11 @@ const handleProgressClick = (event: any) => {
   seekTo(newTime)
 }
 
-// Обработка клавиатуры для прогресс-бара
-const handleProgressKeydown = (event: any) => {
+// Progress bar keyboard handler
+const handleProgressKeydown = (event: KeyboardEvent) => {
   if (isDisabled.value || !duration.value) return
 
-  const step = duration.value * 0.05 // 5% от общей длительности
+  const step = duration.value * 0.05 // 5% of total duration
   let newTime = currentTime.value
 
   switch (event.key) {
@@ -264,18 +264,18 @@ const handleProgressKeydown = (event: any) => {
   seekTo(newTime)
 }
 
-// Обработчики событий аудио
+// Audio event handlers
 const handleLoadedMetadata = () => {
   if (audioRef.value) {
     duration.value = audioRef.value.duration
     isLoading.value = false
     isAudioLoaded.value = true
-    // Устанавливаем громкость после загрузки метаданных
+    // Set volume after metadata load
     audioRef.value.volume = volume.value
   }
 }
 
-// Debounced версия handleTimeUpdate для оптимизации производительности
+// Debounced version of handleTimeUpdate for performance optimization
 const handleTimeUpdateDebounced = debounce(() => {
   if (audioRef.value) {
     currentTime.value = audioRef.value.currentTime
@@ -312,7 +312,7 @@ const handleError = (event: any) => {
   isPlaying.value = false
   isAudioLoaded.value = false
 
-  // Более детальная обработка ошибок
+  // Detailed error handling
   const error = event.target.error
   if (error) {
     switch (error.code) {
@@ -341,7 +341,7 @@ const handleError = (event: any) => {
   }
 }
 
-// Форматирование времени
+// Time formatting
 const formatTime = (time: any) => {
   if (!time || !isFinite(time)) return '0:00'
 
@@ -350,7 +350,7 @@ const formatTime = (time: any) => {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
-// Форматирование процентов для прогресс-бара
+// Progress bar percentage formatting
 const progressPercent = computed(() => {
   if (!duration.value || !isFinite(duration.value)) {
     return 0
@@ -358,18 +358,18 @@ const progressPercent = computed(() => {
   return (currentTime.value / duration.value) * 100
 })
 
-// Инициализация при монтировании компонента
+// Initialize on component mount
 onMounted(() => {
-  // Обработчики событий теперь только в template, убираем дублирование
-  // Устанавливаем громкость по умолчанию
+  // Event handlers are now only in template, removing duplication
+  // Set default volume
   if (audioRef.value) {
     audioRef.value.volume = volume.value
   }
 })
 
-// Очистка при размонтировании
+// Cleanup on component unmount
 onUnmounted(() => {
-  // Очистка не нужна, так как обработчики только в template
+  // Cleanup is not needed because handlers are only in template
   if (audioRef.value) {
     audioRef.value.pause()
     audioRef.value.currentTime = 0
@@ -384,7 +384,7 @@ onUnmounted(() => {
     role="region"
     :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
   >
-    <!-- Скрытый audio элемент с lazy loading -->
+    <!-- Hidden audio element with lazy loading -->
     <audio
       ref="audioRef"
       :src="isPlayerVisible ? encodeAudioUrl(props.url) : undefined"
@@ -399,9 +399,9 @@ onUnmounted(() => {
       @error="handleError"
     />
 
-    <!-- Первая строка: кнопка play, название файла, кнопка скачать -->
+    <!-- First row: play button, filename, download button -->
     <div class="file-header">
-      <!-- Кнопка воспроизведения -->
+      <!-- Play button -->
       <Btn
         v-if="!isPlayerVisible"
         :primary="true"
@@ -423,7 +423,7 @@ onUnmounted(() => {
         @click="togglePlayPause"
       />
 
-      <!-- Информация о файле -->
+      <!-- File info -->
       <div class="file-info" :class="{ 'has-hint': $slots.default }">
         <div class="file-details">
           <div
@@ -438,7 +438,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- Кнопка скачивания -->
+      <!-- Download button -->
       <Btn
         icon="mdi:download"
         :disabled="isDisabled"
@@ -451,20 +451,20 @@ onUnmounted(() => {
       />
     </div>
 
-    <!-- Аудио плеер (показывается при нажатии на play) -->
+    <!-- Audio player (shown when play is clicked) -->
     <div
       v-if="isPlayerVisible"
       class="audio-player"
       role="group"
       :aria-label="`${theme.t.audioFile.audioFile} controls for ${downloadFilename}`"
     >
-      <!-- Основные контролы -->
+      <!-- Main controls -->
       <div
         class="player-controls"
         role="toolbar"
         :aria-label="theme.t.audioFile.audioFile + ' playback controls'"
       >
-        <!-- Кнопка воспроизведения/паузы -->
+        <!-- Play/pause button -->
         <Btn
           class="play-btn"
           :primary="true"
@@ -489,7 +489,7 @@ onUnmounted(() => {
           @click="togglePlayPause"
         />
 
-        <!-- Кнопка остановки -->
+        <!-- Stop button -->
         <Btn
           class="stop-btn"
           :disabled="isDisabled || hasError || !isPlaying"
@@ -501,7 +501,7 @@ onUnmounted(() => {
           @click="stopAudio"
         />
 
-        <!-- Кнопка скрытия плеера -->
+        <!-- Hide player button -->
         <Btn
           class="hide-btn"
           :title="theme.t.audioFile.hidePlayerTitle"

@@ -43,8 +43,14 @@ export function parseLocaleSite(srcDir: string, props: ParseLocaleSiteProps): un
 
 export function loadConfigYamlFile(srcDir: string, fileName: string): unknown {
   const absPath = path.join(srcDir, SITE_DIR_REL_PATH, fileName)
-  const content = fs.readFileSync(absPath, DEFAULT_ENCODE)
-  const obj = yaml.parse(content) as { body: string }
 
-  return yaml.parse(obj.body)
+  try {
+    const content = fs.readFileSync(absPath, DEFAULT_ENCODE)
+    const obj = yaml.parse(content) as { body: string }
+
+    return yaml.parse(obj.body)
+  } catch (error) {
+    console.warn(`Failed to load config file ${absPath}:`, (error as Error)?.message)
+    return {}
+  }
 }

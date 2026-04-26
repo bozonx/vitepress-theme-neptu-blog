@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import { Icon } from '@iconify/vue'
 import Btn from './Btn.vue'
@@ -15,8 +15,8 @@ const mouseLeaveDelayMs = 400
 const listOpen = ref(false)
 const opacity = ref(0)
 const mouseOverWholeEl = ref(false)
-let animationTimeout: any = null
-let leaveTimeout: any = null
+let animationTimeout: ReturnType<typeof setTimeout> | null = null
+let leaveTimeout: ReturnType<typeof setTimeout> | null = null
 
 const toggleList = () => {
   if (listOpen.value) {
@@ -30,7 +30,7 @@ const openList = () => {
   if (listOpen.value) return
 
   listOpen.value = true
-  // run on the next tick
+  // Run on the next tick to guarantee CSS transition fires
   setTimeout(() => (opacity.value = Number(listOpen.value)), 50)
 }
 
@@ -39,7 +39,7 @@ const closeList = () => {
 
   opacity.value = 0
 
-  clearTimeout(animationTimeout)
+  if (animationTimeout) clearTimeout(animationTimeout)
 
   animationTimeout = setTimeout(() => {
     listOpen.value = false
@@ -50,17 +50,17 @@ const closeList = () => {
 const handleWholeMouseEnter = () => {
   mouseOverWholeEl.value = true
 
-  clearTimeout(leaveTimeout)
+  if (leaveTimeout) clearTimeout(leaveTimeout)
 
   leaveTimeout = null
-  // run on the next tick
+  // Run on the next tick
   setTimeout(openList)
 }
 
 const handleWholeMouseLeave = () => {
   mouseOverWholeEl.value = false
 
-  clearTimeout(leaveTimeout)
+  if (leaveTimeout) clearTimeout(leaveTimeout)
 
   leaveTimeout = setTimeout(() => {
     leaveTimeout = null
@@ -68,6 +68,11 @@ const handleWholeMouseLeave = () => {
     if (!mouseOverWholeEl.value) closeList()
   }, mouseLeaveDelayMs)
 }
+
+onUnmounted(() => {
+  if (animationTimeout) clearTimeout(animationTimeout)
+  if (leaveTimeout) clearTimeout(leaveTimeout)
+})
 </script>
 
 <template>

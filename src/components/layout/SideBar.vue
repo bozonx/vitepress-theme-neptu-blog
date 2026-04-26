@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ref, watchEffect, inject } from 'vue'
+import { ref, watch, inject, onUnmounted } from 'vue'
 
 import { SIDEBAR_WIDTH } from '../../constants.ts'
 import SideBarFooter from './SideBarFooter.vue'
@@ -9,18 +9,27 @@ import SideBarItems from './SideBarItems.vue'
 import { Icon } from '@iconify/vue'
 import SideBarTags from './SideBarTags.vue'
 
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
   isMobile: boolean
-  localePosts?: any[]
+  localePosts?: PostLite[]
 }>()
 const { theme, localeIndex } = useData()
-const allPosts = inject<Record<string, any[]>>('posts', {})
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const animationTimeMs = 400
 const drawerOpen = ref(!props.isMobile)
 const animationLeftPx = ref(-SIDEBAR_WIDTH)
 const backdropOpacity = ref(0)
-let animationTimeout: any = null
+let animationTimeout: ReturnType<typeof setTimeout> | null = null
 
 const sideBarConfig = theme.value.sideBar || {}
 const links = sideBarConfig
@@ -79,7 +88,7 @@ const closeDrawer = () => {
   animationLeftPx.value = -SIDEBAR_WIDTH
   backdropOpacity.value = 0
 
-  clearTimeout(animationTimeout)
+  if (animationTimeout) clearTimeout(animationTimeout)
 
   animationTimeout = setTimeout(() => {
     drawerOpen.value = false
@@ -94,8 +103,15 @@ defineExpose({
   },
 })
 
-watchEffect(() => {
-  drawerOpen.value = !props.isMobile
+watch(
+  () => props.isMobile,
+  (isMobile) => {
+    drawerOpen.value = !isMobile
+  }
+)
+
+onUnmounted(() => {
+  if (animationTimeout) clearTimeout(animationTimeout)
 })
 </script>
 

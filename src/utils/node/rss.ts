@@ -85,7 +85,7 @@ export interface RssFormatInfo {
   generator: (feed: any) => string
 }
 
-/** Возвращает информацию о формате RSS */
+/** Returns information about the RSS format */
 export function getFormatInfo(format: string): RssFormatInfo {
   const formats: Record<string, RssFormatInfo> = {
     rss: {
@@ -111,7 +111,7 @@ export function getFormatInfo(format: string): RssFormatInfo {
   return formats[format] ?? formats.rss!
 }
 
-/** Получает настройки форматов RSS из конфигурации */
+/** Gets RSS format settings from configuration */
 export function getRssFormats(config: any): string[] {
   return config.userConfig.rssFormats || ['rss', 'atom', 'json']
 }

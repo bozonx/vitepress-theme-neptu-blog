@@ -2,7 +2,7 @@
 import BtnLink from "../BtnLink.vue";
 import { useData } from "vitepress";
 
-const { theme, localeIndex } = useData();
+const { theme } = useData();
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const { theme, localeIndex } = useData();
     </div>
 
     <ul v-if="theme.footer.links?.length" class="flex flex-wrap gap-x-9 items-center">
-      <li v-for="item in theme.footer.links">
+      <li v-for="(item, index) in theme.footer.links" :key="item.href + index">
         <BtnLink :text="item.text" :href="item.href" class="underline" />
       </li>
     </ul>

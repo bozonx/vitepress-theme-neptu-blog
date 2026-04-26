@@ -29,40 +29,40 @@ export interface AnalyticsStats {
 }
 
 export async function mergeWithAnalytics(
-  posts: any[],
+  posts: Record<string, unknown>[],
   gaCfg: GoogleAnalyticsConfig | null | undefined
-): Promise<any[]> {
-  // Валидация конфигурации
+): Promise<Record<string, unknown>[]> {
+  // Configuration validation
   if (!gaCfg?.propertyId) {
-    console.warn('⚠️ Google Analytics не настроен: отсутствует propertyId')
+    console.warn('⚠️ Google Analytics is not configured: propertyId is missing')
     return posts
   }
 
-  // Проверяем наличие учетных данных (поддерживаем ADC)
+  // Check for credentials (ADC is supported)
   if (!gaCfg?.credentialsJson && !gaCfg?.credentialsPath) {
     console.log(
-      'ℹ️ Учетные данные не указаны, будет использован Application Default Credentials'
+      'ℹ️ No credentials specified, using Application Default Credentials'
     )
     console.log(
-      '   Убедитесь, что установлена переменная GOOGLE_APPLICATION_CREDENTIALS'
+      '   Make sure the GOOGLE_APPLICATION_CREDENTIALS environment variable is set'
     )
-    console.log('   или выполнен gcloud auth application-default login')
+    console.log('   or run gcloud auth application-default login')
   }
 
   try {
     let stats: Record<string, AnalyticsStats> | null = null
 
     if (globalThis.loadingGaStatsPromise) {
-      console.log('📦 Используем кэшированные данные Google Analytics')
+      console.log('📦 Using cached Google Analytics data')
     } else {
-      console.log('🔍 Загружаем статистику из Google Analytics...')
+      console.log('🔍 Loading statistics from Google Analytics...')
       globalThis.loadingGaStatsPromise = loadGoogleAnalytics(gaCfg)
     }
 
     stats = await globalThis.loadingGaStatsPromise!
 
     if (!stats || Object.keys(stats).length === 0) {
-      console.warn('⚠️ Нет данных из Google Analytics')
+      console.warn('⚠️ No data from Google Analytics')
 
       return posts
     }
@@ -78,13 +78,13 @@ export async function mergeWithAnalytics(
     })
 
     console.log(
-      `✅ Обработано ${postsWithStatsCount} постов с аналитикой из ${posts.length} постов`
+      `✅ Processed ${postsWithStatsCount} posts with analytics out of ${posts.length} posts`
     )
 
     return postsWithStats
   } catch (error) {
     console.error(
-      '❌ Ошибка при загрузке данных из Google Analytics:',
+      '❌ Error loading data from Google Analytics:',
       (error as Error).message
     )
 
@@ -101,17 +101,17 @@ export async function loadGoogleAnalytics(
 
     if (gaCfg.credentialsJson) {
       credentials = JSON.parse(gaCfg.credentialsJson)
-      console.log('🔑 Используем credentialsJson')
+      console.log('🔑 Using credentialsJson')
     } else if (gaCfg.credentialsPath) {
       credentials = JSON.parse(
         await fs.readFile(gaCfg.credentialsPath, 'utf-8')
       )
-      console.log(`🔑 Используем файл: ${gaCfg.credentialsPath}`)
+      console.log(`🔑 Using file: ${gaCfg.credentialsPath}`)
     } else {
-      console.log('🔑 Используем Application Default Credentials')
+      console.log('🔑 Using Application Default Credentials')
     }
 
-    const authClient: any = credentials
+    const authClient: unknown = credentials
       ? new google.auth.JWT({
           email: credentials.client_email,
           key: credentials.private_key,
@@ -119,7 +119,7 @@ export async function loadGoogleAnalytics(
         })
       : await new google.auth.GoogleAuth({ scopes }).getClient()
 
-    console.log('✅ Аутентификация выполнена')
+    console.log('✅ Authentication completed')
 
     const analyticsdata = google.analyticsdata({
       version: GA_VERSION,
@@ -130,9 +130,9 @@ export async function loadGoogleAnalytics(
 
     startDate.setDate(startDate.getDate() - (gaCfg.dataPeriodDays || 30))
 
-    console.log('🔍 Запрашиваем данные из Google Analytics...')
+    console.log('🔍 Requesting data from Google Analytics...')
     console.log(
-      `📅 Период: ${startDate.toISOString().split('T')[0]} - ${endDate.toISOString().split('T')[0]}`
+      `📅 Period: ${startDate.toISOString().split('T')[0]} - ${endDate.toISOString().split('T')[0]}`
     )
     console.log(`🏷️ Property ID: ${gaCfg.propertyId}`)
 
@@ -166,30 +166,30 @@ export async function loadGoogleAnalytics(
       },
     }
 
-    console.log('📊 Отправляем запрос к Google Analytics Data API...')
+    console.log('📊 Sending request to Google Analytics Data API...')
 
-    const response = await analyticsdata.properties.runReport(requestParams as any)
+    const response = await analyticsdata.properties.runReport(requestParams as unknown)
 
     const stats: Record<string, AnalyticsStats> = {}
 
     if (!response.data.rows || response.data.rows.length === 0) {
-      console.warn('⚠️ Нет данных в ответе от Google Analytics 4')
-      console.warn('   Возможные причины:')
-      console.warn('   - Недостаточно данных за указанный период')
-      console.warn('   - Неправильный фильтр по pagePath')
-      console.warn('   - Property ID не содержит данных')
+      console.warn('⚠️ No data in response from Google Analytics 4')
+      console.warn('   Possible reasons:')
+      console.warn('   - Not enough data for the specified period')
+      console.warn('   - Incorrect filter by pagePath')
+      console.warn('   - Property ID contains no data')
       return {}
     }
 
     console.log(
-      `📊 Ответ от Google Analytics: Найдено ${response.data.rows?.length || 0} записей`
+      `📊 Response from Google Analytics: Found ${response.data.rows?.length || 0} records`
     )
-    console.log('🔗 Первые 5 URL:')
-    response.data.rows.slice(0, 5).forEach((row: any, index: number) => {
+    console.log('🔗 First 5 URLs:')
+    response.data.rows.slice(0, 5).forEach((row: unknown, index: number) => {
       console.log(`  ${index + 1}. ${row.dimensionValues[0].value}`)
     })
 
-    response.data.rows.forEach((row: any) => {
+    response.data.rows.forEach((row: unknown) => {
       const pagePath = row.dimensionValues[0].value
       const metrics = row.metricValues
 
@@ -201,10 +201,10 @@ export async function loadGoogleAnalytics(
     })
 
     return stats
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(
-      '❌ Ошибка при запросе к Google Analytics API:',
-      error?.message
+      '❌ Error requesting Google Analytics API:',
+      (error as Error)?.message
     )
 
     if (error?.code === 'ENOENT') {
@@ -212,32 +212,32 @@ export async function loadGoogleAnalytics(
         ? 'credentialsJson'
         : 'credentialsPath'
       console.error(
-        '❌ Файл с учетными данными не найден:',
+        '❌ Credentials file not found:',
         credentialsSource === 'credentialsPath'
           ? gaCfg.credentialsPath
           : 'credentialsJson'
       )
     } else if (error?.code === 403) {
-      console.error('❌ Нет доступа к Google Analytics. Проверьте:')
-      console.error('   - Правильность propertyId')
-      console.error('   - Права доступа Service Account к Google Analytics')
-      console.error('   - Включен ли Google Analytics Data API в проекте')
+      console.error('❌ No access to Google Analytics. Check:')
+      console.error('   - Correctness of propertyId')
+      console.error('   - Service Account access rights to Google Analytics')
+      console.error('   - Whether Google Analytics Data API is enabled in the project')
     } else if (error?.code === 400) {
-      console.error('❌ Неверный запрос к Google Analytics API')
+      console.error('❌ Invalid request to Google Analytics API')
       if (error?.details) {
-        console.error('   Детали ошибки:', error.details)
+        console.error('   Error details:', (error as Record<string, unknown>).details)
       }
     } else if (error?.code === 401) {
       console.error(
-        '❌ Ошибка аутентификации. Проверьте учетные данные Service Account'
+        '❌ Authentication error. Check Service Account credentials'
       )
     } else if (error?.code === 429) {
-      console.error('❌ Превышен лимит запросов к Google Analytics API')
+      console.error('❌ Google Analytics API rate limit exceeded')
     } else {
-      console.error('❌ Неизвестная ошибка:', error?.code || 'N/A')
+      console.error('❌ Unknown error:', (error as Record<string, unknown>)?.code || 'N/A')
       if (error?.response?.data) {
         console.error(
-          '   Ответ API:',
+          '   API response:',
           JSON.stringify(error.response.data, null, 2)
         )
       }

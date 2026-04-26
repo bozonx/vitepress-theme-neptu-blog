@@ -1,6 +1,13 @@
 import { arraysIntersection } from './array.ts'
 import type { Post } from '../../types.d.ts'
 
+/** Safely parse a date string/number into a timestamp. Returns 0 for invalid values. */
+function safeDateTime(date: string | number | Date | null | undefined): number {
+  if (!date) return 0
+  const time = new Date(date).getTime()
+  return Number.isFinite(time) ? time : 0
+}
+
 /** Sorts posts by popularity or by date. */
 export function sortPosts(
   posts: Post[] | null | undefined,
@@ -29,9 +36,9 @@ export function sortPosts(
       if (aHasStats && !bHasStats) return -1
       if (!aHasStats && bHasStats) return 1
 
-      return +new Date(b.date || 0) - +new Date(a.date || 0)
+      return safeDateTime(b.date) - safeDateTime(a.date)
     } else {
-      return +new Date(b.date || 0) - +new Date(a.date || 0)
+      return safeDateTime(b.date) - safeDateTime(a.date)
     }
   })
 }
@@ -96,7 +103,7 @@ export function sortSimilarPosts(
         return bPopularity - aPopularity
       }
 
-      return +new Date(b.date || 0) - +new Date(a.date || 0)
+      return safeDateTime(b.date) - safeDateTime(a.date)
     })
     .slice(0, limit)
 }

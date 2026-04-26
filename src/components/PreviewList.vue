@@ -4,13 +4,24 @@ import Pagination from './Pagination.vue'
 import { useData } from 'vitepress'
 
 const { theme } = useData()
-const props = defineProps([
-  'localePosts',
-  'curPage',
-  'perPage',
-  'paginationMaxItems',
-  'paginationBaseUrl',
-])
+
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  analyticsStats?: Record<string, number>
+  [key: string]: unknown
+}
+
+const props = defineProps<{
+  localePosts: PostLite[]
+  curPage: number
+  perPage?: number
+  paginationMaxItems?: number
+  paginationBaseUrl?: string
+}>()
 const perPage = props.perPage || theme.value.perPage
 const start = props.curPage === 1 ? 0 : (props.curPage - 1) * perPage
 const items = props.localePosts.slice(start, start + perPage)
@@ -20,7 +31,7 @@ const totalPages = Math.ceil(props.localePosts.length / perPage)
 <template>
   <div v-if="items.length">
     <ul>
-      <template v-for="item in items">
+      <template v-for="item in items" :key="item.url">
         <li
           v-if="item"
           :data-popularity-value="

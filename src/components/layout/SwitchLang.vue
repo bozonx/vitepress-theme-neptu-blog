@@ -9,9 +9,9 @@ import { Icon } from '@iconify/vue'
 
 const { theme } = useData()
 const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
-const props = defineProps(['noBg'])
+const props = defineProps<{ noBg?: boolean | string }>()
 // redirect from specific tag to tags list
-const resolveLink = (link: any) => {
+const resolveLink = (link: string) => {
   if (!link) return link
 
   const splat = link.split('/')
@@ -41,10 +41,9 @@ const resolveLink = (link: any) => {
         />
       </span>
     </template>
-    <template v-for="locale in localeLinks">
+    <template v-for="locale in localeLinks" :key="locale.link">
       <MenuItem
         v-if="!locale.text"
-        :key="locale.link + 'disabled'"
         :disabled="true"
         :title="theme.t.currentLang"
       >
@@ -52,7 +51,6 @@ const resolveLink = (link: any) => {
       </MenuItem>
       <MenuItem
         v-else
-        :key="locale.link"
         target="_self"
         :href="resolveLink(locale.link)"
       >

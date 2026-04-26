@@ -5,17 +5,26 @@ import UtilPageHeader from './UtilPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 
 const { frontmatter, localeIndex } = useData()
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  localePosts?: any[]
+  localePosts?: PostLite[]
   curPage?: string | number
   perPage?: number
   paginationMaxItems?: number
 }>()
-const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const curPage = Number(props.curPage || 1)
 const sorted = [...(localePosts || [])].sort(
-  (a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  (a, b) => new Date(b.date as string | number | Date).getTime() - new Date(a.date as string | number | Date).getTime()
 )
 </script>
 

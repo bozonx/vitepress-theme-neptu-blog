@@ -5,9 +5,21 @@ import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import TagsList from '../TagsList.vue'
 import UtilSubPageHeader from './UtilSubPageHeader.vue'
 
-const props = defineProps(['localePosts', 'header'])
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{
+  localePosts?: PostLite[]
+  header?: string
+}>()
 const { localeIndex } = useData()
-const allPosts = inject<Record<string, any[]>>('posts', {})
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const tagList = makeTagsList(localePosts)
 // const sorted = tagList.sort((a, b) => String(a.name).localeCompare(b.name))

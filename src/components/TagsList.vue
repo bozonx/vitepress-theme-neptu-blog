@@ -2,12 +2,19 @@
 import { computed } from 'vue'
 import TagItem from './TagItem.vue'
 
+interface TagItem {
+  name: string
+  slug?: string
+  count?: number
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  tags: any[]
+  tags: TagItem[]
   sizeXl?: boolean | string
   sizeSm?: boolean | string
-  class?: any
-  activeCompareMethod?: any
+  class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
+  activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
 }>()
 const emit = defineEmits<{
   (e: 'itemClick'): void
@@ -28,7 +35,7 @@ const sizeClass = computed(() => {
     v-if="props.tags.length"
     :class="['flex flex-wrap', sizeClass, props.class]"
   >
-    <li v-for="item in props.tags">
+    <li v-for="(item, index) in props.tags" :key="item.slug || item.name || index">
       <TagItem
         v-bind="item"
         :size-xl="props.sizeXl"

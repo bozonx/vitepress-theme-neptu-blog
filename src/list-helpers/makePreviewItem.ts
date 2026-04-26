@@ -36,7 +36,7 @@ export function makePreviewItem(filePath: string): PreviewItem {
   if (!preview)
     preview = extractDescriptionFromMd(content, PREVIEW_LENGTH, false)
 
-  // Получаем размеры изображения если оно есть
+  // Get image dimensions if cover is provided
   let coverDimensions = null
   if (fm.cover) {
     coverDimensions = getImageDimensions(fm.cover, baseDir)

@@ -5,19 +5,26 @@ import { makeYearsList } from '../../list-helpers/listHelpers.ts'
 import ListItemWithBadge from '../ListItemWithBadge.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 
-const props = defineProps<{
-  localePosts?: any[]
-}>()
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
+const props = defineProps<{ localePosts?: PostLite[] }>()
 const { theme, frontmatter, localeIndex } = useData()
-const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const yearsList = makeYearsList(localePosts)
 </script>
 
 <template>
   <UtilPageHeader>{{ frontmatter.title }}</UtilPageHeader>
   <ul v-if="yearsList.length">
-    <template v-for="item in yearsList">
+    <template v-for="item in yearsList" :key="item.year">
       <li v-if="item.count">
         <ListItemWithBadge
           :href="`${theme.archiveBaseUrl}/${item.year}/1`"

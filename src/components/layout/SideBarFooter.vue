@@ -5,7 +5,17 @@ import Btn from '../Btn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchLang from './SwitchLang.vue'
 
-const props = defineProps(['class'])
+interface SocialLinkItem {
+  href: string
+  icon?: string
+  title?: string
+  target?: string
+  class?: string
+}
+
+const props = defineProps<{
+  class?: string
+}>()
 const { theme, localeIndex } = useData()
 const socialLinks = [
   ...(theme.value.sideBar.socialLinks || []),
@@ -27,7 +37,7 @@ const socialLinks = [
 <template>
   <div :class="['w-full flex pt-6 pb-3 pr-2 pl-2', props.class]">
     <ul v-if="socialLinks.length" class="flex space-x-1">
-      <li v-for="item in socialLinks">
+      <li v-for="(item, index) in socialLinks" :key="item.href || index">
         <Btn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>

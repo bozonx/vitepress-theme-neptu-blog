@@ -8,8 +8,17 @@ import PreviewList from '../PreviewList.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 
+interface PostLite {
+  url: string
+  title?: string
+  date?: string | number | Date
+  tags?: Array<{ slug?: string; name?: string }>
+  authorId?: string
+  [key: string]: unknown
+}
+
 const props = defineProps<{
-  localePosts?: any[]
+  localePosts?: PostLite[]
   year: string | number
   curPage?: string | number
   perPage?: number
@@ -18,14 +27,14 @@ const props = defineProps<{
 }>()
 const { theme, frontmatter, localeIndex } = useData()
 const route = useRoute()
-const allPosts = inject<Record<string, any[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || [] || []
+const allPosts = inject<Record<string, PostLite[]>>('posts', {})
+const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const monthsList = makeMonthsList(localePosts, props.year)
 
 const curPage = Number(props.curPage || 1)
-// Фильтруем посты по году
-const filtered = localePosts.filter((item: any) => {
-  const postYear = new Date(item.date).getUTCFullYear()
+// Filter posts by year
+const filtered = localePosts.filter((item) => {
+  const postYear = new Date(item.date as string | number | Date).getUTCFullYear()
   return postYear === Number(props.year)
 })
 
@@ -41,7 +50,7 @@ const sorted = sortPosts(
     <UtilPageHeader>{{ frontmatter.title }}</UtilPageHeader>
 
     <ul v-if="monthsList.length" class="flex flex-wrap gap-x-8">
-      <template v-for="item in monthsList">
+      <template v-for="item in monthsList" :key="item.month">
         <li v-if="item.count">
           <ListItemWithBadge
             :href="`${theme.archiveBaseUrl}/${props.year}/month/${item.month}`"
