@@ -17,32 +17,28 @@ export function getImageDimensions(
   srcDir: string
 ): ImageDimensions | null {
   if (!imagePath) return null
-  else if (imagePath.match(/\/\//)) return null
+  // External URL
+  if (imagePath.startsWith('http') || imagePath.startsWith('//')) return null
 
   try {
-    // Full path to image file
-    const fullImagePath = path.join(srcDir, 'public', imagePath)
+    // 1. Try public directory (most common for theme assets)
+    let fullPath = path.join(srcDir, 'public', imagePath)
 
-    // Check file exists
-    if (!fs.existsSync(fullImagePath)) {
-      console.warn(`Image file not found: ${fullImagePath}`)
+    if (!fs.existsSync(fullPath)) {
+      // 2. Try relative to srcDir (for co-located images)
+      fullPath = path.join(srcDir, imagePath)
+    }
+
+    if (!fs.existsSync(fullPath)) {
+      console.warn(`Image file not found: ${imagePath} in ${srcDir}`)
       return null
     }
 
-    // Read file into a buffer
-    const buffer = fs.readFileSync(fullImagePath)
+    // Pass path directly to image-size to avoid reading full file into buffer
+    const dimensions = imageSize(fullPath)
 
-    // Ensure buffer is non-empty
-    if (!buffer || buffer.length === 0) {
-      console.warn(`Empty buffer for image file: ${fullImagePath}`)
-      return null
-    }
-
-    const dimensions = getImageSize(buffer)
-
-    // Validate dimensions
     if (!dimensions || !dimensions.width || !dimensions.height) {
-      console.warn(`Invalid image dimensions for ${imagePath}`)
+      console.warn(`Invalid image dimensions for ${fullPath}`)
       return null
     }
 

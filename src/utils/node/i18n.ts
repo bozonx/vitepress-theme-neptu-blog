@@ -44,13 +44,21 @@ export function parseLocaleSite(srcDir: string, props: ParseLocaleSiteProps): un
 export function loadConfigYamlFile(srcDir: string, fileName: string): unknown {
   const absPath = path.join(srcDir, SITE_DIR_REL_PATH, fileName)
 
+  if (!fs.existsSync(absPath)) {
+    return {}
+  }
+
   try {
     const content = fs.readFileSync(absPath, DEFAULT_ENCODE)
-    const obj = yaml.parse(content) as { body: string }
+    const obj = yaml.parse(content)
 
-    return yaml.parse(obj.body)
+    if (obj && typeof obj === 'object' && 'body' in obj && typeof obj.body === 'string') {
+      return yaml.parse(obj.body)
+    }
+
+    return obj || {}
   } catch (error) {
-    console.warn(`Failed to load config file ${absPath}:`, (error as Error)?.message)
+    console.warn(`Failed to parse config file ${absPath}:`, (error as Error)?.message)
     return {}
   }
 }

@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 // Button disabled state
-const isDisabled = ref(props.disabled)
+const isDisabled = computed(() => props.disabled)
 
 // Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {

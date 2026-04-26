@@ -3,14 +3,21 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 export function useScrollY(): { scrollY: Ref<number> } {
   const scrollY = ref(0)
+  let ticking = false
 
   function onScroll() {
-    scrollY.value = window.scrollY
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        scrollY.value = window.scrollY
+        ticking = false
+      })
+      ticking = true
+    }
   }
 
   onMounted(() => {
     if (!inBrowser) return
-    onScroll()
+    scrollY.value = window.scrollY
     window.addEventListener('scroll', onScroll, { passive: true })
   })
 

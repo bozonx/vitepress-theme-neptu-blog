@@ -24,18 +24,20 @@ const { theme } = useData()
 const props = defineProps<Props>()
 const isExternal = computed(() => !props.hideExternalIcon && isExternalUrl(props.href))
 const hasText = computed(() => Boolean(props.text || slots.default))
-const btnProps: Record<string, unknown> = {}
-
-if (props.href && !props.disabled) {
-  // means just link
-  btnProps.tag = 'a'
-  btnProps.href = props.href
-  btnProps.target = props.target
-} else {
-  // means Button
-  btnProps.tag = 'button'
-  btnProps.disabled = props.disabled
-}
+const btnProps = computed(() => {
+  const propsObj: Record<string, unknown> = {}
+  if (props.href && !props.disabled) {
+    // means just link
+    propsObj.tag = 'a'
+    propsObj.href = props.href
+    propsObj.target = props.target
+  } else {
+    // means Button
+    propsObj.tag = 'button'
+    propsObj.disabled = props.disabled
+  }
+  return propsObj
+})
 </script>
 
 <template>
