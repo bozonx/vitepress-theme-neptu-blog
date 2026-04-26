@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
-import PreviewWithImg from './PreviewWithImg.vue'
+import PreviewWithImage from './PreviewWithImage.vue'
 
 const { lang, theme } = useData()
 interface PreviewItem {
@@ -35,7 +35,7 @@ const params = computed(() => ({
   <a :href="props.item.url" class="card-item preview">
     <h2 class="card-item-header">{{ props.item.title }}</h2>
 
-    <PreviewWithImg
+    <PreviewWithImage
       v-bind="params"
       :thumbnail="props.item.thumbnail"
       :cover-height="props.item.coverHeight"

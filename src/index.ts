@@ -5,9 +5,9 @@ import './styles/vendor/custom-block.css'
 import './styles/vendor/vp-code-group.css'
 import './styles/vendor/vp-code.css'
 import './styles/vendor/vp-doc.css'
-import FileDownload from './components/docComponents/FileDownload.vue'
-import AudioFile from './components/docComponents/AudioFile.vue'
-import VideoYoutube from './components/docComponents/VideoYoutube.vue'
+import FileDownload from './components/doc-components/FileDownload.vue'
+import AudioFile from './components/doc-components/AudioFile.vue'
+import YoutubeVideo from './components/doc-components/YoutubeVideo.vue'
 import { resolveTranslationsByFilePath } from './utils/shared/index.ts'
 import './styles/vp-common.css'
 import './styles/vp-icons.css'
@@ -26,6 +26,6 @@ export default {
 
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)
-    ctx.app.component('VideoYoutube', VideoYoutube)
+    ctx.app.component('YoutubeVideo', YoutubeVideo)
   },
 }

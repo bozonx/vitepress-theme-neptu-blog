@@ -1,36 +1,33 @@
-# Components
+# Компоненты темы Neptu Blog
 
-## JsonLdDisplay.vue
+В этой директории находятся Vue-компоненты, используемые в теме. Они разделены по функциональному назначению:
 
-Компонент для отображения сгенерированных JSON-LD данных на странице.
+## Категории компонентов
 
-### Использование
+-   **`layout-parts/`**: Части общего макета (SideBar, TopBar, Footer, LayoutAside и др.).
+-   **`post/`**: Компоненты для отображения постов (PostAuthor, PostDate, PostTags, PostComments и др.).
+-   **`utility/`**: Компоненты для служебных страниц (HomeHero, Authors, AllTagsList, Years и др.).
+-   **`doc-components/`**: Компоненты для использования внутри markdown документов (FileDownload, AudioFile, YoutubeVideo).
 
-```vue
-<template>
-  <JsonLdDisplay :jsonLdData="$frontmatter.jsonLdData" />
-</template>
+## Основные компоненты
 
-<script setup>
-import JsonLdDisplay from '../components/JsonLdDisplay.vue'
-</script>
+### Btn.vue и BtnLink.vue
+Базовые компоненты кнопок и ссылок в стиле темы.
+
+### PreviewListItem.vue
+Основной компонент для отображения карточки поста в списках. Автоматически выбирает между `PreviewWithImage` и `PreviewNoImage`.
+
+### Pagination.vue
+Компонент пагинации для списков постов.
+
+## Использование в Markdown
+
+Вы можете использовать компоненты из `doc-components` прямо в своих `.md` файлах:
+
+```html
+<YoutubeVideo id="dQw4w9WgXcQ" title="Rick Astley" />
+<FileDownload href="/files/manual.pdf" title="Скачать мануал" />
 ```
 
-### Props
-
-- `jsonLdData` (Object) - JSON-LD данные для отображения
-
-### Функциональность
-
-- Отображает JSON-LD данные в свертываемом блоке
-- Кнопка копирования данных в буфер обмена
-- Ссылка для тестирования с Google Rich Results Test
-- Поддержка темной темы
-- Адаптивный дизайн
-
-### Особенности
-
-- Данные отображаются в формате JSON с подсветкой
-- Автоматическое определение URL для тестирования Google
-- Обработка ошибок копирования
-- Временные уведомления о статусе операций
+---
+Документация обновлена после аудита именования.

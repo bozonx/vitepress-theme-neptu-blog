@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 
-import NotFound from '../components/layout/NotFound.vue'
+import NotFound from '../components/layout-parts/NotFound.vue'
 import { useScrollY } from '../composables/useScrollY.ts'
 import BlogHome from './BlogHome.vue'
 import DefaultLayout from './DefaultLayout.vue'

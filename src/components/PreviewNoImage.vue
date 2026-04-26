@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PreviewWithImg from './PreviewWithImg.vue'
+import PreviewWithImage from './PreviewWithImage.vue'
 
 interface TagItem {
   name: string
@@ -17,5 +17,5 @@ const props = defineProps<{
 </script>
 
 <template>
-  <PreviewWithImg v-bind="props" />
+  <PreviewWithImage v-bind="props" />
 </template>

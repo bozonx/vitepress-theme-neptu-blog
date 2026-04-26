@@ -3,11 +3,11 @@ import { useData } from 'vitepress'
 import { ref } from 'vue'
 
 import PageContent from '../components/PageContent.vue'
-import Aside from '../components/layout/Aside.vue'
-import Footer from '../components/layout/Footer.vue'
-import SideBar from '../components/layout/SideBar.vue'
-import ToTheTop from '../components/layout/ToTheTop.vue'
-import TopBar from '../components/layout/TopBar.vue'
+import LayoutAside from '../components/layout-parts/LayoutAside.vue'
+import Footer from '../components/layout-parts/Footer.vue'
+import SideBar from '../components/layout-parts/SideBar.vue'
+import ToTheTop from '../components/layout-parts/ToTheTop.vue'
+import TopBar from '../components/layout-parts/TopBar.vue'
 import { useBreakpoint } from '../composables/useBreakpoint.ts'
 import { useScrollY } from '../composables/useScrollY.ts'
 import { useSwipeDrawer } from '../composables/useSwipeDrawer.ts'
@@ -72,9 +72,9 @@ useSwipeDrawer({
           </div>
         </main>
 
-        <Aside>
+        <LayoutAside>
           <slot name="aside" />
-        </Aside>
+        </LayoutAside>
       </div>
     </div>
 

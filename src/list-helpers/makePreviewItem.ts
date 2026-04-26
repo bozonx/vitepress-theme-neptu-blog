@@ -2,9 +2,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
-import { parseMdFile, extractDescriptionFromMd } from '../utils/node/index.ts'
+import { parseMdFile, extractDescriptionFromMd } from '../utils/node/markdown.ts'
 import { transliterate } from '../utils/shared/index.ts'
-import { getImageDimensions } from '../utils/node/index.ts'
+import { getImageDimensions } from '../utils/node/image.ts'
 import type { PostFrontmatter, Tag } from '../types.d.ts'
 
 export interface PreviewItem {

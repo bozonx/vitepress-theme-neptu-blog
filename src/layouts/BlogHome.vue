@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData, inBrowser } from 'vitepress'
 import { ref, watchEffect } from 'vue'
-import SwitchLang from '../components/layout/SwitchLang.vue'
+import SwitchLang from '../components/layout-parts/SwitchLang.vue'
 
 const props = defineProps<{
   scrollY: number
