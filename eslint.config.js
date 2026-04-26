@@ -21,6 +21,6 @@ export default tseslint.config(
   },
   eslintConfigPrettier,
   {
-    ignores: ['dist/**', 'node_modules/**', 'example/**', '.vitepress/cache/**', 'docs/**'],
+    ignores: ['dist/**', 'node_modules/**', 'example/**', '.vitepress/cache/**', '.vitepress/dist/**', 'docs/**'],
   }
 )

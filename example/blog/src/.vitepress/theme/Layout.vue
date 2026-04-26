@@ -3,7 +3,7 @@ import { NavSearchButton } from 'vitepress-theme-neptu-blog/components'
 import { PageFindSearch } from 'vitepress-theme-neptu-blog/components'
 import Theme from 'vitepress-theme-neptu-blog'
 import { provide } from 'vue'
-// @ts-ignore
+// @ts-expect-error data loader has no generated types
 import { data as enData } from '../../en/loadPosts.data'
 
 const posts = { en: enData.posts }
