@@ -152,17 +152,14 @@ importers:
         specifier: ^3.2.7
         version: 3.2.7(typescript@6.0.3)
 
-  example/site:
+  vitepress-theme-neptu-landing:
     dependencies:
-      '@midzer/tobii':
-        specifier: ^3.2.0
-        version: 3.2.0
       vitepress:
-        specifier: 2.0.0-alpha.17
+        specifier: ^2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(postcss@8.5.10)(typescript@6.0.3)(yaml@2.8.3)
       vitepress-theme-neptu-blog:
         specifier: workspace:*
-        version: link:../..
+        version: link:..
       vue:
         specifier: ^3.5.0
         version: 3.5.33(typescript@6.0.3)

@@ -10,11 +10,6 @@ export {
   defineBlogConfig,
   mergeBlogConfig,
 } from './blogConfigBase.ts'
-export {
-  common as siteCommonConfig,
-  mergeSiteConfig,
-} from './siteConfigBase.ts'
 export { loadBlogLocale } from '../utils/node/index.ts'
-export { loadSiteLocale } from '../utils/node/index.ts'
 export { resolveTranslationsByFilePath } from '../utils/shared/index.ts'
 export { getImageDimensions } from '../utils/node/index.ts'

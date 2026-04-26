@@ -1,4 +1,4 @@
-import shared from '../sharedLocalesBase/en.ts'
+import shared from 'vitepress-theme-neptu-blog/configs/sharedLocalesBase/en'
 
 export default {
   label: 'English',

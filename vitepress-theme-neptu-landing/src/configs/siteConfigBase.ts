@@ -1,11 +1,13 @@
-import { omitUndefined } from '../utils/shared/index.ts'
-import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
-import { resolveDescription } from '../transformers/resolveDescription.ts'
-import { addJsonLd } from '../transformers/addJsonLd.ts'
-import { addHreflang } from '../transformers/addHreflang.ts'
-import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
-import { filterSitemap } from '../transformers/filterSitemap.ts'
-import { mdImage } from '../transformers/mdImage.ts'
+import { omitUndefined } from 'vitepress-theme-neptu-blog/utils'
+import {
+  addOgMetaTags,
+  resolveDescription,
+  addJsonLd,
+  addHreflang,
+  addCanonicalLink,
+  filterSitemap,
+  mdImage,
+} from 'vitepress-theme-neptu-blog/transformers'
 
 export const common: Record<string, any> = {
   head: [

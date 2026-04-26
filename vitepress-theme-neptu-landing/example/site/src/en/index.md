@@ -4,7 +4,7 @@ layout: home
 
 <script setup>
 import { useData } from "vitepress";
-import { SiteHome } from 'vitepress-theme-neptu-blog/layouts';
+import { SiteHome } from 'vitepress-theme-neptu-landing/layouts';
 
 const { theme, localeIndex } = useData();
 
