@@ -1,3 +1,5 @@
+import shared from '../sharedLocalesBase/ru.ts'
+
 export default {
   label: 'Русский',
   themeConfig: {
@@ -27,7 +29,6 @@ export default {
     toBlog: 'Перейти к блогу',
     author: 'Автор',
     year: 'Год',
-    recentPosts: 'Недавние посты',
     showMorePosts: 'Ещё',
     listenPodcast: 'Слушать подкаст',
     commentCall: 'Комментировать в Telegram канале',
@@ -38,8 +39,7 @@ export default {
     closeMenu: 'Закрыть меню',
     allPostsOfYear: 'Все посты за год',
     postsCount: 'Публикаций',
-    search: 'Поиск',
-    searchInBlog: 'Искать в этом блоге',
+    ...shared,
 
     links: {
       aboutBlog: 'Об этом блоге',
@@ -123,13 +123,6 @@ export default {
       invalidUrlProvided: 'Предоставлен некорректный URL',
       retryDownload: 'Повторить скачивание',
       retry: 'Повторить',
-    },
-    lightbox: {
-      prev: 'Предыдущее',
-      next: 'Следующее',
-      close: 'Закрыть',
-      dialogTitle: 'Изображение',
-      loadingIndicatorLabel: 'Загрузка...',
     },
   },
 }

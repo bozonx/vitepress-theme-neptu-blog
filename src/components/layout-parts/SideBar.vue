@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ref, watch, inject, onUnmounted } from 'vue'
+import { ref, watch, inject, onUnmounted, computed } from 'vue'
 
 import { SIDEBAR_WIDTH } from '../../constants.ts'
 import SideBarFooter from './SideBarFooter.vue'
@@ -32,44 +32,51 @@ const backdropOpacity = ref(0)
 let animationTimeout: ReturnType<typeof setTimeout> | null = null
 
 const sideBarConfig = theme.value.sideBar || {}
-const links = sideBarConfig
-  ? [
-      ...(sideBarConfig.links || []),
 
-      sideBarConfig.recent && {
-        text: theme.value.t.links.recent,
-        href: `${theme.value.recentBaseUrl}/1`,
-        icon: theme.value.recentIcon,
-      },
-      sideBarConfig.popular && {
-        text: theme.value.t.links.popular,
-        href: `${theme.value.popularBaseUrl}/1`,
-        icon: theme.value.popularIcon,
-      },
-      sideBarConfig.archive && {
-        text: theme.value.t.links.byDate,
-        href: `${theme.value.archiveBaseUrl}`,
-        icon: theme.value.byDateIcon,
-      },
-      sideBarConfig.authors && {
-        text: theme.value.t.links.authors,
-        href: `${theme.value.authorsBaseUrl}`,
-        icon: theme.value.authorsIcon,
-      },
-    ].filter(Boolean)
-  : []
+const links = computed(() => {
+  const cfg = theme.value.sideBar || {}
+  return cfg
+    ? [
+        ...(cfg.links || []),
 
-const bottomLinks = sideBarConfig
-  ? [
-      ...(sideBarConfig.bottomLinks || []),
-      sideBarConfig.donate && {
-        text: theme.value.t.links.donate,
-        href: `${theme.value.donate.url}`,
-        icon: theme.value.donate.icon || theme.value.donateIcon,
-        iconClass: 'donate-icon',
-      },
-    ].filter(Boolean)
-  : []
+        cfg.recent && {
+          text: theme.value.t.links.recent,
+          href: `${theme.value.recentBaseUrl}/1`,
+          icon: theme.value.recentIcon,
+        },
+        cfg.popular && {
+          text: theme.value.t.links.popular,
+          href: `${theme.value.popularBaseUrl}/1`,
+          icon: theme.value.popularIcon,
+        },
+        cfg.archive && {
+          text: theme.value.t.links.byDate,
+          href: `${theme.value.archiveBaseUrl}`,
+          icon: theme.value.byDateIcon,
+        },
+        cfg.authors && {
+          text: theme.value.t.links.authors,
+          href: `${theme.value.authorsBaseUrl}`,
+          icon: theme.value.authorsIcon,
+        },
+      ].filter(Boolean)
+    : []
+})
+
+const bottomLinks = computed(() => {
+  const cfg = theme.value.sideBar || {}
+  return cfg
+    ? [
+        ...(cfg.bottomLinks || []),
+        cfg.donate && {
+          text: theme.value.t.links.donate,
+          href: `${theme.value.donate.url}`,
+          icon: theme.value.donate.icon || theme.value.donateIcon,
+          iconClass: 'donate-icon',
+        },
+      ].filter(Boolean)
+    : []
+})
 const openDrawer = () => {
   if (!props.isMobile || drawerOpen.value) return
 

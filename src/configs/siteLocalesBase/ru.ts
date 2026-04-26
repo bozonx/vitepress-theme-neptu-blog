@@ -1,3 +1,5 @@
+import shared from '../sharedLocalesBase/ru.ts'
+
 export default {
   label: 'Русский',
   themeConfig: {
@@ -14,15 +16,7 @@ export default {
   },
   t: {
     donate: 'Донат',
-    search: 'Поиск',
-    searchInBlog: 'Искать в этом блоге',
-    lightbox: {
-      prev: 'Предыдущее',
-      next: 'Следующее',
-      close: 'Закрыть',
-      dialogTitle: 'Изображение',
-      loadingIndicatorLabel: 'Загрузка...',
-    },
+    ...shared,
   },
   search: {
     options: {

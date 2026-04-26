@@ -1,3 +1,5 @@
+import shared from '../sharedLocalesBase/en.ts'
+
 export default {
   label: 'English',
   themeConfig: {
@@ -14,15 +16,7 @@ export default {
   },
   t: {
     donate: 'Donate',
-    search: 'Search',
-    searchInBlog: 'Search in this blog',
-    lightbox: {
-      prev: 'Previous',
-      next: 'Next',
-      close: 'Close',
-      dialogTitle: 'Image',
-      loadingIndicatorLabel: 'Loading...',
-    },
+    ...shared,
   },
   search: {
     options: {

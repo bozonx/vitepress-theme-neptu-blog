@@ -1,3 +1,5 @@
+import shared from '../sharedLocalesBase/en.ts'
+
 export default {
   label: 'English',
   themeConfig: {
@@ -37,8 +39,7 @@ export default {
     closeMenu: 'Close menu',
     allPostsOfYear: 'All posts of the year',
     postsCount: 'Publications',
-    search: 'Search',
-    searchInBlog: 'Search in this blog',
+    ...shared,
 
     links: {
       aboutBlog: 'About This Blog',
@@ -121,13 +122,6 @@ export default {
       invalidUrlProvided: 'Invalid URL provided',
       retryDownload: 'Retry download',
       retry: 'Retry',
-    },
-    lightbox: {
-      prev: 'Previous',
-      next: 'Next',
-      close: 'Close',
-      dialogTitle: 'Image',
-      loadingIndicatorLabel: 'Loading...',
     },
   },
 }
