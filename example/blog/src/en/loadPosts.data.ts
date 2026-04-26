@@ -1,5 +1,5 @@
 import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants'
-import { loadPostsDataFromFiles } from 'vitepress-theme-neptu-blog/list-helpers'
+import { loadPostsDataFromFiles } from 'vitepress-theme-neptu-blog/list-helpers/node'
 
 import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
 

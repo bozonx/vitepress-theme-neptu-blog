@@ -32,6 +32,7 @@
     "./utils/client": "./src/utils/client/index.ts",
     "./layouts": "./src/layouts/index.ts",
     "./list-helpers": "./src/list-helpers/index.ts",
+    "./list-helpers/node": "./src/list-helpers/node.ts",
     "./constants": "./src/constants.ts",
     "./tailwind-source.css": "./src/styles/tailwind-source.css",
     "./blue-theme.css": "./src/styles/themes/blue.css",
