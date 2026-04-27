@@ -1,0 +1,42 @@
+import { describe, it, expect, vi } from 'vitest'
+import * as nodeUtils from '../utils/node/index.ts'
+import { collectImageDimensions } from './collectImageDimensions.ts'
+
+vi.mock('../utils/node/index.ts', () => ({
+  getImageDimensions: vi.fn(),
+}))
+
+describe('collectImageDimensions', () => {
+  it('does nothing without cover', () => {
+    const pageData: Record<string, any> = { frontmatter: {} }
+    collectImageDimensions(pageData, { siteConfig: { srcDir: '/src' } })
+    expect(pageData.frontmatter.coverHeight).toBeUndefined()
+    expect(pageData.frontmatter.coverWidth).toBeUndefined()
+  })
+
+  it('sets dimensions when cover exists', () => {
+    vi.mocked(nodeUtils.getImageDimensions).mockReturnValue({ width: 800, height: 600 })
+
+    const pageData: Record<string, any> = { frontmatter: { cover: '/img/hero.png' } }
+    collectImageDimensions(pageData, { siteConfig: { srcDir: '/src' } })
+    expect(pageData.frontmatter.coverHeight).toBe(600)
+    expect(pageData.frontmatter.coverWidth).toBe(800)
+  })
+
+  it('handles null dimensions gracefully', () => {
+    vi.mocked(nodeUtils.getImageDimensions).mockReturnValue(null)
+
+    const pageData: Record<string, any> = { frontmatter: { cover: '/img/hero.png' } }
+    collectImageDimensions(pageData, { siteConfig: { srcDir: '/src' } })
+    expect(pageData.frontmatter.coverHeight).toBeUndefined()
+    expect(pageData.frontmatter.coverWidth).toBeUndefined()
+  })
+
+  it('passes correct arguments to getImageDimensions', () => {
+    vi.mocked(nodeUtils.getImageDimensions).mockReturnValue({ width: 100, height: 200 })
+
+    const pageData: Record<string, any> = { frontmatter: { cover: '/img/cover.jpg' } }
+    collectImageDimensions(pageData, { siteConfig: { srcDir: '/project/src' } })
+    expect(nodeUtils.getImageDimensions).toHaveBeenCalledWith('/img/cover.jpg', '/project/src')
+  })
+})

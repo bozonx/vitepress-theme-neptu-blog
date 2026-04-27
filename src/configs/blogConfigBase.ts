@@ -85,7 +85,7 @@ export const common: Record<string, any> = {
 
 export function mergeBlogConfig(config: any): any {
   const externalLinkIcon =
-    typeof config.themeConfig.externalLinkIcon === 'boolean'
+    typeof config.themeConfig?.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
       : common.themeConfig.externalLinkIcon
 
@@ -130,11 +130,11 @@ export function mergeBlogConfig(config: any): any {
 
       googleAnalytics: {
         ...common.themeConfig.googleAnalytics,
-        ...config.themeConfig.googleAnalytics,
+        ...config.themeConfig?.googleAnalytics,
       },
       popularPosts: {
         ...common.themeConfig.popularPosts,
-        ...config.themeConfig.popularPosts,
+        ...config.themeConfig?.popularPosts,
       },
     },
 
