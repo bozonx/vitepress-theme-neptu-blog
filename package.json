@@ -38,7 +38,7 @@
     "./tailwind-source.css": "./src/styles/tailwind-source.css",
     "./blue-theme.css": "./src/styles/themes/blue.css",
     "./green-theme.css": "./src/styles/themes/green.css",
-    "./pagefind-fix.css": "./src/styles/pagefind-fix.css",
+    "./pagefind-fix.css": "./src/styles/vendor/pagefind-fix.css",
     "./search-modal.css": "./src/styles/search-modal.css",
     "./configs/sharedLocalesBase/en": "./src/configs/sharedLocalesBase/en.ts",
     "./configs/sharedLocalesBase/ru": "./src/configs/sharedLocalesBase/ru.ts"
