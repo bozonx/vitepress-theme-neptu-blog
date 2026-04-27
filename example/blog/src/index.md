@@ -9,7 +9,7 @@ head:
 <script setup>
 import { useData, inBrowser } from 'vitepress'
 import { onMounted } from 'vue'
-import { resolveNavigatorLang } from 'vitepress-theme-neptu-blog/helpers'
+import { resolveNavigatorLang } from 'vitepress-theme-neptu-blog/utils/client'
 
 const { site } = useData()
 const supportedLocales = Object.keys(site.value.locales)
@@ -17,7 +17,7 @@ const supportedLocales = Object.keys(site.value.locales)
 
 onMounted(() => {
   if (inBrowser && window.location.pathname === '/') {
-    const langToRedirect = resolveNavigatorLang(supportedLocales, navigator.language)
+    const langToRedirect = resolveNavigatorLang(navigator, supportedLocales)
     
     window.location.replace('/' + langToRedirect + '/');
   }

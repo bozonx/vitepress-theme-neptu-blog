@@ -17,18 +17,15 @@ const text =
     :text="text"
     :icon="theme.youtubeIcon"
     target="_blank"
-    class="video-link"
+    class="video-link w-fit py-3"
     :hide-external-icon="true"
   />
 </template>
 
 <style scoped>
 .video-link {
-  width: fit-content;
   color: white !important;
   background: var(--video-link-bg) !important;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
 }
 
 .video-link:hover {

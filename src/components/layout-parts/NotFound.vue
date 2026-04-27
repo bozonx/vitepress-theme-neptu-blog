@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="notfound-page">
+  <div class="notfound-page flex items-center justify-center h-screen">
     <div>
-      <h1 class="notfound-page-message">404 not found</h1>
-      <div class="notfound-page-link">
+      <h1 class="text-white text-4xl">404 not found</h1>
+      <div class="text-xl mt-1">
         <a class="simple-link" href="/">return to home</a>
       </div>
     </div>
@@ -13,20 +13,6 @@
 
 <style scoped>
 .notfound-page {
-  height: 100vh;
   background: var(--gray-900);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.notfound-page-message {
-  color: white;
-  font-size: 2.5rem;
-}
-
-.notfound-page-link {
-  font-size: 1.25rem;
-  margin-top: 0.25rem;
 }
 </style>

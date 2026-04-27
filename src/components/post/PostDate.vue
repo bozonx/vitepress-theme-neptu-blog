@@ -125,6 +125,7 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
         <BaseLink
           v-if="isYear(item)"
           :href="`${theme.archiveBaseUrl}/${year}/1`"
+          class="underline hover:brightness-[1.4]"
         >
           {{ item }}
         </BaseLink>
@@ -132,6 +133,7 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
         <BaseLink
           v-else-if="isMonth(item)"
           :href="`${theme.archiveBaseUrl}/${year}/month/${month}`"
+          class="underline hover:brightness-[1.4]"
         >
           {{ item }}
         </BaseLink>
@@ -142,12 +144,3 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
   </div>
 </template>
 
-<style scoped>
-.post-date a {
-  text-decoration: underline;
-}
-
-.post-date a:hover {
-  filter: brightness(140%);
-}
-</style>

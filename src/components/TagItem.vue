@@ -19,6 +19,7 @@ const href = `${theme.value.tagsBaseUrl}/${props.slug}/1`
 const className =
   'text-center rounded-full text-lg py-1 px-4 ' +
   'justify-center inline-flex space-x-2 items-center text-white ' +
+  'transition-all duration-200 ease-[ease] hover:-translate-y-0.5 ' +
   (props.sizeXl ? `text-xl ` : '') +
   (props.sizeSm ? `text-sm ` : '') +
   (props.count ? 'pr-2 ' : '') +
@@ -43,18 +44,14 @@ const className =
 <style scoped>
 .tag-item {
   background: var(--tag-item-bg);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    filter 0.2s ease;
 }
 
 .tag-item.active {
-  background: var(--tag-item-bg-active);
+  filter: brightness(90%);
+  transform: scale(0.96) translateY(1px);
 }
 
 .tag-item:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   filter: brightness(115%);
 }

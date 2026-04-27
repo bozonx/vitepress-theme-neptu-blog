@@ -22,7 +22,7 @@ const isExternal = computed(
   <BaseLink
     v-bind="$attrs"
     :custom-class="[
-      'simple-link',
+      'simple-link no-underline',
       theme.externalLinkIcon && isExternal && 'vp-external-link-icon',
       props.customClass,
     ]"
@@ -33,8 +33,7 @@ const isExternal = computed(
 
 <style>
 .simple-link {
-  text-decoration: underline;
-  color: var(--link-a-text);
+  color: var(--vp-c-brand-1);
 }
 
 .simple-link:visited {

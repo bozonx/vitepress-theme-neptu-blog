@@ -9,18 +9,12 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <Btn v-bind="$attrs" :custom-class="['btn-link', props.customClass]">
+  <Btn v-bind="$attrs" :custom-class="['inline-flex p-0 bg-transparent! shadow-none! btn-link', props.customClass]">
     <slot />
   </Btn>
 </template>
 
 <style>
-.btn-link {
-  display: inline-flex;
-  padding: 0;
-  background: transparent !important;
-  box-shadow: none !important;
-}
 .btn-link.active {
   border: 0 none;
 }

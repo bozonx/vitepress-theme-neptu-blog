@@ -115,22 +115,22 @@ const fileIcon = computed(() => {
     role="region"
     :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
   >
-    <div class="file-info" :class="{ 'has-hint': $slots.default }">
+    <div class="file-info flex items-center gap-3 flex-1 min-w-0" :class="{ 'items-start': $slots.default }">
       <div
-        class="file-icon"
+        class="file-icon flex items-center justify-center w-10 h-10 rounded-md shrink-0"
         :aria-label="`${theme.t.fileDownload.fileType}: ${extensionName || 'unknown'}`"
         role="img"
       >
         <Icon :icon="fileIcon" aria-hidden="true" />
       </div>
-      <div class="file-details">
+      <div class="file-details flex-1 min-w-0">
         <div
-          class="file-name muted"
+          class="file-name muted font-medium break-all mb-1"
           :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
         >
           {{ downloadFilename }}
         </div>
-        <div v-if="$slots.default" class="file-hint">
+        <div v-if="$slots.default" class="file-hint text-sm italic mt-1">
           <slot />
         </div>
       </div>
@@ -140,7 +140,7 @@ const fileIcon = computed(() => {
       icon="mdi:download"
       :disabled="isDisabled"
       :text="theme.t.fileDownload.downloadFile"
-      class="download-btn"
+      class="download-btn shrink-0"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"
       role="button"
       tabindex="0"
@@ -174,28 +174,9 @@ const fileIcon = computed(() => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.file-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.file-info.has-hint {
-  align-items: flex-start;
-}
-
 .file-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
   background: var(--gray-100);
-  border-radius: 0.375rem;
   color: var(--gray-600);
-  flex-shrink: 0;
 }
 
 .dark .file-icon {
@@ -203,22 +184,8 @@ const fileIcon = computed(() => {
   color: var(--gray-400);
 }
 
-.file-details {
-  flex: 1;
-  min-width: 0;
-}
-
-.file-name {
-  font-weight: 500;
-  word-break: break-all;
-  margin-bottom: 0.25rem;
-}
-
 .file-hint {
-  font-size: 0.875rem;
   color: var(--gray-600);
-  font-style: italic;
-  margin-top: 0.25rem;
 }
 
 .dark .file-hint {
@@ -226,7 +193,6 @@ const fileIcon = computed(() => {
 }
 
 .download-btn {
-  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 

@@ -1,6 +1,6 @@
 <template>
-  <aside v-if="$slots.default" class="aside-container">
-    <div class="aside-content">
+  <aside v-if="$slots.default" class="aside-container hidden min-[1550px]:block min-[1550px]:w-[300px] min-[1550px]:min-w-[300px] min-[1550px]:max-w-[300px] min-[1550px]:px-4 min-[1550px]:ml-6">
+    <div class="aside-content w-full sticky top-[100px]">
       <slot />
     </div>
   </aside>
@@ -14,26 +14,4 @@
 </script>
 
 <style scoped>
-.aside-container {
-  /* Hide on screens below 1550px */
-  display: none;
-}
-
-/* Show only on wide screens */
-@media (min-width: 1550px) {
-  .aside-container {
-    display: block;
-    width: 300px; /* Standard Google ad block width */
-    min-width: 300px;
-    max-width: 300px;
-    padding: 0 16px;
-    margin-left: 24px;
-  }
-}
-
-.aside-content {
-  width: 100%;
-  position: sticky;
-  top: 100px; /* Top offset for better positioning */
-}
 </style>

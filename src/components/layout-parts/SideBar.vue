@@ -135,7 +135,7 @@ onUnmounted(() => {
         <a
           v-if="theme.sidebarLogoSrc"
           :href="`/${localeIndex}/`"
-          class="sidebar-logo"
+          class="sidebar-logo block"
           :title="theme.t.toHome"
         >
           <img
@@ -146,13 +146,13 @@ onUnmounted(() => {
             aria-hidden="true"
           />
         </a>
-        <h4 v-if="theme.siteTitle" class="sidebar-site-title text-sm muted">
+        <h4 v-if="theme.siteTitle" class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]">
           <a :href="`/${localeIndex}/`" :title="theme.t.toHome">
             {{ theme.siteTitle }}
           </a>
         </h4>
 
-        <div class="sidebar-menu">
+        <div class="sidebar-menu pt-1">
           <slot name="sidebar-top" />
 
           <SideBarGroup v-if="links.length">
@@ -203,7 +203,7 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div v-if="$slots['sub-sidebar']" class="max-lg:hidden sub-sidebar">
+    <div v-if="$slots['sub-sidebar']" class="max-lg:hidden sub-sidebar mt-80 flex w-full flex-col justify-center gap-y-4">
       <slot name="sub-sidebar" />
     </div>
   </div>
@@ -265,25 +265,4 @@ onUnmounted(() => {
   );
 }
 
-.sidebar-menu {
-  padding-top: 0.25rem;
-}
-
-.sidebar-logo {
-  display: block;
-}
-
-.sidebar-site-title {
-  font-weight: bold;
-  padding: 0.35rem 0.25rem 0.75rem 0.65rem;
-}
-
-.sub-sidebar {
-  margin-top: 20rem;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  row-gap: calc(var(--spacing) * 4);
-  justify-content: center;
-}
 </style>

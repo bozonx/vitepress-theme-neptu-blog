@@ -44,8 +44,8 @@ const btnProps = computed(() => {
   <BaseLink
     v-bind="btnProps"
     :custom-class="[
-      'flex cursor-pointer items-center rounded-lg',
-      !hasText && 'icon-only',
+      'flex cursor-pointer items-center rounded-lg py-2 px-5 leading-6',
+      !hasText && 'p-3',
       'btn-base',
       btnProps.disabled && 'disabled',
       props.primary && 'btn--primary',
@@ -91,8 +91,6 @@ const btnProps = computed(() => {
 } */
 
 .btn-base {
-  padding: 0.5rem 1.25rem 0.5rem 1.25rem;
-  line-height: 1.5rem;
   background: var(--btn-bg);
   color: var(--btn-text);
   transition:
@@ -111,10 +109,6 @@ const btnProps = computed(() => {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   filter: brightness(110%);
-}
-
-.btn-base.icon-only {
-  padding: 0.75rem;
 }
 
 .btn-base.btn--nobg {

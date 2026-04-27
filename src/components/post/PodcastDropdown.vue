@@ -13,7 +13,7 @@ const btnText = theme.value.t.listenPodcast
 </script>
 
 <template>
-  <DropdownButton v-if="frontmatter.podcasts" class="podcasts-btn">
+  <DropdownButton v-if="frontmatter.podcasts" class="podcasts-btn w-fit">
     <template #btn-text>
       <span class="mr-1" aria-hidden="true">
         <Icon
@@ -39,9 +39,6 @@ const btnText = theme.value.t.listenPodcast
 </template>
 
 <style scoped>
-.podcasts-btn {
-  width: fit-content;
-}
 </style>
 
 <style>

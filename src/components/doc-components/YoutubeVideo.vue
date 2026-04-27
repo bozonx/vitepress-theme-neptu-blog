@@ -1,8 +1,7 @@
 <template>
-  <div v-if="url" class="video-responsive">
+  <div v-if="url" class="video-responsive mt-4 overflow-hidden relative">
     <iframe
-      width="100%"
-      height="400"
+      class="absolute inset-0 w-full h-full"
       :src="url"
       frameborder="0"
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -35,19 +34,8 @@ const url = computed(() => {
 
 <style scoped>
 .video-responsive {
-  margin-top: 1em;
-  overflow: hidden;
   padding-bottom: 56.25%;
-  position: relative;
   height: 0;
-}
-
-.video-responsive iframe {
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  position: absolute;
 }
 
 @media (max-width: 767px) {

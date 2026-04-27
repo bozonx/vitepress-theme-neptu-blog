@@ -45,7 +45,7 @@ const links = theme.value.topBar
 <template>
   <nav
     :class="[
-      'flex w-full py-2 px-2 gap-x-1 top-bar',
+      'flex w-full py-2 px-2 gap-x-1 top-bar pl-[0.675rem]',
       props.isMobile && 'topbar--mobile',
     ]"
   >
@@ -53,7 +53,7 @@ const links = theme.value.topBar
       <Btn
         icon="fa6-solid:bars"
         :no-bg="true"
-        class="lg:hidden topbar-item"
+        class="lg:hidden px-[0.7rem]"
         icon-class="muted"
         :text="theme.sidebarMenuLabel"
         @click="emit('openDrawer')"
@@ -67,7 +67,7 @@ const links = theme.value.topBar
         <Btn
           v-bind="item"
           :no-bg="true"
-          :class="[item.class, 'topbar-item']"
+          :class="[item.class, 'px-[0.7rem]']"
           :icon-class="item.iconClass || 'muted'"
         />
       </li>
@@ -94,10 +94,6 @@ const links = theme.value.topBar
 </template>
 
 <style scoped>
-.top-bar {
-  padding-left: 0.675rem;
-}
-
 .topbar--mobile {
   display: flex;
   position: fixed;
@@ -109,10 +105,5 @@ const links = theme.value.topBar
 
 .dark .topbar--mobile {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
-}
-
-.topbar-item {
-  padding-left: 0.7rem;
-  padding-right: 0.7rem;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <div class="side-bar-tags">
+  <div class="side-bar-tags pr-1 pl-3">
     <TagsList
       :tags="tags"
       :size-sm="true"
-      class="mb-2 side-bar-tags-list"
+      class="mb-2 side-bar-tags-list gap-x-1 gap-y-3"
       active-compare-method="softPagination"
       @item-click="emit('itemClick')"
     />
@@ -46,14 +46,6 @@ const emit = defineEmits(['itemClick'])
 </script>
 
 <style scoped>
-.side-bar-tags {
-  padding: 0 0.25rem 0 0.75rem;
-}
-
-.side-bar-tags-list {
-  column-gap: 4px;
-  row-gap: 12px;
-}
 </style>
 
 <style>

@@ -401,7 +401,7 @@ onUnmounted(() => {
     />
 
     <!-- First row: play button, filename, download button -->
-    <div class="file-header">
+    <div class="file-header flex items-center gap-3 px-4 py-3">
       <!-- Play button -->
       <Btn
         v-if="!isPlayerVisible"
@@ -425,43 +425,47 @@ onUnmounted(() => {
       />
 
       <!-- File info -->
-      <div class="file-info" :class="{ 'has-hint': $slots.default }">
-        <div class="file-details">
-          <div
-            class="file-name muted"
-            :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
-          >
+      <div class="file-info flex gap-3 min-w-0" :class="{ 'has-hint': $slots.default }">
+        <div class="audio-file-icon flex items-center justify-center w-10 h-10 rounded-lg"></div>
+        <div class="audio-file-info flex-1 min-w-0">
+          <div class="text-xs mt-1 font-medium text-sm break-all" :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`">
             {{ downloadFilename }}
           </div>
-          <div v-if="$slots.default" class="file-hint">
+          <div v-if="$slots.default" class="file-hint text-xs mt-1">
             <slot />
           </div>
         </div>
       </div>
 
       <!-- Download button -->
-      <Btn
-        icon="mdi:download"
-        :disabled="isDisabled"
-        :text="theme.t.audioFile.downloadFile"
-        class="download-btn-header"
-        :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
-        role="button"
-        tabindex="0"
-        @click="downloadFile"
-      />
+      <a
+        :href="url"
+        :download="downloadFilename"
+        class="audio-file-download flex items-center justify-center w-8 h-8 rounded-md"
+      >
+        <Btn
+          icon="mdi:download"
+          :disabled="isDisabled"
+          :text="theme.t.audioFile.downloadFile"
+          class="download-btn-header"
+          :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
+          role="button"
+          tabindex="0"
+          @click="downloadFile"
+        />
+      </a>
     </div>
 
     <!-- Audio player (shown when play is clicked) -->
     <div
       v-if="isPlayerVisible"
-      class="audio-player"
+      class="audio-player px-4 py-3"
       role="group"
       :aria-label="`${theme.t.audioFile.audioFile} controls for ${downloadFilename}`"
     >
       <!-- Main controls -->
       <div
-        class="player-controls"
+        class="player-controls flex items-center gap-3"
         role="toolbar"
         :aria-label="theme.t.audioFile.audioFile + ' playback controls'"
       >
@@ -515,7 +519,7 @@ onUnmounted(() => {
 
         <!-- Время -->
         <div
-          class="time-display"
+          class="time-display text-sm ml-auto flex items-center gap-1 h-7 min-w-0 font-medium px-2.5 rounded"
           role="timer"
           :aria-label="`${theme.t.audioFile.currentTime}: ${formatTime(currentTime)} of ${formatTime(duration)}`"
         >
@@ -530,9 +534,9 @@ onUnmounted(() => {
       </div>
 
       <!-- Прогресс-бар -->
-      <div class="progress-container">
+      <div class="progress-container px-4">
         <div
-          class="progress-bar"
+          class="progress-bar flex items-center gap-3 cursor-pointer"
           role="slider"
           :aria-label="`${theme.t.audioFile.audioProgress}: ${Math.round(progressPercent)}%`"
           :aria-valuemin="0"
@@ -543,25 +547,25 @@ onUnmounted(() => {
           @click="handleProgressClick"
           @keydown="handleProgressKeydown"
         >
-          <div class="progress-track">
+          <div class="progress-track flex h-1 rounded-sm overflow-hidden">
             <div
-              class="progress-fill"
-              :style="{ width: `${Math.max(progressPercent, 0.1)}%` }"
-            ></div>
+              class="progress-fill h-full rounded-sm"
+              :style="{ width: `${progressPercent}%` }"
+            />
           </div>
         </div>
       </div>
 
       <!-- Контрол громкости -->
-      <div class="volume-control">
-        <Icon icon="mdi:volume-high" class="volume-icon" aria-hidden="true" />
+      <div class="volume-control flex items-center gap-2">
+        <Icon icon="mdi:volume-high" class="volume-icon text-xl" aria-hidden="true" />
         <input
+          class="volume-slider w-full"
           v-model="volume"
           type="range"
           min="0"
           max="1"
           step="0.1"
-          class="volume-slider"
           :aria-label="`${theme.t.audioFile.volumeControl}: ${Math.round(volume * 100)}%`"
           role="slider"
           :aria-valuemin="0"
@@ -574,7 +578,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Сообщение об ошибке -->
-    <div v-if="hasError" class="error-message" role="alert" aria-live="polite">
+    <div v-if="hasError" class="error-message flex items-center gap-2 px-4 py-3" role="alert" aria-live="polite">
       <Icon icon="mdi:alert-circle" aria-hidden="true" />
       <span>{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
       <Btn
@@ -607,7 +611,6 @@ onUnmounted(() => {
   gap: 1rem;
   border-left: 4px solid var(--primary-btn-bg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-top: 0.325rem;
   margin-bottom: 0.325rem;
 }
 
@@ -620,49 +623,25 @@ onUnmounted(() => {
 
 /* Заголовок файла - первая строка */
 .file-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-alt);
 }
 
 .play-btn-header {
-  border-radius: 50%;
-  transition: all 0.2s ease;
-}
-
-.play-btn-header:hover:not(:disabled) {
-  transform: scale(1.05);
 }
 
 .file-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
   flex: 1;
 }
 
-.file-info.has-hint {
-  align-items: flex-start;
-}
-
-.file-details {
-  flex: 1;
-  min-width: 0;
-}
+.file-info.has-hint {}
 
 .file-name {
-  font-weight: 500;
-  word-break: break-all;
-  margin-bottom: 0.25rem;
+  color: var(--vp-c-text-1);
 }
 
 .file-hint {
-  font-size: 0.875rem;
-  color: var(--gray-600);
-  font-style: italic;
-  margin-top: 0.25rem;
+  color: var(--vp-c-text-2);
 }
 
 .dark .file-hint {
@@ -687,43 +666,27 @@ onUnmounted(() => {
 }
 
 .dark .audio-player {
-  background: var(--gray-950);
-  border-color: var(--gray-800);
+  background: var(--vp-c-bg-alt);
+  border-top: 1px solid var(--vp-c-divider);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.player-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
+.player-controls {}
 
 .play-btn,
 .stop-btn,
 .hide-btn {
-  border-radius: 50%;
-  transition: all 0.2s ease;
 }
 
 .play-btn:hover:not(:disabled),
 .stop-btn:hover:not(:disabled),
-.hide-btn:hover:not(:disabled) {
-  transform: scale(1.05);
+.download-btn-header:hover:not(:disabled) {
 }
 
 .time-display {
-  display: flex;
-  align-items: center;
-  height: 1.75rem;
-  gap: 0.25rem;
-  font-size: 0.875rem;
   color: var(--gray-600);
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  min-width: 0;
-  font-weight: 500;
   background: var(--gray-100);
-  padding: 0 0.625rem;
-  border-radius: 0.25rem;
   border: 1px solid var(--gray-200);
 }
 
@@ -749,7 +712,6 @@ onUnmounted(() => {
 }
 
 .progress-bar {
-  cursor: pointer;
   padding: 0.75rem 0;
   outline: none;
   border-radius: 0.25rem;
@@ -757,8 +719,7 @@ onUnmounted(() => {
 }
 
 .progress-bar:focus {
-  outline: 2px solid var(--primary-btn-bg);
-  outline-offset: 2px;
+  outline: none;
 }
 
 .progress-bar:hover {
@@ -767,12 +728,7 @@ onUnmounted(() => {
 
 .progress-track {
   width: 100%;
-  height: 0.5rem;
-  background: var(--gray-200);
-  border-radius: 0.25rem;
-  overflow: hidden;
   position: relative;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .dark .progress-track {
@@ -781,10 +737,8 @@ onUnmounted(() => {
 }
 
 .progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  border-radius: 0.25rem;
-  transition: width 0.2s ease;
+  transition: width 0.1s linear;
+  background: var(--vp-c-brand-1);
   min-width: 0;
   position: relative;
   box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
@@ -793,55 +747,21 @@ onUnmounted(() => {
 .progress-fill::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
   right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  border-radius: 0.25rem;
+  transform: translate(50%, -50%);
+  background: var(--vp-c-brand-1);
 }
 
 /* Контрол громкости */
-.volume-control {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
-  padding: 0.5rem 0;
-}
-
-.volume-icon {
-  color: var(--gray-600);
-  flex-shrink: 0;
-  font-size: 1.25rem;
-}
-
-.dark .volume-icon {
-  color: var(--gray-400);
-}
-
 .volume-slider {
-  flex: 1;
-  min-width: 0;
-  height: 0.375rem;
-  background: var(--gray-200);
-  border-radius: 0.1875rem;
-  outline: none;
-  cursor: pointer;
-  -webkit-appearance: none;
   appearance: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
 .volume-slider:focus {
-  outline: 2px solid var(--primary-btn-bg);
-  outline-offset: 2px;
+  outline: none;
 }
 
 .dark .volume-slider {
@@ -863,14 +783,10 @@ onUnmounted(() => {
 
 /* Сообщение об ошибке */
 .error-message {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
+  color: var(--vp-c-danger-1);
   background: #fef2f2;
   border: 1px solid #fecaca;
   border-radius: 0.375rem;
-  color: #dc2626;
   font-size: 0.875rem;
 }
 
@@ -889,9 +805,8 @@ onUnmounted(() => {
   color: #fca5a5;
 }
 
-.retry-btn {
-  margin-left: auto;
-  flex-shrink: 0;
+.retry-btn:hover {
+  text-decoration: none;
 }
 
 @keyframes slideDown {

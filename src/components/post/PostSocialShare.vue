@@ -86,7 +86,7 @@ onMounted(() => {
           :href="item.href"
           :title="item.title"
           v-bind="item.attrs"
-          class="hover-animation-rise"
+          class="hover-animation-rise inline-flex items-center justify-center w-12 h-12 rounded-lg no-underline social-btn"
         >
           <Icon :icon="item.icon" aria-hidden="true" />
         </a>
@@ -97,14 +97,7 @@ onMounted(() => {
 
 <style scoped>
 .social-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.5rem;
   color: var(--vp-c-text-2);
-  text-decoration: none;
 }
 
 .social-btn svg {

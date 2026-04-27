@@ -30,7 +30,7 @@ watch(
     'bottom-0 fixed transition-opacity to-the-top-desk',
     !showed && 'hidden',
   ]" :style="{ opacity, 'transition-duration': `${animationMs}ms` }" aria-hidden="true">
-    <div class="mb-9 ml-4 flex gap-x-2 px-2 py-2" @click.prevent.stop="handleClick">
+    <div class="mb-9 ml-4 flex gap-x-2 px-2 py-2 cursor-pointer" @click.prevent.stop="handleClick">
       <Icon icon="fa6-solid:arrow-up" width="1.3rem" height="1.3rem" />
       {{ theme.returnToTopLabel }}
     </div>
@@ -39,7 +39,6 @@ watch(
 
 <style scoped>
 .to-the-top-desk div {
-  cursor: pointer;
   color: var(--gray-600);
 }
 

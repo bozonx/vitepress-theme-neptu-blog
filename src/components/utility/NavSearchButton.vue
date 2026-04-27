@@ -1,8 +1,8 @@
 <template>
-  <div class="nav-search-button">
-    <button class="search-input-btn" :title="theme.t?.searchInBlog">
-      <Icon icon="fa6-solid:magnifying-glass" class="search-icon" />
-      <span class="search-placeholder">{{ theme.t?.search }}...</span>
+  <div class="nav-search-button flex items-center h-full w-40 max-[490px]:w-[120px] max-[439px]:w-full">
+    <button class="search-input-btn w-full flex items-center cursor-pointer text-left gap-2 p-[5px_12px] rounded-md" :title="theme.t?.searchInBlog">
+      <Icon icon="fa6-solid:magnifying-glass" class="search-icon w-4 shrink-0" />
+      <span class="search-placeholder text-sm flex-1 max-[439px]:hidden">{{ theme.t?.search }}...</span>
     </button>
   </div>
 </template>
@@ -22,22 +22,7 @@ const { theme } = useData()
 </style>
 
 <style scoped>
-.nav-search-button {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 160px;
-}
-
 .search-input-btn {
-  text-align: left;
-  cursor: pointer;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border-radius: 6px;
   border: 1px solid var(--search-input-btn-border-color);
   background-color: var(--vp-c-bg-soft);
   transition: all 0.2s ease;
@@ -49,34 +34,10 @@ const { theme } = useData()
 }
 
 .search-icon {
-  width: 16px;
   color: var(--vp-c-text-2);
-  flex-shrink: 0;
 }
 
 .search-placeholder {
   color: var(--vp-c-text-2);
-  font-size: 14px;
-  flex: 1;
-}
-
-@media (max-width: 490px) {
-  .nav-search-button {
-    width: 120px;
-  }
-}
-
-@media (max-width: 439px) {
-  .nav-search-button {
-    width: 100%;
-  }
-
-  .search-input-wrapper {
-    padding: 8px 10px;
-  }
-
-  .search-placeholder {
-    display: none;
-  }
 }
 </style>

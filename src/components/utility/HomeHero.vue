@@ -17,7 +17,7 @@
         class="home-logo flex justify-center"
         :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
       >
-        <img :src="props.img.src" :alt="props.img.alt" />
+        <img :src="props.img.src" :alt="props.img.alt" class="w-80 h-80 max-[519px]:w-60 max-[519px]:h-60" />
       </a>
     </div>
     <ul
@@ -58,16 +58,7 @@ const props = defineProps<{
 
 <style scoped>
 .home-logo img {
-  width: 320px;
-  height: 320px;
   filter: drop-shadow(5px 5px 20px rgba(0, 0, 0, 0.5));
-}
-
-@media (max-width: 519px) {
-  .home-logo img {
-    width: 240px;
-    height: 240px;
-  }
 }
 
 .home-hero h1,

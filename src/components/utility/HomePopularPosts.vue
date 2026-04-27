@@ -1,5 +1,5 @@
 <template>
-  <div v-if="theme.popularPosts?.enabled" class="home-popular-posts">
+  <div v-if="theme.popularPosts?.enabled" class="home-popular-posts relative">
     <UtilSubPageHeader class="home-popular-posts-header mb-3">
       {{ theme.t.popularPosts }}
     </UtilSubPageHeader>
@@ -11,7 +11,7 @@
       <BtnLink
         :href="`${theme.popularBaseUrl}/2`"
         :text="theme.t.showMorePosts"
-        class="more-posts-btn"
+        class="more-posts-btn underline"
       />
     </div>
   </div>
@@ -45,10 +45,6 @@ const showMorePosts = localePosts.length > theme.value.perPage
 
 <style>
 /* Frosted glass effect for popular posts */
-.home-popular-posts {
-  position: relative;
-}
-
 .dark .home-popular-posts .card-item,
 .home-popular-posts .card-item {
   background: rgba(0, 0, 0, 0.27);
@@ -79,7 +75,6 @@ const showMorePosts = localePosts.length > theme.value.perPage
 
 .home-popular-posts .more-posts-btn {
   color: var(--gray-300);
-  text-decoration: underline;
 }
 
 @keyframes glassmorphism-fade-in {

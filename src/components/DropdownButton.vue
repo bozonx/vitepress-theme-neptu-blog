@@ -78,7 +78,7 @@ onUnmounted(() => {
 <template>
   <div
     v-on-click-outside="closeList"
-    class="dropdown-btn"
+    class="dropdown-btn inline-block relative"
     @mouseenter="handleWholeMouseEnter"
     @mouseleave="handleWholeMouseLeave"
   >
@@ -90,11 +90,11 @@ onUnmounted(() => {
     >
       <span class="flex">
         <slot name="btn-text" />
-        <span class="dropdown-caret" aria-hidden="true">
+        <span class="dropdown-caret ml-1 -mr-[10px]" aria-hidden="true">
           <span
             :class="[
-              'dropdown-caret-rotate',
-              listOpen && 'dropdown-caret--open',
+              'dropdown-caret-rotate block transition-transform duration-[400ms] rotate-0',
+              listOpen && 'dropdown-caret--open rotate-180',
             ]"
           >
             <Icon icon="ci:caret-down-md" width="1.7rem" height="1.7rem" />
@@ -105,9 +105,9 @@ onUnmounted(() => {
     <div
       :style="{ opacity, 'transition-duration': `${animationTimeMs}ms` }"
       :class="[
-        `dropdown-list space-y-1 transition-opacity`,
-        props.dropUp && 'dropdown--drop-up',
-        props.dropLeft && 'dropdown--drop-left',
+        `dropdown-list space-y-1 transition-opacity absolute z-100 min-w-[100px] py-[0.4rem] rounded-lg mt-[1px]`,
+        props.dropUp && 'dropdown--drop-up bottom-full',
+        props.dropLeft && 'dropdown--drop-left right-0',
         !listOpen && 'hidden',
       ]"
       @click="closeList"
@@ -118,56 +118,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.dropdown-btn {
-  display: inline-block;
-  position: relative;
-}
-
-.dropdown-caret {
-  margin-left: 0.25rem;
-  margin-right: -10px;
-}
-
 .dropdown-list {
-  position: absolute;
-  z-index: 100;
-  min-width: 100px;
-  padding: 0.4rem 0;
-  border-radius: 0.5rem;
-  margin-top: 1px;
   background: var(--dropdown-list-bg);
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
 }
 
 .dark .dropdown-list {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.5);
-}
-
-.dropdown--drop-up {
-  bottom: 100%;
-}
-
-.dropdown--drop-left {
-  right: 0;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(180deg);
-  }
-}
-
-.dropdown-caret-rotate {
-  display: block;
-  transition: transform 400ms;
-  transform: rotate(0deg);
-}
-
-.dropdown-caret--open {
-  transform: rotate(180deg);
 }
 </style>

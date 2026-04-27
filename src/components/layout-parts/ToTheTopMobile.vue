@@ -33,7 +33,7 @@ watch(
   <div
 :class="['bottom-0 right-0 fixed transition-opacity', !showed && 'hidden']"
     :style="{ opacity, 'transition-duration': `${animationMs}ms` }" aria-hidden="true">
-    <div class="to-the-top-mobile" :title="theme.returnToTopLabel" @click.prevent.stop="handleClick">
+    <div class="to-the-top-mobile flex justify-center items-center w-14 h-14 rounded-full text-white mr-12 mb-12" :title="theme.returnToTopLabel" @click.prevent.stop="handleClick">
       <Icon icon="fa6-solid:arrow-up" />
     </div>
   </div>
@@ -42,14 +42,6 @@ watch(
 <style scoped>
 .to-the-top-mobile {
   background: var(--primary-btn-bg);
-  border-radius: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  margin: 0 3rem 3rem 0;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
-  color: white;
 }
 </style>

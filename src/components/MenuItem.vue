@@ -11,7 +11,7 @@ const props = defineProps<Props>()
 <template>
   <Btn
     v-bind="$attrs"
-    :custom-class="['menu-item', props.customClass]"
+    :custom-class="['menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]', props.customClass]"
     icon-class="muted"
     :no-bg="true"
   >
@@ -21,16 +21,6 @@ const props = defineProps<Props>()
 
 <style scoped>
 /**** Lighter Btn for use on lighter background */
-.menu-item {
-  border: 0 none !important;
-  padding: 0.625rem 1.125rem;
-  border-radius: 0;
-  width: 100%;
-  box-shadow: none !important;
-  transition: none !important;
-  transform: none !important;
-}
-
 .menu-item:hover {
   filter: brightness(99%);
 }

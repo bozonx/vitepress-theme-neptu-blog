@@ -29,7 +29,7 @@ const resolveLink = (link: string) => {
     v-if="localeLinks.length && currentLang.label"
     :no-bg="props.noBg"
     :title="theme.langMenuLabel || 'Change language'"
-    class="switch-lang-btn"
+    class="switch-lang-btn px-0"
   >
     <template #btn-text>
       <span class="pt-1" aria-hidden="true">
@@ -61,8 +61,4 @@ const resolveLink = (link: string) => {
 </template>
 
 <style scoped>
-.switch-lang-btn {
-  padding-left: 0;
-  padding-right: 0;
-}
 </style>
