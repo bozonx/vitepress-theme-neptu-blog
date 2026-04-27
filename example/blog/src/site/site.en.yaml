@@ -72,16 +72,10 @@ body: |
       - icon: 'fa6-brands:github-alt'
         href: "${config.repo}"
         title: 'This blog on Github'
-    links:
-      - text: "${t.links.recent}"
-        href: "${theme.recentBaseUrl}/1"
-        icon: "${theme.recentIcon}"
-      - text: "${t.links.byDate}"
-        href: "${theme.archiveBaseUrl}"
-        icon: "${theme.byDateIcon}"
-      - text: "${t.links.authors}"
-        href: "${theme.allAuthorBaseUrl}"
-        icon: "${theme.authorsIcon}"
+    #links:
+    #  - text: "${t.links.recent}"
+    #    href: "${theme.recentBaseUrl}/1"
+    #    icon: "${theme.recentIcon}"
     bottomLinks:
       - text: "${t.links.donate}"
         href: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
