@@ -6,7 +6,7 @@
 
     <div
       v-if="showPopularPostsSwitch"
-      class="flex flex-row items-center gap-1 gap-y-4 list-page-header-switcher"
+      class="flex flex-row items-center gap-1 gap-y-4 list-page-header-switcher max-[460px]:flex-col max-[460px]:items-start"
     >
       <Btn
         :text="theme.t.links.recent"
@@ -43,11 +43,3 @@ const showPopularPostsSwitch =
   props.showPopularPostsSwitch && theme.value.popularPosts?.enabled
 </script>
 
-<style scoped>
-@media (max-width: 460px) {
-  .list-page-header-switcher {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-</style>

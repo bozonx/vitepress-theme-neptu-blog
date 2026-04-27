@@ -16,5 +16,5 @@ export function resolveNavigatorLang(
   if (!navLang) return undefined
 
   const shortLang = navLang.split('-')[0]
-  return locales.find((l) => l === navLang || l === shortLang)
+  return locales.find((l) => l === navLang) || locales.find((l) => l === shortLang)
 }

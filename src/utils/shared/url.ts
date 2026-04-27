@@ -1,7 +1,7 @@
 import { pathTrimExt } from './string.ts'
 
 export function isExternalUrl(url: string | null | undefined): boolean {
-  return Boolean(url && url.match(/^[\a-z\d]+\:\/\//))
+  return Boolean(url && url.match(/^[a-z\d]+:\/\//i))
 }
 
 /**
@@ -15,7 +15,8 @@ export function resolveI18Href(
 ): string {
   const trimmed = String(rawHref).trim()
 
-  if (typeof rawHref !== 'string' || !trimmed) return rawHref
+  if (typeof rawHref !== 'string') return trimmed
+  if (!trimmed) return rawHref
   // Main page
   else if (trimmed === '/') return '/' + localeIndex
 

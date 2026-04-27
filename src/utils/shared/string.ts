@@ -78,8 +78,8 @@ export function standardTemplate(
   let match: RegExpExecArray | null
 
   while ((match = templateRegex.exec(tmpl)) !== null) {
-    const key = match[1] ?? ''
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const key = (match[1] ?? '').trim()
+    const escapedKey = (match[1] ?? '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const replaceRegex = new RegExp(`\\$\\{${escapedKey}\\}`, 'g')
 
     let stringValue: string
@@ -161,7 +161,8 @@ export function smartTruncate(
 
 /** Trim extension from filename */
 export function pathTrimExt(fileName: unknown): string {
-  if (typeof fileName !== 'string' || fileName.indexOf('.') < 0) return fileName as string
+  if (typeof fileName !== 'string') return ''
+  if (fileName.indexOf('.') < 0) return fileName
   const splat = fileName.split('.')
   splat.pop()
   return splat.join('.')

@@ -3,7 +3,7 @@
     class="author-container flex flex-col md:flex-row gap-x-6 gap-y-1 items-start"
   >
     <!-- Author image -->
-    <figure v-if="author?.image" class="author-image-container">
+    <figure v-if="author?.image" class="author-image-container w-full mx-auto md:w-[280px] md:shrink-0">
       <a :href="author.image" class="lightbox">
         <img
           :src="author.image"
@@ -40,17 +40,3 @@ interface Author {
 const props = defineProps<{ author?: Author }>()
 </script>
 
-<style scoped>
-.author-image-container {
-  width: 100%;
-  margin: auto;
-}
-
-/* On md screens and larger */
-@media (min-width: 768px) {
-  .author-image-container {
-    width: 280px;
-    flex-shrink: 0;
-  }
-}
-</style>

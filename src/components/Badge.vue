@@ -8,17 +8,13 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <span class="rounded-full text-sm badge-item" :title="props.title">
+  <span class="rounded-full text-sm badge-item text-white p-2 leading-2! h-6" :title="props.title">
     {{ props.count }}
   </span>
 </template>
 
 <style scoped>
 .badge-item {
-  color: white;
-  padding: 0.5rem;
-  line-height: 0.5rem !important;
-  height: 1.5rem;
   background: var(--primary-btn-bg);
   filter: brightness(120%);
 }

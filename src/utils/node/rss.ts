@@ -33,7 +33,13 @@ export function validatePostForRss(frontmatter: any, url: string): boolean {
 
 /** Creates a unique GUID for a post. */
 export function createPostGuid(siteUrl: string, url: string, date?: string | Date): string {
-  const dateStr = date ? new Date(date).toISOString().split('T')[0] : ''
+  let dateStr = ''
+  if (date) {
+    const parsed = new Date(date)
+    if (!isNaN(parsed.getTime())) {
+      dateStr = parsed.toISOString().split('T')[0]
+    }
+  }
   return `${siteUrl}${url}${dateStr ? `#${dateStr}` : ''}`
 }
 
@@ -50,7 +56,7 @@ export function formatTagsForRss(tags: unknown, siteUrl: string): RssCategory[] 
     .filter((tag): tag is string => typeof tag === 'string' && tag.trim().length > 0)
     .map((tag) => ({
       name: tag.trim(),
-      domain: `${siteUrl}/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`,
+      domain: `${siteUrl}/tag/${tag.trim().toLowerCase().replace(/\s+/g, '-')}`,
     }))
 }
 
@@ -113,7 +119,7 @@ export function getFormatInfo(format: string): RssFormatInfo {
 
 /** Gets RSS format settings from configuration */
 export function getRssFormats(config: any): string[] {
-  return config.userConfig.rssFormats || ['rss', 'atom', 'json']
+  return config?.userConfig?.rssFormats || ['rss', 'atom', 'json']
 }
 
 export function makeAuthorForRss(

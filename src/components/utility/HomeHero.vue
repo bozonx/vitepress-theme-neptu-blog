@@ -14,7 +14,7 @@
       <a
         v-if="props.img"
         aria-hidden="true"
-        class="home-logo"
+        class="home-logo flex justify-center"
         :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
       >
         <img :src="props.img.src" :alt="props.img.alt" />
@@ -57,11 +57,6 @@ const props = defineProps<{
 </script>
 
 <style scoped>
-.home-logo {
-  display: flex;
-  justify-content: center;
-}
-
 .home-logo img {
   width: 320px;
   height: 320px;

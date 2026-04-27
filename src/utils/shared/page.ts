@@ -45,7 +45,7 @@ export function isAuthorPage(filePath: string | null | undefined, siteConfig: Ex
   const escaped = escapeRegExp(authorsBaseUrl)
 
   return (
-    !!filePath.match(new RegExp(`^\\w+\/${escaped}\/`)) &&
+    !!filePath.match(new RegExp(`^[^/]+\/${escaped}\/`)) &&
     !filePath.endsWith(`${authorsBaseUrl}/index.md`)
   )
 }

@@ -88,14 +88,9 @@ if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
         :title="item.title"
         :text="String(item.name)"
         :icon="item.icon"
-        class="px-3 pagination-btn"
+        class="px-4 py-[0.35rem]"
       />
     </li>
   </ul>
 </template>
 
-<style scoped>
-.pagination-btn {
-  padding: 0.35rem 1rem;
-}
-</style>

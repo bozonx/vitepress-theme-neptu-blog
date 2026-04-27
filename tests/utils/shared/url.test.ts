@@ -1,0 +1,101 @@
+import { describe, it, expect } from 'vitest'
+import { isExternalUrl, resolveI18Href, generatePageUrlPath } from '../../../src/utils/shared/url.ts'
+
+describe('isExternalUrl', () => {
+  it('returns true for http://', () => {
+    expect(isExternalUrl('http://example.com')).toBe(true)
+  })
+
+  it('returns true for https://', () => {
+    expect(isExternalUrl('https://example.com')).toBe(true)
+  })
+
+  it('returns true for ftp://', () => {
+    expect(isExternalUrl('ftp://example.com')).toBe(true)
+  })
+
+  it('returns true for uppercase scheme', () => {
+    expect(isExternalUrl('HTTP://example.com')).toBe(true)
+    expect(isExternalUrl('HTTPS://example.com')).toBe(true)
+  })
+
+  it('returns false for protocol-relative URL', () => {
+    expect(isExternalUrl('//example.com')).toBe(false)
+  })
+
+  it('returns false for relative path', () => {
+    expect(isExternalUrl('/path/to/page')).toBe(false)
+  })
+
+  it('returns false for local path', () => {
+    expect(isExternalUrl('assets/image.png')).toBe(false)
+  })
+
+  it('returns false for null', () => {
+    expect(isExternalUrl(null)).toBe(false)
+  })
+
+  it('returns false for empty string', () => {
+    expect(isExternalUrl('')).toBe(false)
+  })
+})
+
+describe('resolveI18Href', () => {
+  it('returns locale-prefixed root for /', () => {
+    expect(resolveI18Href('/', 'en', true)).toBe('/en')
+  })
+
+  it('returns trimmed string when i18nRouting is disabled', () => {
+    expect(resolveI18Href('path', 'en', false)).toBe('path')
+  })
+
+  it('returns external URL unchanged', () => {
+    expect(resolveI18Href('https://example.com', 'en', true)).toBe('https://example.com')
+  })
+
+  it('returns already-absolute internal path unchanged', () => {
+    expect(resolveI18Href('/path', 'en', true)).toBe('/path')
+  })
+
+  it('prepends locale to relative path', () => {
+    expect(resolveI18Href('path/to/page', 'en', true)).toBe('/en/path/to/page')
+  })
+
+  it('trims whitespace', () => {
+    expect(resolveI18Href('  path  ', 'en', true)).toBe('/en/path')
+  })
+
+  it('returns stringified non-string input', () => {
+    expect(resolveI18Href(123 as any, 'en', true)).toBe('123')
+  })
+
+  it('returns empty string for empty string', () => {
+    expect(resolveI18Href('', 'en', true)).toBe('')
+  })
+
+  it('does not add double slashes', () => {
+    expect(resolveI18Href('/path', 'en', true)).toBe('/path')
+  })
+})
+
+describe('generatePageUrlPath', () => {
+  it('removes file extension', () => {
+    expect(generatePageUrlPath('post/hello.md')).toBe('post/hello')
+  })
+
+  it('removes trailing /index', () => {
+    expect(generatePageUrlPath('post/index.md')).toBe('post')
+  })
+
+  it('returns empty string for root index', () => {
+    expect(generatePageUrlPath('index.md')).toBe('')
+  })
+
+  it('handles nested index', () => {
+    expect(generatePageUrlPath('en/post/index.md')).toBe('en/post')
+  })
+
+  it('handles path without index', () => {
+    expect(generatePageUrlPath('about.md')).toBe('about')
+  })
+})
