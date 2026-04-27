@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises'
 import { google } from 'googleapis'
+import type { Auth } from 'googleapis'
 import { POSTS_DIR } from '../constants.ts'
+import type { Post } from '../types.d.ts'
 
 declare global {
    
@@ -22,16 +24,16 @@ export interface GoogleAnalyticsConfig {
   dataLimit?: number
 }
 
-export interface AnalyticsStats {
+export interface AnalyticsStats extends Record<string, number> {
   pageviews: number
   uniquePageviews: number
   avgTimeOnPage: number
 }
 
 export async function mergeWithAnalytics(
-  posts: Record<string, unknown>[],
+  posts: Post[],
   gaCfg: GoogleAnalyticsConfig | null | undefined
-): Promise<Record<string, unknown>[]> {
+): Promise<Post[]> {
   // Configuration validation
   if (!gaCfg?.propertyId) {
     console.warn('⚠️ Google Analytics is not configured: propertyId is missing')
@@ -74,7 +76,7 @@ export async function mergeWithAnalytics(
 
       if (analyticsData) postsWithStatsCount++
 
-      return { ...post, analyticsStats: analyticsData || {} }
+      return { ...post, analyticsStats: analyticsData || {} } as Post
     })
 
     console.log(
@@ -111,7 +113,7 @@ export async function loadGoogleAnalytics(
       console.log('🔑 Using Application Default Credentials')
     }
 
-    const authClient: unknown = credentials
+    const authClient: Auth.JWT | Auth.AuthClient = credentials
       ? new google.auth.JWT({
           email: credentials.client_email,
           key: credentials.private_key,
@@ -123,7 +125,7 @@ export async function loadGoogleAnalytics(
 
     const analyticsdata = google.analyticsdata({
       version: GA_VERSION,
-      auth: authClient,
+      auth: authClient as Auth.JWT,
     })
     const endDate = new Date()
     const startDate = new Date()
@@ -168,11 +170,15 @@ export async function loadGoogleAnalytics(
 
     console.log('📊 Sending request to Google Analytics Data API...')
 
-    const response = await analyticsdata.properties.runReport(requestParams as unknown)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const response = await analyticsdata.properties.runReport(requestParams as any)
 
     const stats: Record<string, AnalyticsStats> = {}
 
-    if (!response.data.rows || response.data.rows.length === 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const responseData = (response as any).data
+
+    if (!responseData.rows || responseData.rows.length === 0) {
       console.warn('⚠️ No data in response from Google Analytics 4')
       console.warn('   Possible reasons:')
       console.warn('   - Not enough data for the specified period')
@@ -182,14 +188,16 @@ export async function loadGoogleAnalytics(
     }
 
     console.log(
-      `📊 Response from Google Analytics: Found ${response.data.rows?.length || 0} records`
+      `📊 Response from Google Analytics: Found ${responseData.rows?.length || 0} records`
     )
     console.log('🔗 First 5 URLs:')
-    response.data.rows.slice(0, 5).forEach((row: unknown, index: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    responseData.rows.slice(0, 5).forEach((row: any, index: number) => {
       console.log(`  ${index + 1}. ${row.dimensionValues[0].value}`)
     })
 
-    response.data.rows.forEach((row: unknown) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    responseData.rows.forEach((row: any) => {
       const pagePath = row.dimensionValues[0].value
       const metrics = row.metricValues
 
@@ -201,7 +209,7 @@ export async function loadGoogleAnalytics(
     })
 
     return stats
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error(
       '❌ Error requesting Google Analytics API:',
       (error as Error)?.message
@@ -225,7 +233,7 @@ export async function loadGoogleAnalytics(
     } else if (error?.code === 400) {
       console.error('❌ Invalid request to Google Analytics API')
       if (error?.details) {
-        console.error('   Error details:', (error as Record<string, unknown>).details)
+        console.error('   Error details:', error.details)
       }
     } else if (error?.code === 401) {
       console.error(

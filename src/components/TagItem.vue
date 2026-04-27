@@ -6,7 +6,7 @@ import Badge from './Badge.vue'
 const { theme } = useData()
 
 interface Props {
-  name: string
+  name?: string
   count?: number
   slug?: string
   sizeXl?: boolean | string

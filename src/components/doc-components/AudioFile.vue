@@ -212,7 +212,7 @@ const seekTo = (time: number) => {
 
 const setVolume = (newVolume: number | string) => {
   if (audioRef.value) {
-    const volumeValue = parseFloat(newVolume)
+    const volumeValue = typeof newVolume === 'string' ? parseFloat(newVolume) : newVolume
     audioRef.value.volume = volumeValue
     volume.value = volumeValue
   }
@@ -222,7 +222,8 @@ const setVolume = (newVolume: number | string) => {
 const handleProgressClick = (event: MouseEvent) => {
   if (isDisabled.value || !duration.value) return
 
-  const progressBar = event.currentTarget
+  const progressBar = event.currentTarget as HTMLElement | null
+  if (!progressBar) return
   const rect = progressBar.getBoundingClientRect()
   const clickX = event.clientX - rect.left
   const percentage = clickX / rect.width

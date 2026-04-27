@@ -34,8 +34,7 @@ export function getImageDimensions(
       return null
     }
 
-    // Pass path directly to image-size to avoid reading full file into buffer
-    const dimensions = imageSize(fullPath)
+    const dimensions = imageSize(fs.readFileSync(fullPath))
 
     if (!dimensions || !dimensions.width || !dimensions.height) {
       console.warn(`Invalid image dimensions for ${fullPath}`)

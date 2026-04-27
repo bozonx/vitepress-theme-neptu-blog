@@ -7,7 +7,7 @@ import PreviewWithImage from './PreviewWithImage.vue'
 const { lang, theme } = useData()
 interface PreviewItem {
   url: string
-  title: string
+  title?: string
   date?: string | number | Date
   tags?: Array<{ slug?: string; name?: string; count?: number }>
   preview?: string
@@ -20,14 +20,12 @@ interface PreviewItem {
 const props = defineProps<{ item: PreviewItem }>()
 const params = computed(() => ({
   tags: props.item.tags,
-  date: props.item.date,
+  date: props.item.date ? String(props.item.date) : undefined,
   localeDate: makeHumanDate(props.item.date, lang.value),
   preview: String(props.item?.preview).trim().replace(/\.$/, '') + ' ...',
-  authorName:
-    theme.value.showAuthorInPostList &&
-    theme.value.authors?.find(
-      (item: { id?: string; name?: string }) => item.id === props.item.authorId
-    )?.name,
+  authorName: theme.value.showAuthorInPostList
+    ? theme.value.authors?.find((item: { id: string; name: string }) => item.id === props.item.authorId)?.name
+    : undefined,
 }))
 </script>
 

@@ -86,7 +86,7 @@ if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
       <Btn
         :href="item.href"
         :title="item.title"
-        :text="item.name"
+        :text="String(item.name)"
         :icon="item.icon"
         class="px-3 pagination-btn"
       />

@@ -8,12 +8,19 @@ function safeDateTime(date: string | number | Date | null | undefined): number {
   return Number.isFinite(time) ? time : 0
 }
 
+interface SortablePost {
+  url?: string
+  date?: string | number | Date
+  analyticsStats?: Record<string, number>
+  tags?: Array<{ slug?: string }>
+}
+
 /** Sorts posts by popularity or by date. */
-export function sortPosts(
-  posts: Post[] | null | undefined,
+export function sortPosts<T extends SortablePost>(
+  posts: T[] | null | undefined,
   sortBy?: string,
   sortByPopularity: boolean = false
-): Post[] {
+): T[] {
   if (!posts || !Array.isArray(posts)) return []
 
   if (sortByPopularity && !sortBy) {
@@ -47,13 +54,13 @@ export function sortPosts(
  * Sorts posts to display similar ones. Priority: number of matching
  * tags > popularity > date
  */
-export function sortSimilarPosts(
-  posts: Post[] | null | undefined,
+export function sortSimilarPosts<T extends SortablePost>(
+  posts: T[] | null | undefined,
   currentPostTags: Array<{ slug?: string }> | null | undefined,
   currentPostUrl: string,
   sortBy?: string,
   limit: number = 5
-): Post[] {
+): T[] {
   if (!posts || !Array.isArray(posts)) return []
   if (!currentPostTags || !Array.isArray(currentPostTags)) return []
 
@@ -71,7 +78,7 @@ export function sortSimilarPosts(
     return arraysIntersection(slugs1, slugs2)
   }
 
-  const getPopularityValue = (post: Post): number => {
+  const getPopularityValue = (post: SortablePost): number => {
     if (!sortBy) return 0
 
     const stats = post.analyticsStats?.[sortBy]

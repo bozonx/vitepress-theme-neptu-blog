@@ -3,7 +3,7 @@ import TagsList from './TagsList.vue'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
 interface TagItem {
-  name: string
+  name?: string
   slug?: string
   count?: number
 }
@@ -42,10 +42,10 @@ const props = defineProps<{
       </div>
 
       <TagsList
-        :tags="props.tags"
+        :tags="props.tags || []"
         class="mt-2"
         :size-sm="true"
-        active-compare-method="none"
+        :active-compare-method="'none'"
       />
     </div>
 
@@ -58,10 +58,10 @@ const props = defineProps<{
 
     <div class="flex max-sm:flex-col-reverse sm:items-end sm:mt-4 gap-x-1">
       <TagsList
-        :tags="props.tags"
+        :tags="props.tags || []"
         class="flex-1"
         :size-sm="true"
-        active-compare-method="none"
+        :active-compare-method="'none'"
       />
 
       <div

@@ -3,10 +3,9 @@ import { computed } from 'vue'
 import TagItem from './TagItem.vue'
 
 interface TagItem {
-  name: string
+  name?: string
   slug?: string
   count?: number
-  [key: string]: unknown
 }
 
 const props = defineProps<{

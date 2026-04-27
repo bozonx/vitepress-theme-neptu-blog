@@ -1,13 +1,17 @@
-interface TagInfo {
-  name: string
+export interface TagInfo {
+  name?: string
   slug?: string
+  count?: number
   [key: string]: unknown
 }
 
-interface PostLite {
+export interface PostLite {
+  url: string
+  title?: string
   date?: string | number | Date
   tags?: TagInfo[]
   authorId?: string
+  analyticsStats?: Record<string, number>
   [key: string]: unknown
 }
 
@@ -47,6 +51,7 @@ export function makeTagsList(allPosts: PostLite[] = []): Array<TagInfo & { count
     if (!item.tags?.length) continue
 
     for (const tagItem of item.tags) {
+      if (!tagItem.name) continue
       if (typeof tags[tagItem.name] === 'undefined') {
         tags[tagItem.name] = { ...tagItem, count: 1 }
       } else {

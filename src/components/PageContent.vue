@@ -6,16 +6,17 @@ import {
   isPage,
   isUtilPage,
 } from '../utils/shared/index.ts'
+import type { PostFrontmatter } from '../types.d.ts'
 import PostFooter from './post/PostFooter.vue'
 import PostDate from './post/PostDate.vue'
 import PostTopBar from './post/PostTopBar.vue'
 import PostImage from './post/PostImage.vue'
 
 const { page, frontmatter } = useData()
-const articlePreviewText = ref<string | null>(null)
+const articlePreviewText = ref<string | null | undefined>(null)
 
 watchEffect(() => {
-  articlePreviewText.value = resolveArticlePreview(frontmatter.value)
+  articlePreviewText.value = resolveArticlePreview(frontmatter.value as PostFrontmatter)
 })
 </script>
 

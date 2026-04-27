@@ -211,6 +211,7 @@ export namespace NeptuBlogTheme {
     authorId?: string
     thumbnail?: string
     cover?: string
+    [key: string]: unknown
   }
 
   export interface ExtendedPageData extends PageData {

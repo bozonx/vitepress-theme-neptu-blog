@@ -35,7 +35,7 @@ const totalPages = Math.ceil(props.localePosts.length / perPage)
         <li
           v-if="item"
           :data-popularity-value="
-            item.analyticsStats?.[theme.popularPosts?.sortBy]
+            theme.popularPosts?.sortBy && item.analyticsStats?.[theme.popularPosts.sortBy]
           "
         >
           <PreviewListItem :item="item" />
