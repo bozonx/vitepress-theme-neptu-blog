@@ -18,6 +18,8 @@ export function addCanonicalLink({
     return
   }
 
+  if (!pageData?.frontmatter) return
+
   const canonicalValue = pageData.frontmatter.canonical
 
   if (!canonicalValue) return

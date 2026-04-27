@@ -118,7 +118,7 @@ export function makeMonthsList(
     count: months[Number(month)]!,
   }))
 
-  res.sort((a, b) => b.month + a.month)
+  res.sort((a, b) => b.month - a.month)
 
   return res
 }
