@@ -1,6 +1,6 @@
 import { POSTS_DIR } from '../constants.ts'
 
-const POSTS_DIR_REGEXP = new RegExp(`^\\w+\/(${POSTS_DIR}|page)`)
+const POSTS_DIR_REGEXP = new RegExp(`^[^/]+\/(${POSTS_DIR}|page)`)
 
 export interface SitemapItem {
   url: string
@@ -14,7 +14,7 @@ export function filterSitemap(items: SitemapItem[]): SitemapItem[] {
     .filter((item) => {
       if (!item.url || !item.links) return false
       else if (item.url.startsWith('/')) return false
-      else if (item.url.match(/^\w+\/$/)) return true
+      else if (item.url.match(/^[^/]+\/$/)) return true
       else if (POSTS_DIR_REGEXP.test(item.url)) return true
       else return false
     })

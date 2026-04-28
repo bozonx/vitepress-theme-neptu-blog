@@ -32,6 +32,14 @@ describe('filterSitemap', () => {
     expect(filterSitemap(items)).toEqual(items)
   })
 
+  it('keeps root locale paths with non-latin characters', () => {
+    const items: SitemapItem[] = [
+      { url: 'рус/', links: [] },
+      { url: '中文/', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual(items)
+  })
+
   it('keeps post directory paths', () => {
     const items: SitemapItem[] = [
       { url: 'en/post/hello', links: [] },
@@ -40,10 +48,26 @@ describe('filterSitemap', () => {
     expect(filterSitemap(items)).toEqual(items)
   })
 
+  it('keeps post directory paths with non-latin locale', () => {
+    const items: SitemapItem[] = [
+      { url: 'рус/post/hello', links: [] },
+      { url: '中文/post/tag/foo', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual(items)
+  })
+
   it('keeps page directory paths', () => {
     const items: SitemapItem[] = [
       { url: 'en/page/2', links: [] },
       { url: 'en/page/99', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual(items)
+  })
+
+  it('keeps page directory paths with non-latin locale', () => {
+    const items: SitemapItem[] = [
+      { url: 'рус/page/2', links: [] },
+      { url: '中文/page/99', links: [] },
     ]
     expect(filterSitemap(items)).toEqual(items)
   })
