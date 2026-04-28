@@ -1,5 +1,7 @@
 dist
 
+src/.vitepress/cache/
+
 # Logs
 logs
 *.log
