@@ -14,3 +14,27 @@ export function resolveTranslationsByFilePath(filePath?: string): any {
 
   return map[localeIndex]
 }
+
+/**
+ * Select the correct plural form for a given count.
+ * Supports English (2 forms) and Russian (3 forms) out of the box.
+ */
+export function pluralize(count: number, forms: string[]): string {
+  const n = Math.abs(count)
+  const len = forms.length
+
+  if (len === 2) {
+    return n === 1 ? forms[0] : forms[1]
+  }
+
+  if (len >= 3) {
+    const lastTwo = n % 100
+    if (lastTwo >= 11 && lastTwo <= 14) return forms[2]
+    const lastDigit = n % 10
+    if (lastDigit === 1) return forms[0]
+    if (lastDigit >= 2 && lastDigit <= 4) return forms[1]
+    return forms[2]
+  }
+
+  return forms[0] ?? ''
+}

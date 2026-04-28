@@ -86,6 +86,7 @@ export namespace NeptuBlogTheme {
     closeMenu: string
     allPostsOfYear: string
     postsCount: string
+    postsCountForms: string[]
     search: string
     searchInBlog: string
 

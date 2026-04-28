@@ -26,7 +26,7 @@
         </p>
 
         <div class="mt-4 muted">
-          <span>{{ theme.t.postsCount }}: {{ props.item.count }}</span>
+          <span>{{ props.item.count }} {{ pluralize(props.item.count ?? 0, theme.t.postsCountForms) }}</span>
         </div>
       </div>
     </div>
@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
+import { pluralize } from '../utils/shared/index.ts'
 
 interface AuthorItem {
   id: string

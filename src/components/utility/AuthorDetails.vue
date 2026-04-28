@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import Author from '../Author.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
-import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
+import { sortPosts, isPopularRoute, pluralize } from '../../utils/shared/index.ts'
 import UtilPageHeader from './UtilPageHeader.vue'
 
 interface PostLite {
@@ -52,7 +52,7 @@ const author = theme.value.authors.find((item: Author) => item.id === props.auth
     :base-url="`/${localeIndex}/${theme.authorsBaseUrl}/${props.authorId}`"
     :show-popular-posts-switch="showPopularPostsSwitch"
   >
-    {{ theme.t.allPostsOfAuthor }} ({{ sorted.length }})
+    {{ sorted.length }} {{ pluralize(sorted.length, theme.t.postsCountForms) }}
   </ListPageHeader>
 
   <PreviewList

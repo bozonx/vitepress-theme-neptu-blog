@@ -39,6 +39,7 @@ export default {
     closeMenu: 'Close menu',
     allPostsOfYear: 'All posts of the year',
     postsCount: 'Publications',
+    postsCountForms: ['Publication', 'Publications'],
     ...shared,
 
     links: {

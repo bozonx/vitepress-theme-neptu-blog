@@ -39,6 +39,7 @@ export default {
     closeMenu: 'Закрыть меню',
     allPostsOfYear: 'Все посты за год',
     postsCount: 'Публикаций',
+    postsCountForms: ['публикация', 'публикации', 'публикаций'],
     ...shared,
 
     links: {
