@@ -19,18 +19,16 @@ export function parseLocaleSite(srcDir: string, props: ParseLocaleSiteProps): un
 
   function transRecursive(items: unknown): unknown {
     if (Array.isArray(items)) {
-      for (const index in items) {
-        items[index] = transRecursive(items[index])
-      }
-
-      return items
+      return items.map((item) => transRecursive(item))
     } else if (items && typeof items === 'object') {
       const obj = items as Record<string, unknown>
-      for (const index of Object.keys(obj)) {
-        obj[index] = transRecursive(obj[index])
+      const result: Record<string, unknown> = {}
+
+      for (const key of Object.keys(obj)) {
+        result[key] = transRecursive(obj[key])
       }
 
-      return obj
+      return result
     } else if (typeof items === 'string') {
       return standardTemplate(items, props as Record<string, unknown>)
     }
