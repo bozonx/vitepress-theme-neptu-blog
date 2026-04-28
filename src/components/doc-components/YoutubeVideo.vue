@@ -1,5 +1,5 @@
 <template>
-  <div v-if="url" class="video-responsive mt-4 overflow-hidden relative aspect-video">
+  <div v-if="url" class="video-responsive mt-4 overflow-hidden relative aspect-video max-md:px-0 max-md:rounded-none max-md:w-auto max-md:my-[0.85rem] max-md:-mx-6">
     <iframe
       class="absolute inset-0 w-full h-full"
       :src="url"
@@ -31,16 +31,3 @@ const url = computed(() => {
   return `https://www.youtube.com/embed/${props.id}`
 })
 </script>
-
-<style scoped>
-@media (max-width: 767px) {
-  .video-responsive {
-    padding-left: 0;
-    padding-right: 0;
-    border-radius: 0;
-    width: auto;
-    margin: 0.85rem -1.5rem;
-    border-radius: 0;
-  }
-}
-</style>

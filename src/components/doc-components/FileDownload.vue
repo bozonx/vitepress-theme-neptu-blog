@@ -110,14 +110,14 @@ const fileIcon = computed(() => {
 
 <template>
   <div
-    class="file-download flex items-center justify-between rounded-xl gap-4 transition-all duration-200 mt-[0.325rem] mb-[0.325rem]"
+    class="file-download flex items-center justify-between rounded-xl gap-4 transition-all duration-200 mt-[0.325rem] mb-[0.325rem] p-4 pl-8 border border-[var(--gray-150)] bg-white border-l-4 border-l-[var(--primary-btn-bg)] shadow-[0_1px_3px_rgba(0,0,0,0.1)] dark:bg-[var(--gray-850)] dark:border-[var(--gray-800)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] max-sm:flex-col max-sm:items-stretch max-sm:gap-3 max-sm:p-3 max-sm:pl-6"
     :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
   >
-    <div class="file-info flex items-center gap-3 flex-1 min-w-0" :class="{ 'items-start': $slots.default }">
+    <div class="file-info flex items-center gap-3 flex-1 min-w-0 max-sm:order-1 max-sm:w-full" :class="{ 'items-start': $slots.default }">
       <div
-        class="file-icon flex items-center justify-center w-10 h-10 rounded-md shrink-0"
+        class="file-icon flex items-center justify-center w-10 h-10 rounded-md shrink-0 bg-[var(--gray-100)] text-[var(--gray-600)] dark:bg-[var(--gray-800)] dark:text-[var(--gray-400)]"
         :aria-label="`${theme.t.fileDownload.fileType}: ${extensionName || 'unknown'}`"
         role="img"
       >
@@ -130,7 +130,7 @@ const fileIcon = computed(() => {
         >
           {{ downloadFilename }}
         </div>
-        <div v-if="$slots.default" class="file-hint text-sm italic mt-1">
+        <div v-if="$slots.default" class="file-hint text-sm italic mt-1 text-[var(--gray-600)] dark:text-[var(--gray-400)]">
           <slot />
         </div>
       </div>
@@ -140,7 +140,7 @@ const fileIcon = computed(() => {
       icon="mdi:download"
       :disabled="isDisabled"
       :text="theme.t.fileDownload.downloadFile"
-      class="download-btn shrink-0 transition-all duration-200"
+      class="download-btn shrink-0 transition-all duration-200 hover:-translate-y-px hover:shadow-[0_4px_8px_rgba(0,0,0,0.15)] max-sm:w-full max-sm:justify-center max-sm:order-2"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"
       role="button"
       tabindex="0"
@@ -148,67 +148,3 @@ const fileIcon = computed(() => {
     />
   </div>
 </template>
-
-<style scoped>
-.file-download {
-  padding: 1rem;
-  padding-left: 2rem;
-  border: 1px solid var(--gray-150);
-  background: #ffffff;
-  border-left: 4px solid var(--primary-btn-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.dark .file-download {
-  background: var(--gray-850);
-  border-color: var(--gray-800);
-  border-left-color: var(--primary-btn-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.file-icon {
-  background: var(--gray-100);
-  color: var(--gray-600);
-}
-
-.dark .file-icon {
-  background: var(--gray-800);
-  color: var(--gray-400);
-}
-
-.file-hint {
-  color: var(--gray-600);
-}
-
-.dark .file-hint {
-  color: var(--gray-400);
-}
-
-.download-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 640px) {
-  .file-download {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    padding-left: 1.5rem;
-  }
-
-  .file-info {
-    justify-content: flex-start;
-    order: 1;
-    width: 100%;
-  }
-
-  .download-btn {
-    width: 100%;
-    justify-content: center;
-    order: 2;
-  }
-}
-</style>

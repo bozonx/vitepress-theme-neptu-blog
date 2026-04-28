@@ -59,6 +59,3 @@ const resolveLink = (link: string) => {
     </template>
   </DropdownButton>
 </template>
-
-<style scoped>
-</style>

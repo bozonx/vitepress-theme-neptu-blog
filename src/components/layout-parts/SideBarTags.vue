@@ -3,7 +3,7 @@
     <TagsList
       :tags="tags"
       :size-sm="true"
-      class="mb-2 side-bar-tags-list gap-x-1 gap-y-3"
+      class="mb-2 side-bar-tags-list gap-x-1 gap-y-3 [&_.tag-item]:py-[3px] [&_.tag-item]:px-[9px]"
       active-compare-method="softPagination"
       @item-click="emit('itemClick')"
     />
@@ -12,7 +12,6 @@
         v-if="showAllTags"
         :href="allTagsUrl"
         :icon="theme.tagsIcon"
-        class="text-sm"
         >{{ theme.t.allTagsCall }}</BtnLink
       >
     </div>
@@ -44,12 +43,3 @@ const allTagsUrl = `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
 const showAllTags = allTags.length > theme.value.sidebarTagsCount
 const emit = defineEmits(['itemClick'])
 </script>
-
-<style scoped>
-</style>
-
-<style>
-.side-bar-tags .tag-item {
-  padding: 3px 9px;
-}
-</style>

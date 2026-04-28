@@ -13,7 +13,7 @@ const btnText = theme.value.t.listenPodcast
 </script>
 
 <template>
-  <DropdownButton v-if="frontmatter.podcasts" class="podcasts-btn w-fit">
+  <DropdownButton v-if="frontmatter.podcasts" class="podcasts-btn w-fit [&>.btn-base]:bg-[var(--podcast-btn-bg)]! [&>.btn-base]:text-white [&>.btn-base]:py-3 [&>.btn-base]:hover:brightness-110">
     <template #btn-text>
       <span class="mr-1" aria-hidden="true">
         <Icon
@@ -37,19 +37,3 @@ const btnText = theme.value.t.listenPodcast
     </template>
   </DropdownButton>
 </template>
-
-<style scoped>
-</style>
-
-<style>
-.podcasts-btn > .btn-base {
-  background: var(--podcast-btn-bg) !important;
-  color: white;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-
-.podcasts-btn > .btn-base:hover {
-  filter: brightness(110%);
-}
-</style>

@@ -57,7 +57,7 @@ useSwipeDrawer({
 
       <div class="flex flex-1">
         <main
-          class="lg:ml-4 xl:ml-24 mt-20 lg:mt-4 px-4 sm:px-8 app-page flex flex-col"
+          class="lg:ml-4 xl:ml-24 mt-20 lg:mt-4 px-4 sm:px-8 app-page flex flex-col w-full max-w-[var(--page-max-width)]"
         >
           <div class="flex-1" v-bind="bodyMarker ? { [bodyMarker]: true } : {}">
             <PageContent />
@@ -81,10 +81,3 @@ useSwipeDrawer({
     <ToTheTop :scroll-y="scrollY" :is-mobile="isMobile" />
   </div>
 </template>
-
-<style scoped>
-.app-page {
-  width: 100%;
-  max-width: var(--page-max-width);
-}
-</style>

@@ -17,18 +17,7 @@ const text =
     :text="text"
     :icon="theme.youtubeIcon"
     target="_blank"
-    class="video-link w-fit py-3"
+    class="video-link w-fit py-3 text-white! bg-[var(--video-link-bg)]! hover:brightness-110"
     :hide-external-icon="true"
   />
 </template>
-
-<style scoped>
-.video-link {
-  color: white !important;
-  background: var(--video-link-bg) !important;
-}
-
-.video-link:hover {
-  filter: brightness(110%);
-}
-</style>

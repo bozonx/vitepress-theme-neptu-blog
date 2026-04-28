@@ -86,30 +86,13 @@ onMounted(() => {
           :href="item.href"
           :title="item.title"
           v-bind="item.attrs"
-          class="hover-animation-rise inline-flex items-center justify-center w-12 h-12 rounded-lg no-underline social-btn transition-all duration-200 ease-in-out hover:-translate-y-0.5"
-        >
+          :class="[
+            'hover-animation-rise inline-flex items-center justify-center w-12 h-12 rounded-lg no-underline social-btn transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:filter-none',
+            item.title === 'VK' && 'text-[#0077ff] hover:text-[#0077ff]',
+          ]">
           <Icon :icon="item.icon" aria-hidden="true" class="w-9 h-9" />
         </a>
       </template>
     </div>
   </div>
 </template>
-
-<style scoped>
-.social-btn {
-  color: var(--vp-c-text-2);
-}
-
-.social-btn:hover {
-  color: var(--vp-c-brand-1);
-  filter: none; /* Убираем старый эффект brightness */
-}
-
-.social-vk {
-  color: #0077ff;
-}
-
-.social-vk:hover {
-  color: #0077ff;
-}
-</style>

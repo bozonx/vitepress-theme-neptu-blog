@@ -46,7 +46,7 @@ const links = theme.value.topBar
   <nav
     :class="[
       'flex w-full py-2 px-2 gap-x-1 top-bar pl-[0.675rem]',
-      props.isMobile && 'fixed z-[1] topbar--mobile',
+      props.isMobile && 'fixed z-[1] topbar--mobile bg-[var(--topbar-mobile-bg)] border-b border-[var(--topbar-mobile-border)] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.2)]',
     ]"
   >
     <div class="flex-1 flex gap-x-3">
@@ -92,15 +92,3 @@ const links = theme.value.topBar
     </ul>
   </nav>
 </template>
-
-<style scoped>
-.topbar--mobile {
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.07);
-  background: var(--topbar-mobile-bg);
-  border-bottom: 1px solid var(--topbar-mobile-border);
-}
-
-.dark .topbar--mobile {
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
-}
-</style>

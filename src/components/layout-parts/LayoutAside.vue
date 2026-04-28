@@ -12,6 +12,3 @@
 // Width matches the standard Google ad block (300px)
 // Visible only if default slot content exists
 </script>
-
-<style scoped>
-</style>

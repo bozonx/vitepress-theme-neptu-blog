@@ -42,46 +42,14 @@ watchEffect(() => {
 <template>
   <div
     ref="wrapperRef"
-    class="dark home-layout"
+    class="dark home-layout flex flex-col justify-center items-center w-full min-h-screen bg-no-repeat bg-center bg-fixed text-white! transition-[background-position-y] duration-100 ease-out"
     :style="`background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);`"
   >
-    <div class="home-layout-topbar">
+    <div class="home-layout-topbar absolute top-0 right-0 pt-4 pr-6">
       <SwitchLang :drop-left="true" :no-bg="true" />
     </div>
-    <div class="home-layout-page">
+    <div class="home-layout-page max-w-[800px] my-20 mx-7">
       <Content />
     </div>
   </div>
 </template>
-
-<style scoped>
-.home-layout {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  min-height: 100vh;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-attachment: fixed;
-  /* Smooth animation for parallax effect */
-  transition: background-position-y 0.1s ease-out;
-}
-
-.home-layout {
-  color: white !important;
-}
-
-.home-layout-topbar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 1rem 1.5rem 0 0;
-}
-
-.home-layout-page {
-  max-width: 800px;
-  margin: 5rem 1.75rem;
-}
-</style>
