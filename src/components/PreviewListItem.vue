@@ -31,7 +31,7 @@ const params = computed(() => ({
 
 <template>
   <a :href="props.item.url" class="card-item preview">
-    <h2 class="card-item-header">{{ props.item.title }}</h2>
+    <h2 class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight">{{ props.item.title }}</h2>
 
     <PreviewWithImage
       v-bind="params"

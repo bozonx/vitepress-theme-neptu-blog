@@ -22,7 +22,7 @@ const props = defineProps<{
 
 <template>
   <div v-if="props.thumbnail" class="md:flex w-full">
-    <div class="card-item-img-col">
+    <div class="card-item-img-col shrink-0 mr-4">
       <img
         :src="props.thumbnail"
         :height="coverHeight"
@@ -30,11 +30,11 @@ const props = defineProps<{
         :sizes="`(max-width: ${LIST_ITEM_THUMB_WIDTH}px) 100vw, ${LIST_ITEM_THUMB_WIDTH}px`"
         loading="lazy"
         aria-hidden="true"
-        class="card-item-img"
+        class="card-item-img w-full h-auto rounded-[0.3125rem]"
         alt=""
       />
 
-      <div class="mt-2 space-x-2 muted card-item-author-date">
+      <div class="mt-2 space-x-2 muted card-item-author-date text-sm leading-5">
         <span v-if="props.authorName">{{ props.authorName }}.</span>
         <time v-if="props.date" :datetime="props.date">
           {{ props.localeDate }}
@@ -65,7 +65,7 @@ const props = defineProps<{
       />
 
       <div
-        class="space-x-2 max-sm:mt-2 max-sm:mb-4 text-right muted card-item-author-date"
+        class="space-x-2 max-sm:mt-2 max-sm:mb-4 text-right muted card-item-author-date text-sm leading-5"
       >
         <span v-if="props.authorName">{{ props.authorName }}.</span>
         <time v-if="props.date" :datetime="props.date">

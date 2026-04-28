@@ -110,7 +110,7 @@ const fileIcon = computed(() => {
 
 <template>
   <div
-    class="file-download"
+    class="file-download flex items-center justify-between rounded-xl gap-4 transition-all duration-200 mt-[0.325rem] mb-[0.325rem]"
     :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
@@ -140,7 +140,7 @@ const fileIcon = computed(() => {
       icon="mdi:download"
       :disabled="isDisabled"
       :text="theme.t.fileDownload.downloadFile"
-      class="download-btn shrink-0"
+      class="download-btn shrink-0 transition-all duration-200"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"
       role="button"
       tabindex="0"
@@ -151,20 +151,12 @@ const fileIcon = computed(() => {
 
 <style scoped>
 .file-download {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 1rem;
   padding-left: 2rem;
   border: 1px solid var(--gray-150);
-  border-radius: 0.75rem;
   background: #ffffff;
-  transition: all 0.2s ease;
-  gap: 1rem;
   border-left: 4px solid var(--primary-btn-bg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-top: 0.325rem;
-  margin-bottom: 0.325rem;
 }
 
 .dark .file-download {
@@ -190,10 +182,6 @@ const fileIcon = computed(() => {
 
 .dark .file-hint {
   color: var(--gray-400);
-}
-
-.download-btn {
-  transition: all 0.2s ease;
 }
 
 .download-btn:hover:not(:disabled) {

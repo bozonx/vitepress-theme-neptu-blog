@@ -3,11 +3,11 @@
     :href="`/${localeIndex}/${theme.authorsBaseUrl}/${props.item.id}/1`"
     class="card-item author-preview"
   >
-    <h2 class="card-item-header">{{ props.item.name }}</h2>
+    <h2 class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight">{{ props.item.name }}</h2>
 
     <div class="md:flex w-full">
       <!-- Author image -->
-      <div v-if="props.item.image" class="card-item-img-col">
+      <div v-if="props.item.image" class="card-item-img-col shrink-0 mr-4">
         <img
           :src="props.item.image"
           :height="props.item.imageHeight"
@@ -15,7 +15,7 @@
           :sizes="`(max-width: ${LIST_ITEM_THUMB_WIDTH}px) 100vw, ${LIST_ITEM_THUMB_WIDTH}px`"
           :alt="props.item.name"
           loading="lazy"
-          class="card-item-img"
+          class="card-item-img w-full h-auto rounded-[0.3125rem]"
         />
       </div>
 

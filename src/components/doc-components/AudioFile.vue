@@ -380,7 +380,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="audio-file"
+    class="audio-file flex flex-col rounded-xl gap-4 mb-[0.325rem] transition-all duration-200"
     :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
@@ -425,7 +425,7 @@ onUnmounted(() => {
       />
 
       <!-- File info -->
-      <div class="file-info flex gap-3 min-w-0" :class="{ 'has-hint': $slots.default }">
+      <div class="file-info flex gap-3 min-w-0 flex-1" :class="{ 'has-hint': $slots.default }">
         <div class="audio-file-icon flex items-center justify-center w-10 h-10 rounded-lg"></div>
         <div class="audio-file-info flex-1 min-w-0">
           <div class="text-xs mt-1 font-medium text-sm break-all" :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`">
@@ -447,7 +447,7 @@ onUnmounted(() => {
           icon="mdi:download"
           :disabled="isDisabled"
           :text="theme.t.audioFile.downloadFile"
-          class="download-btn-header"
+          class="download-btn-header shrink-0"
           :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
           role="button"
           tabindex="0"
@@ -459,7 +459,7 @@ onUnmounted(() => {
     <!-- Audio player (shown when play is clicked) -->
     <div
       v-if="isPlayerVisible"
-      class="audio-player px-4 py-3"
+      class="audio-player flex flex-col gap-3 p-4 rounded-lg border"
       role="group"
       :aria-label="`${theme.t.audioFile.audioFile} controls for ${downloadFilename}`"
     >
@@ -534,9 +534,9 @@ onUnmounted(() => {
       </div>
 
       <!-- Прогресс-бар -->
-      <div class="progress-container px-4">
+      <div class="progress-container px-4 flex-1 min-w-0">
         <div
-          class="progress-bar flex items-center gap-3 cursor-pointer"
+          class="progress-bar flex items-center gap-3 cursor-pointer py-3 outline-none rounded transition-all duration-200"
           role="slider"
           :aria-label="`${theme.t.audioFile.audioProgress}: ${Math.round(progressPercent)}%`"
           :aria-valuemin="0"
@@ -547,9 +547,9 @@ onUnmounted(() => {
           @click="handleProgressClick"
           @keydown="handleProgressKeydown"
         >
-          <div class="progress-track flex h-1 rounded-sm overflow-hidden">
+          <div class="progress-track flex h-1 rounded-sm overflow-hidden w-full relative">
             <div
-              class="progress-fill h-full rounded-sm"
+              class="progress-fill h-full rounded-sm min-w-0 relative"
               :style="{ width: `${progressPercent}%` }"
             />
           </div>
@@ -578,7 +578,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Сообщение об ошибке -->
-    <div v-if="hasError" class="error-message flex items-center gap-2 px-4 py-3" role="alert" aria-live="polite">
+    <div v-if="hasError" class="error-message flex items-center gap-2 px-4 py-3 rounded-md text-sm" role="alert" aria-live="polite">
       <Icon icon="mdi:alert-circle" aria-hidden="true" />
       <span>{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
       <Btn
@@ -600,18 +600,12 @@ onUnmounted(() => {
 
 <style scoped>
 .audio-file {
-  display: flex;
-  flex-direction: column;
   padding: 1rem;
   padding-left: 2rem;
   border: 1px solid var(--gray-150);
-  border-radius: 0.75rem;
   background: #ffffff;
-  transition: all 0.2s ease;
-  gap: 1rem;
   border-left: 4px solid var(--primary-btn-bg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 0.325rem;
 }
 
 .dark .audio-file {
@@ -627,19 +621,6 @@ onUnmounted(() => {
   background: var(--vp-c-bg-alt);
 }
 
-.play-btn-header {
-}
-
-.file-info {
-  flex: 1;
-}
-
-.file-info.has-hint {}
-
-.file-name {
-  color: var(--vp-c-text-1);
-}
-
 .file-hint {
   color: var(--vp-c-text-2);
 }
@@ -648,18 +629,9 @@ onUnmounted(() => {
   color: var(--gray-400);
 }
 
-.download-btn-header {
-  flex-shrink: 0;
-}
-
 /* Аудио плеер */
 .audio-player {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
   background: var(--gray-50);
-  border-radius: 0.5rem;
   border: 1px solid var(--gray-200);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   animation: slideDown 0.3s ease-out;
@@ -669,18 +641,6 @@ onUnmounted(() => {
   background: var(--vp-c-bg-alt);
   border-top: 1px solid var(--vp-c-divider);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.player-controls {}
-
-.play-btn,
-.stop-btn,
-.hide-btn {
-}
-
-.play-btn:hover:not(:disabled),
-.stop-btn:hover:not(:disabled),
-.download-btn-header:hover:not(:disabled) {
 }
 
 .time-display {
@@ -706,29 +666,8 @@ onUnmounted(() => {
 }
 
 /* Прогресс-бар */
-.progress-container {
-  flex: 1;
-  min-width: 0;
-}
-
-.progress-bar {
-  padding: 0.75rem 0;
-  outline: none;
-  border-radius: 0.25rem;
-  transition: all 0.2s ease;
-}
-
-.progress-bar:focus {
-  outline: none;
-}
-
 .progress-bar:hover {
   background: rgba(59, 130, 246, 0.05);
-}
-
-.progress-track {
-  width: 100%;
-  position: relative;
 }
 
 .dark .progress-track {
@@ -739,8 +678,6 @@ onUnmounted(() => {
 .progress-fill {
   transition: width 0.1s linear;
   background: var(--vp-c-brand-1);
-  min-width: 0;
-  position: relative;
   box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
 
@@ -786,8 +723,6 @@ onUnmounted(() => {
   color: var(--vp-c-danger-1);
   background: #fef2f2;
   border: 1px solid #fecaca;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
 }
 
 .error-message .iconify {
@@ -803,10 +738,6 @@ onUnmounted(() => {
 
 .dark .error-message .iconify {
   color: #fca5a5;
-}
-
-.retry-btn:hover {
-  text-decoration: none;
 }
 
 @keyframes slideDown {

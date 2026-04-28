@@ -30,18 +30,6 @@ body.modal-open {
   color: var(--donate-btn);
 }
 
-.hover-animation-rise {
-  transition: all 0.2s ease-in-out;
-}
-
-.hover-animation-rise:hover {
-  transform: translateY(-2px);
-}
-
-.VPSwitchAppearance {
-  cursor: pointer;
-}
-
 /**** Card item */
 .card-item {
   display: block;
@@ -74,33 +62,14 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.card-item-header {
-  font-weight: bold;
-  margin-bottom: 0.75rem;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  letter-spacing: -0.025em;
-}
-
 .card-item:visited .card-item-header {
   color: var(--link-a-visited);
 }
 
-.card-item-author-date {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
 
-.card-item-img {
-  width: 100%;
-  height: auto;
-  border-radius: 0.3125rem;
-}
 
 .card-item-img-col {
   width: var(--list-item-thumb-width);
-  flex-shrink: 0;
-  margin-right: 1rem;
 }
 
 /* На мобильных устройствах (max-md) */
@@ -145,20 +114,8 @@ body.modal-open {
 }
 
 /**** Content page */
-.content-page {
-  min-height: calc(100vh - 400px);
-}
 
 /**** Lightbox */
-.lightbox img {
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
-}
-
 .lightbox img:hover {
   transform: scale(1.02);
   cursor: pointer;
@@ -207,9 +164,6 @@ body.modal-open {
 }
 
 /**** Simple page */
-.simple-page {
-  margin-top: 1rem;
-}
 
 .simple-page h1 {
   font-weight: bold;

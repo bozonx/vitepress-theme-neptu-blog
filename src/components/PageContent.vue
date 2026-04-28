@@ -21,17 +21,17 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div v-if="isUtilPage(frontmatter)" class="content-page">
-    <div class="simple-page">
+  <div v-if="isUtilPage(frontmatter)" class="content-page min-h-[calc(100vh-400px)]">
+    <div class="simple-page mt-4">
       <Content />
     </div>
   </div>
-  <div v-else-if="isPage(frontmatter)" class="content-page">
-    <div class="simple-page vp-doc">
+  <div v-else-if="isPage(frontmatter)" class="content-page min-h-[calc(100vh-400px)]">
+    <div class="simple-page mt-4 vp-doc">
       <Content />
     </div>
   </div>
-  <article v-else class="content-page">
+  <article v-else class="content-page min-h-[calc(100vh-400px)]">
     <header>
       <h1
         v-if="page.title"

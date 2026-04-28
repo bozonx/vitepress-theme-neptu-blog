@@ -16,6 +16,7 @@ const props = defineProps<{
         :alt="props.alt || undefined"
         :height="props.height"
         :width="props.width"
+        class="max-w-full h-auto rounded-md transition-[transform,box-shadow] duration-200 ease-in-out"
       />
     </a>
     <figcaption

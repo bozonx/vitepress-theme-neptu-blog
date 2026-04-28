@@ -1,5 +1,5 @@
 <template>
-  <div v-if="url" class="video-responsive mt-4 overflow-hidden relative">
+  <div v-if="url" class="video-responsive mt-4 overflow-hidden relative aspect-video">
     <iframe
       class="absolute inset-0 w-full h-full"
       :src="url"
@@ -33,11 +33,6 @@ const url = computed(() => {
 </script>
 
 <style scoped>
-.video-responsive {
-  padding-bottom: 56.25%;
-  height: 0;
-}
-
 @media (max-width: 767px) {
   .video-responsive {
     padding-left: 0;

@@ -19,9 +19,9 @@ watchPostEffect(() => {
 </script>
 
 <template>
-  <div class="appearance-wrapper">
+  <div class="appearance-wrapper flex h-full items-center px-[0.7rem]">
     <button
-      class="VPSwitch VPSwitchAppearance"
+      class="VPSwitch VPSwitchAppearance cursor-pointer"
       type="button"
       role="switch"
       :title="switchTitle"
@@ -39,13 +39,6 @@ watchPostEffect(() => {
 </template>
 
 <style scoped>
-.appearance-wrapper {
-  display: flex;
-  height: 100%;
-  align-items: center;
-  padding: 0 0.7rem;
-}
-
 [class^='vpi-'] {
   -webkit-mask: var(--icon) no-repeat;
   mask: var(--icon) no-repeat;

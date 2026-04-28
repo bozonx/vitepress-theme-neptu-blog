@@ -129,7 +129,7 @@ onUnmounted(() => {
         left: props.isMobile ? `${animationLeftPx}px` : '0',
         width: `${SIDEBAR_WIDTH}px`,
       }"
-      class="max-lg:overflow-y-auto max-lg:overflow-x-clip max-lg:fixed lg:h-fit app-drawer"
+      class="max-lg:overflow-y-auto max-lg:overflow-x-clip max-lg:fixed lg:h-fit app-drawer z-10 top-0 bottom-0 transition-[left] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
     >
       <div>
         <a
@@ -183,16 +183,16 @@ onUnmounted(() => {
 
       <SideBarFooter @click="closeDrawer" />
 
-      <div class="sidebar-gradient max-lg:hidden" aria-hidden="true">
-        <div></div>
+      <div class="sidebar-gradient max-lg:hidden w-full relative h-[200px]" aria-hidden="true">
+        <div class="w-[calc(100%+1px)] h-[200px] absolute"></div>
       </div>
     </div>
     <div
       :style="{ opacity: backdropOpacity }"
-      class="lg:hidden app-drawer-backdrop"
+      class="lg:hidden app-drawer-backdrop fixed inset-0 z-[9] cursor-pointer transition-opacity duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)]"
       @click="closeDrawer"
     >
-      <div class="sidebar-closebtn-wrapper">
+      <div class="sidebar-closebtn-wrapper absolute h-0 right-0">
         <button
           :title="theme.t.closeMenu"
           class="py-6 px-6 cursor-pointer text-gray-300 hover:text-white"
@@ -214,40 +214,13 @@ onUnmounted(() => {
   border-right: 1px solid var(--drawer-border-color);
   background: var(--drawer-bg);
   box-sizing: content-box;
-  z-index: 10;
-  top: 0;
-  bottom: 0;
-  transition: left 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .app-drawer-backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: var(--backdrop-bg);
-  z-index: 9;
-  cursor: pointer;
-  transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-closebtn-wrapper {
-  position: absolute;
-  height: 0;
-  right: 0;
-}
-
-.sidebar-gradient {
-  width: 100%;
-  position: relative;
-  height: 200px;
 }
 
 .sidebar-gradient div {
-  width: calc(100% + 1px);
-  height: 200px;
-  position: absolute;
   background: rgb(255, 255, 255);
   background: linear-gradient(
     0deg,
