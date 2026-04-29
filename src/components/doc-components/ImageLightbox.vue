@@ -19,7 +19,7 @@ const isDragging = ref(false)
 let dragStartX = 0
 let dragStartY = 0
 
-const isZoomed = computed(() => scale.value > 1.01)
+const isZoomed = computed(() => Math.abs(scale.value - 1) > 0.01)
 
 const imgStyle = computed(() => ({
   transform: `translate(${panX.value}px, ${panY.value}px) scale(${scale.value})`,
@@ -40,6 +40,8 @@ watch(isOpen, async (open) => {
     loaded.value = false
     await nextTick()
     containerRef.value?.focus()
+  } else {
+    resetZoom()
   }
 })
 
@@ -219,7 +221,11 @@ onUnmounted(() => {
         </button>
 
         <!-- Counter / zoom reset -->
-        <div class="lightbox-counter" aria-hidden="true">
+        <div
+          v-if="hasMultiple || isZoomed"
+          class="lightbox-counter"
+          aria-hidden="true"
+        >
           <span v-if="hasMultiple">{{ currentIndex + 1 }} / {{ items.length }}</span>
           <button
             v-if="isZoomed"
