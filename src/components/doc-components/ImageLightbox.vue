@@ -11,11 +11,28 @@ const hasMultiple = computed(() => items.value.length > 1)
 const loaded = ref(false)
 const containerRef = ref<HTMLDivElement | null>(null)
 
+// Zoom / pan state
+const scale = ref(1)
+const panX = ref(0)
+const panY = ref(0)
+const isDragging = ref(false)
+let dragStartX = 0
+let dragStartY = 0
+
+const isZoomed = computed(() => scale.value > 1.01)
+
+const imgStyle = computed(() => ({
+  transform: `translate(${panX.value}px, ${panY.value}px) scale(${scale.value})`,
+  transition: isDragging.value ? 'none' : 'transform 0.2s ease',
+  cursor: isZoomed.value ? (isDragging.value ? 'grabbing' : 'grab') : 'default',
+}))
+
 let touchStartX = 0
 let touchStartY = 0
 
 watch(currentIndex, () => {
   loaded.value = false
+  resetZoom()
 })
 
 watch(isOpen, async (open) => {
@@ -26,13 +43,26 @@ watch(isOpen, async (open) => {
   }
 })
 
+function resetZoom() {
+  scale.value = 1
+  panX.value = 0
+  panY.value = 0
+  isDragging.value = false
+}
+
 function onKeydown(e: KeyboardEvent) {
   if (!isOpen.value) return
-  switch (e.key) {
-    case 'Escape':
-      e.preventDefault()
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    if (isZoomed.value) {
+      resetZoom()
+    } else {
       close()
-      break
+    }
+    return
+  }
+  if (isZoomed.value) return // disable arrow nav while zoomed
+  switch (e.key) {
     case 'ArrowLeft':
       e.preventDefault()
       prev()
@@ -44,6 +74,36 @@ function onKeydown(e: KeyboardEvent) {
   }
 }
 
+function onWheel(e: WheelEvent) {
+  if (!isOpen.value) return
+  e.preventDefault()
+  const delta = e.deltaY > 0 ? -0.15 : 0.15
+  const newScale = Math.min(5, Math.max(0.5, scale.value + delta))
+  scale.value = newScale
+  if (newScale <= 1) {
+    panX.value = 0
+    panY.value = 0
+  }
+}
+
+function onMouseDown(e: MouseEvent) {
+  if (!isZoomed.value) return
+  isDragging.value = true
+  dragStartX = e.clientX - panX.value
+  dragStartY = e.clientY - panY.value
+  e.preventDefault()
+}
+
+function onMouseMove(e: MouseEvent) {
+  if (!isDragging.value) return
+  panX.value = e.clientX - dragStartX
+  panY.value = e.clientY - dragStartY
+}
+
+function onMouseUp() {
+  isDragging.value = false
+}
+
 function onTouchStart(e: TouchEvent) {
   const t = e.touches[0]
   if (!t) return
@@ -52,6 +112,7 @@ function onTouchStart(e: TouchEvent) {
 }
 
 function onTouchEnd(e: TouchEvent) {
+  if (isZoomed.value) return // disable swipe nav while zoomed
   const t = e.changedTouches[0]
   if (!t) return
   const dx = t.clientX - touchStartX
@@ -73,10 +134,14 @@ function onBackdropClick(e: MouseEvent) {
 
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('mouseup', onMouseUp)
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown)
+  window.removeEventListener('mousemove', onMouseMove)
+  window.removeEventListener('mouseup', onMouseUp)
 })
 </script>
 
@@ -115,17 +180,25 @@ onUnmounted(() => {
 
         <!-- Image container -->
         <figure class="lightbox-figure">
-          <div v-if="!loaded" class="lightbox-loader" role="status">
-            <Icon icon="mdi:loading" class="lightbox-spinner" />
-            <span class="sr-only">{{ locales.loadingIndicatorLabel || 'Loading...' }}</span>
+          <div
+            class="lightbox-img-wrap"
+            @wheel.prevent="onWheel"
+            @mousedown="onMouseDown"
+          >
+            <div v-if="!loaded" class="lightbox-loader" role="status">
+              <Icon icon="mdi:loading" class="lightbox-spinner" />
+              <span class="sr-only">{{ locales.loadingIndicatorLabel || 'Loading...' }}</span>
+            </div>
+            <img
+              v-show="loaded"
+              :src="currentItem?.src"
+              :alt="currentItem?.alt || ''"
+              class="lightbox-img"
+              :style="imgStyle"
+              @load="loaded = true"
+              @dblclick="resetZoom"
+            />
           </div>
-          <img
-            v-show="loaded"
-            :src="currentItem?.src"
-            :alt="currentItem?.alt || ''"
-            class="lightbox-img"
-            @load="loaded = true"
-          />
           <figcaption v-if="currentItem?.alt" class="lightbox-caption">
             {{ currentItem.alt }}
           </figcaption>
@@ -141,9 +214,17 @@ onUnmounted(() => {
           <Icon icon="mdi:chevron-right" />
         </button>
 
-        <!-- Counter -->
-        <div v-if="hasMultiple" class="lightbox-counter" aria-hidden="true">
-          {{ currentIndex + 1 }} / {{ items.length }}
+        <!-- Counter / zoom reset -->
+        <div class="lightbox-counter" aria-hidden="true">
+          <span v-if="hasMultiple">{{ currentIndex + 1 }} / {{ items.length }}</span>
+          <button
+            v-if="isZoomed"
+            class="lightbox-zoom-level"
+            aria-label="Reset zoom"
+            @click="resetZoom"
+          >
+            {{ Math.round(scale * 100) }}%
+          </button>
         </div>
       </div>
     </transition>
@@ -173,12 +254,23 @@ onUnmounted(() => {
   align-items: center;
 }
 
+.lightbox-img-wrap {
+  width: 90vw;
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
 .lightbox-img {
   max-width: 100%;
-  max-height: 80vh;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 4px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .lightbox-loader {
@@ -260,6 +352,20 @@ onUnmounted(() => {
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
+  display: flex;
+  gap: 8px;
+}
+
+.lightbox-zoom-level {
+  font-weight: 600;
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-variant-numeric: inherit;
+  padding: 0;
+  cursor: pointer;
+  line-height: inherit;
 }
 
 .sr-only {
