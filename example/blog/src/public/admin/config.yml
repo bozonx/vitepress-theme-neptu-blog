@@ -1,6 +1,6 @@
 i18n:
   structure: multiple_folders
-  locales: [en, ru]
+  locales: [en]
   default_locale: en
 
 backend:

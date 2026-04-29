@@ -24,17 +24,43 @@ export default async () => {
     siteUrl: 'https://myblog.org',
     repo: 'https://github.com/...',
     themeConfig: {
+      uiLocale: {
+        default: 'en',
+        storageKey: 'example-blog-ui-locale',
+      },
+      uiLocales: {
+        en: {
+          themeConfig: {
+            langMenuLabel: 'Interface language',
+          },
+        },
+        'en-GB': {
+          extends: 'en',
+          label: 'English (UK)',
+          themeConfig: {
+            langMenuLabel: 'Interface language',
+          },
+          t: {
+            viewInAnotherLanguage: 'Read this page in another language',
+          },
+        },
+        ru: {
+          themeConfig: {
+            langMenuLabel: 'Язык интерфейса',
+          },
+        },
+      },
       perPage: PER_PAGE,
       sidebarLogoSrc: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=100&auto=format&fit=crop',
       mainHeroImg: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
 
-      search: { bodyMarker: 'data-pagefind-body' },
+      search: { bodyMarker: 'data-pagefind-body' } as any,
 
       googleAnalytics,
       popularPosts,
 
       // Add there some variables specified for your blog
-    },
+    } as any,
     vite: {
       // tailwindcss() is auto-injected by vitepress-theme-neptu-blog
     },
@@ -58,7 +84,7 @@ export default async () => {
       ['link', { rel: 'stylesheet', href: '/pagefind/pagefind-ui.css' }],
       ['script', { src: '/pagefind/pagefind-ui.js' }],
     ],
-  })
+  } as any)
 
   return defineBlogConfig({
     ...config,

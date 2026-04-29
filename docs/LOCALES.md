@@ -338,12 +338,7 @@ Examples:
 
 ## Open implementation tasks
 
-- add runtime UI locale resolver
-- add `localStorage` persistence for UI locale
-- convert built-in UI locales to lazy loading
-- change the topbar language switcher to UI-locale switching
-- add a separate content-locale switcher for "view in another language"
-- expose admin UI locale extension through typed config
+- document example-site patterns for `/` redirect and custom `uiLocales`
 - add tests for UI locale fallback and persistence
 
 ## Current status
@@ -354,10 +349,13 @@ Already implemented in the repo:
 - content locale keys may be hyphenated
 - UI fallback from `en-US` to `en` exists for built-in locale lookup
 - date formatting uses page `lang` instead of assuming short locale keys
+- runtime UI locale resolver with `localStorage` support
+- lazy loading of built-in UI locales
+- topbar switcher for UI locale selection
+- separate post-level content locale switcher
+- admin-defined `uiLocales` with partial override and `extends`
+- initial SSR merge for content-derived UI locale and admin overrides
 
 Not implemented yet:
 
-- lazy runtime loading of only the active UI locale
-- saved UI locale preference
-- separate UI/content switchers
-- admin-defined runtime UI locales
+- cross-page content-locale matching for translated pages beyond VitePress locale links
