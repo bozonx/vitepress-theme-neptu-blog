@@ -3,6 +3,7 @@ import { DefaultTheme, PageData, SiteConfig } from 'vitepress'
 
 export namespace NeptuBlogTheme {
   export interface Config extends DefaultTheme.Config {
+    i18nRouting?: boolean
     externalLinkIcon?: boolean
     mainHeroImg?: string
     perPage?: number

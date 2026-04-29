@@ -14,7 +14,7 @@ import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
 
-type BlogUserConfig = UserConfig & Record<string, any> & { repo?: string }
+export type BlogUserConfig = UserConfig & Record<string, any> & { repo?: string }
 
 export const common: Record<string, any> = {
   head: [

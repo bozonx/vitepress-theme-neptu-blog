@@ -5,9 +5,10 @@ import { mdToHtml } from './markdown.ts'
 import { getImageDimensions } from './image.ts'
 import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
+import type { BlogUserConfig } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
 
-export async function loadBlogLocale(localeIndex: string, config: any): Promise<any> {
+export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig): Promise<any> {
   const localeMap = blogBaseLocales as Record<string, any>
   const baseLocaleKey = resolveBaseLocaleKey(localeIndex, localeMap)
   const baseLocale = localeMap[baseLocaleKey]
@@ -17,12 +18,12 @@ export async function loadBlogLocale(localeIndex: string, config: any): Promise<
     theme: { ...blogCommon.themeConfig, ...config.themeConfig },
     t: baseLocale.t,
   }
-  const site = parseLocaleSite(config.srcDir, params) as any
+  const site = parseLocaleSite(config.srcDir || '', params) as any
   const { lang, title, description, t, editLink, ...themeConfig } = site
 
   const authors = themeConfig.authors?.map((item: any) => {
     const imageDimensions = item.image
-      ? getImageDimensions(item.image, config.srcDir)
+      ? getImageDimensions(item.image as string, config.srcDir || '')
       : null
 
     return {
