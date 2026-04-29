@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { defineComponent, h, ref } from 'vue'
 import { mount } from '@vue/test-utils'
-import { useBreakpoint } from './useBreakpoint.ts'
+import { useBreakpoint } from '../../src/composables/useBreakpoint.ts'
 
 vi.mock('vitepress', () => ({ inBrowser: true }))
 

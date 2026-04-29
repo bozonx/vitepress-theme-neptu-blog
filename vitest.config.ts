@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'happy-dom',
-    include: ['src/**/*.test.ts', 'tests/**/*.test.ts'],
+    include: ['tests/**/*.test.ts'],
     exclude: ['node_modules/**', 'dist/**', 'example/**', '.vitepress/**'],
     coverage: {
       provider: 'v8',

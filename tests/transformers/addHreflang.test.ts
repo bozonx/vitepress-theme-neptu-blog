@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { addHreflang, type AddHreflangContext } from './addHreflang.ts'
+import { addHreflang, type AddHreflangContext } from '../../src/transformers/addHreflang.ts'
 
-vi.mock('../utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/shared/index.ts')>()
+vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
     generatePageUrlPath: vi.fn((path: string) => path.replace(/\.md$/, '').replace(/\/index$/, '')),

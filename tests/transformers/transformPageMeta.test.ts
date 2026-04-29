@@ -1,17 +1,17 @@
 import { describe, it, expect, vi } from 'vitest'
-import { transformPageMeta } from './transformPageMeta.ts'
-import type { ExtendedPageData } from '../types.d.ts'
+import { transformPageMeta } from '../../src/transformers/transformPageMeta.ts'
+import type { ExtendedPageData } from '../../src/types.d.ts'
 
-vi.mock('../utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/shared/index.ts')>()
+vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
     transliterate: vi.fn((str: string, _lang?: string) => str.toLowerCase().replace(/\s+/g, '-')),
   }
 })
 
-vi.mock('../utils/node/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/node/index.ts')>()
+vi.mock('../../src/utils/node/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/node/index.ts')>()
   return {
     ...actual,
     mdToHtml: vi.fn((md: string) => `<p>${md}</p>`),

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import * as sharedUtils from '../utils/shared/index.ts'
+import * as sharedUtils from '../../src/utils/shared/index.ts'
 import yaml from 'yaml'
-import { addJsonLd, type AddJsonLdContext } from './addJsonLd.ts'
+import { addJsonLd, type AddJsonLdContext } from '../../src/transformers/addJsonLd.ts'
 
 beforeEach(() => {
   vi.spyOn(yaml, 'parse').mockImplementation((str: string) => {
@@ -13,8 +13,8 @@ beforeEach(() => {
   })
 })
 
-vi.mock('../utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/shared/index.ts')>()
+vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
     isPost: vi.fn(),

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import * as fs from 'node:fs'
-import { resolveDescription } from './resolveDescription.ts'
+import { resolveDescription } from '../../src/transformers/resolveDescription.ts'
 
 vi.mock('node:fs', async (importOriginal) => {
   const actual = await importOriginal<typeof import('node:fs')>()
@@ -12,8 +12,8 @@ vi.mock('node:fs', async (importOriginal) => {
   }
 })
 
-vi.mock('../utils/node/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/node/index.ts')>()
+vi.mock('../../src/utils/node/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/node/index.ts')>()
   return {
     ...actual,
     extractDescriptionFromMd: vi.fn((content: string, _maxLen: number) => content.trim()),

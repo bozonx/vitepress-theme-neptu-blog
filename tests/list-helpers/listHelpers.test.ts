@@ -6,7 +6,7 @@ import {
   makePostOfMonthList,
   makeAuthorsList,
   type PostLite,
-} from './listHelpers.ts'
+} from '../../src/list-helpers/listHelpers.ts'
 
 describe('makeTagsList', () => {
   it('returns empty array for empty input', () => {

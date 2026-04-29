@@ -1,47 +1,47 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mergeBlogConfig, defineBlogConfig } from './blogConfigBase.ts'
+import { mergeBlogConfig, defineBlogConfig } from '../../src/configs/blogConfigBase.ts'
 
-vi.mock('../transformers/filterSitemap.ts', () => ({
+vi.mock('../../src/transformers/filterSitemap.ts', () => ({
   filterSitemap: vi.fn((items: any[]) => items),
 }))
 
-vi.mock('../transformers/collectImageDimensions.ts', () => ({
+vi.mock('../../src/transformers/collectImageDimensions.ts', () => ({
   collectImageDimensions: vi.fn(),
 }))
 
-vi.mock('../transformers/transformTitle.ts', () => ({
+vi.mock('../../src/transformers/transformTitle.ts', () => ({
   transformTitle: vi.fn(),
 }))
 
-vi.mock('../transformers/transformPageMeta.ts', () => ({
+vi.mock('../../src/transformers/transformPageMeta.ts', () => ({
   transformPageMeta: vi.fn(),
 }))
 
-vi.mock('../transformers/resolveDescription.ts', () => ({
+vi.mock('../../src/transformers/resolveDescription.ts', () => ({
   resolveDescription: vi.fn(),
 }))
 
-vi.mock('../transformers/addOgMetaTags.ts', () => ({
+vi.mock('../../src/transformers/addOgMetaTags.ts', () => ({
   addOgMetaTags: vi.fn(),
 }))
 
-vi.mock('../transformers/addJsonLd.ts', () => ({
+vi.mock('../../src/transformers/addJsonLd.ts', () => ({
   addJsonLd: vi.fn(),
 }))
 
-vi.mock('../transformers/addHreflang.ts', () => ({
+vi.mock('../../src/transformers/addHreflang.ts', () => ({
   addHreflang: vi.fn(),
 }))
 
-vi.mock('../transformers/addCanonicalLink.ts', () => ({
+vi.mock('../../src/transformers/addCanonicalLink.ts', () => ({
   addCanonicalLink: vi.fn(),
 }))
 
-vi.mock('../transformers/addRssLinks.ts', () => ({
+vi.mock('../../src/transformers/addRssLinks.ts', () => ({
   addRssLinks: vi.fn(),
 }))
 
-vi.mock('../transformers/generateRssFeed.ts', () => ({
+vi.mock('../../src/transformers/generateRssFeed.ts', () => ({
   generateRssFeed: vi.fn(),
 }))
 

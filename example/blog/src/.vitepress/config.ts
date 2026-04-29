@@ -1,7 +1,6 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 import { defineBlogConfig, loadBlogLocale } from 'vitepress-theme-neptu-blog/configs'
 
@@ -17,7 +16,6 @@ export const popularPosts = {
 export const googleAnalytics = {
   propertyId: '123456789',
   credentialsJson: process.env.GA_CREDENTIALS_JSON,
-  credentialsPath: '.../credentials.json',
 }
 
 export default async () => {
@@ -38,7 +36,7 @@ export default async () => {
       // Add there some variables specified for your blog
     },
     vite: {
-      plugins: [tailwindcss()],
+      // tailwindcss() is auto-injected by vitepress-theme-neptu-blog
     },
     head: [
       // do not recognize telephone numbers on the page

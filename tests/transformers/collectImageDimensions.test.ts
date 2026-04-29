@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import * as nodeUtils from '../utils/node/index.ts'
-import { collectImageDimensions } from './collectImageDimensions.ts'
+import * as nodeUtils from '../../src/utils/node/index.ts'
+import { collectImageDimensions } from '../../src/transformers/collectImageDimensions.ts'
 
-vi.mock('../utils/node/index.ts', () => ({
+vi.mock('../../src/utils/node/index.ts', () => ({
   getImageDimensions: vi.fn(),
 }))
 

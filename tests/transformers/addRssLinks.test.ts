@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { addRssLinks, type AddRssLinksContext } from './addRssLinks.ts'
+import { addRssLinks, type AddRssLinksContext } from '../../src/transformers/addRssLinks.ts'
 
-vi.mock('../utils/node/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/node/index.ts')>()
+vi.mock('../../src/utils/node/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/node/index.ts')>()
   return {
     ...actual,
     getRssFormats: vi.fn((_config: any) => ['rss', 'atom']),

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
-import { transformTitle } from './transformTitle.ts'
-import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+import { transformTitle } from '../../src/transformers/transformTitle.ts'
+import type { ExtendedPageData, ExtendedSiteConfig } from '../../src/types.d.ts'
 
-vi.mock('../utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../utils/shared/index.ts')>()
+vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
     mustacheTemplate: vi.fn((tmpl: string, _options: any, { eval: isEval }: { eval?: boolean }) => {

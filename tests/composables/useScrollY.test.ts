@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { defineComponent, h, ref } from 'vue'
 import { mount } from '@vue/test-utils'
-import { useScrollY } from './useScrollY.ts'
+import { useScrollY } from '../../src/composables/useScrollY.ts'
 
 vi.mock('vitepress', () => ({ inBrowser: true }))
 

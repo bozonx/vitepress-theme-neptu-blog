@@ -5,7 +5,7 @@ import {
   makeMonthsParams,
   makeTagsParams,
   makeAuthorsParams,
-} from './makeListParams.ts'
+} from '../../src/list-helpers/makeListParams.ts'
 
 describe('makeAllPostsParams', () => {
   it('returns empty array for empty posts', () => {

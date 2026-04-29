@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { filterSitemap, type SitemapItem } from './filterSitemap.ts'
+import { filterSitemap, type SitemapItem } from '../../src/transformers/filterSitemap.ts'
 
 describe('filterSitemap', () => {
   it('returns empty array for empty input', () => {
