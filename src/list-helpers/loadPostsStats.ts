@@ -1,4 +1,3 @@
-import fs from 'node:fs/promises'
 import { google } from 'googleapis'
 import type { Auth } from 'googleapis'
 import { POSTS_DIR } from '../constants.ts'
@@ -18,7 +17,6 @@ const GA_VERSION = 'v1beta'
 
 export interface GoogleAnalyticsConfig {
   propertyId?: string | null
-  credentialsPath?: string | null
   credentialsJson?: string | null
   dataPeriodDays?: number
   dataLimit?: number
@@ -41,7 +39,7 @@ export async function mergeWithAnalytics(
   }
 
   // Check for credentials (ADC is supported)
-  if (!gaCfg?.credentialsJson && !gaCfg?.credentialsPath) {
+  if (!gaCfg?.credentialsJson) {
     console.log(
       'ℹ️ No credentials specified, using Application Default Credentials'
     )
@@ -104,11 +102,6 @@ export async function loadGoogleAnalytics(
     if (gaCfg.credentialsJson) {
       credentials = JSON.parse(gaCfg.credentialsJson)
       console.log('🔑 Using credentialsJson')
-    } else if (gaCfg.credentialsPath) {
-      credentials = JSON.parse(
-        await fs.readFile(gaCfg.credentialsPath, 'utf-8')
-      )
-      console.log(`🔑 Using file: ${gaCfg.credentialsPath}`)
     } else {
       console.log('🔑 Using Application Default Credentials')
     }
@@ -216,14 +209,9 @@ export async function loadGoogleAnalytics(
     )
 
     if (error?.code === 'ENOENT') {
-      const credentialsSource = gaCfg.credentialsJson
-        ? 'credentialsJson'
-        : 'credentialsPath'
       console.error(
         '❌ Credentials file not found:',
-        credentialsSource === 'credentialsPath'
-          ? gaCfg.credentialsPath
-          : 'credentialsJson'
+        gaCfg.credentialsJson ? 'credentialsJson' : 'ADC'
       )
     } else if (error?.code === 403) {
       console.error('❌ No access to Google Analytics. Check:')

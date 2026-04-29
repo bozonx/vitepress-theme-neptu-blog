@@ -111,7 +111,6 @@ export namespace NeptuBlogTheme {
 
   export interface GoogleAnalyticsConfig {
     propertyId?: string | null
-    credentialsPath?: string | null
     credentialsJson?: string | null
     dataPeriodDays?: number
     dataLimit?: number

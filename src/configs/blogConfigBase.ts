@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import { omitUndefined } from '../utils/shared/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
@@ -52,7 +53,6 @@ export const common: Record<string, any> = {
 
     googleAnalytics: {
       propertyId: null,
-      credentialsPath: null,
       credentialsJson: null,
       dataPeriodDays: 30,
       dataLimit: 1000,
@@ -98,6 +98,12 @@ export function mergeBlogConfig(config: any): any {
     locales: { ...common.locales, ...config.locales },
     vite: {
       ...config.vite,
+      plugins: [
+        ...(config.vite?.plugins?.some((p: any) => p?.name === 'tailwindcss')
+          ? []
+          : [tailwindcss()]),
+        ...(config.vite?.plugins || []),
+      ],
       ssr: { noExternal: ['vitepress-theme-neptu-blog'], ...config.vite?.ssr },
     },
     sitemap: {
