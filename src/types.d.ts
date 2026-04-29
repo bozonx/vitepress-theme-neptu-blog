@@ -9,7 +9,7 @@ export namespace NeptuBlogTheme {
     perPage?: number
     sidebarTagsCount?: number
     similarPostsCount?: number
-    homeBgParalaxOffset?: number
+    homeBgParallaxOffset?: number
     paginationMaxItems?: number
     showAuthorInPostList?: boolean
 

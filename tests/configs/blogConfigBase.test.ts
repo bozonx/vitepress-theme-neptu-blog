@@ -177,7 +177,7 @@ describe('mergeBlogConfig', () => {
     })
     const pageData = { frontmatter: {} }
     const ctx = { siteConfig: {} }
-    await result.transformPageData(pageData, ctx)
+    await (result.transformPageData as any)(pageData, ctx)
     expect(customFn).toHaveBeenCalledWith(pageData, ctx)
   })
 
@@ -187,7 +187,7 @@ describe('mergeBlogConfig', () => {
       transformHead: customFn,
     })
     const ctx = { head: [], pageData: {}, siteConfig: {} }
-    await result.transformHead(ctx)
+    await (result.transformHead as any)(ctx)
     expect(customFn).toHaveBeenCalledWith(ctx)
   })
 
@@ -197,7 +197,7 @@ describe('mergeBlogConfig', () => {
       buildEnd: customFn,
     })
     const cfg = {}
-    await result.buildEnd(cfg)
+    await (result.buildEnd as any)(cfg)
     expect(customFn).toHaveBeenCalledWith(cfg)
   })
 })

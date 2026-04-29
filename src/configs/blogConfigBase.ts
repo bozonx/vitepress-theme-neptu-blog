@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import type { UserConfig } from 'vitepress'
 import { omitUndefined } from '../utils/shared/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
@@ -12,6 +13,8 @@ import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
+
+type BlogUserConfig = UserConfig & Record<string, any>
 
 export const common: Record<string, any> = {
   head: [
@@ -47,7 +50,7 @@ export const common: Record<string, any> = {
     perPage: 10,
     sidebarTagsCount: 15,
     similarPostsCount: 5,
-    homeBgParalaxOffset: 300,
+    homeBgParallaxOffset: 300,
     paginationMaxItems: 5,
     showAuthorInPostList: true,
 
@@ -83,7 +86,7 @@ export const common: Record<string, any> = {
   },
 }
 
-export function mergeBlogConfig(config: any): any {
+export function mergeBlogConfig(config: BlogUserConfig): any {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
@@ -112,14 +115,13 @@ export function mergeBlogConfig(config: any): any {
         return filterSitemap(items as any)
       },
       ...config.sitemap,
-    },
+    } as any,
     markdown: {
       ...config.markdown,
       image: { lazyLoading: true, ...config.markdown?.image },
       externalLinks: omitUndefined({
         target: '_blank',
         class: externalLinkIcon ? 'vp-external-link-icon' : undefined,
-        rel: [],
       }),
       config: (md: any) => {
         md.use(mdImage, { srcDir: config.srcDir })
