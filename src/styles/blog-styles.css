@@ -151,6 +151,23 @@ body.modal-open {
   color: var(--gray-400);
 }
 
+/* CLS protection: reserve space for images without width/height attributes */
+.card-item-img:not([width]):not([height]) {
+  aspect-ratio: 16 / 9;
+}
+
+.author-image-container img {
+  object-fit: cover;
+}
+
+.author-image-container img:not([width]):not([height]) {
+  aspect-ratio: 1 / 1;
+}
+
+.content-page figure img:not([width]):not([height]) {
+  aspect-ratio: 16 / 9;
+}
+
 /* Адаптивность для мобильных устройств */
 @media (max-width: 640px) {
   .content-page figure {

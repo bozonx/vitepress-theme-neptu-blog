@@ -17,7 +17,13 @@
         class="home-logo flex justify-center"
         :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
       >
-        <img :src="props.img.src" :alt="props.img.alt" class="w-80 h-80 max-[519px]:w-60 max-[519px]:h-60" />
+        <img
+          :src="props.img.src"
+          :alt="props.img.alt"
+          width="320"
+          height="320"
+          class="home-hero-img"
+        />
       </a>
     </div>
     <ul
@@ -72,5 +78,17 @@ const props = defineProps<{
 
 .home-hero-buttons .btn-base:not(.btn--primary) {
   background-color: var(--gray-700);
+}
+
+.home-hero-img {
+  width: 320px;
+  height: 320px;
+}
+
+@media (max-width: 519px) {
+  .home-hero-img {
+    width: 240px;
+    height: 240px;
+  }
 }
 </style>
