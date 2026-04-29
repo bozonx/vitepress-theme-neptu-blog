@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs.js'
+import { useContentLangs } from '../../composables/useContentLangs.ts'
 import { useUiTheme } from '../../composables/useUiLocale.ts'
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 
 const { theme } = useUiTheme()
-const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
+const { localeLinks, currentLang } = useContentLangs({ correspondingLink: true })
 </script>
 
 <template>
