@@ -117,9 +117,6 @@ importers:
 
   example/blog:
     dependencies:
-      '@midzer/tobii':
-        specifier: ^3.2.0
-        version: 3.2.0
       vitepress:
         specifier: 2.0.0-alpha.17
         version: 2.0.0-alpha.17(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(postcss@8.5.10)(typescript@6.0.3)(yaml@2.8.3)
@@ -151,18 +148,6 @@ importers:
       vue-tsc:
         specifier: ^3.2.7
         version: 3.2.7(typescript@6.0.3)
-
-  vitepress-theme-neptu-landing:
-    dependencies:
-      vitepress:
-        specifier: ^2.0.0-alpha.17
-        version: 2.0.0-alpha.17(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(postcss@8.5.10)(typescript@6.0.3)(yaml@2.8.3)
-      vitepress-theme-neptu-blog:
-        specifier: workspace:*
-        version: link:..
-      vue:
-        specifier: ^3.5.0
-        version: 3.5.33(typescript@6.0.3)
 
 packages:
 
@@ -452,10 +437,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
-
-  '@midzer/tobii@3.2.0':
-    resolution: {integrity: sha512-MUkIWSowwd9syU6Fzfe/6eouLg56ovw+eSSsfLPd7q6UqBiHJdGsxhmgrDSDMaWyrSmLVkiRKZQsK7g/NlGO5g==}
-    engines: {node: '>=18'}
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
@@ -2853,8 +2834,6 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  '@midzer/tobii@3.2.0': {}
 
   '@one-ini/wasm@0.1.1': {}
 

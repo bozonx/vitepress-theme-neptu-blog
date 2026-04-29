@@ -13,7 +13,6 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@midzer/tobii": "^3.2.0",
     "vitepress": "2.0.0-alpha.17",
     "vitepress-theme-neptu-blog": "workspace:*",
     "vue": "^3.5.33"

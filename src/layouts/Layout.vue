@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 import NotFound from '../components/layout-parts/NotFound.vue'
 import { useScrollY } from '../composables/useScrollY.ts'
+import ImageLightbox from '../components/doc-components/ImageLightbox.vue'
 import BlogHome from './BlogHome.vue'
 import DefaultLayout from './DefaultLayout.vue'
 
@@ -25,6 +26,8 @@ const layoutKind = computed(() => {
 
 <template>
   <div id="modals"></div>
+
+  <ImageLightbox />
 
   <NotFound v-if="layoutKind === 'not-found'" />
 

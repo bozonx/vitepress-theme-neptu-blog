@@ -1,10 +1,5 @@
 /// <reference types="vite/client" />
 
-declare module '@midzer/tobii' {
-  const Tobii: any;
-  export default Tobii;
-}
-
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
