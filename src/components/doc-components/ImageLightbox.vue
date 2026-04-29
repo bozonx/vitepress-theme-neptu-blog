@@ -179,30 +179,34 @@ onUnmounted(() => {
         </button>
 
         <!-- Image container -->
-        <figure class="lightbox-figure">
-          <div
-            class="lightbox-img-wrap"
-            @wheel.prevent="onWheel"
-            @mousedown="onMouseDown"
-          >
-            <div v-if="!loaded" class="lightbox-loader" role="status">
-              <Icon icon="mdi:loading" class="lightbox-spinner" />
-              <span class="sr-only">{{ locales.loadingIndicatorLabel || 'Loading...' }}</span>
-            </div>
-            <img
-              v-show="loaded"
-              :src="currentItem?.src"
-              :alt="currentItem?.alt || ''"
-              class="lightbox-img"
-              :style="imgStyle"
-              @load="loaded = true"
-              @dblclick="resetZoom"
-            />
+        <div
+          class="lightbox-img-wrap"
+          @wheel.prevent="onWheel"
+          @mousedown="onMouseDown"
+        >
+          <div v-if="!loaded" class="lightbox-loader" role="status">
+            <Icon icon="mdi:loading" class="lightbox-spinner" />
+            <span class="sr-only">{{ locales.loadingIndicatorLabel || 'Loading...' }}</span>
           </div>
-          <figcaption v-if="currentItem?.alt" class="lightbox-caption">
-            {{ currentItem.alt }}
-          </figcaption>
-        </figure>
+          <img
+            v-show="loaded"
+            :src="currentItem?.src"
+            :alt="currentItem?.alt || ''"
+            class="lightbox-img"
+            :class="{ 'lightbox-img--zoomed': isZoomed }"
+            :style="imgStyle"
+            @load="loaded = true"
+            @dblclick="resetZoom"
+          />
+        </div>
+
+        <!-- Caption -->
+        <div
+          v-if="currentItem?.alt"
+          class="lightbox-caption-fixed"
+        >
+          {{ currentItem.alt }}
+        </div>
 
         <!-- Next button -->
         <button
@@ -244,33 +248,25 @@ onUnmounted(() => {
   outline: none;
 }
 
-.lightbox-figure {
-  position: relative;
-  max-width: 90vw;
-  max-height: 85vh;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .lightbox-img-wrap {
-  width: 90vw;
-  height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .lightbox-img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 85vw;
+  max-height: 80vh;
   object-fit: contain;
   border-radius: 4px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.lightbox-img--zoomed {
+  max-width: none;
+  max-height: none;
 }
 
 .lightbox-loader {
@@ -294,16 +290,8 @@ onUnmounted(() => {
   }
 }
 
-.lightbox-caption {
-  margin-top: 0.75rem;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.875rem;
-  text-align: center;
-  max-width: 100%;
-}
-
 .lightbox-btn {
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -341,8 +329,22 @@ onUnmounted(() => {
   transform: translateY(-50%);
 }
 
+.lightbox-caption-fixed {
+  position: fixed;
+  bottom: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.875rem;
+  text-align: center;
+  max-width: 90vw;
+  padding: 0 1rem;
+  z-index: 101;
+  pointer-events: none;
+}
+
 .lightbox-counter {
-  position: absolute;
+  position: fixed;
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
@@ -382,12 +384,8 @@ onUnmounted(() => {
 
 /* Mobile adjustments */
 @media (max-width: 640px) {
-  .lightbox-figure {
-    max-width: 95vw;
-    max-height: 90vh;
-  }
-
   .lightbox-img {
+    max-width: 90vw;
     max-height: 75vh;
   }
 
