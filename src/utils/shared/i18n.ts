@@ -2,17 +2,29 @@ import locales from '../../configs/blogLocalesBase/index.ts'
 import type { I18n } from '../../types.d.ts'
 
 type LocalesMap = Record<string, { t: I18n; [key: string]: any }>
+const DEFAULT_LOCALE = 'en'
+
+export function resolveBaseLocaleKey(
+  localeIndex: string | undefined,
+  map: Record<string, unknown>
+): string {
+  if (!localeIndex) return DEFAULT_LOCALE
+  if (map[localeIndex]) return localeIndex
+
+  const shortLocale = localeIndex.split('-')[0]
+  if (shortLocale && map[shortLocale]) return shortLocale
+
+  return DEFAULT_LOCALE
+}
 
 export function resolveTranslationsByFilePath(filePath?: string): any {
   const map = locales as unknown as LocalesMap
-  if (!filePath) return map.en
+  if (!filePath) return map[DEFAULT_LOCALE]
 
   const segments = filePath?.split('/').filter(Boolean) ?? []
   const localeIndex = segments[0] ?? ''
 
-  if (!map[localeIndex]) return map.en
-
-  return map[localeIndex]
+  return map[resolveBaseLocaleKey(localeIndex, map)]
 }
 
 /**

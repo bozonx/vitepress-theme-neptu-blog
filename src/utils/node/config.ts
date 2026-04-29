@@ -3,11 +3,14 @@ import { isExternalUrl } from '../shared/url.ts'
 import { parseLocaleSite } from './i18n.ts'
 import { mdToHtml } from './markdown.ts'
 import { getImageDimensions } from './image.ts'
+import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
 
 export async function loadBlogLocale(localeIndex: string, config: any): Promise<any> {
-  const baseLocale = (blogBaseLocales as Record<string, any>)[localeIndex]
+  const localeMap = blogBaseLocales as Record<string, any>
+  const baseLocaleKey = resolveBaseLocaleKey(localeIndex, localeMap)
+  const baseLocale = localeMap[baseLocaleKey]
   const params = {
     localeIndex,
     config,
@@ -48,4 +51,3 @@ export async function loadBlogLocale(localeIndex: string, config: any): Promise<
     },
   }
 }
-

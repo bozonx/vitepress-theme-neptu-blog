@@ -4,56 +4,15 @@ import { useData } from 'vitepress'
 import { makeHumanDate } from '../../utils/shared/index.ts'
 import BaseLink from '../BaseLink.vue'
 
-const { page, theme, localeIndex } = useData()
+const { page, theme, lang } = useData()
 const rawDate = page.value.frontmatter.date
-
-// List of supported languages (European + Middle Eastern)
-const supportedLanguages = [
-  'en',
-  'ru',
-  'de',
-  'fr',
-  'es',
-  'it',
-  'pt',
-  'nl',
-  'pl',
-  'cs',
-  'sk',
-  'hu',
-  'sv',
-  'no',
-  'da',
-  'fi',
-  'ar',
-  'he',
-  'uk',
-  'be',
-  'bg',
-  'hr',
-  'sr',
-  'sl',
-  'et',
-  'lv',
-  'lt',
-  'ro',
-  'el',
-  'tr',
-]
-
-// Check if the language is supported
-const isLanguageSupported = (language: string) => supportedLanguages.includes(language)
 
 // Extract year and month for link generation
 const dateObj = rawDate ? new Date(rawDate) : null
 const year = dateObj ? dateObj.getUTCFullYear() : null
 const month = dateObj ? dateObj.getUTCMonth() + 1 : null
 
-// Use supported language or fallback to English
-const effectiveLang = isLanguageSupported(localeIndex.value)
-  ? localeIndex.value
-  : 'en'
-const localeDate = makeHumanDate(rawDate, effectiveLang) || ''
+const localeDate = makeHumanDate(rawDate, lang.value || 'en') || ''
 
 // Determine whether a token represents a year
 const isYear = (item: string) => {
@@ -108,13 +67,6 @@ const isMonth = (item: string) => {
   )
 }
 
-// Warn in dev mode for unsupported languages
-if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
-  console.warn(
-    `[PostDate] Language "${localeIndex.value}" is not fully supported. Using English fallback. ` +
-      `Supported languages: ${supportedLanguages.join(', ')}`
-  )
-}
 </script>
 
 <template>
@@ -143,4 +95,3 @@ if ((import.meta as any).env.DEV && !isLanguageSupported(localeIndex.value)) {
     </time>
   </div>
 </template>
-

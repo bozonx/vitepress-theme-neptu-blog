@@ -14,7 +14,7 @@ import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
 
-type BlogUserConfig = UserConfig & Record<string, any>
+type BlogUserConfig = UserConfig & Record<string, any> & { repo?: string }
 
 export const common: Record<string, any> = {
   head: [
@@ -43,7 +43,6 @@ export const common: Record<string, any> = {
   maxDescriptionLength: 300,
 
   themeConfig: {
-    i18nRouting: true,
     externalLinkIcon: true,
     mainHeroImg: '/img/home-logo.webp',
 
@@ -76,12 +75,9 @@ export const common: Record<string, any> = {
     popularIcon: 'fa6-solid:star',
     byDateIcon: 'fa6-solid:calendar-days',
     authorsIcon: 'mdi:users',
-    socialLinksIcon: 'heroicons:megaphone-16-solid',
     rssIcon: 'bi:rss-fill',
     atomIcon: 'vscode-icons:file-type-atom',
     youtubeIcon: 'fa6-brands:youtube',
-    telegramIcon: 'fa6-brands:telegram',
-    chatIcon: 'fa6-solid:message',
     tagsIcon: 'fa6-solid:tag',
   },
 }

@@ -13,12 +13,12 @@ interface Props {
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
 }
 
-const { theme, localeIndex } = useData()
+const { localeIndex } = useData()
 const route = useRoute()
 const props = defineProps<Props>()
 // Reactive computed properties
 const resolvedHref = computed(() =>
-  resolveI18Href(props.href || '', localeIndex.value, theme.value.i18nRouting)
+  resolveI18Href(props.href || '', localeIndex.value)
 )
 const isExternal = computed(() => isExternalUrl(props.href))
 const tag = computed(() => props.tag || 'a')

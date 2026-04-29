@@ -3,7 +3,6 @@ import { DefaultTheme, PageData, SiteConfig } from 'vitepress'
 
 export namespace NeptuBlogTheme {
   export interface Config extends DefaultTheme.Config {
-    i18nRouting?: boolean
     externalLinkIcon?: boolean
     mainHeroImg?: string
     perPage?: number
@@ -27,12 +26,9 @@ export namespace NeptuBlogTheme {
     popularIcon?: string
     byDateIcon?: string
     authorsIcon?: string
-    socialLinksIcon?: string
     rssIcon?: string
     atomIcon?: string
     youtubeIcon?: string
-    telegramIcon?: string
-    chatIcon?: string
     tagsIcon?: string
 
     authors?: Author[]
@@ -44,7 +40,7 @@ export namespace NeptuBlogTheme {
     siteTitle?: string
     sidebarMenuLabel?: string
 
-    siteUrl?: string
+    socialMediaShares?: string
 
     t: I18n
 
@@ -57,7 +53,9 @@ export namespace NeptuBlogTheme {
     }
 
     footer?: {
+      message?: string
       copyright?: string
+      links?: NavLink[]
     }
   }
 
@@ -148,6 +146,9 @@ export namespace NeptuBlogTheme {
     tags?: boolean
     bottomLinks?: NavLink[]
     donate?: boolean
+    socialLinks?: SocialLink[]
+    rssFeed?: boolean
+    atomFeed?: boolean
   }
 
   export interface NavLink {
@@ -172,6 +173,7 @@ export namespace NeptuBlogTheme {
   export interface DonateConfig {
     url: string
     icon?: string
+    postDonateCall?: string
   }
 
   export interface Tag {

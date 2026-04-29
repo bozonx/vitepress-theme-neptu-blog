@@ -6,6 +6,39 @@ Vitepress blog template for freedom sites by Ivan K.
 
 See `example` dir
 
+## Multilingual model
+
+This theme is multilingual by design.
+
+- Content always lives inside a locale directory, even if your site has only one language.
+- Locale indexes are user-defined route segments such as `en`, `ru`, `en-US`, `pt-BR`, `zh-CN`.
+- The theme does not restrict content locales to two-letter codes.
+- A single-language blog should still keep its content under a locale folder such as `src/en/`.
+
+Example content layout:
+
+```text
+src/
+  index.md
+  en/
+    index.md
+    post/
+    page/
+  en-US/
+    index.md
+    post/
+    page/
+  site/
+    site.en.yaml
+    site.en-US.yaml
+```
+
+Notes:
+
+- `localeIndex` is the route segment and content bucket.
+- `lang` in locale config is the language tag used for SEO and browser formatting, for example `en-US` or `en-GB`.
+- If you only need one English UI but different content trees, you can still choose separate content locales such as `en-US` and `en-GB`.
+
 ## Use in dev mode
 
 This repo is a pnpm workspace. Clone and run:
@@ -102,7 +135,7 @@ export default {
   topBar:
     links:
       - text: "${PROPS.t.links.donate}"
-        href: "${PROPS.siteUrl}/${PROPS.lang}/page/donate"
+        href: "${PROPS.siteUrl}/${PROPS.localeIndex}/page/donate"
         icon: "${PROPS.donateIcon}"
         # show on desktop and on mobile
         mobileToo: true

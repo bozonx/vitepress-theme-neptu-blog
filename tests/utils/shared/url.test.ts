@@ -42,39 +42,39 @@ describe('isExternalUrl', () => {
 
 describe('resolveI18Href', () => {
   it('returns locale-prefixed root for /', () => {
-    expect(resolveI18Href('/', 'en', true)).toBe('/en')
-  })
-
-  it('returns trimmed string when i18nRouting is disabled', () => {
-    expect(resolveI18Href('path', 'en', false)).toBe('path')
+    expect(resolveI18Href('/', 'en')).toBe('/en')
   })
 
   it('returns external URL unchanged', () => {
-    expect(resolveI18Href('https://example.com', 'en', true)).toBe('https://example.com')
+    expect(resolveI18Href('https://example.com', 'en')).toBe('https://example.com')
   })
 
   it('returns already-absolute internal path unchanged', () => {
-    expect(resolveI18Href('/path', 'en', true)).toBe('/path')
+    expect(resolveI18Href('/path', 'en')).toBe('/path')
   })
 
   it('prepends locale to relative path', () => {
-    expect(resolveI18Href('path/to/page', 'en', true)).toBe('/en/path/to/page')
+    expect(resolveI18Href('path/to/page', 'en')).toBe('/en/path/to/page')
   })
 
   it('trims whitespace', () => {
-    expect(resolveI18Href('  path  ', 'en', true)).toBe('/en/path')
+    expect(resolveI18Href('  path  ', 'en')).toBe('/en/path')
   })
 
   it('returns stringified non-string input', () => {
-    expect(resolveI18Href(123 as any, 'en', true)).toBe('123')
+    expect(resolveI18Href(123 as any, 'en')).toBe('123')
   })
 
   it('returns empty string for empty string', () => {
-    expect(resolveI18Href('', 'en', true)).toBe('')
+    expect(resolveI18Href('', 'en')).toBe('')
   })
 
   it('does not add double slashes', () => {
-    expect(resolveI18Href('/path', 'en', true)).toBe('/path')
+    expect(resolveI18Href('/path', 'en')).toBe('/path')
+  })
+
+  it('supports hyphenated locale indexes', () => {
+    expect(resolveI18Href('post/hello', 'en-US')).toBe('/en-US/post/hello')
   })
 })
 

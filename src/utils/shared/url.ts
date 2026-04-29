@@ -10,8 +10,7 @@ export function isExternalUrl(url: string | null | undefined): boolean {
  */
 export function resolveI18Href(
   rawHref: string,
-  localeIndex: string,
-  i18nRouting: boolean
+  localeIndex: string
 ): string {
   const trimmed = String(rawHref).trim()
 
@@ -22,7 +21,7 @@ export function resolveI18Href(
 
   const isExternal = isExternalUrl(trimmed)
 
-  if (isExternal || !i18nRouting) return trimmed
+  if (isExternal) return trimmed
   // Already includes language prefix
   if (trimmed.indexOf('/') === 0) return trimmed
   // Add language prefix — insert a slash between localeIndex and trimmed.
