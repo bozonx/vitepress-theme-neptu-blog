@@ -114,7 +114,7 @@ describe('mdImage', () => {
     expect(imageToken.attrPush).toHaveBeenCalledWith(['height', '480'])
   })
 
-  it('does nothing for non-standalone paragraphs', () => {
+  it('adds lazy loading to non-standalone paragraphs but skips figure', () => {
     const imageToken = createMockToken('image', 'img', 0, [['src', 'img.png']])
     const inlineToken = createMockToken('inline', '', 0)
     inlineToken.children = [imageToken]
@@ -130,6 +130,8 @@ describe('mdImage', () => {
     md._rule(createMockState(tokens))
 
     expect(tokens[0].type).toBe('div_open')
+    expect(imageToken.attrPush).toHaveBeenCalledWith(['loading', 'lazy'])
+    expect(imageToken.attrPush).toHaveBeenCalledWith(['decoding', 'async'])
   })
 
   it('does nothing for non-image inline content', () => {

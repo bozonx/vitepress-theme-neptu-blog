@@ -12,9 +12,9 @@
           :src="props.item.image"
           :height="props.item.imageHeight"
           :width="props.item.imageWidth"
-          :sizes="`(max-width: ${LIST_ITEM_THUMB_WIDTH}px) 100vw, ${LIST_ITEM_THUMB_WIDTH}px`"
           :alt="props.item.name"
           loading="lazy"
+          decoding="async"
           class="card-item-img w-full h-auto rounded-[0.3125rem]"
         />
       </div>

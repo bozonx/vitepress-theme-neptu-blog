@@ -8,9 +8,10 @@
         <img
           :src="author.image"
           :alt="author?.name"
-          :sizes="`(min-width: ${LIST_ITEM_THUMB_WIDTH}px) ${LIST_ITEM_THUMB_WIDTH}px, 100vw`"
           :height="author?.imageHeight"
           :width="author?.imageWidth"
+          loading="lazy"
+          decoding="async"
           class="w-full max-w-full h-auto rounded-md transition-[transform,box-shadow] duration-200 ease-in-out"
         />
       </a>

@@ -36,6 +36,13 @@ export function mdImage(md: any, { srcDir }: MdImageOptions = {}): void {
           prevToken.type === 'paragraph_open' &&
           nextToken.type === 'paragraph_close'
 
+        for (const child of children) {
+          if (child.type === 'image') {
+            child.attrPush(['loading', 'lazy'])
+            child.attrPush(['decoding', 'async'])
+          }
+        }
+
         if (hasOnlyImage && isStandaloneParagraph) {
           const imageToken = children.length === 1 ? children[0] : children[1]
 

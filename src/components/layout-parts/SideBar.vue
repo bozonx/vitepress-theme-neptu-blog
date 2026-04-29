@@ -141,6 +141,7 @@ onUnmounted(() => {
           <img
             :src="theme.sidebarLogoSrc"
             loading="lazy"
+            decoding="async"
             width="320"
             height="158"
             aria-hidden="true"
