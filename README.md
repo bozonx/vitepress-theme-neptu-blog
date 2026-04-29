@@ -39,6 +39,8 @@ Notes:
 - `lang` in locale config is the language tag used for SEO and browser formatting, for example `en-US` or `en-GB`.
 - If you only need one English UI but different content trees, you can still choose separate content locales such as `en-US` and `en-GB`.
 
+See [docs/LOCALES.md](docs/LOCALES.md) for the planned locale model, UI locale resolution, switcher behavior, and admin overrides.
+
 ## Use in dev mode
 
 This repo is a pnpm workspace. Clone and run:
