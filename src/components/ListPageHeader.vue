@@ -26,10 +26,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useData } from 'vitepress'
 import Btn from './Btn.vue'
+import { useUiTheme } from '../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 
 const props = defineProps({
   baseUrl: { type: String, required: true },
@@ -42,4 +42,3 @@ const popularBaseUrl = computed(() => {
 const showPopularPostsSwitch =
   props.showPopularPostsSwitch && theme.value.popularPosts?.enabled
 </script>
-

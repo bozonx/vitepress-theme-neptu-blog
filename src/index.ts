@@ -8,6 +8,7 @@ import './styles/vendor/vp-doc.css'
 import FileDownload from './components/doc-components/FileDownload.vue'
 import AudioFile from './components/doc-components/AudioFile.vue'
 import YoutubeVideo from './components/doc-components/YoutubeVideo.vue'
+import { getActiveUiLocale } from './composables/useUiLocale.ts'
 import { resolveTranslationsByFilePath } from './utils/shared/index.ts'
 import './styles/vendor/vp-common.css'
 import './styles/vendor/vp-icons.css'
@@ -22,7 +23,7 @@ export default {
   Layout,
   enhanceApp(ctx: EnhanceAppContext) {
     ctx.app.config.globalProperties.getLocales = () =>
-      resolveTranslationsByFilePath(ctx.router.route.path)
+      getActiveUiLocale() || resolveTranslationsByFilePath(ctx.router.route.path)
 
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)

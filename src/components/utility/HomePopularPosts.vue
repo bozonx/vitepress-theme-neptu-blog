@@ -24,6 +24,7 @@ import UtilSubPageHeader from './UtilSubPageHeader.vue'
 import BtnLink from '../BtnLink.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts } from '../../utils/shared/index.ts'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -35,12 +36,13 @@ interface PostLite {
 }
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { localeIndex, theme } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const sorted = sortPosts(localePosts, theme.value.popularPosts?.sortBy, true)
-const posts = sorted.slice(0, theme.value.perPage)
-const showMorePosts = localePosts.length > theme.value.perPage
+const posts = sorted.slice(0, theme.value.perPage || 0)
+const showMorePosts = localePosts.length > (theme.value.perPage || 0)
 </script>
 
 <style>

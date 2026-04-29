@@ -4,10 +4,12 @@ import { useData } from 'vitepress'
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import PodcastIcon from './PodcastIcon.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 import type { ThemeConfig, PostFrontmatter } from '../../types.d.ts'
 
-const { frontmatter, theme } = useData<ThemeConfig>()
+const { frontmatter } = useData<ThemeConfig>()
+const { theme } = useUiTheme()
 const fm = frontmatter.value as PostFrontmatter
 const btnText = theme.value.t.listenPodcast
 </script>

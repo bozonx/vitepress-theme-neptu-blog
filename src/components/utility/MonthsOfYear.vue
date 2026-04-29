@@ -7,6 +7,7 @@ import ListItemWithBadge from '../ListItemWithBadge.vue'
 import PreviewList from '../PreviewList.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import ListPageHeader from '../ListPageHeader.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -25,7 +26,8 @@ const props = defineProps<{
   paginationMaxItems?: number
   showPopularPostsSwitch?: boolean
 }>()
-const { theme, frontmatter, localeIndex } = useData()
+const { frontmatter, localeIndex } = useData()
+const { theme } = useUiTheme()
 const route = useRoute()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []

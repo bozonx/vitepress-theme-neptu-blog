@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
-
 import Btn from '../Btn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchLang from './SwitchLang.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 const props = defineProps<{
   isMobile?: boolean
 }>()
@@ -29,17 +28,22 @@ const resolveItemShowClass = (item: LinkItem) => {
   // both
   return ''
 }
-const links = theme.value.topBar
-  ? [
-      ...(theme.value.topBar.links || []),
-      theme.value.topBar.donate && {
-        text: theme.value.t.links.donate,
-        href: `${theme.value.donate.url}`,
-        icon: theme.value.donate.icon || theme.value.donateIcon,
-        iconClass: 'donate-icon',
-      },
-    ].filter(Boolean)
-  : []
+const links: LinkItem[] = [...(theme.value.topBar?.links || [])]
+if (theme.value.topBar?.donate && theme.value.donate) {
+  links.push({
+    text: theme.value.t.links.donate,
+    href: `${theme.value.donate.url}`,
+    icon: theme.value.donate.icon || theme.value.donateIcon,
+    iconClass: 'donate-icon',
+  })
+}
+const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((item) => ({
+  href: item.url || item.link,
+  icon: item.icon,
+  class: item.class,
+  desktopOnly: item.desktopOnly,
+  mobileOnly: item.mobileOnly,
+})).filter((item) => Boolean(item.href))
 </script>
 
 <template>
@@ -81,9 +85,9 @@ const links = theme.value.topBar
       <SwitchAppearance />
     </div>
 
-    <ul v-if="theme.topBar?.socialLinks?.length" class="flex space-x-1">
+    <ul v-if="socialLinks.length" class="flex space-x-1">
       <li
-        v-for="(item, index) in theme.topBar.socialLinks"
+        v-for="(item, index) in socialLinks"
         :key="item.href || index"
         :class="resolveItemShowClass(item)"
       >

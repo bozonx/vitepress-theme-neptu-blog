@@ -2,8 +2,10 @@
 import { useData } from 'vitepress'
 import TagsList from '../TagsList.vue'
 import BtnLink from '../BtnLink.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme, frontmatter } = useData()
+const { frontmatter } = useData()
+const { theme } = useUiTheme()
 const tags = [...(frontmatter.value.tags || [])].sort((a, b) =>
   String(a.name).localeCompare(b.name)
 )

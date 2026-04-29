@@ -2,8 +2,10 @@
 import { useData } from 'vitepress'
 
 import Btn from '../Btn.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { frontmatter, theme } = useData()
+const { frontmatter } = useData()
+const { theme } = useUiTheme()
 const text =
   theme.value.t.postVideoButton +
   (frontmatter.value.videoLinkLang

@@ -3,8 +3,10 @@ import { useData } from 'vitepress'
 import { onMounted, ref } from 'vue'
 
 import { Icon } from '@iconify/vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme, title } = useData()
+const { title } = useData()
+const { theme } = useUiTheme()
 const siteFullTitle = encodeURIComponent(title.value)
 interface ShareItem {
   href: string

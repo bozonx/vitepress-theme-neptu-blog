@@ -14,8 +14,10 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { isPost, isPage } from '../utils/shared/index.ts'
 import BtnLink from './BtnLink.vue'
+import { useUiTheme } from '../composables/useUiLocale.ts'
 
-const { page, frontmatter, theme } = useData()
+const { page, frontmatter } = useData()
+const { theme } = useUiTheme()
 
 const allowEditLink = computed(() => {
   return (
@@ -26,9 +28,10 @@ const allowEditLink = computed(() => {
 })
 
 const editLinkHref = computed(() => {
-  return theme.value?.editLink?.pattern.replace(
-    ':path',
-    page.value.relativePath
-  )
+  const pattern = theme.value?.editLink?.pattern
+  if (typeof pattern === 'function') {
+    return pattern(page.value)
+  }
+  return pattern?.replace(':path', page.value.relativePath)
 })
 </script>

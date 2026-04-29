@@ -6,6 +6,8 @@ import ListPageHeader from '../ListPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts, isPopularRoute, pluralize } from '../../utils/shared/index.ts'
 import UtilPageHeader from './UtilPageHeader.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
+import type { Author as ThemeAuthor } from '../../types.d.ts'
 
 interface PostLite {
   url: string
@@ -16,11 +18,6 @@ interface PostLite {
   [key: string]: unknown
 }
 
-interface Author {
-  id: string
-  name?: string
-}
-
 const props = defineProps<{
   localePosts?: PostLite[]
   curPage?: string | number
@@ -29,7 +26,8 @@ const props = defineProps<{
   authorId: string
   showPopularPostsSwitch?: boolean
 }>()
-const { localeIndex, theme, frontmatter } = useData()
+const { localeIndex, frontmatter } = useData()
+const { theme } = useUiTheme()
 const route = useRoute()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
@@ -41,7 +39,9 @@ const sorted = sortPosts(
   theme.value.popularPosts?.sortBy,
   isPopularRoute(route.path, theme)
 )
-const author = theme.value.authors.find((item: Author) => item.id === props.authorId)
+const author = theme.value.authors?.find(
+  (item: ThemeAuthor) => item.id === props.authorId
+)
 </script>
 
 <template>

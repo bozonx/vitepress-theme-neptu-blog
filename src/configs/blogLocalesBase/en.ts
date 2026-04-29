@@ -34,6 +34,7 @@ export default {
     commentCall: 'Comment on Telegram Channel',
     allTagsCall: 'View All Tags',
     popularPostsCall: 'View All Popular Posts',
+    viewInAnotherLanguage: 'View in another language',
     postVideoButton: 'Watch Video',
     allPostsOfAuthor: 'Posts of the author',
     closeMenu: 'Close menu',

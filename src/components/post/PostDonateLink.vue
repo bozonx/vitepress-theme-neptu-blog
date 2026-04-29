@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
 import BtnLink from '../BtnLink.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 </script>
 
 <template>

@@ -4,6 +4,7 @@ import { useData } from 'vitepress'
 import Btn from '../Btn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchLang from './SwitchLang.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface SocialLinkItem {
   href: string
@@ -16,22 +17,33 @@ interface SocialLinkItem {
 const props = defineProps<{
   class?: string
 }>()
-const { theme, localeIndex } = useData()
-const socialLinks = [
-  ...(theme.value.sideBar.socialLinks || []),
-  theme.value.sideBar.rssFeed && {
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
+const socialLinks: SocialLinkItem[] = [
+  ...(theme.value.sideBar?.socialLinks || []).map((item) => ({
+    href: item.url || item.link,
+    icon: item.icon,
+    class: item.class,
+  })),
+].filter((item) => Boolean(item.href)) as SocialLinkItem[]
+
+if (theme.value.sideBar?.rssFeed) {
+  socialLinks.push({
     href: `/feed-${localeIndex.value}.rss`,
     icon: theme.value.rssIcon,
     title: theme.value.t.links.rssFeed,
     target: '_blank',
-  },
-  theme.value.sideBar.atomFeed && {
+  })
+}
+
+if (theme.value.sideBar?.atomFeed) {
+  socialLinks.push({
     href: `/feed-${localeIndex.value}.atom`,
     icon: theme.value.atomIcon,
     title: theme.value.t.links.atomFeed,
     target: '_blank',
-  },
-]
+  })
+}
 </script>
 
 <template>

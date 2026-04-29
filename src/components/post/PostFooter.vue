@@ -9,6 +9,7 @@ import PostSocialShare from './PostSocialShare.vue'
 import PostTags from './PostTags.vue'
 import EditLink from '../EditLink.vue'
 import BtnLink from '../BtnLink.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -20,7 +21,8 @@ interface PostLite {
 }
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { localeIndex, theme } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 </script>

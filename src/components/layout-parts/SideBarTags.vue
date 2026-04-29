@@ -23,6 +23,7 @@ import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import BtnLink from '../BtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -34,12 +35,13 @@ interface PostLite {
 }
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { theme, localeIndex } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 const allTags = makeTagsList(props.localePosts)
 const tags = allTags
   .map(({ count, ...tag }) => tag)
-  .slice(0, theme.value.sidebarTagsCount)
+  .slice(0, theme.value.sidebarTagsCount || 0)
 const allTagsUrl = `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
-const showAllTags = allTags.length > theme.value.sidebarTagsCount
+const showAllTags = allTags.length > (theme.value.sidebarTagsCount || 0)
 const emit = defineEmits(['itemClick'])
 </script>

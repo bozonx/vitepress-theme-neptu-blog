@@ -34,6 +34,7 @@ export default {
     commentCall: 'Комментировать в Telegram канале',
     allTagsCall: 'Смотреть все тэги',
     popularPostsCall: 'Смотреть все популярные посты',
+    viewInAnotherLanguage: 'Смотреть на другом языке',
     postVideoButton: 'Смотреть видео',
     allPostsOfAuthor: 'Посты автора',
     closeMenu: 'Закрыть меню',

@@ -5,6 +5,7 @@ import PreviewList from '../PreviewList.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
 import BtnLink from '../BtnLink.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -24,7 +25,8 @@ const props = defineProps<{
   tagName: string
   showPopularPostsSwitch?: boolean
 }>()
-const { theme, localeIndex, frontmatter } = useData()
+const { localeIndex, frontmatter } = useData()
+const { theme } = useUiTheme()
 const route = useRoute()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []

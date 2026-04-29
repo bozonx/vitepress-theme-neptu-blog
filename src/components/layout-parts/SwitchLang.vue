@@ -1,32 +1,17 @@
 <script lang="ts" setup>
-// see https://github.com/vuejs/vitepress/blob/9b1bb4ffc6423ef0f16a213133980fdb6e9bf552/src/client/theme-default/components/VPNavScreenTranslations.vue
-import { useData } from 'vitepress'
-import { useLangs } from 'vitepress/dist/client/theme-default/composables/langs.js'
-
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import { Icon } from '@iconify/vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme } = useData()
-const { localeLinks, currentLang } = useLangs({ correspondingLink: true })
+const { theme, availableUiLocales, currentUiLocaleKey, currentUiLocaleLabel, setUiLocale } =
+  useUiTheme()
 const props = defineProps<{ noBg?: boolean | string }>()
-// redirect from specific tag to tags list
-const resolveLink = (link: string) => {
-  if (!link) return link
-
-  const splat = link.split('/')
-
-  if (splat[2] === theme.value.tagsBaseUrl) {
-    return `/${splat[1]}/${theme.value.tagsBaseUrl}`
-  }
-
-  return link
-}
 </script>
 
 <template>
   <DropdownButton
-    v-if="localeLinks.length && currentLang.label"
+    v-if="availableUiLocales.length"
     :no-bg="props.noBg"
     :title="theme.langMenuLabel || 'Change language'"
     class="switch-lang-btn px-0"
@@ -41,20 +26,15 @@ const resolveLink = (link: string) => {
         />
       </span>
     </template>
-    <template v-for="locale in localeLinks" :key="locale.link">
+    <MenuItem :disabled="true" :title="theme.t.currentLang">
+      {{ currentUiLocaleLabel }}
+    </MenuItem>
+    <template v-for="locale in availableUiLocales" :key="locale.key">
       <MenuItem
-        v-if="!locale.text"
-        :disabled="true"
-        :title="theme.t.currentLang"
+        :disabled="locale.key === currentUiLocaleKey"
+        @click="setUiLocale(locale.key)"
       >
-        {{ currentLang.label }}
-      </MenuItem>
-      <MenuItem
-        v-else
-        target="_self"
-        :href="resolveLink(locale.link)"
-      >
-        {{ locale.text }}
+        {{ locale.label }}
       </MenuItem>
     </template>
   </DropdownButton>

@@ -2,8 +2,27 @@
 import { DefaultTheme, PageData, SiteConfig } from 'vitepress'
 
 export namespace NeptuBlogTheme {
+  export type DeepPartial<T> = {
+    [K in keyof T]?: T[K] extends Array<infer U>
+      ? Array<DeepPartial<U>>
+      : T[K] extends Record<string, any>
+      ? DeepPartial<T[K]>
+      : T[K]
+  }
+
+  export interface UiLocaleConfig {
+    default?: string
+    storageKey?: string
+  }
+
+  export interface UiLocaleDefinition {
+    extends?: string
+    label?: string
+    themeConfig?: DeepPartial<Config>
+    t?: DeepPartial<I18n>
+  }
+
   export interface Config extends DefaultTheme.Config {
-    i18nRouting?: boolean
     externalLinkIcon?: boolean
     mainHeroImg?: string
     perPage?: number
@@ -42,6 +61,8 @@ export namespace NeptuBlogTheme {
     sidebarMenuLabel?: string
 
     socialMediaShares?: string
+    uiLocale?: UiLocaleConfig
+    uiLocales?: Record<string, UiLocaleDefinition>
 
     t: I18n
 
@@ -80,6 +101,7 @@ export namespace NeptuBlogTheme {
     commentCall: string
     allTagsCall: string
     popularPostsCall: string
+    viewInAnotherLanguage: string
     postVideoButton: string
     allPostsOfAuthor: string
     closeMenu: string
@@ -231,10 +253,13 @@ export namespace NeptuBlogTheme {
 }
 
 export type ThemeConfig = NeptuBlogTheme.Config
+export type DeepPartial<T> = NeptuBlogTheme.DeepPartial<T>
 export type Post = NeptuBlogTheme.Post
 export type PostFrontmatter = NeptuBlogTheme.PostFrontmatter
 export type Tag = NeptuBlogTheme.Tag
 export type Author = NeptuBlogTheme.Author
 export type I18n = NeptuBlogTheme.I18n
+export type UiLocaleConfig = NeptuBlogTheme.UiLocaleConfig
+export type UiLocaleDefinition = NeptuBlogTheme.UiLocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig

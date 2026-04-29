@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
-import { useData } from "vitepress";
-import { watch } from "vue";
-import { useToTheTop } from "../../composables/useToTheTop.ts";
+import { Icon } from '@iconify/vue'
+import { watch } from 'vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useToTheTop } from '../../composables/useToTheTop.ts'
 
 const props = defineProps<{
   scrollY: number
-}>();
-const SCROLL_BREAKPOINT = 1080;
-const { theme } = useData();
-const { showed, opacity, show, hide, handleClick, animationMs } = useToTheTop();
+}>()
+const SCROLL_BREAKPOINT = 1080
+const { theme } = useUiTheme()
+const { showed, opacity, show, hide, handleClick, animationMs } = useToTheTop()
 
 watch(
   () => props.scrollY,
   (scrollY, prevScroll) => {
-    const prev = prevScroll ?? 0;
+    const prev = prevScroll ?? 0
     if (scrollY > SCROLL_BREAKPOINT) {
       if (scrollY > prev) {
-        hide();
+        hide()
       } else {
-        show();
+        show()
       }
     } else {
-      hide();
+      hide()
     }
   },
   { immediate: true }
-);
+)
 </script>
 
 <template>

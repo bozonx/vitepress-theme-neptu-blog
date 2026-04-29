@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
 import BaseLink from './BaseLink.vue'
 import Badge from './Badge.vue'
+import { useUiTheme } from '../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 
 interface Props {
   name?: string

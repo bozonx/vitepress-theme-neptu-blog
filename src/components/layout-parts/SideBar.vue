@@ -8,6 +8,7 @@ import SideBarGroup from './SideBarGroup.vue'
 import SideBarItems from './SideBarItems.vue'
 import { Icon } from '@iconify/vue'
 import SideBarTags from './SideBarTags.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -18,11 +19,22 @@ interface PostLite {
   [key: string]: unknown
 }
 
+interface SideBarItem {
+  header?: string
+  href?: string
+  icon?: string
+  class?: string
+  mobile?: boolean
+  text?: string
+  title?: string
+}
+
 const props = defineProps<{
   isMobile: boolean
   localePosts?: PostLite[]
 }>()
-const { theme, localeIndex } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const animationTimeMs = 400
@@ -32,50 +44,56 @@ const backdropOpacity = ref(0)
 let animationTimeout: ReturnType<typeof setTimeout> | null = null
 
 const sideBarConfig = theme.value.sideBar || {}
-
-const links = computed(() => {
+const links = computed<SideBarItem[]>(() => {
   const cfg = theme.value.sideBar || {}
-  return cfg
-    ? [
-        ...(cfg.links || []),
+  const items: SideBarItem[] = [...(cfg.links || [])]
 
-        cfg.recent && {
-          text: theme.value.t.links.recent,
-          href: `${theme.value.recentBaseUrl}/1`,
-          icon: theme.value.recentIcon,
-        },
-        cfg.popular && {
-          text: theme.value.t.links.popular,
-          href: `${theme.value.popularBaseUrl}/1`,
-          icon: theme.value.popularIcon,
-        },
-        cfg.archive && {
-          text: theme.value.t.links.byDate,
-          href: `${theme.value.archiveBaseUrl}`,
-          icon: theme.value.byDateIcon,
-        },
-        cfg.authors && {
-          text: theme.value.t.links.authors,
-          href: `${theme.value.authorsBaseUrl}`,
-          icon: theme.value.authorsIcon,
-        },
-      ].filter(Boolean)
-    : []
+  if (cfg.recent) {
+    items.push({
+      text: theme.value.t.links.recent,
+      href: `${theme.value.recentBaseUrl}/1`,
+      icon: theme.value.recentIcon,
+    })
+  }
+  if (cfg.popular) {
+    items.push({
+      text: theme.value.t.links.popular,
+      href: `${theme.value.popularBaseUrl}/1`,
+      icon: theme.value.popularIcon,
+    })
+  }
+  if (cfg.archive) {
+    items.push({
+      text: theme.value.t.links.byDate,
+      href: `${theme.value.archiveBaseUrl}`,
+      icon: theme.value.byDateIcon,
+    })
+  }
+  if (cfg.authors) {
+    items.push({
+      text: theme.value.t.links.authors,
+      href: `${theme.value.authorsBaseUrl}`,
+      icon: theme.value.authorsIcon,
+    })
+  }
+
+  return items
 })
 
-const bottomLinks = computed(() => {
+const bottomLinks = computed<SideBarItem[]>(() => {
   const cfg = theme.value.sideBar || {}
-  return cfg
-    ? [
-        ...(cfg.bottomLinks || []),
-        cfg.donate && {
-          text: theme.value.t.links.donate,
-          href: `${theme.value.donate.url}`,
-          icon: theme.value.donate.icon || theme.value.donateIcon,
-          iconClass: 'donate-icon',
-        },
-      ].filter(Boolean)
-    : []
+  const items: SideBarItem[] = [...(cfg.bottomLinks || [])]
+
+  if (cfg.donate && theme.value.donate) {
+    items.push({
+      text: theme.value.t.links.donate,
+      href: `${theme.value.donate.url}`,
+      icon: theme.value.donate.icon || theme.value.donateIcon,
+      class: 'donate-icon',
+    })
+  }
+
+  return items
 })
 const openDrawer = () => {
   if (!props.isMobile || drawerOpen.value) return

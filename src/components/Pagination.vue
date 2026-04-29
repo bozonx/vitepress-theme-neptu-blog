@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useData, useRoute } from 'vitepress'
+import { useRoute } from 'vitepress'
 import Btn from './Btn.vue'
+import { useUiTheme } from '../composables/useUiLocale.ts'
 
 const route = useRoute()
-const { theme } = useData()
+const { theme } = useUiTheme()
 const props = defineProps<{
   paginationMaxItems?: number
   curPage: number
@@ -93,4 +94,3 @@ if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
     </li>
   </ul>
 </template>
-

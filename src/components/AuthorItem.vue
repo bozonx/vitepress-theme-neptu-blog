@@ -37,6 +37,7 @@
 import { useData } from 'vitepress'
 import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 import { pluralize } from '../utils/shared/index.ts'
+import { useUiTheme } from '../composables/useUiLocale.ts'
 
 interface AuthorItem {
   id: string
@@ -49,5 +50,6 @@ interface AuthorItem {
 }
 
 const props = defineProps<{ item: AuthorItem }>()
-const { theme, localeIndex } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 </script>

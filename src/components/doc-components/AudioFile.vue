@@ -2,9 +2,9 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import Btn from '../Btn.vue'
-import { useData } from 'vitepress'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 
 // Component props
 const props = defineProps({

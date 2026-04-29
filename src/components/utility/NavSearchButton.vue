@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { useData } from 'vitepress'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 </script>

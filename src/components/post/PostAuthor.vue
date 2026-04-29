@@ -2,8 +2,10 @@
 import { useData } from 'vitepress'
 
 import SimpleLink from '../SimpleLink.vue'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { frontmatter, theme } = useData()
+const { frontmatter } = useData()
+const { theme } = useUiTheme()
 interface Author {
   id: string
   name?: string

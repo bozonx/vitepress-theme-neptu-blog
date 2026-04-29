@@ -2,6 +2,7 @@
 import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
 import { sortSimilarPosts } from '../../utils/shared/index.ts'
+import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface PostLite {
   url: string
@@ -13,7 +14,8 @@ interface PostLite {
 }
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { frontmatter, theme } = useData()
+const { frontmatter } = useData()
+const { theme } = useUiTheme()
 const route = useRoute()
 
 // Get similar posts using the helper
@@ -22,7 +24,9 @@ const items = frontmatter.value.tags
       props.localePosts || [],
       frontmatter.value.tags,
       route.path,
-      theme.value.popularPosts?.enabled && theme.value.popularPosts?.sortBy,
+      theme.value.popularPosts?.enabled
+        ? theme.value.popularPosts.sortBy
+        : undefined,
       theme.value.similarPostsCount
     )
   : []
