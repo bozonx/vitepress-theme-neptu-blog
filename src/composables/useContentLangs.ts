@@ -16,7 +16,6 @@ interface CurrentLang {
 
 interface LocaleSpecificConfig {
   label: string
-  link?: string
   lang?: string
   dir?: string
 }
@@ -49,7 +48,7 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
 
     return {
       label: currentLocale?.label,
-      link: currentLocale?.link || (localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`),
+      link: `/${localeIndex.value}/`,
     }
   })
 
@@ -62,7 +61,7 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
           return []
         }
 
-        const localeBaseLink = value.link || (key === 'root' ? '/' : `/${key}/`)
+        const localeBaseLink = `/${key}/`
         const relativePath = page.value.relativePath.slice(currentLang.value.link.length - 1)
 
         return {

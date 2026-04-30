@@ -1,196 +1,68 @@
-# Hreflang Meta Tags для VitePress Neptu Blog Theme
+# Hreflang Meta Tags for VitePress Neptu Blog Theme
 
-## Описание
+## Summary
 
-Функция `addHreflang` автоматически добавляет метатеги hreflang в head страницы для улучшения SEO и многоязычности. Она генерирует ссылки на эту же страницу на всех доступных языках.
+`addHreflang` adds alternate locale links for multilingual pages.
 
-## Что делает функция
+The theme assumes locale-prefixed routing only:
 
-1. **Анализирует путь страницы** - извлекает языковой префикс и путь страницы
-2. **Генерирует URL для других языков** - создает ссылки на эту же страницу на других доступных языках
-3. **Добавляет метатеги в head** - вставляет `<link rel="alternate" hreflang="..." href="..." />` теги
-4. **Исключает root язык** - не добавляет hreflang для root локали
-5. **Не дублирует текущий язык** - не добавляет ссылку на текущий язык страницы
+- `en/index.md` -> `/en/`
+- `ru/post/hello.md` -> `/ru/post/hello`
+- `en-GB/page/about.md` -> `/en-GB/page/about`
 
-## Генерируемые метатеги
+There is no special `root` locale in the theme model.
 
-Для русской страницы `ru/index.md` генерируются:
+## Current behavior
+
+The transformer:
+
+1. Reads the current page locale from `pageData.relativePath`.
+2. Removes that locale segment from the relative path.
+3. Rebuilds the same page path for every configured locale.
+4. Adds one `<link rel="alternate">` tag per locale.
+
+For `en/post/hello.md` with locales `en` and `ru`, it generates:
 
 ```html
-<!-- Другие языки -->
-<link rel="alternate" hreflang="en-US" href="https://example.com/en/index" />
-
-<!-- x-default (основной язык) -->
-<link
-  rel="alternate"
-  hreflang="x-default"
-  href="https://example.com/en/index"
-/>
+<link rel="alternate" hreflang="en-US" href="https://example.com/en/post/hello" />
+<link rel="alternate" hreflang="ru-RU" href="https://example.com/ru/post/hello" />
 ```
 
-**Важно**: Ссылка на текущий язык НЕ добавляется, так как это не нужно для hreflang.
+## Requirements
 
-## Конфигурация
+- `siteUrl` must be configured.
+- At least two locales must exist in `locales`.
+- Content files must live under locale folders.
 
-### Требования
+Example:
 
-1. **Hostname** - должен быть указан в конфигурации блога
-2. **Многоязычность** - должно быть настроено минимум 2 языка
-3. **Структура файлов** - файлы должны иметь языковой префикс в пути
-
-### Пример конфигурации
-
-```javascript
-// В конфигурации VitePress
+```ts
 export default defineConfig({
-  ...configBase,
-  locales: { en: { lang: 'en-US' }, ru: { lang: 'ru-RU' } },
+  locales: {
+    en: { lang: 'en-US' },
+    ru: { lang: 'ru-RU' },
+  },
 })
-
-// В PROPS.js
-export const PROPS = { hostname: 'https://example.com' }
 ```
 
-## Структура файлов
+## File structure
 
-Функция ожидает следующую структуру файлов:
-
-```
+```text
 src/
-├── en/
-│   ├── post/
-│   │   └── article.md
-│   └── page/
-│       └── about.md
-└── ru/
-    ├── post/
-    │   └── article.md
-    └── page/
-        └── about.md
+  en/
+    index.md
+    post/
+      article.md
+  ru/
+    index.md
+    post/
+      article.md
 ```
 
-## Обработка различных типов страниц
+Even a single-language site should still use a locale folder such as `src/en/`.
 
-### Посты
+## Notes
 
-- **Путь**: `en/post/article.md`
-- **URL**: `https://example.com/en/post/article`
-
-### Страницы
-
-- **Путь**: `en/page/about.md`
-- **URL**: `https://example.com/en/page/about`
-
-### Главная страница
-
-- **Путь**: `en/index.md`
-- **URL**: `https://example.com/en`
-
-## Логика работы
-
-1. **Проверка входных данных** - проверяет наличие filePath и hostname
-2. **Извлечение языка** - получает текущий язык из пути файла
-3. **Фильтрация языков** - исключает root и текущий язык
-4. **Генерация путей** - создает пути для других доступных языков
-5. **Очистка путей** - убирает расширения файлов и индексы
-6. **Добавление метатегов** - вставляет hreflang теги в frontmatter.head
-
-## Особенности реализации
-
-### Исключение root языка
-
-Функция автоматически исключает `root` локаль из hreflang метатегов, так как это техническая локаль VitePress.
-
-### Отсутствие ссылки на текущий язык
-
-Hreflang метатеги не должны содержать ссылку на текущий язык страницы - это избыточно и может вызвать путаницу.
-
-### x-default hreflang
-
-`x-default` указывает на основной язык сайта (обычно английский) и используется поисковыми системами для определения языка по умолчанию.
-
-## Обработка ошибок
-
-Функция корректно обрабатывает следующие случаи:
-
-- ✅ **Корректные страницы** - добавляет все необходимые метатеги
-- ✅ **Отсутствие hostname** - пропускает страницу
-- ✅ **Корневые страницы** - пропускает страницы без языкового префикса
-- ✅ **Один язык** - пропускает страницы с одним языком
-- ✅ **Root локаль** - исключает root из hreflang
-- ✅ **Текущий язык** - не дублирует ссылку на текущий язык
-- ✅ **Некорректные пути** - безопасно обрабатывает различные форматы путей
-
-## Интеграция
-
-Функция автоматически вызывается в `transformPageData` и не требует дополнительной настройки:
-
-```javascript
-transformPageData(pageData, ctx) {
-  resolveDescription(pageData, ctx)
-  transformPageMeta(pageData, ctx)
-  addOgMetaTags(pageData, ctx)
-  addJsonLd(pageData, ctx)
-  addRssLinks(pageData, ctx)
-  addHreflang(pageData, ctx) // Автоматически добавляет hreflang
-}
-```
-
-## Преимущества
-
-1. **SEO улучшения** - помогает поисковым системам понимать многоязычную структуру
-2. **Автоматизация** - не требует ручного добавления метатегов
-3. **Корректность** - генерирует правильные URL для всех языков
-4. **Безопасность** - корректно обрабатывает ошибки и крайние случаи
-5. **Производительность** - работает только с необходимыми страницами
-6. **Соответствие стандартам** - не дублирует ссылки и правильно устанавливает x-default
-
-## Тестирование
-
-Функция протестирована на:
-
-- ✅ Обычных постах
-- ✅ Страницах с индексом
-- ✅ Главных страницах
-- ✅ Страницах без hostname
-- ✅ Корневых страницах
-- ✅ Страницах с одним языком
-- ✅ Исключении root языка
-- ✅ Отсутствии дублирования текущего языка
-- ✅ Правильной установке x-default
-
-## Поддержка
-
-Функция полностью интегрирована в VitePress Neptu Blog Theme и готова к использованию без дополнительной настройки.
-
-## Примеры вывода
-
-### Для русской страницы `ru/index.md`:
-
-```html
-<link
-  rel="alternate"
-  hreflang="en-US"
-  href="https://blog.p-libereco.org/en/index"
-/>
-<link
-  rel="alternate"
-  hreflang="x-default"
-  href="https://blog.p-libereco.org/en/index"
-/>
-```
-
-### Для английской страницы `en/index.md`:
-
-```html
-<link
-  rel="alternate"
-  hreflang="ru-RU"
-  href="https://blog.p-libereco.org/ru/index"
-/>
-<link
-  rel="alternate"
-  hreflang="x-default"
-  href="https://blog.p-libereco.org/ru/index"
-/>
-```
+- The current locale is included in the generated hreflang set.
+- `x-default` is not generated by the current implementation.
+- Links without a locale prefix are outside the supported routing model.

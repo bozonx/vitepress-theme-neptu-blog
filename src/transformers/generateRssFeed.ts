@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { createContentLoader } from 'vitepress'
 
-import { DEFAULT_ENCODE, POSTS_DIR, ROOT_LANG } from '../constants.ts'
+import { DEFAULT_ENCODE, POSTS_DIR } from '../constants.ts'
 import { extractDescriptionFromMd } from '../utils/node/index.ts'
 import {
   createPostGuid,
@@ -30,8 +30,6 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
     const siteUrl = config.userConfig.siteUrl!
 
     for (const localeIndex of Object.keys(config.site.locales)) {
-      if (localeIndex === ROOT_LANG) continue
-
       const locale = config.site.locales[localeIndex]!
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
 

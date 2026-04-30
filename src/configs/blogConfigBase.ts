@@ -36,7 +36,6 @@ export const common: Record<string, any> = {
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',
-  locales: { root: { lang: 'en-US' } },
 
   maxPostsInRssFeed: 50,
   rssFormats: ['rss', 'atom', 'json'],

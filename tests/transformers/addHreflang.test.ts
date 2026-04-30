@@ -20,7 +20,6 @@ describe('addHreflang', () => {
         userConfig: { siteUrl: 'https://example.com' },
         site: {
           locales: {
-            root: { lang: 'en' },
             en: { lang: 'en' },
             ru: { lang: 'ru' },
           },
@@ -56,9 +55,7 @@ describe('addHreflang', () => {
   it('adds hreflang links for all locales', () => {
     const ctx = createContext()
     addHreflang(ctx)
-    expect(ctx.head).toHaveLength(4) // 2 locales * 1 link + root x-default
-    const xDefault = ctx.head.find((h) => h[1]?.hreflang === 'x-default')
-    expect(xDefault).toBeDefined()
+    expect(ctx.head).toHaveLength(2) // 2 locales * 1 link
   })
 
   it('constructs correct locale paths', () => {
@@ -66,7 +63,7 @@ describe('addHreflang', () => {
     addHreflang(ctx)
     const enLink = ctx.head.find((h) => h[1]?.hreflang === 'en')
     const ruLink = ctx.head.find((h) => h[1]?.hreflang === 'ru')
-    expect(enLink?.[1]?.href).toBe('https://example.com/post/hello')
+    expect(enLink?.[1]?.href).toBe('https://example.com/en/post/hello')
     expect(ruLink?.[1]?.href).toBe('https://example.com/ru/post/hello')
   })
 
@@ -76,7 +73,6 @@ describe('addHreflang', () => {
         userConfig: { siteUrl: 'https://example.com' },
         site: {
           locales: {
-            root: {},
             en: {},
             de: {},
           },

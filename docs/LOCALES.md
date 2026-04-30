@@ -206,7 +206,6 @@ Example:
 ```ts
 export default defineConfig({
   locales: {
-    root: { lang: 'en-US' },
     en: { lang: 'en-US' },
     'en-GB': { lang: 'en-GB' },
     ru: { lang: 'ru-RU' },

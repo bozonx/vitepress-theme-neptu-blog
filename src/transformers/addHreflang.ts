@@ -1,5 +1,4 @@
 import { generatePageUrlPath } from '../utils/shared/index.ts'
-import { ROOT_LANG } from '../constants.ts'
 import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 export interface AddHreflangContext {
@@ -24,15 +23,8 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
   const pathWithoutLocale = segments.slice(1).join('/')
 
   Object.entries(locales).forEach(([code, locale]: [string, any]) => {
-    const isRoot = code === ROOT_LANG
     const lang = locale.lang || code
-    
-    // Construct URL for this locale
-    let localePath = pathWithoutLocale
-    if (!isRoot) {
-      localePath = `${code}/${pathWithoutLocale}`
-    }
-    
+    const localePath = `${code}/${pathWithoutLocale}`
     const url = `${siteUrl}/${generatePageUrlPath(localePath)}`
 
     head.push([
@@ -43,17 +35,5 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
         href: url,
       },
     ])
-
-    // Add x-default (usually the root language or a specific fallback)
-    if (isRoot) {
-      head.push([
-        'link',
-        {
-          rel: 'alternate',
-          hreflang: 'x-default',
-          href: url,
-        },
-      ])
-    }
   })
 }

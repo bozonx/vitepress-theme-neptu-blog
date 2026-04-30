@@ -30,7 +30,6 @@ describe('addRssLinks', () => {
         },
         site: {
           locales: {
-            root: { title: 'Root Blog' },
             en: { title: 'English Blog' },
             ru: { title: 'Russian Blog' },
           },
@@ -98,10 +97,4 @@ describe('addRssLinks', () => {
     expect(ruAlts).toHaveLength(1) // Only the main feed, not alternate
   })
 
-  it('skips root locale in alternate feeds', () => {
-    const ctx = createContext()
-    addRssLinks(ctx)
-    const rootAlt = ctx.head.find((h) => h[1]?.hreflang === 'root')
-    expect(rootAlt).toBeUndefined()
-  })
 })

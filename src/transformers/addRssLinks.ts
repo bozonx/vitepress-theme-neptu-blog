@@ -1,6 +1,5 @@
 import { getFormatInfo, getRssFormats } from '../utils/node/index.ts'
 import { isHomePage } from '../utils/shared/index.ts'
-import { ROOT_LANG } from '../constants.ts'
 
 export interface AddRssLinksContext {
   page: string
@@ -15,9 +14,7 @@ export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksCon
 
   const siteUrl = siteConfig.userConfig.siteUrl
   const localeIndex = page.split('/')[0]!
-  const supportedLocales = Object.keys(siteConfig.site.locales).filter(
-    (locale) => locale !== ROOT_LANG
-  )
+  const supportedLocales = Object.keys(siteConfig.site.locales)
 
   const rssFormats = getRssFormats(siteConfig)
 

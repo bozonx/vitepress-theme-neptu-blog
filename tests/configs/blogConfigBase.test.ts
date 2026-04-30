@@ -84,7 +84,6 @@ describe('mergeBlogConfig', () => {
       locales: { de: { label: 'Deutsch' } },
     })
     expect(result.locales.de).toEqual({ label: 'Deutsch' })
-    expect(result.locales.root).toBeDefined()
   })
 
   it('preserves rssFormats array', () => {

@@ -67,7 +67,6 @@ describe('addJsonLd', () => {
         },
         site: {
           locales: {
-            root: { lang: 'en', title: 'Root' },
             en: { lang: 'en-US', title: 'Blog', themeConfig: { authors: [{ id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' }], publisher: { name: 'Pub', url: 'https://pub.com', logo: '/img/logo.png' } } },
           },
         },
