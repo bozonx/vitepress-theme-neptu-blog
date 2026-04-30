@@ -31,6 +31,7 @@ describe('addOgMetaTags', () => {
           siteUrl: 'https://example.com',
           themeConfig: {
             mainHeroImg: '/img/hero.png',
+            authorsBaseUrl: 'authors',
             authors: [{ id: 'alice', name: 'Alice Author' }],
           },
         },
@@ -42,7 +43,8 @@ describe('addOgMetaTags', () => {
               lang: 'en-US',
               themeConfig: {
                 mainHeroImg: '/img/hero.png',
-                authors: [{ id: 'alice', name: 'Alice Author' }],
+                authorsBaseUrl: 'authors',
+                authors: [{ id: 'alice', name: 'Alice Author', aboutUrl: 'https://alice.example.com' }],
               },
             },
           },
@@ -97,6 +99,20 @@ describe('addOgMetaTags', () => {
     expect(ctx.head).toContainEqual(['meta', { property: 'og:image', content: 'https://cdn.example.com/cover.png' }])
   })
 
+  it('uses protocol-relative cover URL as external', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.cover = '//cdn.example.com/cover.png'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image', content: 'https://cdn.example.com/cover.png' }])
+  })
+
+  it('normalizes relative cover paths without a leading slash', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.cover = 'img/cover.png'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image', content: 'https://example.com/img/cover.png' }])
+  })
+
   it('falls back to mainHeroImg when cover is absent', () => {
     const ctx = createContext()
     ctx.pageData.frontmatter.cover = undefined
@@ -112,6 +128,7 @@ describe('addOgMetaTags', () => {
     addOgMetaTags(ctx)
     const imageTags = ctx.head.filter((h) => h[1]?.property === 'og:image' || h[1]?.name === 'twitter:image')
     expect(imageTags).toHaveLength(0)
+    expect(ctx.head).toContainEqual(['meta', { name: 'twitter:card', content: 'summary' }])
   })
 
   it('uses frontmatter title over locale title', () => {
@@ -151,7 +168,7 @@ describe('addOgMetaTags', () => {
   it('adds article author for posts', () => {
     const ctx = createContext()
     addOgMetaTags(ctx)
-    expect(ctx.head).toContainEqual(['meta', { property: 'article:author', content: 'Alice Author' }])
+    expect(ctx.head).toContainEqual(['meta', { property: 'article:author', content: 'https://alice.example.com' }])
   })
 
   it('skips article-specific tags for non-posts', () => {
@@ -178,5 +195,43 @@ describe('addOgMetaTags', () => {
     addOgMetaTags(ctx)
     const titleTag = ctx.head.find((h) => h[1]?.property === 'og:title')
     expect(titleTag).toBeUndefined()
+  })
+
+  it('uses pageData.description as fallback before locale description', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.description = ''
+    ;(ctx.pageData as any).description = 'Resolved page description'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:description', content: 'Resolved page description' }])
+    expect(ctx.head).toContainEqual(['meta', { name: 'twitter:description', content: 'Resolved page description' }])
+  })
+
+  it('skips published_time when date is invalid', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.date = 'not-a-date'
+    expect(() => addOgMetaTags(ctx)).not.toThrow()
+    const publishedTag = ctx.head.find((h) => h[1]?.property === 'article:published_time')
+    expect(publishedTag).toBeUndefined()
+  })
+
+  it('adds image alt and dimensions when available', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.coverAlt = 'Cover alt text'
+    ctx.pageData.frontmatter.coverWidth = 1200
+    ctx.pageData.frontmatter.coverHeight = 630
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image:alt', content: 'Cover alt text' }])
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image:width', content: '1200' }])
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image:height', content: '630' }])
+    expect(ctx.head).toContainEqual(['meta', { name: 'twitter:image:alt', content: 'Cover alt text' }])
+  })
+
+  it('handles trailing slash in siteUrl without producing malformed URLs', () => {
+    const ctx = createContext()
+    ctx.siteConfig.userConfig.siteUrl = 'https://example.com/'
+    ctx.pageData.frontmatter.cover = 'img/cover.png'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:url', content: 'https://example.com/en/post/hello' }])
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:image', content: 'https://example.com/img/cover.png' }])
   })
 })
