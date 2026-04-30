@@ -7,11 +7,9 @@ import { useScrollY } from '../composables/useScrollY.ts'
 import ImageLightbox from '../components/doc-components/ImageLightbox.vue'
 import BlogHome from './BlogHome.vue'
 import DefaultLayout from './DefaultLayout.vue'
-import { useUiLocaleController } from '../composables/useUiLocale.ts'
 
 const { page, frontmatter } = useData()
 const { scrollY } = useScrollY()
-useUiLocaleController()
 
 // `layout: false` -> raw <Content />
 // `layout: home`  -> BlogHome (parallax full-takeover)

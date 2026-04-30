@@ -3,7 +3,6 @@ import { useData } from 'vitepress'
 
 import Btn from '../Btn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
-import SwitchLang from './SwitchLang.vue'
 import { useUiTheme } from '../../composables/useUiLocale.ts'
 
 interface SocialLinkItem {
@@ -55,10 +54,6 @@ if (theme.value.sideBar?.atomFeed) {
     </ul>
 
     <div class="flex-1 flex justify-end">
-      <div class="lg:hidden">
-        <SwitchLang :drop-up="true" :no-bg="true" @click.stop />
-      </div>
-
       <div class="lg:hidden">
         <SwitchAppearance @click.stop />
       </div>

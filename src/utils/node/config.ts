@@ -70,11 +70,22 @@ export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig
     localeMap,
     config.themeConfig?.uiLocales
   )
+  const resolvedTheme = deepMerge(
+    { ...blogCommon.themeConfig, ...config.themeConfig } as Record<string, unknown>,
+    {
+      ...(baseLocale.themeConfig || {}),
+      ...(uiLocale.themeConfig || {}),
+      t: {
+        ...baseLocale.t,
+        ...(uiLocale.t || {}),
+      },
+    }
+  )
   const params = {
     localeIndex,
     config,
-    theme: { ...blogCommon.themeConfig, ...config.themeConfig },
-    t: baseLocale.t,
+    theme: resolvedTheme,
+    t: (resolvedTheme as Record<string, any>).t,
   }
   const site = parseLocaleSite(config.srcDir || '', params) as any
   const { lang, title, description, t, editLink, ...themeConfig } = site

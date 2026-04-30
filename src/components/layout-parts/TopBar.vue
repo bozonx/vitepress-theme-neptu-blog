@@ -77,7 +77,7 @@ const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((ite
       </li>
     </ul>
 
-    <div class="max-lg:hidden">
+    <div>
       <SwitchLang :no-bg="true" />
     </div>
 

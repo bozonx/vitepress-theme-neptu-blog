@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useData, inBrowser } from 'vitepress'
 import { ref, watchEffect } from 'vue'
-import SwitchLang from '../components/layout-parts/SwitchLang.vue'
 
 const props = defineProps<{
   scrollY: number
@@ -45,9 +44,6 @@ watchEffect(() => {
     class="dark home-layout flex flex-col justify-center items-center w-full min-h-screen bg-no-repeat bg-center bg-fixed text-white! transition-[background-position-y] duration-100 ease-out"
     :style="`background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);`"
   >
-    <div class="home-layout-topbar absolute top-0 right-0 pt-4 pr-6">
-      <SwitchLang :drop-left="true" :no-bg="true" />
-    </div>
     <div class="home-layout-page max-w-[800px] my-20 mx-7">
       <Content />
     </div>

@@ -1,10 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
+import { parseLocaleSite } from '../../../src/utils/node/i18n.ts'
 
 vi.mock('../../../src/utils/node/i18n.ts', () => ({
-  parseLocaleSite: vi.fn(() => ({
+  parseLocaleSite: vi.fn((_srcDir: string, props: any) => ({
     lang: 'en-US',
     title: 'Example',
     description: 'Example description',
+    resolvedUiLabel: props.theme?.langMenuLabel,
+    resolvedViewInAnotherLanguage: props.theme?.t?.viewInAnotherLanguage,
     t: { customKey: 'Custom value' },
   })),
 }))
@@ -51,6 +54,42 @@ describe('loadBlogLocale', () => {
     expect(result.themeConfig.langMenuLabel).toBe('UI language')
     expect(result.themeConfig.t.viewInAnotherLanguage).toBe(
       'Read in another language'
+    )
+    expect(result.themeConfig.resolvedUiLabel).toBe('UI language')
+    expect(result.themeConfig.resolvedViewInAnotherLanguage).toBe(
+      'Read in another language'
+    )
+  })
+
+  it('passes build-resolved interface translations into site parsing', async () => {
+    await loadBlogLocale('en-GB', {
+      srcDir: '/src',
+      repo: 'https://github.com/example/repo',
+      themeConfig: {
+        uiLocales: {
+          'en-GB': {
+            extends: 'en',
+            t: { viewInAnotherLanguage: 'Read in another language' },
+            themeConfig: { langMenuLabel: 'UI language' },
+          },
+        },
+      },
+    } as any)
+
+    expect(parseLocaleSite).toHaveBeenCalledWith(
+      '/src',
+      expect.objectContaining({
+        localeIndex: 'en-GB',
+        t: expect.objectContaining({
+          viewInAnotherLanguage: 'Read in another language',
+        }),
+        theme: expect.objectContaining({
+          langMenuLabel: 'UI language',
+          t: expect.objectContaining({
+            viewInAnotherLanguage: 'Read in another language',
+          }),
+        }),
+      })
     )
   })
 })

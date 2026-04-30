@@ -2,16 +2,17 @@
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import { Icon } from '@iconify/vue'
+import { useContentLangs } from '../../composables/useContentLangs.ts'
 import { useUiTheme } from '../../composables/useUiLocale.ts'
 
-const { theme, availableUiLocales, currentUiLocaleKey, currentUiLocaleLabel, setUiLocale } =
-  useUiTheme()
+const { theme } = useUiTheme()
+const { currentLang, localeLinks } = useContentLangs({ correspondingLink: true })
 const props = defineProps<{ noBg?: boolean | string }>()
 </script>
 
 <template>
   <DropdownButton
-    v-if="availableUiLocales.length"
+    v-if="localeLinks.length"
     :no-bg="props.noBg"
     :title="theme.langMenuLabel || 'Change language'"
     class="switch-lang-btn px-0"
@@ -27,14 +28,11 @@ const props = defineProps<{ noBg?: boolean | string }>()
       </span>
     </template>
     <MenuItem :disabled="true" :title="theme.t.currentLang">
-      {{ currentUiLocaleLabel }}
+      {{ currentLang.label || theme.t.currentLang }}
     </MenuItem>
-    <template v-for="locale in availableUiLocales" :key="locale.key">
-      <MenuItem
-        :disabled="locale.key === currentUiLocaleKey"
-        @click="setUiLocale(locale.key)"
-      >
-        {{ locale.label }}
+    <template v-for="locale in localeLinks" :key="locale.link">
+      <MenuItem target="_self" :href="locale.link">
+        {{ locale.text }}
       </MenuItem>
     </template>
   </DropdownButton>

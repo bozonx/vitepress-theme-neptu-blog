@@ -9,7 +9,6 @@ import {
 import type { PostFrontmatter } from '../types.d.ts'
 import PostFooter from './post/PostFooter.vue'
 import PostDate from './post/PostDate.vue'
-import PostContentLangSwitch from './post/PostContentLangSwitch.vue'
 import PostTopBar from './post/PostTopBar.vue'
 import PostImage from './post/PostImage.vue'
 
@@ -42,7 +41,6 @@ watchEffect(() => {
       </h1>
       <div class="mt-4 flex items-start justify-between gap-4 max-sm:flex-col">
         <PostDate />
-        <PostContentLangSwitch class="sm:ml-auto" />
       </div>
       <PostTopBar class="mt-10" />
     </header>
