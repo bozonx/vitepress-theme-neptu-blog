@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { isExternalUrl, resolveI18Href, generatePageUrlPath } from '../../../src/utils/shared/url.ts'
+import {
+  isExternalUrl,
+  resolveI18Href,
+  generatePageUrlPath,
+  normalizeSiteUrl,
+  makeAbsoluteUrl,
+  replaceRelativePathLocale,
+} from '../../../src/utils/shared/url.ts'
 
 describe('isExternalUrl', () => {
   it('returns true for http://', () => {
@@ -97,5 +104,45 @@ describe('generatePageUrlPath', () => {
 
   it('handles path without index', () => {
     expect(generatePageUrlPath('about.md')).toBe('about')
+  })
+})
+
+describe('normalizeSiteUrl', () => {
+  it('trims whitespace and removes trailing slashes', () => {
+    expect(normalizeSiteUrl(' https://example.com/// ')).toBe('https://example.com')
+  })
+
+  it('returns undefined for blank values', () => {
+    expect(normalizeSiteUrl('   ')).toBeUndefined()
+  })
+})
+
+describe('makeAbsoluteUrl', () => {
+  it('joins relative paths with normalized siteUrl', () => {
+    expect(makeAbsoluteUrl('https://example.com/', 'en/post/hello')).toBe(
+      'https://example.com/en/post/hello'
+    )
+  })
+
+  it('normalizes paths without a leading slash', () => {
+    expect(makeAbsoluteUrl('https://example.com/', 'img/cover.png')).toBe(
+      'https://example.com/img/cover.png'
+    )
+  })
+
+  it('keeps absolute URLs unchanged', () => {
+    expect(makeAbsoluteUrl('https://example.com', 'https://cdn.example.com/a.png')).toBe(
+      'https://cdn.example.com/a.png'
+    )
+  })
+})
+
+describe('replaceRelativePathLocale', () => {
+  it('replaces the locale prefix', () => {
+    expect(replaceRelativePathLocale('en/post/hello.md', 'ru')).toBe('ru/post/hello.md')
+  })
+
+  it('returns undefined for invalid paths', () => {
+    expect(replaceRelativePathLocale('hello.md', 'ru')).toBeUndefined()
   })
 })

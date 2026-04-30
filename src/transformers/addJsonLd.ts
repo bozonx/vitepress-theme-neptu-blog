@@ -5,7 +5,8 @@ import {
   generatePageUrlPath,
   isAuthorPage,
   isPage,
-  isExternalUrl,
+  makeAbsoluteUrl,
+  normalizeSiteUrl,
 } from '../utils/shared/index.ts'
 import type {
   ExtendedPageData,
@@ -53,11 +54,6 @@ function parseCustomJsonLd(
   }
 }
 
-function toAbsoluteUrl(siteUrl: string, url: string | undefined): string | undefined {
-  if (!url) return
-  return isExternalUrl(url) ? url : `${siteUrl}${url}`
-}
-
 function hasJsonLdEntries(jsonLdData: unknown): boolean {
   if (Array.isArray(jsonLdData)) return jsonLdData.length > 0
   return !!jsonLdData && typeof jsonLdData === 'object' && Object.keys(jsonLdData).length > 0
@@ -97,9 +93,17 @@ function createPostJsonLd(
     )
 
   const authorName = author?.name || author?.id
+  const authorsBaseUrl =
+    (langConfig.themeConfig as ThemeConfig).authorsBaseUrl ||
+    siteConfig.userConfig.themeConfig.authorsBaseUrl
   const authorUrl = author?.aboutUrl
-    ? author.aboutUrl
-    : `${siteUrl}/${localeIndex}/${siteConfig.userConfig.themeConfig.authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+    ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
+    : authorsBaseUrl
+    ? makeAbsoluteUrl(
+        siteUrl,
+        `${localeIndex}/${authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+      )
+    : undefined
   const cover = pageData.frontmatter.cover
   const tags = pageData.frontmatter.tags
   const lang = langConfig.lang
@@ -134,7 +138,7 @@ function createPostJsonLd(
       cover &&
       omitUndefined({
         '@type': 'ImageObject',
-        url: toAbsoluteUrl(siteUrl, cover),
+        url: makeAbsoluteUrl(siteUrl, cover),
         height: pageData.frontmatter.coverHeight,
         width: pageData.frontmatter.coverWidth,
         caption:
@@ -181,12 +185,17 @@ function createAuthorJsonLd(
     ...rest
   } = author
   const authorName = name || id
+  const authorsBaseUrl =
+    (langConfig.themeConfig as ThemeConfig).authorsBaseUrl ||
+    siteConfig.userConfig.themeConfig.authorsBaseUrl
   const authorUrl = aboutUrl
-    ? aboutUrl
-    : `${siteUrl}/${localeIndex}/${siteConfig.userConfig.themeConfig.authorsBaseUrl}/${id}/1`
+    ? makeAbsoluteUrl(siteUrl, aboutUrl)
+    : authorsBaseUrl
+    ? makeAbsoluteUrl(siteUrl, `${localeIndex}/${authorsBaseUrl}/${id}/1`)
+    : undefined
   let imgUrl = image
 
-  imgUrl = toAbsoluteUrl(siteUrl, imgUrl)
+  imgUrl = makeAbsoluteUrl(siteUrl, imgUrl)
 
   return {
     '@context': 'https://schema.org',
@@ -261,23 +270,24 @@ export function addJsonLd({
 
   if (!langConfig || !langConfig.themeConfig) return
 
-  const siteUrl = siteConfig.userConfig.siteUrl
+  const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
   if (!siteUrl) {
     console.warn(`[addJsonLd] siteUrl is not configured. JSON-LD requires absolute URLs.`)
     return
   }
 
-  const localeIndexUrl = `${siteUrl}/${localeIndex}`
-  const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
+  const localeIndexUrl = makeAbsoluteUrl(siteUrl, localeIndex)
+  const pageUrl = makeAbsoluteUrl(siteUrl, generatePageUrlPath(page))
+  if (!localeIndexUrl || !pageUrl) return
   // siteName: fallback resolution matches createPageJsonLd usage.
   const siteName = langConfig.title || ''
   const publisher = langConfig.themeConfig.publisher && {
     '@type': 'Organization',
     name: langConfig.themeConfig.publisher?.name || siteName,
-    url: langConfig.themeConfig.publisher?.url || siteUrl,
+    url: makeAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher?.url || siteUrl),
     logo: langConfig.themeConfig.publisher?.logo && {
       '@type': 'ImageObject',
-      url: toAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher.logo),
+      url: makeAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher.logo),
     },
   }
 

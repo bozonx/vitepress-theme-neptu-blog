@@ -47,6 +47,15 @@ describe('addCanonicalLink', () => {
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
   })
 
+  it('supports the short self alias', () => {
+    const ctx = createContext({
+      page: 'en/post/hello.md',
+      pageData: { frontmatter: { canonical: 's' } },
+    })
+    addCanonicalLink(ctx)
+    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+  })
+
   it('warns and skips if siteUrl is missing for self-canonical', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const ctx = createContext({
@@ -65,6 +74,15 @@ describe('addCanonicalLink', () => {
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://other.com/page' }]])
+  })
+
+  it('normalizes self-canonical when siteUrl has a trailing slash', () => {
+    const ctx = createContext({
+      pageData: { frontmatter: { canonical: 'self' } },
+      siteConfig: { userConfig: { siteUrl: 'https://example.com/' } },
+    })
+    addCanonicalLink(ctx)
+    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
   })
 
   it('warns and skips invalid explicit URL', () => {

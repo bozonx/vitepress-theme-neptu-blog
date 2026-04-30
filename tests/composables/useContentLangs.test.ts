@@ -73,4 +73,60 @@ describe('useContentLangs', () => {
       },
     ])
   })
+
+  it('does not hide another locale when labels are duplicated', () => {
+    mockedUseData.mockReturnValue({
+      site: ref({
+        locales: {
+          en: { label: 'English' },
+          'en-GB': { label: 'English' },
+        },
+        cleanUrls: true,
+      }),
+      localeIndex: ref('en'),
+      page: ref({
+        relativePath: 'en/post/hello.md',
+      }),
+      theme: ref({
+        i18nRouting: true,
+      }),
+      hash: ref(''),
+    })
+
+    const { localeLinks } = useContentLangs({ correspondingLink: true })
+
+    expect(localeLinks.value).toEqual([
+      {
+        text: 'English',
+        link: '/en-GB/post/hello',
+        lang: undefined,
+        dir: undefined,
+      },
+    ])
+  })
+
+  it('filters out missing corresponding locale pages when pages index is available', () => {
+    mockedUseData.mockReturnValue({
+      site: ref({
+        locales: {
+          en: { label: 'English' },
+          ru: { label: 'Русский' },
+        },
+        pages: [{ relativePath: 'en/post/hello.md' }],
+        cleanUrls: true,
+      }),
+      localeIndex: ref('en'),
+      page: ref({
+        relativePath: 'en/post/hello.md',
+      }),
+      theme: ref({
+        i18nRouting: true,
+      }),
+      hash: ref(''),
+    })
+
+    const { localeLinks } = useContentLangs({ correspondingLink: true })
+
+    expect(localeLinks.value).toEqual([])
+  })
 })

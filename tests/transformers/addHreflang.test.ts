@@ -1,4 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
+import fs from 'node:fs'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { addHreflang, type AddHreflangContext } from '../../src/transformers/addHreflang.ts'
 
 vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
@@ -10,6 +11,10 @@ vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
 })
 
 describe('addHreflang', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   function createContext(overrides: Partial<AddHreflangContext> = {}): AddHreflangContext {
     return {
       head: [],
@@ -83,5 +88,47 @@ describe('addHreflang', () => {
     addHreflang(ctx)
     const deLink = ctx.head.find((h) => h[1]?.hreflang === 'de')
     expect(deLink).toBeDefined()
+  })
+
+  it('normalizes siteUrl with trailing slash', () => {
+    const ctx = createContext({
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com/' },
+        site: {
+          locales: {
+            en: { lang: 'en' },
+            ru: { lang: 'ru' },
+          },
+        },
+      } as any,
+    })
+    addHreflang(ctx)
+    expect(ctx.head).toContainEqual([
+      'link',
+      { rel: 'alternate', hreflang: 'en', href: 'https://example.com/en/post/hello' },
+    ])
+  })
+
+  it('skips locales without a matching source file when srcDir is available', () => {
+    vi.spyOn(fs, 'existsSync').mockImplementation((filePath: fs.PathLike) =>
+      String(filePath).endsWith('/en/post/hello.md')
+    )
+
+    const ctx = createContext({
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com' },
+        srcDir: '/src',
+        site: {
+          locales: {
+            en: { lang: 'en' },
+            ru: { lang: 'ru' },
+          },
+        },
+      } as any,
+    })
+
+    addHreflang(ctx)
+
+    expect(ctx.head).toEqual([])
   })
 })

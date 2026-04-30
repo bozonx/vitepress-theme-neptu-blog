@@ -1,4 +1,4 @@
-import { generatePageUrlPath } from '../utils/shared/index.ts'
+import { generatePageUrlPath, makeAbsoluteUrl, normalizeSiteUrl } from '../utils/shared/index.ts'
 
 export interface AddCanonicalLinkContext {
   page: string
@@ -27,8 +27,8 @@ export function addCanonicalLink({
   try {
     let canonicalUrl: string | null = null
 
-    if (canonicalValue === 'self') {
-      const siteUrl = siteConfig.userConfig.siteUrl
+    if (canonicalValue === 'self' || canonicalValue === 's') {
+      const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
 
       if (!siteUrl) {
         console.warn(
@@ -36,11 +36,12 @@ export function addCanonicalLink({
         )
         return
       }
-      canonicalUrl = `${siteUrl}/${generatePageUrlPath(page)}`
+      canonicalUrl = makeAbsoluteUrl(siteUrl, generatePageUrlPath(page)) || null
     } else if (typeof canonicalValue === 'string') {
       try {
-        new URL(canonicalValue)
-        canonicalUrl = canonicalValue
+        const trimmedCanonicalUrl = canonicalValue.trim()
+        new URL(trimmedCanonicalUrl)
+        canonicalUrl = trimmedCanonicalUrl
       } catch {
         console.warn(`Invalid canonical URL in ${page}: ${canonicalValue}`)
         return

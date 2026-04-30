@@ -4,6 +4,50 @@ export function isExternalUrl(url: string | null | undefined): boolean {
   return Boolean(url && url.match(/^[a-z\d]+:\/\//i))
 }
 
+export function normalizeSiteUrl(siteUrl: string | null | undefined): string | undefined {
+  if (typeof siteUrl !== 'string') return
+
+  const trimmed = siteUrl.trim()
+  if (!trimmed) return
+
+  return trimmed.replace(/\/+$/, '')
+}
+
+export function makeAbsoluteUrl(
+  siteUrl: string | null | undefined,
+  rawUrl: string | null | undefined
+): string | undefined {
+  if (typeof rawUrl !== 'string') return
+
+  const trimmed = rawUrl.trim()
+  const normalizedSiteUrl = normalizeSiteUrl(siteUrl)
+
+  if (!trimmed || !normalizedSiteUrl) return
+  if (isExternalUrl(trimmed)) return trimmed
+  if (trimmed.startsWith('//')) return `https:${trimmed}`
+
+  const baseUrl = `${normalizedSiteUrl}/`
+  const relativeUrl = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
+
+  try {
+    return new URL(relativeUrl, baseUrl).toString()
+  } catch {
+    return
+  }
+}
+
+export function replaceRelativePathLocale(
+  relativePath: string | null | undefined,
+  localeIndex: string
+): string | undefined {
+  if (typeof relativePath !== 'string') return
+
+  const segments = relativePath.split('/')
+  if (segments.length < 2 || !segments[0]) return
+
+  return [localeIndex, ...segments.slice(1)].join('/')
+}
+
 /**
  * Resolves URLs for multilingual sites by adding a language prefix to
  * internal links.

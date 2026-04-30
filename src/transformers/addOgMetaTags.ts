@@ -1,4 +1,9 @@
-import { generatePageUrlPath, isExternalUrl, isPost } from '../utils/shared/index.ts'
+import {
+  generatePageUrlPath,
+  isPost,
+  makeAbsoluteUrl,
+  normalizeSiteUrl,
+} from '../utils/shared/index.ts'
 import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author } from '../types.d.ts'
 
 export interface AddOgMetaTagsContext {
@@ -13,31 +18,13 @@ function normalizeText(value: unknown): string | undefined {
   return normalized || undefined
 }
 
-function toAbsoluteUrl(siteUrl: string, rawUrl: unknown): string | undefined {
-  if (typeof rawUrl !== 'string') return
-
-  const trimmed = rawUrl.trim()
-  if (!trimmed) return
-  if (isExternalUrl(trimmed)) return trimmed
-  if (trimmed.startsWith('//')) return `https:${trimmed}`
-
-  const baseUrl = `${siteUrl.replace(/\/+$/, '')}/`
-  const relativeUrl = trimmed.startsWith('/') ? trimmed.slice(1) : trimmed
-
-  try {
-    return new URL(relativeUrl, baseUrl).toString()
-  } catch {
-    return
-  }
-}
-
 /** Adds Open Graph and Twitter meta tags to the page head. */
 export function addOgMetaTags({
   head,
   pageData,
   siteConfig,
 }: AddOgMetaTagsContext): void {
-  const siteUrl = normalizeText(siteConfig.userConfig.siteUrl)
+  const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
   if (!siteUrl) return
 
   const localeIndex = pageData.filePath.split('/')[0]!
@@ -45,7 +32,7 @@ export function addOgMetaTags({
   if (!langConfig) return
 
   const themeConfig = langConfig.themeConfig as ThemeConfig
-  const pageUrl = toAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
+  const pageUrl = makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
   const title =
     normalizeText(pageData.frontmatter.title) ||
     normalizeText(pageData.title) ||
@@ -55,7 +42,7 @@ export function addOgMetaTags({
     normalizeText(pageData.description) ||
     normalizeText(langConfig.description)
   const cover = pageData.frontmatter.cover
-  const imageUrl = toAbsoluteUrl(siteUrl, cover || themeConfig.mainHeroImg)
+  const imageUrl = makeAbsoluteUrl(siteUrl, cover || themeConfig.mainHeroImg)
   const imageAlt = normalizeText(pageData.frontmatter.coverAlt)
   const imageWidth = pageData.frontmatter.coverWidth
   const imageHeight = pageData.frontmatter.coverHeight
@@ -66,9 +53,9 @@ export function addOgMetaTags({
       (item: Author) => item.id === pageData.frontmatter.authorId
     )
   const authorUrl = author?.aboutUrl
-    ? toAbsoluteUrl(siteUrl, author.aboutUrl)
+    ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
     : themeConfig.authorsBaseUrl && pageData.frontmatter.authorId
-    ? toAbsoluteUrl(
+    ? makeAbsoluteUrl(
         siteUrl,
         `${localeIndex}/${themeConfig.authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
       )

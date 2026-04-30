@@ -1,6 +1,7 @@
 import { useData, type SiteData } from 'vitepress'
 import { computed } from 'vue'
 import type { NeptuBlogTheme } from '../types.d.ts'
+import { replaceRelativePathLocale } from '../utils/shared/index.ts'
 
 interface LocaleLink {
   text: string
@@ -18,6 +19,10 @@ interface LocaleSpecificConfig {
   label: string
   lang?: string
   dir?: string
+}
+
+interface SitePageRef {
+  relativePath?: string
 }
 
 function ensureStartingSlash(path: string): string {
@@ -53,16 +58,28 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
   })
 
   const localeLinks = computed<LocaleLink[]>(() => {
+    const knownPages = (site.value as SiteData<NeptuBlogTheme.Config> & { pages?: SitePageRef[] }).pages
+
     return Object.entries(
       site.value.locales as SiteData<NeptuBlogTheme.Config>['locales']
     ).flatMap(
       ([key, value]) => {
-        if (currentLang.value.label === value.label) {
+        if (key === localeIndex.value) {
           return []
         }
 
         const localeBaseLink = `/${key}/`
-        const relativePath = page.value.relativePath.slice(currentLang.value.link.length - 1)
+        const localeRelativePath = replaceRelativePathLocale(page.value.relativePath, key)
+        if (!localeRelativePath) return []
+
+        if (
+          knownPages &&
+          !knownPages.some((sitePage) => sitePage.relativePath === localeRelativePath)
+        ) {
+          return []
+        }
+
+        const relativePath = localeRelativePath.slice(localeBaseLink.length - 1)
 
         return {
           text: value.label,

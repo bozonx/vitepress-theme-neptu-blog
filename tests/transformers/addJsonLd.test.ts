@@ -259,6 +259,18 @@ describe('addJsonLd', () => {
     expect(json.image.url).toBe('https://cdn.example.com/cover.png')
   })
 
+  it('normalizes relative cover paths without a leading slash', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext()
+    ctx.pageData.frontmatter.cover = 'img/cover.png'
+    addJsonLd(ctx)
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.image.url).toBe('https://example.com/img/cover.png')
+  })
+
   it('includes keywords from tags', () => {
     vi.mocked(sharedUtils.isPost).mockReturnValue(true)
     vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
@@ -295,6 +307,39 @@ describe('addJsonLd', () => {
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.author.url).toBe('https://example.com/en/authors/alice/1')
+  })
+
+  it('uses locale-level authorsBaseUrl when it differs from the global config', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext()
+    ctx.siteConfig.userConfig.themeConfig.authorsBaseUrl = 'writers'
+    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authorsBaseUrl = 'team'
+    ctx.siteConfig.userConfig.themeConfig.authors = [{ id: 'alice' } as any]
+    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [{ id: 'alice' }]
+
+    addJsonLd(ctx)
+
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.author.url).toBe('https://example.com/en/team/alice/1')
+  })
+
+  it('normalizes URLs when siteUrl has a trailing slash', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext()
+    ctx.siteConfig.userConfig.siteUrl = 'https://example.com/'
+    ctx.pageData.frontmatter.cover = 'img/cover.png'
+
+    addJsonLd(ctx)
+
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.url).toBe('https://example.com/en/post/hello')
+    expect(json.image.url).toBe('https://example.com/img/cover.png')
   })
 
   it('warns and falls back to base post JSON-LD when custom YAML is invalid', () => {
