@@ -1,5 +1,5 @@
 import { google } from 'googleapis'
-import type { Auth } from 'googleapis'
+import type { Auth, analyticsdata_v1beta } from 'googleapis'
 import { POSTS_DIR } from '../constants.ts'
 import type { Post } from '../types.d.ts'
 
@@ -28,6 +28,16 @@ export interface AnalyticsStats extends Record<string, number> {
   avgTimeOnPage: number
 }
 
+// Helper to normalize paths so GA paths match VitePress output URLs
+function normalizePath(p: string): string {
+  return p
+    .split('?')[0] // remove query string
+    .split('#')[0] // remove hash
+    .replace(/\/index\.html$/, '/')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '') // remove trailing slash
+}
+
 export async function mergeWithAnalytics(
   posts: Post[],
   gaCfg: GoogleAnalyticsConfig | null | undefined
@@ -52,15 +62,21 @@ export async function mergeWithAnalytics(
     let postsWithStatsCount = 0
 
     const postsWithStats = posts.map((post) => {
-      const analyticsData = stats![post.url]
+      const normalizedPostUrl = normalizePath(post.url)
+      const analyticsData = stats![normalizedPostUrl]
 
       if (analyticsData) postsWithStatsCount++
 
       return { ...post, analyticsStats: analyticsData || {} } as Post
     })
+    
+    if (postsWithStatsCount > 0) {
+       console.info(`\x1b[32m📈 Merged GA stats for ${postsWithStatsCount} posts.\x1b[0m`)
+    }
 
     return postsWithStats
-  } catch {
+  } catch (err) {
+    console.error('\x1b[31m❌ Error merging GA stats with posts:\x1b[0m', err)
     return posts
   }
 }
@@ -93,7 +109,7 @@ export async function loadGoogleAnalytics(
 
     startDate.setDate(startDate.getDate() - (gaCfg.dataPeriodDays || 30))
 
-    const requestParams = {
+    const requestParams: analyticsdata_v1beta.Params$Resource$Properties$Runreport = {
       property: `properties/${gaCfg.propertyId}`,
       requestBody: {
         dateRanges: [
@@ -123,32 +139,41 @@ export async function loadGoogleAnalytics(
       },
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const response = await analyticsdata.properties.runReport(requestParams as any)
+    console.info(`\x1b[36m🔍 Fetching GA stats for property ${gaCfg.propertyId}...\x1b[0m`)
+
+    const response = await analyticsdata.properties.runReport(requestParams)
 
     const stats: Record<string, AnalyticsStats> = {}
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const responseData = (response as any).data
+    const rows = response.data.rows
 
-    if (!responseData.rows || responseData.rows.length === 0) {
+    if (!rows || rows.length === 0) {
+      console.warn('\x1b[33m⚠️ GA returned no data for this period.\x1b[0m')
       return {}
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    responseData.rows.forEach((row: any) => {
-      const pagePath = row.dimensionValues[0].value
-      const metrics = row.metricValues
+    rows.forEach((row) => {
+      if (!row.dimensionValues?.[0]?.value || !row.metricValues) return
+
+      const pagePath = normalizePath(row.dimensionValues[0].value)
 
       stats[pagePath] = {
-        pageviews: parseInt(metrics[0].value) || 0,
-        uniquePageviews: parseInt(metrics[1].value) || 0,
-        avgTimeOnPage: parseFloat(metrics[2].value) || 0,
+        pageviews: parseInt(row.metricValues[0].value || '0', 10),
+        uniquePageviews: parseInt(row.metricValues[1].value || '0', 10),
+        avgTimeOnPage: parseFloat(row.metricValues[2].value || '0'),
       }
     })
+    
+    console.info(`\x1b[32m✅ Loaded GA stats for ${Object.keys(stats).length} paths.\x1b[0m`)
 
     return stats
-  } catch {
+  } catch (err: unknown) {
+    console.error('\x1b[31m❌ Critical error fetching Google Analytics data:\x1b[0m')
+    if (err instanceof Error) {
+        console.error(err.message)
+    } else {
+        console.error(err)
+    }
     return {}
   }
 }

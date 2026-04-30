@@ -560,8 +560,8 @@ onUnmounted(() => {
       <div class="volume-control flex items-center gap-2">
         <Icon icon="mdi:volume-high" class="volume-icon text-xl" aria-hidden="true" />
         <input
-          class="volume-slider w-full"
           v-model="volume"
+          class="volume-slider w-full"
           type="range"
           min="0"
           max="1"

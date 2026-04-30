@@ -1,239 +1,113 @@
 # 🏗️ Build-Time Analytics
 
-Система генерации популярных постов во время сборки (build time) для статических сайтов. Статистика запрашивается один раз при сборке и встраивается в статические файлы.
+Система интеграции аналитики во время сборки (build time) для статических сайтов на базе VitePress. Статистика запрашивается один раз при сборке и встраивается напрямую в статические файлы страниц (Data Loaders).
 
 ## 🎯 Преимущества Build-Time подхода
 
-- ⚡ **Быстрая загрузка** - нет запросов к API во время работы сайта
-- 🔒 **Безопасность** - credentials не нужны в продакшене
-- 📦 **Статичность** - полностью статический сайт
-- 🚀 **Производительность** - данные уже готовы
-- 💰 **Экономия** - нет лимитов API запросов
+- ⚡ **Быстрая загрузка** - нет клиентских запросов к API Google во время работы сайта.
+- 🔒 **Безопасность** - приватные ключи (credentials) используются только на сервере при сборке и не попадают в продакшен-бандл.
+- 📦 **Статичность** - полностью статический сайт (SSG).
+- 💰 **Экономия** - нет риска превысить лимиты API из-за наплыва пользователей.
 
 ## 🔧 Как это работает
 
 1. **Во время сборки** (`npm run build`):
-   - Система запрашивает статистику из выбранного источника
-   - Сортирует посты по популярности
-   - Генерирует JSON файл с результатами
+   - Система читает переменные окружения с доступами.
+   - Запрашивает статистику по просмотрам из Google Analytics 4 (GA4).
+   - "Впекает" (подмешивает) полученные данные напрямую в объекты `post` (через механизм data loaders VitePress).
 
 2. **Во время работы сайта**:
-   - Компонент загружает статический JSON файл
-   - Отображает популярные посты без дополнительных запросов
+   - Компоненты сайта используют заранее подготовленные данные из объектов `post.analyticsStats` для сортировки и отображения.
 
-## ⚙️ Настройка
+## ⚙️ Настройка Google Analytics 4
 
-### 1. Включите аналитику в конфигурации
+Для того чтобы система могла забрать данные из GA4, вам потребуется настроить сервисный аккаунт:
+
+1. Зайдите в [Google Cloud Console](https://console.cloud.google.com/).
+2. Создайте **Service Account** (Сервисный аккаунт).
+3. Создайте новый ключ для этого аккаунта в формате **JSON** и скачайте его.
+4. Откройте скачанный JSON и скопируйте `client_email`.
+5. Перейдите в панель администратора вашей **Google Analytics 4**.
+6. Добавьте скопированный email в список пользователей и выдайте ему права **Viewer (Читатель)**.
+
+### Переменные окружения
+
+Для безопасности мы используем переменные окружения. **Никогда не коммитьте ваш JSON-ключ в репозиторий!**
+
+Создайте файл `.env` (или настройте секреты в CI/CD):
+
+```bash
+# ID вашего ресурса в GA4 (находится в админке GA -> Property Settings)
+GA_PROPERTY_ID=123456789
+
+# Полное содержимое скачанного JSON-файла в виде одной строки.
+# Для локальной разработки вы можете просто скопировать содержимое файла сюда.
+GA_CREDENTIALS_JSON='{"type": "service_account", "project_id": "...", "private_key_id": "...", "private_key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n", "client_email": "..."}'
+```
+
+### Конфигурация в `.vitepress/config.ts`
+
+В конфигурационном файле блога (`.vitepress/config.ts`) укажите эти переменные:
 
 ```javascript
-// .vitepress/config.js
+import { defineConfig } from 'vitepress'
+import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 export default defineConfig(
   defineBlogConfig({
     themeConfig: {
-      analytics: {
-        // Включить генерацию популярных постов во время сборки
-        enabled: true,
-
-        // Тип аналитики: 'google' или 'mock'
-        type: 'mock',
-
-        // Общие настройки
-        sortBy: 'pageviews',
-        popularPostsCount: 10,
-        outputPath: 'popular-posts.json',
+      googleAnalytics: {
+        propertyId: process.env.GA_PROPERTY_ID,
+        credentialsJson: process.env.GA_CREDENTIALS_JSON,
+        // За сколько последних дней запрашивать статистику (по умолчанию 30)
+        dataPeriodDays: 30, 
       },
+      popularPosts: {
+        enabled: true,
+        sortBy: 'pageviews', // Возможные значения: 'pageviews', 'uniquePageviews', 'avgTimeOnPage'
+      }
     },
   })
 )
 ```
 
-### 2. Запустите сборку
+## 🔄 Процесс сборки и Логи
+
+При сборке (`npm run build` или `npm run dev`) вы увидите в консоли процесс загрузки:
 
 ```bash
-npm run build
-```
-
-### 3. Результат
-
-В директории `docs/` (или вашей `outDir`) появится файл `popular-posts.json`:
-
-```json
-{
-  "generatedAt": "2024-01-15T10:30:00.000Z",
-  "source": "mock",
-  "totalPosts": 25,
-  "popularPostsCount": 10,
-  "posts": [
-    {
-      "url": "/en/post/popular-post-1",
-      "title": "Popular Post 1",
-      "date": "2024-01-10",
-      "analytics": {
-        "pageviews": 1234,
-        "uniquePageviews": 987,
-        "avgTimeOnPage": 180,
-        "bounceRate": 0.23
-      }
-    }
-  ]
-}
-```
-
-## 📊 Поддерживаемые источники
-
-### 1. 🎭 Моковые данные (для разработки)
-
-```javascript
-analytics: {
-  enabled: true,
-  type: 'mock',
-  sortBy: 'pageviews',
-  popularPostsCount: 10,
-}
-```
-
-**Использование:**
-
-- Разработка и тестирование
-- Демонстрация функциональности
-- Когда нет доступа к реальным данным
-
-### 2. 📊 Google Analytics
-
-```javascript
-analytics: {
-  enabled: true,
-  type: 'google',
-  google: {
-    enabled: true,
-    version: 'ga4', // или 'ua'
-    propertyId: 'YOUR_PROPERTY_ID',
-    credentialsPath: './credentials/ga-service-account.json',
-    dataPeriodDays: 30,
-  },
-  sortBy: 'pageviews',
-  popularPostsCount: 10,
-}
-```
-
-**Требования:**
-
-- Сервисный аккаунт Google Cloud
-- JSON ключ с правами доступа
-- Настройка в Google Analytics
-
-## 🔄 Процесс сборки
-
-### Логи сборки
-
-При включенной аналитике вы увидите следующие сообщения:
-
-```bash
-📊 Генерируем популярные посты во время сборки...
-🔍 Загружаем статистику из Google Analytics...
-📊 Обработано 25 страниц из Google Analytics 4
-✅ Популярные посты сохранены в docs/popular-posts.json
-📈 Обработано 10 популярных постов из 25 общих
+🔍 Fetching GA stats for property 123456789...
+✅ Loaded GA stats for 25 paths.
+📈 Merged GA stats for 15 posts.
 ```
 
 ### Обработка ошибок
 
-Если аналитика не настроена или произошла ошибка:
+Система безопасна к сбоям. Если произойдет ошибка сети, ключ будет недействителен или GA вернет пустой ответ, система выведет предупреждение в консоль, но **сборка не упадет**. Посты просто соберутся без статистики (сортировка по популярности откатится к сортировке по дате).
 
+Примеры ошибок:
 ```bash
-⚠️ Не удалось сгенерировать популярные посты: Google Analytics не настроен
+# Если нет данных за указанный период:
+⚠️ GA returned no data for this period.
+
+# Если неверные доступы или нет прав:
+❌ Critical error fetching Google Analytics data:
+Request failed with status code 403
 ```
 
-Система продолжит сборку без популярных постов.
+## 🚀 CI/CD интеграция (GitHub Actions)
 
-## 📁 Структура файлов
+В настройках репозитория на GitHub перейдите в **Settings -> Secrets and variables -> Actions** и добавьте два секрета:
+1. `GA_PROPERTY_ID`
+2. `GA_CREDENTIALS_JSON` (вставьте всё содержимое JSON-ключа).
 
-```
-your-blog/
-├── .vitepress/
-│   └── config.js                 # Конфигурация аналитики
-├── credentials/
-│   └── ga-service-account.json   # JSON ключ от Google (если используется)
-├── .cache/
-│   └── post-views.json          # Данные просмотров (если используется)
-├── docs/                        # Результат сборки
-│   ├── popular-posts.json       # Сгенерированный файл с популярными постами
-│   └── ...                      # Остальные файлы сайта
-└── src/
-    └── components/
-        └── list/
-            └── PopularPostsList.vue  # Компонент для отображения
-```
-
-## 🎨 Отображение на сайте
-
-### Компонент PopularPostsList
-
-Компонент автоматически:
-
-1. **Загружает** статический JSON файл
-2. **Отображает** популярные посты
-3. **Показывает** статистику для каждого поста
-4. **Использует fallback** при ошибках
-
-### Визуальные индикаторы
-
-- **📊 GA Stats** - данные из Google Analytics
-- **📊 Mock Data** - моковые данные
-
-### Статистика постов
-
-Под каждым постом отображается:
-
-- **👁️ 1,234 views** - количество просмотров
-- **👤 987 unique views** - уникальные просмотры
-- **⏱️ 3m 0s avg** - среднее время на странице
-- **📈 23.4% bounce rate** - процент отказов
-
-## 🔧 Переменные окружения
-
-### Для продакшена
-
-```bash
-# .env
-ANALYTICS_TYPE=google
-GA_PROPERTY_ID=123456789
-GA_CREDENTIALS_PATH=./credentials/ga-service-account.json
-ANALYTICS_SORT_BY=pageviews
-ANALYTICS_COUNT=10
-```
-
-```javascript
-// .vitepress/config.js
-analytics: {
-  enabled: process.env.NODE_ENV === 'production',
-  type: process.env.ANALYTICS_TYPE || 'mock',
-  google: {
-    enabled: process.env.ANALYTICS_TYPE === 'google',
-    propertyId: process.env.GA_PROPERTY_ID,
-    credentialsPath: process.env.GA_CREDENTIALS_PATH,
-  },
-  sortBy: process.env.ANALYTICS_SORT_BY || 'pageviews',
-  popularPostsCount: parseInt(process.env.ANALYTICS_COUNT) || 10,
-}
-```
-
-### Для разработки
-
-```bash
-# .env.development
-ANALYTICS_TYPE=mock
-ANALYTICS_ENABLED=false
-```
-
-## 🚀 CI/CD интеграция
-
-### GitHub Actions
+Пример workflow (`.github/workflows/deploy.yml`):
 
 ```yaml
-# .github/workflows/build.yml
-name: Build and Deploy
-
+name: Deploy
 on:
   push:
     branches: [main]
@@ -249,106 +123,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      - name: Build with analytics
+      - name: Build Blog
         env:
-          ANALYTICS_TYPE: google
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
-          GA_CREDENTIALS_PATH: ./credentials/ga-service-account.json
+          GA_CREDENTIALS_JSON: ${{ secrets.GA_CREDENTIALS_JSON }}
         run: npm run build
-
-      - name: Deploy
-        run: # ваш скрипт деплоя
-```
-
-### Netlify
-
-```toml
-# netlify.toml
-[build]
-  command = "npm run build"
-
-[build.environment]
-  ANALYTICS_TYPE = "google"
-  GA_PROPERTY_ID = "123456789"
-
-[[build.environment]]
-  ANALYTICS_SORT_BY = "pageviews"
-  ANALYTICS_COUNT = "10"
-```
-
-## 🔒 Безопасность
-
-### Google Analytics
-
-- ✅ **Credentials только при сборке** - не попадают в продакшен
-- ✅ **Ограниченные права** - только чтение аналитики
-- ✅ **Локальное хранение** - JSON ключи не в репозитории
-
-## 📊 Мониторинг
-
-### Логи сборки
-
-Отслеживайте логи сборки для мониторинга:
-
-```bash
-# Успешная генерация
-✅ Популярные посты сохранены в docs/popular-posts.json
-📈 Обработано 10 популярных постов из 25 общих
-
-# Ошибки
-❌ Ошибка генерации популярных постов: Google Analytics не настроен
-⚠️ Не удалось сгенерировать популярные посты: HTTP 401: Unauthorized
-```
-
-### Проверка файла
-
-```bash
-# Проверяем, что файл создан
-ls -la docs/popular-posts.json
-
-# Проверяем содержимое
-cat docs/popular-posts.json | jq '.popularPostsCount'
-```
-
-## 🎯 Рекомендации
-
-### Для продакшена
-
-1. **Google Analytics** - если у вас есть GA
-2. **Моковые данные** - для демонстрации
-
-### Для разработки
-
-1. **Моковые данные** - быстрый старт
-2. **Отключенная аналитика** - для тестирования fallback
-
-### Частота обновления
-
-- **Ежедневно** - для актуальных данных
-- **При каждом деплое** - для стабильности
-- **По расписанию** - для автоматизации
-
-## 🔧 Отладка
-
-### Проблемы с Google Analytics
-
-```bash
-# Проверьте credentials
-cat credentials/ga-service-account.json | jq '.client_email'
-
-# Проверьте права доступа
-# Email должен быть добавлен в GA с правами "Viewer"
-```
-
-### Проблемы с файлами
-
-```bash
-# Проверьте права доступа к credentials
-ls -la credentials/ga-service-account.json
-
-# Проверьте формат JSON
-cat credentials/ga-service-account.json | jq '.client_email'
 ```
