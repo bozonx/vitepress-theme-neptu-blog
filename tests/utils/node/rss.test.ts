@@ -3,6 +3,8 @@ import {
   validatePostForRss,
   createPostGuid,
   formatTagsForRss,
+  getFeedPath,
+  getFeedUrl,
   validateRssConfig,
   getFormatInfo,
   getRssFormats,
@@ -75,30 +77,36 @@ describe('createPostGuid', () => {
 
 describe('formatTagsForRss', () => {
   it('formats tags into categories', () => {
-    expect(formatTagsForRss(['JavaScript', 'Vue'], 'https://site.com')).toEqual([
-      { name: 'JavaScript', domain: 'https://site.com/tag/javascript' },
-      { name: 'Vue', domain: 'https://site.com/tag/vue' },
+    expect(formatTagsForRss(['JavaScript', 'Vue'], 'https://site.com', 'en')).toEqual([
+      { name: 'JavaScript', domain: 'https://site.com/en/tags/javascript/1' },
+      { name: 'Vue', domain: 'https://site.com/en/tags/vue/1' },
     ])
   })
 
   it('trims whitespace and replaces spaces with hyphens', () => {
-    expect(formatTagsForRss(['  web dev  '], 'https://site.com')).toEqual([
-      { name: 'web dev', domain: 'https://site.com/tag/web-dev' },
+    expect(formatTagsForRss(['  web dev  '], 'https://site.com', 'en')).toEqual([
+      { name: 'web dev', domain: 'https://site.com/en/tags/web-dev/1' },
     ])
   })
 
   it('filters non-string and empty entries', () => {
-    expect(formatTagsForRss(['ok', '', 123, null, '   '], 'https://site.com')).toEqual([
-      { name: 'ok', domain: 'https://site.com/tag/ok' },
+    expect(formatTagsForRss(['ok', '', 123, null, '   '], 'https://site.com', 'en')).toEqual([
+      { name: 'ok', domain: 'https://site.com/en/tags/ok/1' },
     ])
   })
 
   it('returns empty array for null', () => {
-    expect(formatTagsForRss(null, 'https://site.com')).toEqual([])
+    expect(formatTagsForRss(null, 'https://site.com', 'en')).toEqual([])
   })
 
   it('returns empty array for non-array', () => {
-    expect(formatTagsForRss('tag', 'https://site.com')).toEqual([])
+    expect(formatTagsForRss('tag', 'https://site.com', 'en')).toEqual([])
+  })
+
+  it('uses configured tags base url', () => {
+    expect(formatTagsForRss(['Vue'], 'https://site.com', 'ru', 'topics')).toEqual([
+      { name: 'Vue', domain: 'https://site.com/ru/topics/vue/1' },
+    ])
   })
 })
 
@@ -165,6 +173,28 @@ describe('getRssFormats', () => {
   it('returns configured formats', () => {
     expect(getRssFormats({ userConfig: { rssFormats: ['rss', 'json'] } })).toEqual(['rss', 'json'])
   })
+
+  it('falls back to themeConfig formats', () => {
+    expect(getRssFormats({ userConfig: { themeConfig: { rssFormats: ['atom'] } } })).toEqual([
+      'atom',
+    ])
+  })
+
+  it('normalizes, deduplicates and filters invalid formats', () => {
+    expect(
+      getRssFormats({ userConfig: { rssFormats: [' RSS ', 'atom', 'atom', 'invalid'] } })
+    ).toEqual(['rss', 'atom'])
+  })
+})
+
+describe('feed helpers', () => {
+  it('builds localized feed paths', () => {
+    expect(getFeedPath('en', 'rss')).toBe('/en/feed.rss')
+  })
+
+  it('builds localized feed urls', () => {
+    expect(getFeedUrl('https://site.com/', 'ru', 'atom')).toBe('https://site.com/ru/feed.atom')
+  })
 })
 
 describe('makeAuthorForRss', () => {
@@ -199,6 +229,27 @@ describe('makeAuthorForRss', () => {
       },
     }
     expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com', 'en')).toBeUndefined()
+  })
+
+  it('reads authors from built site locales when available', () => {
+    const config = {
+      site: {
+        locales: {
+          en: {
+            themeConfig: {
+              authors: [{ id: 'john', name: 'John' }],
+            },
+          },
+        },
+      },
+      userConfig: {
+        themeConfig: { authorsBaseUrl: 'authors' },
+      },
+    }
+    expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com/en', 'en')).toEqual({
+      name: 'John',
+      link: 'https://site.com/en/authors/john/1',
+    })
   })
 
   it('returns undefined when author is not found', () => {

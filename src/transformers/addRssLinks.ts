@@ -1,4 +1,4 @@
-import { getFormatInfo, getRssFormats } from '../utils/node/index.ts'
+import { getFeedUrl, getFormatInfo, getRssFormats, normalizeSiteUrl } from '../utils/node/index.ts'
 import { isHomePage } from '../utils/shared/index.ts'
 
 export interface AddRssLinksContext {
@@ -12,38 +12,28 @@ export interface AddRssLinksContext {
 export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksContext): void {
   if (!isHomePage(pageData.frontmatter)) return
 
-  const siteUrl = siteConfig.userConfig.siteUrl
+  const rawSiteUrl = siteConfig.userConfig.siteUrl
+  if (!rawSiteUrl) {
+    console.warn('[addRssLinks] siteUrl is not configured. RSS links were not added.')
+    return
+  }
+
+  const siteUrl = normalizeSiteUrl(rawSiteUrl)
   const localeIndex = page.split('/')[0]!
   const supportedLocales = Object.keys(siteConfig.site.locales)
 
   const rssFormats = getRssFormats(siteConfig)
 
-  for (const format of rssFormats) {
-    const feedUrl = `${siteUrl}/feed-${localeIndex}.${format}`
-    const formatInfo = getFormatInfo(format)
-
-    head.push([
-      'link',
-      {
-        rel: 'alternate',
-        type: formatInfo.mimeType,
-        title: `${siteConfig.site.locales[localeIndex].title} - ${formatInfo.title}`,
-        href: feedUrl,
-        hreflang: localeIndex,
-      },
-    ])
-  }
-
   for (const locale of supportedLocales) {
-    if (locale !== localeIndex) {
-      const feedUrl = `${siteUrl}/feed-${locale}.rss`
-
+    for (const format of rssFormats) {
+      const feedUrl = getFeedUrl(siteUrl, locale, format)
+      const formatInfo = getFormatInfo(format)
       head.push([
         'link',
         {
           rel: 'alternate',
-          type: 'application/rss+xml',
-          title: `${siteConfig.site.locales[locale].title} - RSS Feed`,
+          type: formatInfo.mimeType,
+          title: `${siteConfig.site.locales[locale].title} - ${formatInfo.title}`,
           href: feedUrl,
           hreflang: locale,
         },

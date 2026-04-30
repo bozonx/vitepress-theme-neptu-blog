@@ -8,9 +8,14 @@ import { extractDescriptionFromMd } from '../utils/node/index.ts'
 import {
   createPostGuid,
   formatTagsForRss,
+  getFeedPath,
+  getFeedUrl,
   getFormatInfo,
   getRssFormats,
+  makeAbsoluteUrl,
   makeAuthorForRss,
+  normalizePathSegment,
+  normalizeSiteUrl,
   validatePostForRss,
   validateRssConfig,
 } from '../utils/node/index.ts'
@@ -27,11 +32,22 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
     }
 
     const feeds: Record<string, Feed> = {}
-    const siteUrl = config.userConfig.siteUrl!
+    const siteUrl = normalizeSiteUrl(config.userConfig.siteUrl!)
+    const rssFormats = getRssFormats(config)
+    const generationErrors: Error[] = []
 
     for (const localeIndex of Object.keys(config.site.locales)) {
       const locale = config.site.locales[localeIndex]!
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
+      const tagsBaseUrl =
+        normalizePathSegment(locale.themeConfig?.tagsBaseUrl) ||
+        normalizePathSegment(config.userConfig.themeConfig?.tagsBaseUrl) ||
+        'tags'
+      const feedLinks = Object.fromEntries(
+        rssFormats
+          .filter((format) => format === 'rss' || format === 'atom')
+          .map((format) => [format, getFeedUrl(siteUrl, localeIndex, format)])
+      )
 
       feeds[localeIndex] = new Feed({
         language: localeIndex,
@@ -41,13 +57,17 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
         id: localeSiteUrl,
         link: localeSiteUrl,
         favicon: `${siteUrl}/img/favicon-32x32.png`,
-        image: `${siteUrl}${config.userConfig.themeConfig.sidebarLogoSrc}`,
+        image:
+          makeAbsoluteUrl(
+            siteUrl,
+            locale.themeConfig?.sidebarLogoSrc ||
+              config.userConfig.themeConfig?.sidebarLogoSrc ||
+              locale.themeConfig?.mainHeroImg ||
+              config.userConfig.themeConfig?.mainHeroImg
+          ) || `${siteUrl}/img/favicon-32x32.png`,
         generator: 'VitePress Neptu Blog Theme',
         updated: new Date(),
-        feedLinks: {
-          rss: `${siteUrl}/feed-${localeIndex}.rss`,
-          atom: `${siteUrl}/feed-${localeIndex}.atom`,
-        },
+        feedLinks,
       })
 
       try {
@@ -56,14 +76,19 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
           { includeSrc: true }
         ).load()
 
-        const sortedPosts = posts
-          .sort(
-            (a, b) =>
-              +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
-          )
-          .slice(0, (config.userConfig as any).maxPostsInRssFeed)
+        const sortedPosts = posts.sort(
+          (a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
+        )
+        const configuredMaxPosts = Number((config.userConfig as any).maxPostsInRssFeed)
+        const maxPosts =
+          Number.isFinite(configuredMaxPosts) && configuredMaxPosts >= 0
+            ? configuredMaxPosts
+            : 50
+        let addedPostsCount = 0
 
         for (const { url, frontmatter, src } of sortedPosts) {
+          if (addedPostsCount >= maxPosts) break
+
           const fm = frontmatter as PostFrontmatter
           try {
             if (!validatePostForRss(fm, url)) {
@@ -78,7 +103,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
                   (config.userConfig as any).maxDescriptionLength
                 )
             const guid = createPostGuid(siteUrl, url, fm.date)
-            const categories = formatTagsForRss(fm.tags, siteUrl)
+            const categories = formatTagsForRss(fm.tags, siteUrl, localeIndex, tagsBaseUrl)
 
             feeds[localeIndex]!.addItem({
               title: fm.title || '',
@@ -86,7 +111,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
               id: guid,
               link: `${siteUrl}${url}`,
               date: fm.date ? new Date(fm.date) : new Date(),
-              image: fm.cover ? (fm.cover.includes('://') ? fm.cover : `${siteUrl}${fm.cover}`) : undefined,
+              image: makeAbsoluteUrl(siteUrl, fm.cover),
               author: makeAuthorForRss(
                 config,
                 fm,
@@ -96,50 +121,58 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
               category: categories.length > 0 ? categories : undefined,
               published: fm.date ? new Date(fm.date) : new Date(),
             })
+            addedPostsCount += 1
           } catch (postError) {
             console.error(`Error processing post ${url}:`, postError)
             continue
           }
         }
       } catch (loaderError) {
-        console.error(
-          `Error loading posts for locale ${localeIndex}:`,
-          loaderError
+        delete feeds[localeIndex]
+        const error = new Error(
+          `Error loading posts for locale ${localeIndex}: ${(loaderError as Error).message}`,
+          { cause: loaderError as Error }
         )
+        generationErrors.push(error)
+        console.error(error.message, loaderError)
         continue
       }
     }
 
-    const rssFormats = getRssFormats(config)
-
     for (const localeIndex of Object.keys(feeds)) {
       try {
-        const feedDir = path.join(config.outDir)
+        const feedDir = path.join(config.outDir, localeIndex)
+        fs.mkdirSync(feedDir, { recursive: true })
 
         for (const format of rssFormats) {
           try {
             const formatInfo = getFormatInfo(format)
-            const feedPath = path.join(
-              feedDir,
-              `feed-${localeIndex}.${formatInfo.extension}`
-            )
+            const feedPath = path.join(feedDir, path.basename(getFeedPath(localeIndex, format)))
 
             const feedContent = formatInfo.generator(feeds[localeIndex]!)
 
             fs.writeFileSync(feedPath, feedContent, DEFAULT_ENCODE)
           } catch (formatError) {
-            console.error(
-              `Error generating ${format} feed for locale ${localeIndex}:`,
-              formatError
+            const error = new Error(
+              `Error generating ${format} feed for locale ${localeIndex}: ${(formatError as Error).message}`,
+              { cause: formatError as Error }
             )
+            generationErrors.push(error)
+            console.error(error.message, formatError)
           }
         }
       } catch (writeError) {
-        console.error(
-          `Error writing feeds for locale ${localeIndex}:`,
-          writeError
+        const error = new Error(
+          `Error writing feeds for locale ${localeIndex}: ${(writeError as Error).message}`,
+          { cause: writeError as Error }
         )
+        generationErrors.push(error)
+        console.error(error.message, writeError)
       }
+    }
+
+    if (generationErrors.length > 0) {
+      throw new AggregateError(generationErrors, 'RSS feed generation completed with errors')
     }
   } catch (error) {
     console.error('Error generating RSS feeds:', error)

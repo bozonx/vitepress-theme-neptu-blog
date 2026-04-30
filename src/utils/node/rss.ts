@@ -48,15 +48,54 @@ export interface RssCategory {
   domain: string
 }
 
+function normalizeSiteUrl(siteUrl: string): string {
+  return siteUrl.replace(/\/+$/, '')
+}
+
+function normalizePathSegment(value: string | undefined): string | undefined {
+  const trimmed = value?.trim()
+  if (!trimmed) return undefined
+
+  return trimmed.replace(/^\/+|\/+$/g, '')
+}
+
+function makeAbsoluteUrl(siteUrl: string, rawPath: string | undefined): string | undefined {
+  if (!rawPath) return undefined
+  if (/^[a-z\d]+:\/\//i.test(rawPath)) return rawPath
+
+  const base = normalizeSiteUrl(siteUrl)
+  const path = rawPath.startsWith('/') ? rawPath : `/${rawPath}`
+  return `${base}${path}`
+}
+
+export function getFeedPath(localeIndex: string, format: string): string {
+  return `/${localeIndex}/feed.${getFormatInfo(format).extension}`
+}
+
+export function getFeedUrl(siteUrl: string, localeIndex: string, format: string): string {
+  return `${normalizeSiteUrl(siteUrl)}${getFeedPath(localeIndex, format)}`
+}
+
 /** Formats tags for RSS categories. */
-export function formatTagsForRss(tags: unknown, siteUrl: string): RssCategory[] {
+export function formatTagsForRss(
+  tags: unknown,
+  siteUrl: string,
+  localeIndex: string,
+  tagsBaseUrl = 'tags'
+): RssCategory[] {
   if (!tags || !Array.isArray(tags)) return []
+
+  const cleanTagsBaseUrl = normalizePathSegment(tagsBaseUrl) || 'tags'
+  const baseUrl = normalizeSiteUrl(siteUrl)
 
   return (tags as unknown[])
     .filter((tag): tag is string => typeof tag === 'string' && tag.trim().length > 0)
     .map((tag) => ({
       name: tag.trim(),
-      domain: `${siteUrl}/tag/${tag.trim().toLowerCase().replace(/\s+/g, '-')}`,
+      domain: `${baseUrl}/${localeIndex}/${cleanTagsBaseUrl}/${tag
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')}/1`,
     }))
 }
 
@@ -119,7 +158,18 @@ export function getFormatInfo(format: string): RssFormatInfo {
 
 /** Gets RSS format settings from configuration */
 export function getRssFormats(config: any): string[] {
-  return config?.userConfig?.rssFormats || ['rss', 'atom', 'json']
+  const configuredFormats =
+    config?.userConfig?.rssFormats ?? config?.userConfig?.themeConfig?.rssFormats
+  const knownFormats = new Set(['rss', 'atom', 'json'])
+
+  if (!Array.isArray(configuredFormats) || configuredFormats.length === 0) {
+    return ['rss', 'atom', 'json']
+  }
+
+  return [...new Set(configuredFormats)]
+    .filter((format): format is string => typeof format === 'string')
+    .map((format) => format.trim().toLowerCase())
+    .filter((format) => knownFormats.has(format))
 }
 
 export function makeAuthorForRss(
@@ -130,7 +180,9 @@ export function makeAuthorForRss(
 ): { name: string; link: string } | undefined {
   if (!frontmatter.authorId) return undefined
 
-  const authors = config.userConfig.locales[localeIndex].themeConfig?.authors
+  const authors =
+    config.site?.locales?.[localeIndex]?.themeConfig?.authors ??
+    config.userConfig?.locales?.[localeIndex]?.themeConfig?.authors
 
   if (!Array.isArray(authors)) return
 
@@ -138,8 +190,13 @@ export function makeAuthorForRss(
 
   if (!author) return
 
+  const authorsBaseUrl = normalizePathSegment(config.userConfig?.themeConfig?.authorsBaseUrl)
+  if (!authorsBaseUrl) return
+
   return {
     name: author.name,
-    link: `${siteUrl}/${config.userConfig.themeConfig.authorsBaseUrl}/${author.id}/1`,
+    link: `${normalizeSiteUrl(siteUrl)}/${authorsBaseUrl}/${author.id}/1`,
   }
 }
+
+export { makeAbsoluteUrl, normalizePathSegment, normalizeSiteUrl }
