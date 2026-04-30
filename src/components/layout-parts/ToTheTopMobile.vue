@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { watch } from 'vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 import { useToTheTop } from '../../composables/useToTheTop.ts'
 
 const props = defineProps<{

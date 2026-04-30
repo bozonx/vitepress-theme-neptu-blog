@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import Btn from '../Btn.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 

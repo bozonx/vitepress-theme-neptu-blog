@@ -22,7 +22,6 @@ const { localeIndex } = useData()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const tagList = makeTagsList(localePosts)
-// const sorted = tagList.sort((a, b) => String(a.name).localeCompare(b.name))
 </script>
 
 <template>

@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Btn from './Btn.vue'
-import { useUiTheme } from '../composables/useUiLocale.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 

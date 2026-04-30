@@ -78,18 +78,6 @@ const btnProps = computed(() => {
 </template>
 
 <style>
-/* .btn-base__external {
-  padding-left: 0.25rem;
-  font-size: 13px;
-  margin-right: -0.3rem;
-  color: var(--gray-500);
-}
-
-.dark .btn-base__external,
-.btn-base__external.btn--only-dark {
-  color: var(--gray-600);
-} */
-
 .btn-base {
   background: var(--btn-bg);
   color: var(--btn-text);

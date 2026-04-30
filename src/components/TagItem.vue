@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseLink from './BaseLink.vue'
 import Badge from './Badge.vue'
-import { useUiTheme } from '../composables/useUiLocale.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 

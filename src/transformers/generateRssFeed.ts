@@ -129,7 +129,6 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
             const feedContent = formatInfo.generator(feeds[localeIndex]!)
 
             fs.writeFileSync(feedPath, feedContent, DEFAULT_ENCODE)
-            console.log(`Generated ${formatInfo.title}: ${feedPath}`)
           } catch (formatError) {
             console.error(
               `Error generating ${format} feed for locale ${localeIndex}:`,

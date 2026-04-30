@@ -7,7 +7,7 @@ import ListItemWithBadge from '../ListItemWithBadge.vue'
 import PreviewList from '../PreviewList.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import ListPageHeader from '../ListPageHeader.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
   url: string

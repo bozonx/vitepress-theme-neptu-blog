@@ -230,7 +230,7 @@ Add `canonical` parameter to your post frontmatter to automatically include a ca
 - `canonical: "self"` - Link to the current page itself
 - `canonical: "s"` - Short version of "self"
 
-See [CANONICAL_README.md](CANONICAL_README.md) for detailed documentation.
+See [CANONICAL_LINKS.md](CANONICAL_LINKS.md) for detailed documentation.
 ```
 
 ## Publish

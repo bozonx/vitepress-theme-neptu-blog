@@ -24,7 +24,7 @@ import UtilSubPageHeader from './UtilSubPageHeader.vue'
 import BtnLink from '../BtnLink.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts } from '../../utils/shared/index.ts'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
   url: string

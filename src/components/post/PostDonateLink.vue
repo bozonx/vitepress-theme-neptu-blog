@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BtnLink from '../BtnLink.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 </script>

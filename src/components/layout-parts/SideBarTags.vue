@@ -23,7 +23,7 @@ import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import BtnLink from '../BtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
   url: string

@@ -51,8 +51,6 @@ export async function loadPostsData(
 
     cache[cacheKey] = posts
 
-    console.log(`\n...Loaded ${posts.length} posts from ${postsDir}`)
-
     if (popularPostsEnabled && googleAnalytics) {
       cache[cacheKey] = await mergeWithAnalytics(posts, googleAnalytics)
     }
@@ -60,7 +58,6 @@ export async function loadPostsData(
     return cache[cacheKey]!
   } catch (error) {
     const errorMsg = `Error loading posts for locale ${localeIndex}: ${(error as Error).message}`
-    console.error(errorMsg, error)
     throw new Error(errorMsg, { cause: error as Error })
   }
 }
@@ -92,8 +89,6 @@ export async function loadPostsDataFromFiles(
 
     cache[cacheKey] = posts
 
-    console.log(`\n...Loaded ${posts.length} posts from watched files`)
-
     if (popularPostsEnabled && googleAnalytics) {
       cache[cacheKey] = await mergeWithAnalytics(posts, googleAnalytics)
     }
@@ -101,7 +96,6 @@ export async function loadPostsDataFromFiles(
     return cache[cacheKey]!
   } catch (error) {
     const errorMsg = `Error loading posts from watched files: ${(error as Error).message}`
-    console.error(errorMsg, error)
     throw new Error(errorMsg, { cause: error as Error })
   }
 }

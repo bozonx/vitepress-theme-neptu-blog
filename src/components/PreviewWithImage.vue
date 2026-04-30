@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TagsList from './TagsList.vue'
-import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
 interface TagItem {
   name?: string

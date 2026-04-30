@@ -57,7 +57,6 @@ describe('addHreflang', () => {
     const ctx = createContext()
     addHreflang(ctx)
     expect(ctx.head).toHaveLength(4) // 2 locales * 1 link + root x-default
-    // Should include x-default for root
     const xDefault = ctx.head.find((h) => h[1]?.hreflang === 'x-default')
     expect(xDefault).toBeDefined()
   })

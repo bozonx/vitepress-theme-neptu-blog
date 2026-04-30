@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vitepress'
 import Btn from './Btn.vue'
-import { useUiTheme } from '../composables/useUiLocale.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const route = useRoute()
 const { theme } = useUiTheme()
@@ -26,10 +26,6 @@ const totalPages = props.totalPages
 const baseUrl =
   props.paginationBaseUrl || route.path.split('/').slice(0, -1).join('/')
 
-// example
-// const curPage = 4;
-// const maxItems = 7;
-// const totalPages = 4;
 
 if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
   const halfPages = (maxItems - 1) / 2

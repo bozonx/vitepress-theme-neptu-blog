@@ -14,7 +14,7 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { isPost, isPage } from '../utils/shared/index.ts'
 import BtnLink from './BtnLink.vue'
-import { useUiTheme } from '../composables/useUiLocale.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { page, frontmatter } = useData()
 const { theme } = useUiTheme()

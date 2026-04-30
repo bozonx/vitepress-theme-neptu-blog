@@ -3,7 +3,7 @@
 // and https://github.com/vuejs/vitepress/blob/9b1bb4ffc6423ef0f16a213133980fdb6e9bf552/src/client/theme-default/components/VPSwitchAppearance.vue
 import { useData } from 'vitepress'
 import { inject, ref, watchPostEffect } from 'vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { isDark } = useData()
 const { theme } = useUiTheme()

@@ -4,7 +4,7 @@ import { useData } from 'vitepress'
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import PodcastIcon from './PodcastIcon.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 import type { ThemeConfig, PostFrontmatter } from '../../types.d.ts'
 

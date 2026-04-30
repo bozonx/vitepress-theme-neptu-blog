@@ -28,7 +28,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import SocialMediaLinks from './SocialMediaLinks.vue'
-import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 
 interface Author {
   name?: string

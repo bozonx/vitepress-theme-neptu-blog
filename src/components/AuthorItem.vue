@@ -35,9 +35,8 @@
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { LIST_ITEM_THUMB_WIDTH } from '../constants.ts'
 import { pluralize } from '../utils/shared/index.ts'
-import { useUiTheme } from '../composables/useUiLocale.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 
 interface AuthorItem {
   id: string

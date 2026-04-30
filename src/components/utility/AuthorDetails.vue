@@ -6,7 +6,7 @@ import ListPageHeader from '../ListPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts, isPopularRoute, pluralize } from '../../utils/shared/index.ts'
 import UtilPageHeader from './UtilPageHeader.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 import type { Author as ThemeAuthor } from '../../types.d.ts'
 
 interface PostLite {

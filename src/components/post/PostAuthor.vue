@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 
 import SimpleLink from '../SimpleLink.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
 const { theme } = useUiTheme()

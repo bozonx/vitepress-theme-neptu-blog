@@ -8,7 +8,7 @@ import SideBarGroup from './SideBarGroup.vue'
 import SideBarItems from './SideBarItems.vue'
 import { Icon } from '@iconify/vue'
 import SideBarTags from './SideBarTags.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
   url: string

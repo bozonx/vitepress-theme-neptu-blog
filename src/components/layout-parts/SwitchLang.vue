@@ -3,7 +3,7 @@ import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import { Icon } from '@iconify/vue'
 import { useContentLangs } from '../../composables/useContentLangs.ts'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 const { currentLang, localeLinks } = useContentLangs({ correspondingLink: true })

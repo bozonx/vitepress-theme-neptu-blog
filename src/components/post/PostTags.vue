@@ -2,7 +2,7 @@
 import { useData } from 'vitepress'
 import TagsList from '../TagsList.vue'
 import BtnLink from '../BtnLink.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
 const { theme } = useUiTheme()

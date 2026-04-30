@@ -9,7 +9,7 @@ import PostSocialShare from './PostSocialShare.vue'
 import PostTags from './PostTags.vue'
 import EditLink from '../EditLink.vue'
 import BtnLink from '../BtnLink.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
   url: string

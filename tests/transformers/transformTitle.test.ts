@@ -8,7 +8,6 @@ vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
     ...actual,
     mustacheTemplate: vi.fn((tmpl: string, _options: any, { eval: isEval }: { eval?: boolean }) => {
       if (!isEval) return tmpl
-      // Simple mock for mustache with eval
       return tmpl.replace(/\{\{(.+?)\}\}/g, (_: string, key: string) => {
         if (key === 'params.tag') return 'MyTag'
         if (key === 'theme.siteTitle') return 'MySite'

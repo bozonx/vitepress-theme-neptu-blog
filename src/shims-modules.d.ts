@@ -14,13 +14,6 @@ declare module 'slug' {
   function slug(input: string, opts?: SlugOptions | string): string
   export = slug
 }
-declare module 'vitepress/dist/client/theme-default/composables/langs.js' {
-  export function useLangs(options?: { correspondingLink?: boolean }): {
-    localeLinks: Array<{ text: string; link: string }>
-    currentLang: { label: string; link: string }
-  }
-}
-
 declare module '*.css' {
   const content: string;
   export default content;

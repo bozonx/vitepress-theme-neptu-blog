@@ -32,38 +32,20 @@ export async function mergeWithAnalytics(
   posts: Post[],
   gaCfg: GoogleAnalyticsConfig | null | undefined
 ): Promise<Post[]> {
-  // Configuration validation
   if (!gaCfg?.propertyId) {
-    console.warn('⚠️ Google Analytics is not configured: propertyId is missing')
     return posts
-  }
-
-  // Check for credentials (ADC is supported)
-  if (!gaCfg?.credentialsJson) {
-    console.log(
-      'ℹ️ No credentials specified, using Application Default Credentials'
-    )
-    console.log(
-      '   Make sure the GOOGLE_APPLICATION_CREDENTIALS environment variable is set'
-    )
-    console.log('   or run gcloud auth application-default login')
   }
 
   try {
     let stats: Record<string, AnalyticsStats> | null = null
 
-    if (globalThis.loadingGaStatsPromise) {
-      console.log('📦 Using cached Google Analytics data')
-    } else {
-      console.log('🔍 Loading statistics from Google Analytics...')
+    if (!globalThis.loadingGaStatsPromise) {
       globalThis.loadingGaStatsPromise = loadGoogleAnalytics(gaCfg)
     }
 
     stats = await globalThis.loadingGaStatsPromise!
 
     if (!stats || Object.keys(stats).length === 0) {
-      console.warn('⚠️ No data from Google Analytics')
-
       return posts
     }
 
@@ -77,17 +59,8 @@ export async function mergeWithAnalytics(
       return { ...post, analyticsStats: analyticsData || {} } as Post
     })
 
-    console.log(
-      `✅ Processed ${postsWithStatsCount} posts with analytics out of ${posts.length} posts`
-    )
-
     return postsWithStats
-  } catch (error) {
-    console.error(
-      '❌ Error loading data from Google Analytics:',
-      (error as Error).message
-    )
-
+  } catch {
     return posts
   }
 }
@@ -101,9 +74,6 @@ export async function loadGoogleAnalytics(
 
     if (gaCfg.credentialsJson) {
       credentials = JSON.parse(gaCfg.credentialsJson)
-      console.log('🔑 Using credentialsJson')
-    } else {
-      console.log('🔑 Using Application Default Credentials')
     }
 
     const authClient: Auth.JWT | Auth.AuthClient = credentials
@@ -114,8 +84,6 @@ export async function loadGoogleAnalytics(
         })
       : await new google.auth.GoogleAuth({ scopes }).getClient()
 
-    console.log('✅ Authentication completed')
-
     const analyticsdata = google.analyticsdata({
       version: GA_VERSION,
       auth: authClient as Auth.JWT,
@@ -124,12 +92,6 @@ export async function loadGoogleAnalytics(
     const startDate = new Date()
 
     startDate.setDate(startDate.getDate() - (gaCfg.dataPeriodDays || 30))
-
-    console.log('🔍 Requesting data from Google Analytics...')
-    console.log(
-      `📅 Period: ${startDate.toISOString().split('T')[0]} - ${endDate.toISOString().split('T')[0]}`
-    )
-    console.log(`🏷️ Property ID: ${gaCfg.propertyId}`)
 
     const requestParams = {
       property: `properties/${gaCfg.propertyId}`,
@@ -161,8 +123,6 @@ export async function loadGoogleAnalytics(
       },
     }
 
-    console.log('📊 Sending request to Google Analytics Data API...')
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const response = await analyticsdata.properties.runReport(requestParams as any)
 
@@ -172,22 +132,8 @@ export async function loadGoogleAnalytics(
     const responseData = (response as any).data
 
     if (!responseData.rows || responseData.rows.length === 0) {
-      console.warn('⚠️ No data in response from Google Analytics 4')
-      console.warn('   Possible reasons:')
-      console.warn('   - Not enough data for the specified period')
-      console.warn('   - Incorrect filter by pagePath')
-      console.warn('   - Property ID contains no data')
       return {}
     }
-
-    console.log(
-      `📊 Response from Google Analytics: Found ${responseData.rows?.length || 0} records`
-    )
-    console.log('🔗 First 5 URLs:')
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    responseData.rows.slice(0, 5).forEach((row: any, index: number) => {
-      console.log(`  ${index + 1}. ${row.dimensionValues[0].value}`)
-    })
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     responseData.rows.forEach((row: any) => {
@@ -202,43 +148,7 @@ export async function loadGoogleAnalytics(
     })
 
     return stats
-  } catch (error: any) {
-    console.error(
-      '❌ Error requesting Google Analytics API:',
-      (error as Error)?.message
-    )
-
-    if (error?.code === 'ENOENT') {
-      console.error(
-        '❌ Credentials file not found:',
-        gaCfg.credentialsJson ? 'credentialsJson' : 'ADC'
-      )
-    } else if (error?.code === 403) {
-      console.error('❌ No access to Google Analytics. Check:')
-      console.error('   - Correctness of propertyId')
-      console.error('   - Service Account access rights to Google Analytics')
-      console.error('   - Whether Google Analytics Data API is enabled in the project')
-    } else if (error?.code === 400) {
-      console.error('❌ Invalid request to Google Analytics API')
-      if (error?.details) {
-        console.error('   Error details:', error.details)
-      }
-    } else if (error?.code === 401) {
-      console.error(
-        '❌ Authentication error. Check Service Account credentials'
-      )
-    } else if (error?.code === 429) {
-      console.error('❌ Google Analytics API rate limit exceeded')
-    } else {
-      console.error('❌ Unknown error:', (error as Record<string, unknown>)?.code || 'N/A')
-      if (error?.response?.data) {
-        console.error(
-          '   API response:',
-          JSON.stringify(error.response.data, null, 2)
-        )
-      }
-    }
-
+  } catch {
     return {}
   }
 }

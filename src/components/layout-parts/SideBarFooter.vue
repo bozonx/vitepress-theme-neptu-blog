@@ -3,7 +3,7 @@ import { useData } from 'vitepress'
 
 import Btn from '../Btn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
-import { useUiTheme } from '../../composables/useUiLocale.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface SocialLinkItem {
   href: string
