@@ -645,7 +645,7 @@ onUnmounted(() => {
 
 .time-display {
   color: var(--gray-600);
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-family: var(--vp-font-family-mono, ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace);
   background: var(--gray-100);
   border: 1px solid var(--gray-200);
 }
