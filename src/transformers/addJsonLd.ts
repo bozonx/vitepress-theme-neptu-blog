@@ -261,7 +261,12 @@ export function addJsonLd({
 
   if (!langConfig || !langConfig.themeConfig) return
 
-  const siteUrl = siteConfig.userConfig.siteUrl!
+  const siteUrl = siteConfig.userConfig.siteUrl
+  if (!siteUrl) {
+    console.warn(`[addJsonLd] siteUrl is not configured. JSON-LD requires absolute URLs.`)
+    return
+  }
+
   const localeIndexUrl = `${siteUrl}/${localeIndex}`
   const pageUrl = `${siteUrl}/${generatePageUrlPath(page)}`
   // siteName: fallback resolution matches createPageJsonLd usage.
