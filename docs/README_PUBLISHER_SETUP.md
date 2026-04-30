@@ -1,96 +1,66 @@
-# Настройка поля Publisher для JSON-LD
+# Publisher setup for JSON-LD
 
-## Проблема
+## Problem
 
-Поле `publisher` не появляется в JSON-LD, потому что не настроено в конфигурации локалей.
+`publisher` is omitted from generated JSON-LD when it is not configured in the locale theme config.
 
-## Решение
+## Configuration
 
-### 1. Добавьте конфигурацию в файлы локалей
+Add `publisher` to the locale `themeConfig`:
 
-#### `src/configs/siteLocalesBase/en.js`:
-
-```javascript
+```ts
 export default {
-  label: 'English',
-  publisher: {
-    name: 'Your Site Name',
-    url: 'https://yoursite.com',
-    logo: 'https://yoursite.com/logo.png',
+  themeConfig: {
+    publisher: {
+      name: 'Your Site Name',
+      url: 'https://yoursite.com',
+      logo: '/logo.png',
+    },
   },
-  // ... остальная конфигурация
 }
 ```
 
-#### `src/configs/siteLocalesBase/ru.js`:
+You can also override it in the final site config with the same shape.
 
-```javascript
-export default {
-  label: 'Русский',
-  publisher: {
-    name: 'Название вашего сайта',
-    url: 'https://yoursite.com',
-    logo: 'https://yoursite.com/logo.png',
-  },
-  // ... остальная конфигурация
-}
-```
+## How it works
 
-### 2. Или переопределите в конфигурации сайта
+`src/transformers/addJsonLd.ts` builds:
 
-В YAML файле вашего сайта:
-
-```yaml
-publisher:
-  name: 'Custom Site Name'
-  url: 'https://customsite.com'
-  logo: 'https://customsite.com/logo.png'
-```
-
-## Что происходит в коде
-
-В трансформере `addJsonLd.js` поле `publisher` формируется так:
-
-```javascript
-const publisher = langConfig.publisher && {
+```ts
+const publisher = langConfig.themeConfig.publisher && {
   '@type': 'Organization',
-  name: langConfig.publisher.name || siteName,
-  url: langConfig.publisher.url || hostname,
-  logo: langConfig.publisher.logo && {
+  name: langConfig.themeConfig.publisher.name || siteName,
+  url: langConfig.themeConfig.publisher.url || siteUrl,
+  logo: langConfig.themeConfig.publisher.logo && {
     '@type': 'ImageObject',
-    url: langConfig.publisher.logo,
+    url: absoluteLogoUrl,
   },
 }
 ```
 
-Если `langConfig.publisher` не определен, переменная `publisher` становится `undefined`, и поле не добавляется в JSON-LD.
+If `publisher` is missing, the field is not added to JSON-LD.
 
-## Результат
-
-После настройки в JSON-LD появится:
+## Result
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Заголовок поста",
   "publisher": {
     "@type": "Organization",
     "name": "Your Site Name",
     "url": "https://yoursite.com",
-    "logo": { "@type": "ImageObject", "url": "https://yoursite.com/logo.png" }
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yoursite.com/logo.png"
+    }
   }
-  // ... остальные поля
 }
 ```
 
-## Проверка
+## Verification
 
-1. Добавьте конфигурацию `publisher`
-2. Пересоберите сайт
-3. Проверьте JSON-LD на странице поста
-4. Убедитесь, что поле `publisher` присутствует
-
-## Дополнительная информация
-
-См. файл `docs/JSON_LD_GUIDE.md` для полного руководства по настройке JSON-LD.
+1. Configure `themeConfig.publisher`
+2. Build the site
+3. Open a post page
+4. Check the generated `application/ld+json` script

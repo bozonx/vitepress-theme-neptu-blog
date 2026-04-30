@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import * as sharedUtils from '../../src/utils/shared/index.ts'
 import yaml from 'yaml'
 import { addJsonLd, type AddJsonLdContext } from '../../src/transformers/addJsonLd.ts'
@@ -8,9 +8,14 @@ beforeEach(() => {
     try {
       return JSON.parse(str)
     } catch {
-      return {}
+      throw new Error('Invalid JSON/YAML')
     }
   })
+  vi.spyOn(console, 'warn').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
 })
 
 vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
@@ -110,7 +115,13 @@ describe('addJsonLd', () => {
     expect(json.datePublished).toBe('2023-01-01')
     expect(json.inLanguage).toBe('en-US')
     expect(json.author).toEqual({ '@type': 'Person', name: 'Alice', url: 'https://alice.com' })
-    expect(json.publisher).toEqual({ '@type': 'Organization', name: 'Pub', url: 'https://pub.com', logo: { '@type': 'ImageObject', url: '/img/logo.png' } })
+    expect(json.publisher).toEqual({ '@type': 'Organization', name: 'Pub', url: 'https://pub.com', logo: { '@type': 'ImageObject', url: 'https://example.com/img/logo.png' } })
+    expect(json.isPartOf).toEqual({
+      '@type': 'WebSite',
+      '@id': 'https://example.com/en/#website',
+      url: 'https://example.com/en',
+      inLanguage: 'en-US',
+    })
     expect(json.image).toBeDefined()
   })
 
@@ -234,7 +245,7 @@ describe('addJsonLd', () => {
     const ctx = createContext()
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
-    expect(json.updatedDate).toBe(new Date(1672531200000).toISOString())
+    expect(json.dateModified).toBe(new Date(1672531200000).toISOString())
   })
 
   it('handles external cover URL', () => {
@@ -285,5 +296,106 @@ describe('addJsonLd', () => {
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.author.url).toBe('https://example.com/en/authors/alice/1')
+  })
+
+  it('warns and falls back to base post JSON-LD when custom YAML is invalid', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      pageData: {
+        title: 'Hello',
+        description: 'World',
+        relativePath: 'en/post/hello.md',
+        frontmatter: {
+          layout: 'post',
+          date: '2023-01-01',
+          jsonLd: 'not: valid: yaml:',
+        },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    expect(console.warn).toHaveBeenCalledOnce()
+    expect(ctx.head).toHaveLength(1)
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json['@type']).toBe('BlogPosting')
+    expect(json.headline).toBe('Hello')
+  })
+
+  it('warns and skips custom-only JSON-LD when YAML is invalid', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      page: 'en/custom.md',
+      pageData: {
+        title: 'Custom',
+        relativePath: 'en/custom.md',
+        frontmatter: { layout: 'util', jsonLd: 'not: valid: yaml:' },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    expect(console.warn).toHaveBeenCalledOnce()
+    expect(ctx.head).toHaveLength(0)
+  })
+
+  it('wraps top-level custom JSON-LD arrays in @graph', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      page: 'en/custom.md',
+      pageData: {
+        title: 'Custom',
+        relativePath: 'en/custom.md',
+        frontmatter: {
+          layout: 'util',
+          jsonLd: '[{\"@type\":\"Thing\",\"name\":\"One\"},{\"@type\":\"Thing\",\"name\":\"Two\"}]',
+        },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    expect(ctx.head).toHaveLength(1)
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json['@context']).toBe('https://schema.org')
+    expect(json['@graph']).toEqual([
+      { '@type': 'Thing', name: 'One' },
+      { '@type': 'Thing', name: 'Two' },
+    ])
+  })
+
+  it('ignores top-level custom arrays when merging into generated post JSON-LD', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      pageData: {
+        title: 'Hello',
+        description: 'World',
+        relativePath: 'en/post/hello.md',
+        frontmatter: {
+          layout: 'post',
+          date: '2023-01-01',
+          jsonLd: '[{\"@type\":\"Thing\",\"name\":\"Ignored\"}]',
+        },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    expect(ctx.head).toHaveLength(1)
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json['@type']).toBe('BlogPosting')
+    expect(json['@graph']).toBeUndefined()
   })
 })

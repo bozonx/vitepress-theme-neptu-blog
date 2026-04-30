@@ -21,7 +21,7 @@ This page demonstrates advanced JSON-LD features including array support for `is
 
 ## Array Support
 
-The `isPartOf` field can be an array of objects, which is useful when content belongs to multiple parent entities.
+The `isPartOf` field in custom JSON-LD can be an array of objects, which is useful when content belongs to multiple parent entities.
 
 ## Generated JSON-LD
 
@@ -60,8 +60,6 @@ Remember to use quotes for fields starting with `@`:
 @type: Article    # Incorrect
 ```
 
-## Actual Generated JSON-LD Data
+## Verification
 
-Below you can see the actual JSON-LD data that was generated from the YAML in the frontmatter:
-
-<JsonLdDisplay :jsonLdData="$frontmatter.jsonLdData" />
+Inspect the generated HTML and confirm the `application/ld+json` script contains the expected `isPartOf` array.

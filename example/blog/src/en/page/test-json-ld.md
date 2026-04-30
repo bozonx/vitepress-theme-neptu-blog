@@ -19,8 +19,8 @@ This page demonstrates how to use the `jsonLd` frontmatter parameter to generate
 ## How it works
 
 1. Add `jsonLd` to your frontmatter with YAML content
-2. The transformer will parse the YAML and generate JSON-LD
-3. The result will be available in `frontmatter.jsonLdData`
+2. The transformer will parse the YAML and merge it into the generated page schema
+3. The result will be emitted into the page `<head>` as `application/ld+json`
 
 ## Example YAML
 
@@ -53,8 +53,6 @@ When using fields that start with `@` (like `@type`), you must wrap them in quot
 @type: WebPage    # Incorrect - will cause parsing error
 ```
 
-## Generated JSON-LD Data
+## Verification
 
-Below you can see the actual JSON-LD data that was generated from the YAML in the frontmatter:
-
-<JsonLdDisplay :jsonLdData="$frontmatter.jsonLdData" />
+Inspect the generated page HTML and check the `application/ld+json` script in the `<head>`.

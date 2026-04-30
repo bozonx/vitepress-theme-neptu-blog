@@ -1,116 +1,96 @@
-# Руководство по настройке JSON-LD
+# JSON-LD Guide
 
-## Обзор
+## Overview
 
-JSON-LD (JavaScript Object Notation for Linked Data) - это формат структурированных данных, который помогает поисковым системам лучше понимать содержимое вашего сайта.
+The theme generates JSON-LD automatically for posts, author pages, and plain content pages.
 
-## Автоматическая генерация
+The implementation lives in `src/transformers/addJsonLd.ts` and is executed from `transformHead`.
 
-Шаблон автоматически генерирует JSON-LD для всех постов блога, включая следующие поля:
+## Automatic output for posts
 
-- `@context`: Схема Schema.org
-- `@type`: BlogPosting
-- `headline`: Заголовок поста
-- `description`: Описание поста
-- `url`: URL поста
-- `datePublished`: Дата публикации
-- `dateModified`: Дата последнего обновления (если указана)
-- `author`: Автор поста
-- `image`: Обложка поста (если указана)
-- `keywords`: Теги поста
-- `publisher`: Информация об издателе
-- `inLanguage`: Язык поста
-- `isPartOf`: Связь с основным сайтом и альтернативными языковыми версиями
+Post pages generate a `BlogPosting` schema with these core fields:
 
-## Настройка поля Publisher
+- `headline`
+- `description`
+- `url`
+- `datePublished`
+- `dateModified` when available
+- `author` when the author exists in locale config
+- `image` from `cover`
+- `keywords` from tags
+- `publisher` from locale config
+- `inLanguage`
+- `mainEntityOfPage`
+- `isPartOf`
 
-Поле `publisher` содержит информацию об организации, которая публикует контент. Для его настройки добавьте в конфигурацию локали:
+## Custom schema in frontmatter
 
-### В файле `src/configs/siteLocalesBase/en.js`:
-
-```javascript
-export default {
-  label: 'English',
-  publisher: {
-    name: 'Your Site Name',
-    url: 'https://yoursite.com',
-    logo: 'https://yoursite.com/logo.png',
-  },
-  // ... остальная конфигурация
-}
-```
-
-### В файле `src/configs/siteLocalesBase/ru.js`:
-
-```javascript
-export default {
-  label: 'Русский',
-  publisher: {
-    name: 'Название вашего сайта',
-    url: 'https://yoursite.com',
-    logo: 'https://yoursite.com/logo.png',
-  },
-  // ... остальная конфигурация
-}
-```
-
-### Параметры publisher:
-
-- `name`: Название организации/сайта
-- `url`: URL основного сайта
-- `logo`: URL логотипа организации (опционально)
-
-## Переопределение в конфигурации сайта
-
-Вы также можете переопределить настройки publisher в конфигурации конкретного сайта, добавив в YAML файл:
+Use `jsonLd` in frontmatter when you need extra fields.
 
 ```yaml
-publisher:
-  name: 'Custom Site Name'
-  url: 'https://customsite.com'
-  logo: 'https://customsite.com/custom-logo.png'
+---
+title: Test JSON-LD Page
+description: Demonstrates custom JSON-LD
+layout: page
+jsonLd: |
+  "@type": AboutPage
+  speakable:
+    "@type": SpeakableSpecification
+    cssSelector:
+      - h1
+      - p.lead
+---
 ```
 
-## Проверка результата
+### Merge rules
 
-После настройки поле `publisher` должно появиться в JSON-LD:
+- Generated post/page schemas: custom object fields are merged into the generated schema
+- Custom-only pages: the parsed object becomes the full JSON-LD payload
+- Custom-only pages may also use a top-level array; it will be emitted as `@graph`
+
+## Publisher
+
+Add `publisher` to locale `themeConfig`:
+
+```ts
+export default {
+  themeConfig: {
+    publisher: {
+      name: 'Your Site Name',
+      url: 'https://yoursite.com',
+      logo: '/logo.png',
+    },
+  },
+}
+```
+
+Output:
 
 ```json
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Заголовок поста",
   "publisher": {
     "@type": "Organization",
     "name": "Your Site Name",
     "url": "https://yoursite.com",
-    "logo": { "@type": "ImageObject", "url": "https://yoursite.com/logo.png" }
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://yoursite.com/logo.png"
+    }
   }
-  // ... остальные поля
 }
 ```
 
-## Устранение проблем
+## Error handling
 
-### Поле publisher не появляется:
+- Invalid YAML in `frontmatter.jsonLd` produces a warning in the build log
+- Generated post/page schemas still render without custom overrides
+- Custom-only invalid JSON-LD is skipped
 
-1. Проверьте, что конфигурация `publisher` добавлена в файлы локалей
-2. Убедитесь, что значения не пустые
-3. Проверьте консоль на наличие ошибок
+## Best practices
 
-### Неправильные данные:
-
-1. Проверьте корректность URL
-2. Убедитесь, что логотип доступен по указанному URL
-3. Проверьте формат дат в постах
-
-## Дополнительные возможности
-
-Шаблон также поддерживает:
-
-- Автоматическое определение языка
-- Генерацию альтернативных языковых версий
-- Интеграцию с Open Graph тегами
-- Генерацию RSS/Atom фидов
-- Канонические ссылки
-- Hreflang теги
+- Keep `siteUrl` configured, otherwise generated URLs will be incomplete
+- Prefer absolute URLs in custom schema fields
+- Use valid schema.org property names such as `dateModified`
+- Test custom schema with Google Rich Results Test

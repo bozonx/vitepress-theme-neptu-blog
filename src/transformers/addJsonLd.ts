@@ -1,11 +1,11 @@
 import yaml from 'yaml'
 import { omitUndefined } from '../utils/shared/index.ts'
-import { ROOT_LANG } from '../constants.ts'
 import {
   isPost,
   generatePageUrlPath,
   isAuthorPage,
   isPage,
+  isExternalUrl,
 } from '../utils/shared/index.ts'
 import type {
   ExtendedPageData,
@@ -22,12 +22,58 @@ export interface AddJsonLdContext {
 }
 
 function parseYamlToJsonLd(strYaml: string): any {
+  return yaml.parse(strYaml)
+}
+
+function warnInvalidJsonLd(pagePath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error)
+  console.warn(`[addJsonLd] Failed to parse frontmatter.jsonLd for "${pagePath}": ${message}`)
+}
+
+function parseCustomJsonLd(
+  rawJsonLd: unknown,
+  pagePath: string
+): Record<string, any> | any[] | undefined {
+  if (typeof rawJsonLd !== 'string' || rawJsonLd.trim() === '') return
+
   try {
-    return yaml.parse(strYaml)
+    const parsed = parseYamlToJsonLd(rawJsonLd)
+
+    if (Array.isArray(parsed)) {
+      return parsed.filter(
+        (item) => item && typeof item === 'object' && !Array.isArray(item)
+      )
+    }
+
+    if (parsed && typeof parsed === 'object') {
+      return parsed
+    }
   } catch (error) {
-    throw new Error('Error parsing frontmatter.jsonLd:', {
-      cause: error as Error,
-    })
+    warnInvalidJsonLd(pagePath, error)
+  }
+}
+
+function toAbsoluteUrl(siteUrl: string, url: string | undefined): string | undefined {
+  if (!url) return
+  return isExternalUrl(url) ? url : `${siteUrl}${url}`
+}
+
+function hasJsonLdEntries(jsonLdData: unknown): boolean {
+  if (Array.isArray(jsonLdData)) return jsonLdData.length > 0
+  return !!jsonLdData && typeof jsonLdData === 'object' && Object.keys(jsonLdData).length > 0
+}
+
+function withSchemaContext(jsonLdData: Record<string, any> | any[]): Record<string, any> {
+  if (Array.isArray(jsonLdData)) {
+    return {
+      '@context': 'https://schema.org',
+      '@graph': jsonLdData,
+    }
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    ...jsonLdData,
   }
 }
 
@@ -57,23 +103,6 @@ function createPostJsonLd(
   const cover = pageData.frontmatter.cover
   const tags = pageData.frontmatter.tags
   const lang = langConfig.lang
-  const [, ...restPath] = pageData.relativePath.split('/')
-  const pagePathWithoutLang = restPath.join('/')
-  const alternateLanguages: Array<{ code: string; url: string }> = []
-
-  if (siteConfig.site.locales) {
-    Object.entries(siteConfig.site.locales).forEach(
-      ([code, locale]: [string, any]) => {
-        if (code === localeIndex || code === ROOT_LANG) return
-        const alternateUrl = generatePageUrlPath(pagePathWithoutLang)
-
-        alternateLanguages.push({
-          code: locale.lang || code,
-          url: `${siteUrl}/${code}/${alternateUrl}`,
-        })
-      }
-    )
-  }
 
   const article: Record<string, any> = {
     '@type': 'BlogPosting',
@@ -85,22 +114,17 @@ function createPostJsonLd(
     mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
     inLanguage: lang,
     isPartOf: {
-      '@type': 'CreativeWork',
+      '@type': 'WebSite',
       '@id': `${localeIndexUrl}/#website`,
+      url: localeIndexUrl,
       inLanguage: lang,
-      hasPart: alternateLanguages.map((altLang) => ({
-        '@type': 'CreativeWork',
-        '@id': altLang.url,
-        inLanguage: altLang.code,
-        url: altLang.url,
-      })),
     },
     author: authorName && {
       '@type': 'Person',
       name: authorName,
       url: authorUrl,
     },
-    updatedDate:
+    dateModified:
       pageData.lastUpdated && new Date(pageData.lastUpdated).toISOString(),
     keywords:
       tags && tags.length > 0
@@ -110,7 +134,7 @@ function createPostJsonLd(
       cover &&
       omitUndefined({
         '@type': 'ImageObject',
-        url: cover.includes('://') ? cover : `${siteUrl}${cover}`,
+        url: toAbsoluteUrl(siteUrl, cover),
         height: pageData.frontmatter.coverHeight,
         width: pageData.frontmatter.coverWidth,
         caption:
@@ -121,8 +145,11 @@ function createPostJsonLd(
   }
 
   if (pageData.frontmatter.jsonLd) {
-    const customJsonLd = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
-    if (customJsonLd && typeof customJsonLd === 'object') {
+    const customJsonLd = parseCustomJsonLd(
+      pageData.frontmatter.jsonLd,
+      pageData.relativePath
+    )
+    if (customJsonLd && !Array.isArray(customJsonLd)) {
       Object.assign(article, customJsonLd)
     }
   }
@@ -159,9 +186,7 @@ function createAuthorJsonLd(
     : `${siteUrl}/${localeIndex}/${siteConfig.userConfig.themeConfig.authorsBaseUrl}/${id}/1`
   let imgUrl = image
 
-  if (imgUrl && !imgUrl.includes('://')) {
-    imgUrl = `${siteUrl}${imgUrl}`
-  }
+  imgUrl = toAbsoluteUrl(siteUrl, imgUrl)
 
   return {
     '@context': 'https://schema.org',
@@ -203,8 +228,11 @@ function createPageJsonLd(
   }
 
   if (pageData.frontmatter.jsonLd) {
-    const customJsonLd = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
-    if (customJsonLd && typeof customJsonLd === 'object') {
+    const customJsonLd = parseCustomJsonLd(
+      pageData.frontmatter.jsonLd,
+      pageData.relativePath
+    )
+    if (customJsonLd && !Array.isArray(customJsonLd)) {
       Object.assign(page, customJsonLd)
     }
   }
@@ -244,7 +272,7 @@ export function addJsonLd({
     url: langConfig.themeConfig.publisher?.url || siteUrl,
     logo: langConfig.themeConfig.publisher?.logo && {
       '@type': 'ImageObject',
-      url: langConfig.themeConfig.publisher.logo,
+      url: toAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher.logo),
     },
   }
 
@@ -276,21 +304,16 @@ export function addJsonLd({
       siteName
     )
   } else if (pageData.frontmatter.jsonLd) {
-    jsonLdData = parseYamlToJsonLd(pageData.frontmatter.jsonLd)
+    jsonLdData = parseCustomJsonLd(pageData.frontmatter.jsonLd, pageData.relativePath)
   } else {
     return
   }
 
-  if (typeof jsonLdData !== 'object' || Object.keys(jsonLdData).length === 0)
-    return
+  if (!hasJsonLdEntries(jsonLdData)) return
 
   head.push([
     'script',
     { type: 'application/ld+json' },
-    JSON.stringify(
-      { '@context': 'https://schema.org', ...jsonLdData },
-      null,
-      2
-    ),
+    JSON.stringify(withSchemaContext(jsonLdData), null, 2),
   ])
 }

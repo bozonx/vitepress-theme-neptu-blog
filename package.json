@@ -27,6 +27,7 @@
     "./package.json": "./package.json",
     "./components": "./src/components/index.ts",
     "./configs": "./src/configs/index.ts",
+    "./helpers": "./src/helpers.ts",
     "./utils": "./src/utils/shared/index.ts",
     "./utils/node": "./src/utils/node/index.ts",
     "./utils/client": "./src/utils/client/index.ts",

@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev src",
-    "pagefind": "pagefind --verbose --site ./dist --glob '**/{post,page}*/*.html'",
+    "pagefind": "pagefind --verbose --site ./src/.vitepress/dist --glob '**/{post,page}*/*.html'",
     "build": "vitepress build src && pnpm pagefind",
     "preview": "vitepress preview src",
     "typecheck": "vue-tsc --noEmit"
