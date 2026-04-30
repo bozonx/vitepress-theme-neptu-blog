@@ -106,8 +106,19 @@ export function addOgMetaTags({
         ])
       }
     }
+    if (pageData.lastUpdated) {
+      const updatedAt = new Date(pageData.lastUpdated)
+      if (!Number.isNaN(updatedAt.getTime())) {
+        tags.push(['property', 'article:modified_time', updatedAt.toISOString()])
+        tags.push(['property', 'og:updated_time', updatedAt.toISOString()])
+      }
+    }
     if (pageData.frontmatter.tags) {
-      (pageData.frontmatter.tags as any[]).forEach((tag: any) => {
+      const tagsList = Array.isArray(pageData.frontmatter.tags)
+        ? pageData.frontmatter.tags
+        : [pageData.frontmatter.tags]
+
+      tagsList.forEach((tag: any) => {
         tags.push(['property', 'article:tag', tag.name || tag])
       })
     }

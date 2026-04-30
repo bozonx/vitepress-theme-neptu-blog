@@ -187,13 +187,6 @@ describe('addOgMetaTags', () => {
     expect(ctx.head).toContainEqual(['meta', { property: 'article:tag', content: 'plain' }])
   })
 
-  it('handles string tag', () => {
-    const ctx = createContext()
-    ctx.pageData.frontmatter.tags = 'single-tag' as any
-    addOgMetaTags(ctx)
-    expect(ctx.head).toContainEqual(['meta', { property: 'article:tag', content: 'single-tag' }])
-  })
-
   it('skips meta tags with falsy content', () => {
     const ctx = createContext()
     ctx.pageData.frontmatter.title = ''
