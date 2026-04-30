@@ -53,11 +53,15 @@ export function isAuthorPage(filePath: string | null | undefined, siteConfig: Ex
 /** Resolve article preview text inside article. Or return undefined */
 export function resolveArticlePreview(frontmatter: Frontmatter): string | undefined {
   const { previewText, descrAsPreview, description } = frontmatter
+  const normalizedPreviewText =
+    typeof previewText === 'string' ? previewText.trim() : undefined
+  const normalizedDescription =
+    typeof description === 'string' ? description.trim() : undefined
 
-  if (previewText) {
-    return previewText
-  } else if (descrAsPreview && description) {
-    return description
+  if (normalizedPreviewText !== undefined) {
+    return normalizedPreviewText || undefined
+  } else if (descrAsPreview && normalizedDescription) {
+    return normalizedDescription
   }
   return undefined
 }

@@ -48,14 +48,14 @@ const props = defineProps<{
       />
     </div>
 
-    <p class="max-md:mt-5 flex-1 card-item-description">
+    <p v-if="props.preview" class="max-md:mt-5 flex-1 card-item-description">
       {{ props.preview }}
     </p>
   </div>
   <div v-else>
-    <p class="card-item-description">{{ props.preview }}</p>
+    <p v-if="props.preview" class="card-item-description">{{ props.preview }}</p>
 
-    <div class="flex max-sm:flex-col-reverse sm:items-end sm:mt-4 gap-x-1">
+    <div class="flex max-sm:flex-col-reverse sm:items-end gap-x-1" :class="{ 'sm:mt-4': props.preview }">
       <TagsList
         :tags="props.tags || []"
         class="flex-1"

@@ -18,11 +18,18 @@ interface PreviewItem {
 }
 
 const props = defineProps<{ item: PreviewItem }>()
+function formatPreview(preview: string | undefined): string | undefined {
+  const normalized = typeof preview === 'string' ? preview.trim() : ''
+  if (!normalized) return undefined
+
+  return normalized.replace(/\.$/, '') + ' ...'
+}
+
 const params = computed(() => ({
   tags: props.item.tags,
   date: props.item.date ? String(props.item.date) : undefined,
   localeDate: makeHumanDate(props.item.date, lang.value),
-  preview: String(props.item?.preview).trim().replace(/\.$/, '') + ' ...',
+  preview: formatPreview(props.item.preview),
   authorName: theme.value.showAuthorInPostList
     ? theme.value.authors?.find((item: { id: string; name: string }) => item.id === props.item.authorId)?.name
     : undefined,

@@ -17,7 +17,10 @@ export function resolveDescription(
   if (!isPost(pageData.frontmatter) && !isPage(pageData.frontmatter)) return
 
   const description = (pageData.frontmatter.description as string)?.trim() || ''
-  if (description) return
+  if (description) {
+    pageData.description = description
+    return
+  }
 
   try {
     const rawContent = fs.readFileSync(

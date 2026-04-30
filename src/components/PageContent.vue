@@ -45,7 +45,7 @@ watchEffect(() => {
       <PostTopBar class="mt-10" />
     </header>
 
-    <div v-if="articlePreviewText" class="mt-10 italic">
+    <div v-if="articlePreviewText && !frontmatter.cover" class="mt-10 italic">
       {{ articlePreviewText }}
     </div>
 

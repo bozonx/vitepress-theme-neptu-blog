@@ -22,6 +22,21 @@ export interface AddJsonLdContext {
   siteConfig: ExtendedSiteConfig
 }
 
+function normalizeText(value: unknown): string | undefined {
+  if (typeof value !== 'string') return
+  const normalized = value.trim()
+  return normalized || undefined
+}
+
+function toIsoDate(value: unknown): string | undefined {
+  if (value === null || value === undefined || value === '') return
+
+  const date = new Date(value as string | number | Date)
+  if (Number.isNaN(date.getTime())) return
+
+  return date.toISOString()
+}
+
 function parseYamlToJsonLd(strYaml: string): any {
   return yaml.parse(strYaml)
 }
@@ -84,8 +99,12 @@ function createPostJsonLd(
   pageUrl: string,
   publisher: any
 ): any {
-  const title = pageData.title
-  const description = pageData.description
+  const title =
+    normalizeText(pageData.frontmatter.title) ||
+    normalizeText(pageData.title)
+  const description =
+    normalizeText(pageData.frontmatter.description) ||
+    normalizeText(pageData.description)
   const author =
     pageData.frontmatter.authorId &&
     (langConfig.themeConfig as ThemeConfig).authors?.find(
@@ -128,8 +147,7 @@ function createPostJsonLd(
       name: authorName,
       url: authorUrl,
     },
-    dateModified:
-      pageData.lastUpdated && new Date(pageData.lastUpdated).toISOString(),
+    dateModified: toIsoDate(pageData.lastUpdated),
     keywords:
       tags && tags.length > 0
         ? (tags as any[]).map((tag: any) => tag.name || tag).join(', ')
@@ -224,9 +242,11 @@ function createPageJsonLd(
 ): any {
   const page: Record<string, any> = {
     '@type': 'WebPage',
-    name: pageData.title,
+    name: normalizeText(pageData.frontmatter.title) || normalizeText(pageData.title),
     url: pageUrl,
-    description: pageData.description,
+    description:
+      normalizeText(pageData.frontmatter.description) ||
+      normalizeText(pageData.description),
     isPartOf: {
       '@type': 'WebSite',
       '@id': `${localeIndexUrl}/#website`,

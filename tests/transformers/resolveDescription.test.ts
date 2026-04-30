@@ -40,7 +40,7 @@ describe('resolveDescription', () => {
     }
     resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: {} } as any })
     expect(fs.readFileSync).not.toHaveBeenCalled()
-    expect(pageData.description).toBeUndefined()
+    expect(pageData.description).toBe('Existing desc')
   })
 
   it('reads file and extracts description for post', () => {

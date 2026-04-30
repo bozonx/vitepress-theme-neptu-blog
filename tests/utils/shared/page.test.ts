@@ -153,6 +153,17 @@ describe('resolveArticlePreview', () => {
   it('returns undefined when descrAsPreview is true but no description', () => {
     expect(resolveArticlePreview({ descrAsPreview: true })).toBeUndefined()
   })
+
+  it('treats blank previewText as explicit absence', () => {
+    expect(
+      resolveArticlePreview({ previewText: '   ', description: 'Desc', descrAsPreview: true })
+    ).toBeUndefined()
+  })
+
+  it('trims previewText and description', () => {
+    expect(resolveArticlePreview({ previewText: '  Preview  ' })).toBe('Preview')
+    expect(resolveArticlePreview({ description: '  Desc  ', descrAsPreview: true })).toBe('Desc')
+  })
 })
 
 describe('resolveBodyMarker', () => {

@@ -66,10 +66,15 @@ export function resolvePreview({
   descrAsPreview,
   description,
 }: PostFrontmatter): string | undefined {
-  if (previewText) {
-    return previewText
-  } else if (descrAsPreview && description) {
-    return description
+  const normalizedPreviewText =
+    typeof previewText === 'string' ? previewText.trim() : undefined
+  const normalizedDescription =
+    typeof description === 'string' ? description.trim() : undefined
+
+  if (normalizedPreviewText !== undefined) {
+    return normalizedPreviewText || undefined
+  } else if (descrAsPreview && normalizedDescription) {
+    return normalizedDescription
   }
   return undefined
 }

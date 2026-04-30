@@ -247,6 +247,76 @@ describe('addJsonLd', () => {
     expect(json.dateModified).toBe(new Date(1672531200000).toISOString())
   })
 
+  it('uses frontmatter description when pageData.description is missing', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      pageData: {
+        title: 'Hello',
+        description: undefined,
+        relativePath: 'en/post/hello.md',
+        frontmatter: {
+          layout: 'post',
+          title: 'Hello',
+          description: '  World from frontmatter  ',
+          date: '2023-01-01',
+        },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.description).toBe('World from frontmatter')
+  })
+
+  it('uses frontmatter title for pages when pageData.title is missing', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(false)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(true)
+
+    const ctx = createContext({
+      page: 'en/about.md',
+      pageData: {
+        title: undefined,
+        description: 'About us',
+        relativePath: 'en/about.md',
+        frontmatter: { layout: 'page', title: '  About  ' },
+      } as any,
+    })
+
+    addJsonLd(ctx)
+
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.name).toBe('About')
+  })
+
+  it('skips invalid lastUpdated instead of throwing', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext({
+      pageData: {
+        title: 'Hello',
+        description: 'World',
+        relativePath: 'en/post/hello.md',
+        frontmatter: {
+          layout: 'post',
+          date: '2023-01-01',
+        },
+        lastUpdated: 'not-a-date',
+      } as any,
+    })
+
+    expect(() => addJsonLd(ctx)).not.toThrow()
+
+    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
+    expect(json.dateModified).toBeUndefined()
+  })
+
   it('handles external cover URL', () => {
     vi.mocked(sharedUtils.isPost).mockReturnValue(true)
     vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
