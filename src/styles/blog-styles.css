@@ -72,36 +72,15 @@ body.modal-open {
   width: var(--list-item-thumb-width);
 }
 
-/* На мобильных устройствах (max-md) */
-@media (max-width: 767px) {
-  .card-item-img-col {
-    width: 100% !important; /* max-md:w-full! */
-  }
-}
-
 .card-item-img-col img {
   object-fit: cover;
   display: block;
   max-width: 100%;
 }
 
-/* На экранах меньше 766px изображение занимает всю ширину */
-@media (max-width: 766px) {
+@media (max-width: 767px) {
   .card-item-img-col {
     width: 100%;
-  }
-
-  .card-item-img-col img {
-    width: 100%;
-    /* Высота будет установлена через атрибут height */
-  }
-}
-
-/* На экранах больше 766px изображение имеет фиксированную ширину */
-@media (min-width: 767px) {
-  .card-item-img-col img {
-    width: var(--list-item-thumb-width);
-    /* Высота будет установлена через атрибут height */
   }
 }
 

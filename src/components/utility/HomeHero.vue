@@ -28,7 +28,7 @@
     </div>
     <ul
       v-if="props.buttons"
-      class="flex w-full max-md:flex-col justify-center gap-x-3 gap-y-6 mt-14 home-hero-buttons"
+      class="flex w-full max-md:flex-col items-center justify-center gap-x-3 gap-y-6 mt-14 home-hero-buttons"
     >
       <li v-for="(item, index) in props.buttons" :key="item.href || index">
         <Btn v-bind="item" class="rounded-full! px-7! w-fit" />

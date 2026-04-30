@@ -101,6 +101,10 @@ You get a single deduplicated stylesheet, customisable design tokens via
 `@theme {}`, and your own utilities can extend the same Tailwind cascade
 the theme uses. See `example/blog` for a complete reference.
 
+### Customizing Fonts
+
+See [docs/FONTS.md](docs/FONTS.md) for a guide on how to change the default typography and use custom fonts (like Google Fonts).
+
 ## Config
 
 ```
