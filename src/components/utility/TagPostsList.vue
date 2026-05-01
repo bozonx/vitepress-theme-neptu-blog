@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import PreviewList from '../PreviewList.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
@@ -58,8 +58,8 @@ const sorted = sortPosts(
   />
 
   <div class="mt-8">
-    <BtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
+    <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
       theme.t.allTagsCall
-    }}</BtnLink>
+    }}</NeptuBtnLink>
   </div>
 </template>

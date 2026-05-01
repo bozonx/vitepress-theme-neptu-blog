@@ -57,8 +57,7 @@ export async function loadPostsData(
 
     return cache[cacheKey]!
   } catch (error) {
-    const errorMsg = `Error loading posts for locale ${localeIndex}: ${(error as Error).message}`
-    throw new Error(errorMsg, { cause: error as Error })
+    throw new Error(`Error loading posts for locale ${localeIndex}: ${(error as Error).message}`, { cause: error })
   }
 }
 
@@ -95,7 +94,6 @@ export async function loadPostsDataFromFiles(
 
     return cache[cacheKey]!
   } catch (error) {
-    const errorMsg = `Error loading posts from watched files: ${(error as Error).message}`
-    throw new Error(errorMsg, { cause: error as Error })
+    throw new Error(`Error loading posts from watched files: ${(error as Error).message}`, { cause: error })
   }
 }

@@ -1,19 +1,19 @@
 <template>
-  <BtnLink
+  <NeptuBtnLink
     v-if="allowEditLink"
     :href="editLinkHref"
     rel="nofollow"
     icon="bx:edit"
   >
     {{ theme.editLink?.text }}
-  </BtnLink>
+  </NeptuBtnLink>
 </template>
 
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { isPost, isPage } from '../utils/shared/index.ts'
-import BtnLink from './BtnLink.vue'
+import NeptuBtnLink from './NeptuBtnLink.vue'
 import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { page, frontmatter } = useData()

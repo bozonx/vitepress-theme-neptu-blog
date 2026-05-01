@@ -31,14 +31,14 @@
       class="flex w-full max-md:flex-col items-center justify-center gap-x-3 gap-y-6 mt-14 home-hero-buttons"
     >
       <li v-for="(item, index) in props.buttons" :key="item.href || index">
-        <Btn v-bind="item" class="rounded-full! px-7! w-fit" />
+        <NeptuBtn v-bind="item" class="rounded-full! px-7! w-fit" />
       </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import { useData } from 'vitepress'
 
 const { theme, localeIndex } = useData()

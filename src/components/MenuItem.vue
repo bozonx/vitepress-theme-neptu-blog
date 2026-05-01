@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Btn from './Btn.vue'
+import NeptuBtn from './NeptuBtn.vue'
 
 interface Props {
   customClass?: unknown
@@ -9,14 +9,14 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <Btn
+  <NeptuBtn
     v-bind="$attrs"
     :custom-class="['menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]', props.customClass]"
     icon-class="muted"
     :no-bg="true"
   >
     <slot />
-  </Btn>
+  </NeptuBtn>
 </template>
 
 <style scoped>

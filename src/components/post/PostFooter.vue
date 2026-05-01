@@ -8,7 +8,7 @@ import PostDonateLink from './PostDonateLink.vue'
 import PostSocialShare from './PostSocialShare.vue'
 import PostTags from './PostTags.vue'
 import EditLink from '../EditLink.vue'
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface PostLite {
@@ -42,7 +42,7 @@ const localePosts = props.localePosts || allPosts[localeIndex.value] || []
   <PostSimilarList class="mt-14" :locale-posts="localePosts" />
 
   <div class="mt-10">
-    <BtnLink
+    <NeptuBtnLink
       v-if="theme.popularPosts?.enabled"
       :href="`${theme.popularBaseUrl}/1`"
       :text="theme.t.popularPostsCall"

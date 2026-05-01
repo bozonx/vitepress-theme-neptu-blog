@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
@@ -8,7 +8,7 @@ const { theme } = useUiTheme()
 <template>
   <div v-if="theme.donate?.postDonateCall" class="vp-doc">
     <span>{{ theme.donate.postDonateCall }}</span>
-    <BtnLink
+    <NeptuBtnLink
       :href="theme.donate.url"
       :text="theme.t.links.donate"
       target="_blank"

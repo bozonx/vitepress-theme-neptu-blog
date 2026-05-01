@@ -1,7 +1,7 @@
 import locales from '../../configs/blogLocalesBase/index.ts'
 import type { I18n } from '../../types.d.ts'
 
-type LocalesMap = Record<string, { t: I18n; [key: string]: any }>
+type LocalesMap = Record<string, { t: I18n; [key: string]: unknown }>
 const DEFAULT_LOCALE = 'en'
 
 export function resolveBaseLocaleKey(
@@ -17,7 +17,7 @@ export function resolveBaseLocaleKey(
   return DEFAULT_LOCALE
 }
 
-export function resolveTranslationsByFilePath(filePath?: string): any {
+export function resolveTranslationsByFilePath(filePath?: string): { t: I18n; [key: string]: unknown } {
   const map = locales as unknown as LocalesMap
   if (!filePath) return map[DEFAULT_LOCALE]
 

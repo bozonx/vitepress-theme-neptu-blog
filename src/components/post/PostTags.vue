@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import TagsList from '../TagsList.vue'
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
@@ -20,9 +20,9 @@ const tags = [...(frontmatter.value.tags || [])].sort((a, b) =>
     </div>
 
     <div class="mt-3">
-      <BtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
+      <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
         theme.t.allTagsCall
-      }}</BtnLink>
+      }}</NeptuBtnLink>
     </div>
   </div>
 </template>

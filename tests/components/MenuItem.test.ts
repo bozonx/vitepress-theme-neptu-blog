@@ -8,7 +8,7 @@ describe('MenuItem', () => {
       attrs: { href: '/test' },
       slots: { default: 'Item text' },
     })
-    const btn = wrapper.findComponent({ name: 'Btn' })
+    const btn = wrapper.findComponent({ name: 'NeptuBtn' })
     expect(btn.exists()).toBe(true)
     expect(btn.attributes('href')).toBe('/test')
     expect(btn.text()).toBe('Item text')
@@ -16,7 +16,7 @@ describe('MenuItem', () => {
 
   it('applies menu-item classes to Btn', () => {
     const wrapper = mount(MenuItem)
-    const btn = wrapper.findComponent({ name: 'Btn' })
+    const btn = wrapper.findComponent({ name: 'NeptuBtn' })
     const classes = btn.props('customClass')
     expect(classes).toEqual(
       expect.arrayContaining([expect.stringContaining('menu-item')])
@@ -25,7 +25,7 @@ describe('MenuItem', () => {
 
   it('sets noBg and iconClass on Btn', () => {
     const wrapper = mount(MenuItem)
-    const btn = wrapper.findComponent({ name: 'Btn' })
+    const btn = wrapper.findComponent({ name: 'NeptuBtn' })
     expect(btn.props('noBg')).toBe(true)
     expect(btn.props('iconClass')).toBe('muted')
   })

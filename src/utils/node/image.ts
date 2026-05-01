@@ -66,6 +66,6 @@ export function getImageSize(buffer: Buffer): ImageSizeResult {
       type: dimensions.type,
     }
   } catch (error) {
-    throw new Error(`Failed to get image dimensions: ${(error as Error)?.message}`, { cause: error })
+    throw new Error('Failed to get image dimensions', { cause: error })
   }
 }

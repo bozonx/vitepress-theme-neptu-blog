@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vitepress'
-import Btn from './Btn.vue'
+import NeptuBtn from './NeptuBtn.vue'
 import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const route = useRoute()
@@ -80,7 +80,7 @@ if (curPage >= 1 && totalPages > 1 && curPage <= totalPages && maxItems > 0) {
 <template>
   <ul v-if="items.length" class="flex justify-center gap-x-1">
     <li v-for="item of items" :key="item.href" class="flex align-center">
-      <Btn
+      <NeptuBtn
         :href="item.href"
         :title="item.title"
         :text="String(item.name)"

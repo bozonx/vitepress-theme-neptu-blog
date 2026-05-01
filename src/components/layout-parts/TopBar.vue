@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchLang from './SwitchLang.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
@@ -54,7 +54,7 @@ const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((ite
     ]"
   >
     <div class="flex-1 flex gap-x-3">
-      <Btn
+      <NeptuBtn
         icon="fa6-solid:bars"
         :no-bg="true"
         class="lg:hidden px-[0.7rem]"
@@ -68,7 +68,7 @@ const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((ite
 
     <ul v-if="links.length" class="flex space-x-1">
       <li v-for="(item, index) in links" :key="item.href || index" :class="resolveItemShowClass(item)">
-        <Btn
+        <NeptuBtn
           v-bind="item"
           :no-bg="true"
           :class="[item.class, 'px-[0.7rem]']"
@@ -91,7 +91,7 @@ const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((ite
         :key="item.href || index"
         :class="resolveItemShowClass(item)"
       >
-        <Btn :no-bg="true" v-bind="item" :class="[item.class]" />
+        <NeptuBtn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>
   </nav>

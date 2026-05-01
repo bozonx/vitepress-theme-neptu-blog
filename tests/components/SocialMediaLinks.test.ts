@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import SocialMediaLinks from '../../src/components/SocialMediaLinks.vue'
 
-const BtnStub = {
+const NeptuBtnStub = {
   template: '<a :href="$attrs.href" :title="$attrs.title" class="btn-stub"><slot /></a>',
 }
 
@@ -10,7 +10,7 @@ describe('SocialMediaLinks', () => {
   it('renders nothing when links array is empty', () => {
     const wrapper = mount(SocialMediaLinks, {
       props: { links: [] },
-      global: { stubs: { Btn: BtnStub } },
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub } },
     })
     expect(wrapper.findAll('.btn-stub')).toHaveLength(0)
   })
@@ -23,7 +23,7 @@ describe('SocialMediaLinks', () => {
           { url: 'https://youtube.com/user', type: 'youtube' },
         ],
       },
-      global: { stubs: { Btn: BtnStub } },
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub } },
     })
     const anchors = wrapper.findAll('.btn-stub')
     expect(anchors).toHaveLength(2)
@@ -41,7 +41,7 @@ describe('SocialMediaLinks', () => {
           { url: 'https://insta.com', type: 'instagram' },
         ],
       },
-      global: { stubs: { Btn: { template: '<a :data-icon="$attrs.icon"><slot /></a>' } } },
+      global: { stubs: { NeptuBtn: { template: '<a :data-icon="$attrs.icon"><slot /></a>' } } },
     })
     const anchors = wrapper.findAll('a')
     expect(anchors[0].attributes('data-icon')).toBe('mdi:twitter')
@@ -54,7 +54,7 @@ describe('SocialMediaLinks', () => {
       props: {
         links: [{ url: 'https://unknown.com', type: 'unknown' }],
       },
-      global: { stubs: { Btn: { template: '<a :data-icon="$attrs.icon"><slot /></a>' } } },
+      global: { stubs: { NeptuBtn: { template: '<a :data-icon="$attrs.icon"><slot /></a>' } } },
     })
     expect(wrapper.find('a').attributes('data-icon')).toBe('mdi:web')
   })

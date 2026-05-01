@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import TopBar from '../../src/components/layout-parts/TopBar.vue'
 import { mockTheme } from '../mocks/vitepress'
 
-const BtnStub = {
-  name: 'Btn',
+const NeptuBtnStub = {
+  name: 'NeptuBtn',
   template: '<button class="btn-stub"><slot /></button>',
   props: ['icon', 'noBg', 'class', 'iconClass', 'text'],
 }
@@ -28,17 +28,17 @@ describe('TopBar', () => {
 
   it('renders topBar links', () => {
     const wrapper = mount(TopBar, {
-      global: { stubs: { Btn: BtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })
-    const btns = wrapper.findAllComponents({ name: 'Btn' })
+    const btns = wrapper.findAllComponents({ name: 'NeptuBtn' })
     expect(btns.length).toBeGreaterThanOrEqual(1)
   })
 
   it('emits openDrawer when menu button clicked', () => {
     const wrapper = mount(TopBar, {
-      global: { stubs: { Btn: BtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })
-    const menuBtn = wrapper.findAllComponents({ name: 'Btn' }).find((b) => b.props('icon') === 'fa6-solid:bars')
+    const menuBtn = wrapper.findAllComponents({ name: 'NeptuBtn' }).find((b) => b.props('icon') === 'fa6-solid:bars')
     if (menuBtn) {
       menuBtn.vm.$emit('click')
       expect(wrapper.emitted('openDrawer')).toHaveLength(1)
@@ -47,7 +47,7 @@ describe('TopBar', () => {
 
   it('renders switch appearance only on desktop', () => {
     const wrapper = mount(TopBar, {
-      global: { stubs: { Btn: BtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })
     expect(wrapper.findComponent({ name: 'SwitchAppearance' }).exists()).toBe(true)
   })

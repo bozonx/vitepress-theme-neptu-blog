@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
@@ -14,7 +14,7 @@ const text =
 </script>
 
 <template>
-  <Btn
+  <NeptuBtn
     :href="frontmatter.videoLink"
     :text="text"
     :icon="theme.youtubeIcon"

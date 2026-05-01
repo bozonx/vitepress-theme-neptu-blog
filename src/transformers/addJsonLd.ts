@@ -280,7 +280,7 @@ export function addJsonLd({
     return
   }
 
-  let jsonLdData: any = null
+  let jsonLdData: any
   const localeIndex = page.split('/')[0]!
   const langConfig = siteConfig.site.locales[localeIndex] as {
     title?: string

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
@@ -136,7 +136,7 @@ const fileIcon = computed(() => {
       </div>
     </div>
 
-    <Btn
+    <NeptuBtn
       icon="mdi:download"
       :disabled="isDisabled"
       :text="theme.t.fileDownload.downloadFile"

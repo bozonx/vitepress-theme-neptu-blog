@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { loadPostsData, loadPostsDataFromFiles } from '../../src/list-helpers/loadPosts.ts'
 
 const mockReaddir = vi.fn()
-const mockReadFile = vi.fn()
 
 vi.mock('node:fs/promises', () => ({
   default: { readdir: (...args: any[]) => mockReaddir(...args) },

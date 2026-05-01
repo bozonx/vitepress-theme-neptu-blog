@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
@@ -237,7 +237,7 @@ const handleProgressKeydown = (event: KeyboardEvent) => {
   if (isDisabled.value || !duration.value) return
 
   const step = duration.value * 0.05 // 5% of total duration
-  let newTime = currentTime.value
+  let newTime: number
 
   switch (event.key) {
     case 'ArrowLeft':
@@ -403,7 +403,7 @@ onUnmounted(() => {
     <!-- First row: play button, filename, download button -->
     <div class="file-header flex items-center gap-3 px-4 py-3">
       <!-- Play button -->
-      <Btn
+      <NeptuBtn
         v-if="!isPlayerVisible"
         :primary="true"
         class="play-btn-header"
@@ -443,7 +443,7 @@ onUnmounted(() => {
         :download="downloadFilename"
         class="audio-file-download flex items-center justify-center w-8 h-8 rounded-md"
       >
-        <Btn
+        <NeptuBtn
           icon="mdi:download"
           :disabled="isDisabled"
           :text="theme.t.audioFile.downloadFile"
@@ -470,7 +470,7 @@ onUnmounted(() => {
         :aria-label="theme.t.audioFile.audioFile + ' playback controls'"
       >
         <!-- Play/pause button -->
-        <Btn
+        <NeptuBtn
           class="play-btn"
           :primary="true"
           :disabled="isDisabled || hasError"
@@ -495,7 +495,7 @@ onUnmounted(() => {
         />
 
         <!-- Stop button -->
-        <Btn
+        <NeptuBtn
           class="stop-btn"
           :disabled="isDisabled || hasError || !isPlaying"
           :title="theme.t.audioFile.stopAudio"
@@ -507,7 +507,7 @@ onUnmounted(() => {
         />
 
         <!-- Hide player button -->
-        <Btn
+        <NeptuBtn
           class="hide-btn"
           :title="theme.t.audioFile.hidePlayerTitle"
           :aria-label="theme.t.audioFile.hidePlayer"
@@ -581,7 +581,7 @@ onUnmounted(() => {
     <div v-if="hasError" class="error-message flex items-center gap-2 px-4 py-3 rounded-md text-sm" role="alert" aria-live="polite">
       <Icon icon="mdi:alert-circle" aria-hidden="true" />
       <span>{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
-      <Btn
+      <NeptuBtn
         v-if="!isValidUrl(props.url)"
         class="retry-btn"
         :aria-label="theme.t.audioFile.retryWithValidUrl"

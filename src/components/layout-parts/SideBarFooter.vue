@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 
-import Btn from '../Btn.vue'
+import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
@@ -55,7 +55,7 @@ if (theme.value.sideBar?.atomFeed && hasFormat('atom')) {
   <div :class="['w-full flex pt-6 pb-3 pr-2 pl-2', props.class]">
     <ul v-if="socialLinks.length" class="flex space-x-1">
       <li v-for="(item, index) in socialLinks" :key="item.href || index">
-        <Btn :no-bg="true" v-bind="item" :class="[item.class]" />
+        <NeptuBtn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>
 

@@ -8,7 +8,7 @@
 
     <div v-if="showMorePosts" class="mt-8 flex">
       <span class="mr-2">... </span>
-      <BtnLink
+      <NeptuBtnLink
         :href="`${theme.popularBaseUrl}/2`"
         :text="theme.t.showMorePosts"
         class="more-posts-btn underline"
@@ -21,7 +21,7 @@
 import { inject } from 'vue'
 import { useData } from 'vitepress'
 import UtilSubPageHeader from './UtilSubPageHeader.vue'
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts } from '../../utils/shared/index.ts'
 import { useUiTheme } from '../../composables/useUiTheme.ts'

@@ -2,7 +2,7 @@
 import { ref, onUnmounted, nextTick } from 'vue'
 import { vOnClickOutside } from '@vueuse/components'
 import { Icon } from '@iconify/vue'
-import Btn from './Btn.vue'
+import NeptuBtn from './NeptuBtn.vue'
 
 const props = defineProps<{
   dropUp?: boolean | string
@@ -16,7 +16,7 @@ const menuId = `dropdown-menu-${Math.random().toString(36).slice(2, 10)}`
 const listOpen = ref(false)
 const opacity = ref(0)
 const mouseOverWholeEl = ref(false)
-const triggerRef = ref<InstanceType<typeof Btn> | null>(null)
+const triggerRef = ref<InstanceType<typeof NeptuBtn> | null>(null)
 const menuRef = ref<{
   querySelectorAll: (
     selector: string
@@ -145,7 +145,7 @@ onUnmounted(() => {
     @mouseenter="handleWholeMouseEnter"
     @mouseleave="handleWholeMouseLeave"
   >
-    <Btn
+    <NeptuBtn
       ref="triggerRef"
       :no-bg="props.noBg"
       :title="props.title"
@@ -169,7 +169,7 @@ onUnmounted(() => {
           </span>
         </span>
       </span>
-    </Btn>
+    </NeptuBtn>
     <div
       :id="menuId"
       ref="menuRef"

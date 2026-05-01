@@ -1,0 +1,78 @@
+import { describe, it, expect, beforeEach } from 'vitest'
+import { mount } from '@vue/test-utils'
+import PreviewListItem from '../../src/components/PreviewListItem.vue'
+import { mockTheme } from '../mocks/vitepress'
+
+const PreviewWithImageStub = {
+  name: 'PreviewWithImage',
+  template: '<div class="preview-stub" />',
+  props: ['tags', 'date', 'localeDate', 'preview', 'authorName', 'thumbnail', 'coverHeight', 'coverWidth'],
+}
+
+describe('PreviewListItem', () => {
+  beforeEach(() => {
+    mockTheme.value = { showAuthorInPostList: false, authors: [] }
+  })
+
+  it('renders title as link', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/post-1', title: 'Hello' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    expect(wrapper.find('a').attributes('href')).toBe('/post-1')
+    expect(wrapper.find('h2').text()).toBe('Hello')
+  })
+
+  it('formats preview text with ellipsis', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', preview: '  Some preview text.  ' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('preview')).toBe('Some preview text ...')
+  })
+
+  it('removes trailing dot before ellipsis', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', preview: 'Ends with dot.' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('preview')).toBe('Ends with dot ...')
+  })
+
+  it('passes undefined preview for empty string', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', preview: '   ' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('preview')).toBeUndefined()
+  })
+
+  it('passes author name when configured', () => {
+    mockTheme.value = {
+      showAuthorInPostList: true,
+      authors: [{ id: 'alice', name: 'Alice' }],
+    }
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', authorId: 'alice' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('authorName')).toBe('Alice')
+  })
+
+  it('passes undefined author when author not found', () => {
+    mockTheme.value = {
+      showAuthorInPostList: true,
+      authors: [{ id: 'bob', name: 'Bob' }],
+    }
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', authorId: 'alice' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('authorName')).toBeUndefined()
+  })
+})

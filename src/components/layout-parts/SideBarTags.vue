@@ -8,11 +8,11 @@
       @item-click="emit('itemClick')"
     />
     <div class="mt-2">
-      <BtnLink
+      <NeptuBtnLink
         v-if="showAllTags"
         :href="allTagsUrl"
         :icon="theme.tagsIcon"
-        >{{ theme.t.allTagsCall }}</BtnLink
+        >{{ theme.t.allTagsCall }}</NeptuBtnLink
       >
     </div>
   </div>
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { makeTagsList } from '../../list-helpers/listHelpers.ts'
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'
 import { useUiTheme } from '../../composables/useUiTheme.ts'

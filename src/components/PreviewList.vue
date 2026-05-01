@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PreviewListItem from './PreviewListItem.vue'
-import Pagination from './Pagination.vue'
+import NeptuPagination from './NeptuPagination.vue'
 import { useData } from 'vitepress'
 
 const { theme } = useData()
@@ -44,7 +44,7 @@ const totalPages = Math.ceil(props.localePosts.length / perPage)
     </ul>
 
     <div v-if="totalPages > 1" class="mt-10">
-      <Pagination
+      <NeptuPagination
         :cur-page="props.curPage"
         :total-pages="totalPages"
         :pagination-max-items="props.paginationMaxItems"

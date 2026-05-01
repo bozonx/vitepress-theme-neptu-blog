@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BtnLink from "../BtnLink.vue";
+import NeptuBtnLink from "../NeptuBtnLink.vue";
 import { useData } from "vitepress";
 
 const { theme } = useData();
@@ -16,7 +16,7 @@ const { theme } = useData();
 
     <ul v-if="theme.footer.links?.length" class="flex flex-wrap gap-x-9 items-center">
       <li v-for="(item, index) in theme.footer.links" :key="item.href + index">
-        <BtnLink :text="item.text" :href="item.href" class="underline" />
+        <NeptuBtnLink :text="item.text" :href="item.href" class="underline" />
       </li>
     </ul>
   </footer>

@@ -8,13 +8,13 @@
       v-if="showPopularPostsSwitch"
       class="flex flex-row items-center gap-1 gap-y-4 list-page-header-switcher max-[460px]:flex-col max-[460px]:items-start"
     >
-      <Btn
+      <NeptuBtn
         :text="theme.t.links.recent"
         :href="`${props.baseUrl}/1`"
         :icon="theme.recentIcon"
         active-compare-method="pagination"
       />
-      <Btn
+      <NeptuBtn
         :text="theme.t.links.popular"
         :href="`${popularBaseUrl}/1`"
         :icon="theme.popularIcon"
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import Btn from './Btn.vue'
+import NeptuBtn from './NeptuBtn.vue'
 import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()

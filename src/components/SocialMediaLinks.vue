@@ -1,6 +1,6 @@
 <template>
   <div class="flex gap-x-2">
-    <Btn
+    <NeptuBtn
       v-for="link in links"
       :key="link.url"
       :href="link.url"
@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import Btn from './Btn.vue'
+import NeptuBtn from './NeptuBtn.vue'
 
 interface SocialLink {
   url: string

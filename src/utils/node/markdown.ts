@@ -106,7 +106,7 @@ export function parseMdFile(
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     throw new Error(`Failed to parse frontmatter in ${sourceName}: ${message}`, {
-      cause: error instanceof Error ? error : undefined,
+      cause: error,
     })
   }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
 
-import BtnLink from '../BtnLink.vue'
+import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
@@ -10,7 +10,7 @@ const { theme } = useUiTheme()
 
 <template>
   <div v-if="frontmatter.commentUrl">
-    <BtnLink
+    <NeptuBtnLink
       :href="frontmatter.commentUrl"
       :text="theme.t.commentCall"
       target="_blank"
