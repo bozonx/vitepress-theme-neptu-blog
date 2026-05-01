@@ -62,6 +62,14 @@ body.modal-open {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
+.card-item.preview:hover {
+  transform: none;
+}
+
+.dark .card-item.preview:hover {
+  transform: none;
+}
+
 .card-item:visited .card-item-header {
   color: var(--link-a-visited);
 }
