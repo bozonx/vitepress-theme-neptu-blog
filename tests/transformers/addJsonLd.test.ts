@@ -471,7 +471,7 @@ describe('addJsonLd', () => {
         relativePath: 'en/custom.md',
         frontmatter: {
           layout: 'util',
-          jsonLd: '[{\"@type\":\"Thing\",\"name\":\"One\"},{\"@type\":\"Thing\",\"name\":\"Two\"}]',
+          jsonLd: '[{"@type":"Thing","name":"One"},{"@type":"Thing","name":"Two"}]',
         },
       } as any,
     })
@@ -500,7 +500,7 @@ describe('addJsonLd', () => {
         frontmatter: {
           layout: 'post',
           date: '2023-01-01',
-          jsonLd: '[{\"@type\":\"Thing\",\"name\":\"Ignored\"}]',
+          jsonLd: '[{"@type":"Thing","name":"Ignored"}]',
         },
       } as any,
     })
