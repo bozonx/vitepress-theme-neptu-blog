@@ -8,7 +8,7 @@ describe('ListItemWithBadge', () => {
       props: { text: 'Posts', count: 5 },
     })
     expect(wrapper.text()).toContain('Posts')
-    const badge = wrapper.findComponent({ name: 'Badge' })
+    const badge = wrapper.findComponent({ name: 'NeptuBadge' })
     expect(badge.exists()).toBe(true)
     expect(badge.props('count')).toBe(5)
   })
@@ -17,7 +17,7 @@ describe('ListItemWithBadge', () => {
     const wrapper = mount(ListItemWithBadge, {
       props: { text: 'Posts' },
     })
-    expect(wrapper.findComponent({ name: 'Badge' }).exists()).toBe(false)
+    expect(wrapper.findComponent({ name: 'NeptuBadge' }).exists()).toBe(false)
     expect(wrapper.text()).toContain('Posts')
   })
 

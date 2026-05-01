@@ -53,11 +53,11 @@ export function getImageDimensions(
 
 /** Gets image dimensions from a buffer */
 export function getImageSize(buffer: Buffer): ImageSizeResult {
-  try {
-    if (!Buffer.isBuffer(buffer)) {
-      throw new Error('Input must be a Buffer')
-    }
+  if (!Buffer.isBuffer(buffer)) {
+    throw new Error('Input must be a Buffer')
+  }
 
+  try {
     const dimensions = imageSize(buffer)
 
     return {

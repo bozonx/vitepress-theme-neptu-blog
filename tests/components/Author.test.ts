@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Author from '../../src/components/Author.vue'
+import Author from '../../src/components/NeptuAuthor.vue'
 
 describe('Author', () => {
   it('renders author image with correct attributes', () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import Badge from '../../src/components/Badge.vue'
+import Badge from '../../src/components/NeptuBadge.vue'
 
 describe('Badge', () => {
   it('renders numeric count', () => {

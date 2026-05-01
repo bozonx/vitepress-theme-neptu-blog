@@ -77,7 +77,7 @@ export const common: Record<string, unknown> = {
     recentBaseUrl: 'recent',
     authorsBaseUrl: 'authors',
 
-    donateIcon: 'fa6-solid:heart',
+    donateIcon: 'fa6-solid:hand-holding-heart',
     recentIcon: 'fa6-solid:bolt',
     popularIcon: 'fa6-solid:star',
     byDateIcon: 'fa6-solid:calendar-days',

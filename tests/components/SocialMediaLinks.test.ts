@@ -10,7 +10,7 @@ describe('SocialMediaLinks', () => {
   it('renders nothing when links array is empty', () => {
     const wrapper = mount(SocialMediaLinks, {
       props: { links: [] },
-      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub } },
+      global: { stubs: { NeptuBtn: NeptuBtnStub } },
     })
     expect(wrapper.findAll('.btn-stub')).toHaveLength(0)
   })
@@ -23,7 +23,7 @@ describe('SocialMediaLinks', () => {
           { url: 'https://youtube.com/user', type: 'youtube' },
         ],
       },
-      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub } },
+      global: { stubs: { NeptuBtn: NeptuBtnStub } },
     })
     const anchors = wrapper.findAll('.btn-stub')
     expect(anchors).toHaveLength(2)
