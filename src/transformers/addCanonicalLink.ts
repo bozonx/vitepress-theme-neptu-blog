@@ -1,10 +1,12 @@
 import { generatePageUrlPath, makeAbsoluteUrl, normalizeSiteUrl } from '../utils/shared/index.ts'
 
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+
 export interface AddCanonicalLinkContext {
   page: string
   head: any[]
-  pageData: any
-  siteConfig: any
+  pageData: ExtendedPageData
+  siteConfig: ExtendedSiteConfig
 }
 
 /** Adds a canonical link to the page head if the canonical parameter is specified in frontmatter. */
@@ -14,6 +16,7 @@ export function addCanonicalLink({
   pageData,
   siteConfig,
 }: AddCanonicalLinkContext): void {
+
   if (!page || page.indexOf('/') < 0) {
     return
   }

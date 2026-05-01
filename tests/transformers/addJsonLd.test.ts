@@ -46,6 +46,7 @@ describe('addJsonLd', () => {
         title: 'Hello',
         description: 'World',
         relativePath: 'en/post/hello.md',
+        filePath: 'en/post/hello.md',
         frontmatter: {
           layout: 'post',
           date: '2023-01-01',
@@ -57,6 +58,7 @@ describe('addJsonLd', () => {
         ...overrides.pageData,
       } as any,
       siteConfig: {
+        srcDir: '.',
         userConfig: {
           siteUrl: 'https://example.com',
           themeConfig: {
@@ -67,7 +69,14 @@ describe('addJsonLd', () => {
         },
         site: {
           locales: {
-            en: { lang: 'en-US', title: 'Blog', themeConfig: { authors: [{ id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' }], publisher: { name: 'Pub', url: 'https://pub.com', logo: '/img/logo.png' } } },
+            en: {
+              lang: 'en-US',
+              title: 'Blog',
+              themeConfig: {
+                authors: [{ id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' }],
+                publisher: { name: 'Pub', url: 'https://pub.com', logo: '/img/logo.png' },
+              },
+            },
           },
         },
         ...overrides.siteConfig,
@@ -75,6 +84,7 @@ describe('addJsonLd', () => {
       ...overrides,
     }
   }
+
 
   it('does nothing if page has no slash', () => {
     const ctx = createContext({ page: 'hello' })
@@ -347,7 +357,7 @@ describe('addJsonLd', () => {
     vi.mocked(sharedUtils.isPage).mockReturnValue(false)
 
     const ctx = createContext()
-    ctx.pageData.frontmatter.tags = [{ name: 'JavaScript' }, 'TypeScript']
+    ctx.pageData.frontmatter.tags = [{ name: 'JavaScript' } as any, 'TypeScript']
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.keywords).toBe('JavaScript, TypeScript')

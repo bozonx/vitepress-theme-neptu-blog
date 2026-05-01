@@ -140,7 +140,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    v-on-click-outside="closeList"
+    v-on-click-outside="() => closeList()"
     class="dropdown-btn inline-block relative"
     @mouseenter="handleWholeMouseEnter"
     @mouseleave="handleWholeMouseLeave"
@@ -181,7 +181,7 @@ onUnmounted(() => {
         props.dropLeft && 'dropdown--drop-left right-0',
         !listOpen && 'hidden',
       ]"
-      @click="closeList"
+      @click="() => closeList()"
       @keydown="handleMenuKeydown"
     >
       <slot />

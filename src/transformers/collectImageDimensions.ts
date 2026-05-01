@@ -1,9 +1,12 @@
 import { getImageDimensions } from '../utils/node/index.ts'
 
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+
 export function collectImageDimensions(
-  pageData: any,
-  { siteConfig }: { siteConfig: any }
+  pageData: ExtendedPageData,
+  siteConfig: ExtendedSiteConfig
 ): void {
+
   if (!pageData.frontmatter.cover) return
 
   const imageDimensions = getImageDimensions(

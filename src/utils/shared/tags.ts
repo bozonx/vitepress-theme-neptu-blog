@@ -29,10 +29,10 @@ export function normalizeTag(
   if (!name && !rawSlug) return
 
   return {
-    ...(record as Tag),
+    ...record,
     name: name || rawSlug || '',
     slug: rawSlug || transliterate(name || '', lang),
-  }
+  } as Tag
 }
 
 export function normalizeTags(

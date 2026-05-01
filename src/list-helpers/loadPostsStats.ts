@@ -135,7 +135,7 @@ export async function loadGoogleAnalytics(
           },
         },
         orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-        limit: gaCfg.dataLimit || 1000,
+        limit: (gaCfg.dataLimit || 1000).toString(),
       },
     }
 

@@ -25,6 +25,7 @@ describe('addOgMetaTags', () => {
           authorId: 'alice',
           layout: 'post',
         },
+        ...overrides.pageData,
       } as any,
       siteConfig: {
         userConfig: {
@@ -44,15 +45,19 @@ describe('addOgMetaTags', () => {
               themeConfig: {
                 mainHeroImg: '/img/hero.png',
                 authorsBaseUrl: 'authors',
-                authors: [{ id: 'alice', name: 'Alice Author', aboutUrl: 'https://alice.example.com' }],
+                authors: [
+                  { id: 'alice', name: 'Alice Author', aboutUrl: 'https://alice.example.com' },
+                ],
               },
             },
           },
         },
+        ...overrides.siteConfig,
       } as any,
       ...overrides,
     }
   }
+
 
   it('does nothing without siteUrl', () => {
     const ctx = createContext({ siteConfig: { userConfig: {}, site: { locales: {} } } as any })
@@ -181,7 +186,7 @@ describe('addOgMetaTags', () => {
 
   it('handles tag objects with name property', () => {
     const ctx = createContext()
-    ctx.pageData.frontmatter.tags = [{ name: 'Tagged' }, 'plain']
+    ctx.pageData.frontmatter.tags = [{ name: 'Tagged' } as any, 'plain']
     addOgMetaTags(ctx)
     expect(ctx.head).toContainEqual(['meta', { property: 'article:tag', content: 'Tagged' }])
     expect(ctx.head).toContainEqual(['meta', { property: 'article:tag', content: 'plain' }])
@@ -189,7 +194,7 @@ describe('addOgMetaTags', () => {
 
   it('handles string tag', () => {
     const ctx = createContext()
-    ctx.pageData.frontmatter.tags = 'single-tag' as any
+    ctx.pageData.frontmatter.tags = ['single-tag'] as any
     addOgMetaTags(ctx)
     expect(ctx.head).toContainEqual(['meta', { property: 'article:tag', content: 'single-tag' }])
   })

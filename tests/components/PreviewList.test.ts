@@ -9,7 +9,7 @@ const PreviewListItemStub = {
 }
 
 const PaginationStub = {
-  name: 'Pagination',
+  name: 'NeptuPagination',
   template: '<div class="pagination-stub" />',
   props: ['curPage', 'totalPages', 'paginationMaxItems', 'paginationBaseUrl'],
 }
@@ -24,7 +24,7 @@ describe('PreviewList', () => {
   it('renders first page items by default', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts, curPage: 1, perPage: 10 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
     expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(10)
   })
@@ -32,7 +32,7 @@ describe('PreviewList', () => {
   it('renders second page items', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts, curPage: 2, perPage: 10 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
     expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(10)
   })
@@ -40,7 +40,7 @@ describe('PreviewList', () => {
   it('renders last partial page', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts, curPage: 3, perPage: 10 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
     expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(5)
   })
@@ -48,7 +48,7 @@ describe('PreviewList', () => {
   it('renders nothing when items array is empty', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: [], curPage: 1 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
     expect(wrapper.find('div').exists()).toBe(false)
   })
@@ -56,16 +56,16 @@ describe('PreviewList', () => {
   it('shows pagination when totalPages > 1', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts, curPage: 1, perPage: 10 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
-    expect(wrapper.findComponent({ name: 'Pagination' }).exists()).toBe(true)
+    expect(wrapper.findComponent({ name: 'NeptuPagination' }).exists()).toBe(true)
   })
 
   it('hides pagination when totalPages <= 1', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts.slice(0, 5), curPage: 1, perPage: 10 },
-      global: { stubs: { PreviewListItem: PreviewListItemStub, Pagination: PaginationStub } },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
     })
-    expect(wrapper.findComponent({ name: 'Pagination' }).exists()).toBe(false)
+    expect(wrapper.findComponent({ name: 'NeptuPagination' }).exists()).toBe(false)
   })
 })

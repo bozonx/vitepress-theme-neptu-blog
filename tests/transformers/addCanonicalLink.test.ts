@@ -14,11 +14,17 @@ describe('addCanonicalLink', () => {
     return {
       page: overrides.page ?? 'en/post/hello.md',
       head: [],
-      pageData: overrides.pageData ?? { frontmatter: {} },
-      siteConfig: overrides.siteConfig ?? { userConfig: { siteUrl: 'https://example.com' } },
+      pageData: (overrides.pageData ?? {
+        filePath: overrides.page ?? 'en/post/hello.md',
+        frontmatter: {},
+      }) as any,
+      siteConfig: (overrides.siteConfig ?? {
+        userConfig: { siteUrl: 'https://example.com' },
+      }) as any,
       ...overrides,
     } as AddCanonicalLinkContext
   }
+
 
   it('does nothing if page has no slash', () => {
     const ctx = createContext({ page: 'hello' })
@@ -41,7 +47,7 @@ describe('addCanonicalLink', () => {
   it('adds self-canonical link', () => {
     const ctx = createContext({
       page: 'en/post/hello.md',
-      pageData: { frontmatter: { canonical: 'self' } },
+      pageData: { frontmatter: { canonical: 'self' } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
@@ -50,8 +56,9 @@ describe('addCanonicalLink', () => {
   it('supports the short self alias', () => {
     const ctx = createContext({
       page: 'en/post/hello.md',
-      pageData: { frontmatter: { canonical: 's' } },
+      pageData: { frontmatter: { canonical: 's' } } as any,
     })
+
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
   })
@@ -59,8 +66,8 @@ describe('addCanonicalLink', () => {
   it('warns and skips if siteUrl is missing for self-canonical', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const ctx = createContext({
-      pageData: { frontmatter: { canonical: 'self' } },
-      siteConfig: { userConfig: {} },
+      pageData: { frontmatter: { canonical: 'self' } } as any,
+      siteConfig: { userConfig: {} } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
@@ -70,7 +77,7 @@ describe('addCanonicalLink', () => {
 
   it('adds explicit canonical URL', () => {
     const ctx = createContext({
-      pageData: { frontmatter: { canonical: 'https://other.com/page' } },
+      pageData: { frontmatter: { canonical: 'https://other.com/page' } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://other.com/page' }]])
@@ -78,8 +85,8 @@ describe('addCanonicalLink', () => {
 
   it('normalizes self-canonical when siteUrl has a trailing slash', () => {
     const ctx = createContext({
-      pageData: { frontmatter: { canonical: 'self' } },
-      siteConfig: { userConfig: { siteUrl: 'https://example.com/' } },
+      pageData: { frontmatter: { canonical: 'self' } } as any,
+      siteConfig: { userConfig: { siteUrl: 'https://example.com/' } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
@@ -89,7 +96,7 @@ describe('addCanonicalLink', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const ctx = createContext({
       page: 'en/post/hello.md',
-      pageData: { frontmatter: { canonical: 'not-a-url' } },
+      pageData: { frontmatter: { canonical: 'not-a-url' } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
@@ -99,11 +106,12 @@ describe('addCanonicalLink', () => {
 
   it('skips non-string canonical values', () => {
     const ctx = createContext({
-      pageData: { frontmatter: { canonical: true } },
+      pageData: { frontmatter: { canonical: true } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
   })
+
 
   it('handles null pageData gracefully', () => {
     const ctx = createContext({
@@ -118,7 +126,7 @@ describe('addCanonicalLink', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const ctx = createContext({
       page: 'en/post/hello.md',
-      pageData: { frontmatter: { canonical: 'self' } },
+      pageData: { frontmatter: { canonical: 'self' } } as any,
       siteConfig: null as any,
     })
     addCanonicalLink(ctx)

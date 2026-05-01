@@ -79,7 +79,10 @@ export namespace NeptuBlogTheme {
       copyright?: string
       links?: NavLink[]
     }
+
+    [key: string]: any
   }
+
 
   export interface I18n {
     popularPosts: string
@@ -128,7 +131,10 @@ export namespace NeptuBlogTheme {
     audioFile: Record<string, string>
     fileDownload: Record<string, string>
     lightbox: Record<string, string>
+
+    [key: string]: any
   }
+
 
   export interface GoogleAnalyticsConfig {
     propertyId?: string | null
@@ -222,7 +228,9 @@ export namespace NeptuBlogTheme {
     jsonLd?: string
     searchIncluded?: boolean
     podcasts?: Record<string, string>
+    canonical?: string
   }
+
 
   export interface Post {
     url: string
@@ -239,14 +247,29 @@ export namespace NeptuBlogTheme {
     [key: string]: unknown
   }
 
+  export interface LocaleDefinition {
+    lang?: string
+    title?: string
+    description?: string
+    head?: DefaultTheme.Config['head']
+    themeConfig?: DeepPartial<Config>
+    t?: DeepPartial<I18n>
+    label?: string
+    link?: string
+  }
+
   export interface ExtendedPageData extends PageData {
-    frontmatter: PostFrontmatter | Record<string, any>
+    frontmatter: PostFrontmatter
+    filePath: string
   }
 
   export interface ExtendedSiteConfig extends SiteConfig<Config> {
     userConfig: {
       themeConfig: Config
       siteUrl?: string
+      maxPostsInRssFeed?: number
+      rssFormats?: string[]
+      maxDescriptionLength?: number
       [key: string]: unknown
     }
   }
@@ -261,5 +284,7 @@ export type Author = NeptuBlogTheme.Author
 export type I18n = NeptuBlogTheme.I18n
 export type UiLocaleConfig = NeptuBlogTheme.UiLocaleConfig
 export type UiLocaleDefinition = NeptuBlogTheme.UiLocaleDefinition
+export type LocaleDefinition = NeptuBlogTheme.LocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
+

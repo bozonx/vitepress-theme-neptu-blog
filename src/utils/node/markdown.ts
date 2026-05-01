@@ -14,7 +14,14 @@ const SAFE_URL_PROTOCOLS = new Set([
   'tel:',
 ])
 
-function sanitizeNodeTree(node: any): void {
+interface RehypeNode {
+  type: string
+  tagName?: string
+  properties?: Record<string, unknown>
+  children?: RehypeNode[]
+}
+
+function sanitizeNodeTree(node: RehypeNode): void {
   if (!node || typeof node !== 'object') return
 
   if (node.type === 'element' && typeof node.tagName === 'string') {
@@ -36,10 +43,11 @@ function sanitizeNodeTree(node: any): void {
 }
 
 function sanitizeHtmlTree() {
-  return (tree: any) => {
+  return (tree: RehypeNode) => {
     sanitizeNodeTree(tree)
   }
 }
+
 
 function isExternalUrl(value: string): boolean {
   return /^(?:https?:)?\/\//i.test(value)

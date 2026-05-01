@@ -6,7 +6,7 @@ import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
 import type { BlogUserConfig } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
-import type { UiLocaleDefinition } from '../../types.d.ts'
+import type { UiLocaleDefinition, LocaleDefinition, Author } from '../../types.d.ts'
 
 function resolveInitialUiLocaleKey(
   localeIndex: string,
@@ -25,7 +25,7 @@ function resolveInitialUiLocaleKey(
 
 function resolveUiLocaleDefinition(
   localeKey: string,
-  builtIns: Record<string, any>,
+  builtIns: Record<string, LocaleDefinition>,
   uiLocales: Record<string, UiLocaleDefinition> = {},
   visited = new Set<string>()
 ): UiLocaleDefinition {
@@ -54,20 +54,24 @@ function resolveUiLocaleDefinition(
   }
 }
 
-export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig): Promise<any> {
-  const localeMap = blogBaseLocales as Record<string, any>
+export async function loadBlogLocale(
+  localeIndex: string,
+  config: BlogUserConfig
+): Promise<LocaleDefinition & { label?: string }> {
+  const localeMap = blogBaseLocales as unknown as Record<string, LocaleDefinition>
   const baseLocaleKey = resolveBaseLocaleKey(localeIndex, localeMap)
   const baseLocale = localeMap[baseLocaleKey]
   const uiLocaleKey = resolveInitialUiLocaleKey(
     localeIndex,
-    config.themeConfig?.uiLocales,
+    config.themeConfig?.uiLocales || {},
     config.themeConfig?.uiLocale?.default
   )
   const uiLocale = resolveUiLocaleDefinition(
     uiLocaleKey,
     localeMap,
-    config.themeConfig?.uiLocales
+    config.themeConfig?.uiLocales || {}
   )
+
   const resolvedTheme = deepMerge(
     { ...blogCommon.themeConfig, ...config.themeConfig } as Record<string, unknown>,
     {
@@ -83,12 +87,12 @@ export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig
     localeIndex,
     config,
     theme: resolvedTheme,
-    t: (resolvedTheme as Record<string, any>).t,
+    t: (resolvedTheme as Record<string, unknown>).t as Record<string, unknown>,
   }
   const site = parseLocaleSite(config.srcDir || '', params) as any
   const { lang, title, description, t, editLink, ...themeConfig } = site
 
-  const authors = themeConfig.authors?.map((item: any) => {
+  const authors = (themeConfig.authors as Author[] | undefined)?.map((item: Author) => {
     const imageDimensions = item.image
       ? getImageDimensions(item.image as string, config.srcDir || '')
       : null
@@ -112,8 +116,8 @@ export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig
       ...themeConfig,
       editLink: {
         pattern: `${config.repo}/edit/main/src/:path`,
-        ...baseLocale.themeConfig.editLink,
-        ...((uiLocale.themeConfig || {}) as Record<string, any>).editLink,
+        ...baseLocale.themeConfig?.editLink,
+        ...((uiLocale.themeConfig || {}) as Record<string, { text?: string }>).editLink,
         ...editLink,
       },
       t: { ...baseLocale.t, ...(uiLocale.t || {}), ...t },
@@ -121,3 +125,4 @@ export async function loadBlogLocale(localeIndex: string, config: BlogUserConfig
     },
   }
 }
+

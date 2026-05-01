@@ -13,8 +13,16 @@ import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
-export type BlogUserConfig = UserConfig & Record<string, any> & { repo?: string }
+export type BlogUserConfig = UserConfig & {
+  repo?: string
+  siteUrl?: string
+  maxPostsInRssFeed?: number
+  rssFormats?: string[]
+  maxDescriptionLength?: number
+  [key: string]: any
+}
 
 export const common: Record<string, any> = {
   head: [
@@ -141,18 +149,23 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
       },
     },
 
-    async transformPageData(pageData: any, ctx: any) {
-      collectImageDimensions(pageData, ctx)
-      transformTitle(pageData, ctx)
-      transformPageMeta(pageData, ctx)
-      resolveDescription(pageData, ctx)
+    async transformPageData(pageData: ExtendedPageData, { siteConfig }: { siteConfig: ExtendedSiteConfig }) {
+      collectImageDimensions(pageData, siteConfig)
+      transformTitle(pageData, { siteConfig })
+      transformPageMeta(pageData)
+      resolveDescription(pageData, { siteConfig })
 
       if (config.transformPageData) {
-        await config.transformPageData(pageData, ctx)
+        await config.transformPageData(pageData, { siteConfig })
       }
     },
 
-    async transformHead(ctx: any) {
+    async transformHead(ctx: {
+      head: any[]
+      pageData: ExtendedPageData
+      siteConfig: ExtendedSiteConfig
+      page: string
+    }) {
       addOgMetaTags(ctx)
       addJsonLd(ctx)
       addHreflang(ctx)
@@ -160,9 +173,12 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
       addRssLinks(ctx)
 
       if (config.transformHead) {
-        await config.transformHead(ctx)
+        await config.transformHead(ctx as any)
       }
+
     },
+
+
 
     buildEnd: async (cfg: any) => {
       await generateRssFeed(cfg)

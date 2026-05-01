@@ -6,7 +6,7 @@ import {
   normalizeSiteUrl,
   replaceRelativePathLocale,
 } from '../utils/shared/index.ts'
-import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+import type { ExtendedPageData, ExtendedSiteConfig, LocaleDefinition } from '../types.d.ts'
 
 export interface AddHreflangContext {
   head: any[]
@@ -27,7 +27,7 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
   const relativePath = pageData.relativePath
   const srcDir = siteConfig.srcDir
 
-  const alternates = Object.entries(locales).flatMap(([code, locale]: [string, any]) => {
+  const alternates = Object.entries(locales).flatMap(([code, locale]) => {
     const localeRelativePath = replaceRelativePathLocale(relativePath, code)
     if (!localeRelativePath) return []
 
@@ -38,26 +38,27 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
     const url = makeAbsoluteUrl(siteUrl, generatePageUrlPath(localeRelativePath))
     if (!url) return []
 
-    const lang = locale.lang || code
+    const lang = (locale as LocaleDefinition).lang || code
 
-    return [{
-      code,
-      tag: [
-        'link',
-        {
-          rel: 'alternate',
-          hreflang: lang,
-          href: url,
-        },
-      ],
-    }]
+    return [
+      {
+        code,
+        tag: [
+          'link',
+          {
+            rel: 'alternate',
+            hreflang: lang,
+            href: url,
+          },
+        ] as [string, Record<string, string>],
+      },
+    ]
   })
 
   if (alternates.length <= 1) return
 
   const defaultAlternate =
-    alternates.find((alternate) => alternate.code === Object.keys(locales)[0]) ||
-    alternates[0]
+    alternates.find((alternate) => alternate.code === Object.keys(locales)[0]) || alternates[0]
 
   head.push(
     ...alternates.map((alternate) => alternate.tag),
@@ -71,3 +72,4 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
     ]
   )
 }
+

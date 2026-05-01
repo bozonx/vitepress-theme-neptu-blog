@@ -21,6 +21,7 @@ vi.mock('../../src/utils/node/index.ts', async (importOriginal) => {
 describe('transformPageMeta', () => {
   function createPageData(overrides: Partial<ExtendedPageData> = {}): ExtendedPageData {
     return {
+      filePath: 'en/test.md',
       frontmatter: {
         layout: 'post',
         tags: ['Foo', 'Bar Baz'],
@@ -32,13 +33,13 @@ describe('transformPageMeta', () => {
 
   it('does nothing for non-post pages', () => {
     const pageData = createPageData({ frontmatter: { layout: 'page' } })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toBeUndefined()
   })
 
   it('transforms string tags to objects with slug', () => {
     const pageData = createPageData()
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toEqual([
       { name: 'Foo', slug: 'foo' },
       { name: 'Bar Baz', slug: 'bar-baz' },
@@ -52,7 +53,7 @@ describe('transformPageMeta', () => {
         tags: [{ name: 'Foo', slug: 'custom-slug' }],
       },
     })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toEqual([{ name: 'Foo', slug: 'custom-slug' }])
   })
 
@@ -61,10 +62,10 @@ describe('transformPageMeta', () => {
       filePath: 'en/post/hello.md',
       frontmatter: {
         layout: 'post',
-        tags: [{ name: 'Foo Bar' }],
+        tags: [{ name: 'Foo Bar' } as any],
       },
     })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toEqual([{ name: 'Foo Bar', slug: 'foo-bar' }])
   })
 
@@ -75,13 +76,13 @@ describe('transformPageMeta', () => {
         coverDescr: 'Some **bold** text',
       },
     })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.coverDescr).toBe('<p>Some **bold** text</p>')
   })
 
   it('does nothing when coverDescr is absent', () => {
     const pageData = createPageData()
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.coverDescr).toBeUndefined()
   })
 
@@ -92,7 +93,7 @@ describe('transformPageMeta', () => {
         tags: [],
       },
     })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toEqual([])
   })
 
@@ -102,7 +103,8 @@ describe('transformPageMeta', () => {
         layout: 'post',
       },
     })
-    transformPageMeta(pageData, {})
+    transformPageMeta(pageData)
     expect(pageData.frontmatter.tags).toBeUndefined()
   })
+
 })

@@ -9,7 +9,7 @@ const TagsListStub = {
   props: ['tags'],
 }
 
-const NeptuNeptuBtnLinkStub = {
+const NeptuBtnLinkStub = {
   name: 'NeptuBtnLink',
   template: '<a class="btn-link-stub"><slot /></a>',
   props: ['href', 'icon'],
@@ -28,7 +28,7 @@ describe('PostTags', () => {
   it('renders nothing when no tags', () => {
     mockFrontmatter.value = {}
     const wrapper = mount(PostTags, {
-      global: { stubs: { TagsList: TagsListStub, BtnLink: NeptuBtnLinkStub } },
+      global: { stubs: { TagsList: TagsListStub, NeptuBtnLink: NeptuBtnLinkStub } },
     })
     expect(wrapper.find('div').exists()).toBe(false)
   })
@@ -41,10 +41,10 @@ describe('PostTags', () => {
       ],
     }
     const wrapper = mount(PostTags, {
-      global: { stubs: { TagsList: TagsListStub, BtnLink: NeptuBtnLinkStub } },
+      global: { stubs: { TagsList: TagsListStub, NeptuBtnLink: NeptuBtnLinkStub } },
     })
     expect(wrapper.findComponent({ name: 'TagsList' }).exists()).toBe(true)
-    expect(wrapper.findComponent({ name: 'BtnLink' }).exists()).toBe(true)
+    expect(wrapper.findComponent({ name: 'NeptuBtnLink' }).exists()).toBe(true)
     expect(wrapper.findComponent({ name: 'TagsList' }).props('tags')).toHaveLength(2)
   })
 
@@ -56,7 +56,7 @@ describe('PostTags', () => {
       ],
     }
     const wrapper = mount(PostTags, {
-      global: { stubs: { TagsList: TagsListStub, BtnLink: NeptuBtnLinkStub } },
+      global: { stubs: { TagsList: TagsListStub, NeptuBtnLink: NeptuBtnLinkStub } },
     })
     const tagsProp = wrapper.findComponent({ name: 'TagsList' }).props('tags')
     expect(tagsProp[0].name).toBe('Apple')

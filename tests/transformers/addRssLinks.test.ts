@@ -26,27 +26,36 @@ describe('addRssLinks', () => {
     return {
       page: 'en/index.md',
       head: [],
-      pageData: {
+      pageData: (overrides.pageData ?? {
+        filePath: 'en/index.md',
         frontmatter: { layout: 'home' },
-      },
-      siteConfig: {
+        relativePath: 'en/index.md',
+        title: 'English Blog',
+        description: 'Blog description',
+      }) as any,
+      siteConfig: (overrides.siteConfig ?? {
+        srcDir: '.',
         userConfig: {
           siteUrl: 'https://example.com',
+          themeConfig: {} as any,
         },
         site: {
           locales: {
-            en: { title: 'English Blog' },
-            ru: { title: 'Russian Blog' },
+            en: { title: 'English Blog', lang: 'en', label: 'English', link: '/en/' },
+            ru: { title: 'Russian Blog', lang: 'ru', label: 'Russian', link: '/ru/' },
           },
         },
-      },
+      }) as any,
       ...overrides,
     } as AddRssLinksContext
   }
 
+
+
+
   it('does nothing for non-home pages', () => {
     const ctx = createContext({
-      pageData: { frontmatter: { layout: 'post' } },
+      pageData: { frontmatter: { layout: 'post' } } as any,
     })
     addRssLinks(ctx)
     expect(ctx.head).toEqual([])
@@ -118,12 +127,13 @@ describe('addRssLinks', () => {
         userConfig: {},
         site: {
           locales: {
-            en: { title: 'English Blog' },
-            ru: { title: 'Russian Blog' },
+            en: { title: 'English Blog', label: 'English', link: '/en/' },
+            ru: { title: 'Russian Blog', label: 'Russian', link: '/ru/' },
           },
         },
-      },
+      } as any,
     })
+
     addRssLinks(ctx)
     expect(ctx.head).toEqual([])
     expect(warnSpy).toHaveBeenCalledWith(

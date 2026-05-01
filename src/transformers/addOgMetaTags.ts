@@ -47,11 +47,10 @@ export function addOgMetaTags({
   const imageWidth = pageData.frontmatter.coverWidth
   const imageHeight = pageData.frontmatter.coverHeight
 
-  const author =
-    pageData.frontmatter.authorId &&
-    themeConfig.authors?.find(
-      (item: Author) => item.id === pageData.frontmatter.authorId
-    )
+  const author = pageData.frontmatter.authorId
+    ? themeConfig.authors?.find((item: Author) => item.id === pageData.frontmatter.authorId)
+    : undefined
+
   const authorUrl = author?.aboutUrl
     ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
     : themeConfig.authorsBaseUrl && pageData.frontmatter.authorId
@@ -114,9 +113,12 @@ export function addOgMetaTags({
     }
   }
 
-  tags.forEach(([type, name, content]) => {
-    if (content) {
-      head.push(['meta', { [type]: name, content }])
-    }
+  const filteredTags = tags.filter(
+    (tag): tag is [string, string, string] => Boolean(tag[0] && tag[1] && tag[2])
+  )
+
+  filteredTags.forEach(([type, name, content]) => {
+    head.push(['meta', { [type]: name, content }])
   })
 }
+
