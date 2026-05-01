@@ -1,64 +1,313 @@
 # vitepress-theme-neptu-blog
 
-Vitepress blog template for freedom sites by Ivan K.
+VitePress blog theme with i18n, RSS/Atom/JSON feeds, JSON-LD structured data, hreflang tags, canonical links, popular posts via Google Analytics, Pagefind search, tag/archive/author layouts, and Tailwind v4 styling.
 
-## Use in your project
+## Table of Contents
 
-See `example` dir
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Configuration](#configuration)
+- [Post Frontmatter](#post-frontmatter)
+- [Layouts & Components](#layouts--components)
+- [Styling](#styling)
+- [Multilingual Setup](#multilingual-setup)
+- [SEO Features](#seo-features)
+- [Development](#development)
+- [Publishing](#publishing)
 
-## Multilingual model
+## Features
 
-This theme is multilingual by design.
+- **Tailwind v4** source-mode styling
+- **Multilingual by design** — locale-prefixed routing, separate UI and content locales
+- **SEO ready** — JSON-LD, Open Graph, hreflang, canonical links, sitemap filtering
+- **RSS/Atom/JSON feeds** — generated automatically per locale
+- **Popular posts** — sort by GA4 pageviews at build time
+- **Pagefind** search integration
+- **Built-in layouts** — home, post, page, tag, archive, author
+- **Utility components** — home hero, tag lists, author cards, pagination
+- **Doc components** — audio player, file download, YouTube embed
 
-- Content always lives inside a locale directory, even if your site has only one language.
-- Locale indexes are user-defined route segments such as `en`, `ru`, `en-US`, `pt-BR`, `zh-CN`.
-- The theme does not restrict content locales to two-letter codes.
-- A single-language blog should still keep its content under a locale folder such as `src/en/`.
+## Installation
 
-Example content layout:
+```sh
+pnpm add -D vitepress-theme-neptu-blog
+```
+
+Peer dependencies (handled automatically with compatible VitePress projects):
+
+- `vitepress`
+- `vue`
+- `tailwindcss`
+
+## Quick Start
+
+Create `.vitepress/theme/index.ts`:
+
+```ts
+import DefaultTheme from 'vitepress-theme-neptu-blog'
+import './styles.css'
+
+export default DefaultTheme
+```
+
+Create `.vitepress/theme/styles.css`:
+
+```css
+@import "tailwindcss";
+@import "vitepress-theme-neptu-blog/tailwind-source.css";
+```
+
+Create `.vitepress/config.ts`:
+
+```ts
+import { defineConfig } from 'vitepress'
+import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
+
+export default defineConfig(
+  defineBlogConfig({
+    siteUrl: 'https://example.com',
+    title: 'My Blog',
+    description: 'Blog description',
+    srcDir: 'src',
+    locales: {
+      en: { lang: 'en-US', label: 'English' },
+    },
+    themeConfig: {
+      sidebarLogoSrc: '/img/sidebar-logo.webp',
+      authors: [
+        { id: 'john-smith', name: 'John Smith' },
+      ],
+    },
+  })
+)
+```
+
+Content lives inside locale folders:
 
 ```text
 src/
-  index.md
   en/
-    index.md
+    index.md          # home page
     post/
+      hello.md        # blog post
     page/
-  en-US/
-    index.md
-    post/
-    page/
-  site/
-    site.en.yaml
-    site.en-US.yaml
+      about.md        # static page
 ```
 
-Notes:
+See the `example/blog` directory in this repo for a complete working project.
 
-- `localeIndex` is the route segment and content bucket.
-- `lang` in locale config is the language tag used for SEO and browser formatting, for example `en-US` or `en-GB`.
-- If you only need one English UI but different content trees, you can still choose separate content locales such as `en-US` and `en-GB`.
+## Configuration
 
-See [docs/LOCALES.md](docs/LOCALES.md) for the planned locale model, UI locale resolution, switcher behavior, and admin overrides.
+`defineBlogConfig` merges your settings with theme defaults. Below are the main `themeConfig` options.
 
-## Use in dev mode
+### Core options
 
-This repo is a pnpm workspace. Clone and run:
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `showAuthorInPostList` | `boolean` | `true` | Show author name in post list items |
+| `perPage` | `number` | `10` | Posts per page |
+| `sidebarTagsCount` | `number` | `15` | Max tags shown in sidebar |
+| `similarPostsCount` | `number` | `5` | Similar posts count on post page |
+| `homeBgParallaxOffset` | `number` | `300` | Parallax offset for home background |
+| `paginationMaxItems` | `number` | `5` | Max pagination links |
+| `sidebarLogoSrc` | `string` | - | Logo image in sidebar |
+| `siteTitle` | `string` | - | Override site title in sidebar |
+| `sidebarMenuLabel` | `string` | - | Custom sidebar menu label |
 
-```sh
-pnpm install
-pnpm --filter vitepress-theme-neptu-blog-example-blog dev
+### Authors
+
+```ts
+themeConfig: {
+  authors: [
+    {
+      id: 'john-smith',
+      name: 'John Smith',
+      description?: string,
+      avatar?: string,
+      image?: string,
+      imageHeight?: number,
+      imageWidth?: number,
+      aboutUrl?: string,
+      links?: [{ icon: 'mdi:github', link: 'https://github.com/...' }],
+    },
+  ],
+}
 ```
 
-The example site under `example/blog` is linked to the local theme via
-`workspace:*`, so any change in `src/` is reflected immediately.
+### Navigation
 
-## Styling: Tailwind v4 source-mode
+```ts
+themeConfig: {
+  topBar: {
+    links: [
+      { text: '${PROPS.t.links.donate}', href: '${PROPS.siteUrl}/${PROPS.localeIndex}/page/donate', icon: '${PROPS.donateIcon}', mobileOnly?: boolean, desktopOnly?: boolean },
+    ],
+    donate?: boolean,
+    socialLinks?: SocialLink[],
+  },
+  sideBar: {
+    links?: NavLink[],
+    recent?: boolean,
+    popular?: boolean,
+    archive?: boolean,
+    authors?: boolean,
+    tags?: boolean,
+    bottomLinks?: NavLink[],
+    donate?: boolean,
+    socialLinks?: SocialLink[],
+    rssFeed?: boolean,
+    atomFeed?: boolean,
+  },
+}
+```
 
-The theme is built with Tailwind v4 and ships its sources, not prebuilt
-CSS. Your VitePress site must compile Tailwind itself; the theme exposes
-a single `@source` re-export that tells your Tailwind compiler to scan
-the theme's `.vue` / `.js` files.
+### Google Analytics (build-time popular posts)
+
+```ts
+themeConfig: {
+  googleAnalytics: {
+    propertyId: process.env.GA_PROPERTY_ID,
+    credentialsJson: process.env.GA_CREDENTIALS_JSON,
+    dataPeriodDays: 30,
+    dataLimit: 1000,
+  },
+  popularPosts: {
+    enabled: true,
+    sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
+  },
+}
+```
+
+See [docs/BUILD_TIME_ANALYTICS.md](docs/BUILD_TIME_ANALYTICS.md) for the full GA4 service-account setup.
+
+### RSS feed options
+
+```ts
+export default defineConfig(
+  defineBlogConfig({
+    maxPostsInRssFeed: 50,
+    rssFormats: ['rss', 'atom', 'json'],
+  })
+)
+```
+
+See [docs/rss-feed-guide.md](docs/rss-feed-guide.md) for details.
+
+### JSON-LD publisher
+
+```ts
+themeConfig: {
+  publisher: {
+    name: 'Your Site Name',
+    url: 'https://yoursite.com',
+    logo: '/logo.png',
+  },
+}
+```
+
+See [docs/JSON_LD_GUIDE.md](docs/JSON_LD_GUIDE.md) for structured-data documentation.
+
+### Optional VitePress build options
+
+```ts
+export default defineConfig({
+  metaChunk: true, // smaller initial HTML payloads for large sites
+})
+```
+
+## Post Frontmatter
+
+Posts support the following frontmatter fields:
+
+### Common fields
+
+```yaml
+---
+# Optional: override title extracted from H1
+title: 'Post Title'
+# Meta description and preview text
+description: 'Post description'
+# Use description as preview in lists and article
+descrAsPreview: true
+# Custom preview text (overrides description auto-preview)
+previewText: 'Custom preview text'
+# ISO publication date (include time for same-day ordering)
+date: '2024-01-15T10:00:00Z'
+# Author ID from themeConfig.authors
+authorId: 'john-smith'
+# Main cover image
+cover: /media/cover.jpg
+coverDescr: 'Cover description'
+coverAlt: 'Alt text'
+# Social comments URL
+commentUrl: 'https://...'
+# Tags (spaces allowed)
+tags:
+  - 'some tag'
+# Canonical link
+canonical: 'https://example.com/en/post/post-slug'
+# or
+canonical: 'self'
+# or short alias
+canonical: 's'
+---
+```
+
+### Media posts
+
+```yaml
+---
+# YouTube / external video link
+videoLink: 'https://youtube.com/watch?v=...'
+videoLinkLang: 'en'
+
+# Podcast links
+podcasts:
+  site: 'https://...'
+  spotify: 'https://...'
+  applepodcasts: 'https://...'
+podcastLang: 'en'
+---
+```
+
+If no media or cover is set, the first image found in the post content is used as the list thumbnail.
+
+## Layouts & Components
+
+### Layouts
+
+Import from `vitepress-theme-neptu-blog/layouts`:
+
+- `Layout` — main Neptu layout (default)
+- `DefaultLayout` — plain content layout
+- `BlogHome` — home page layout
+
+### Utility components
+
+Import from `vitepress-theme-neptu-blog/components`:
+
+- `HomeHero`, `HomeTags`, `HomePopularPosts`
+- `AllTagsList`, `TagPostsList`
+- `AuthorDetails`, `NeptuAuthors`
+- `MonthPostsList`, `MonthsOfYear`, `NeptuYears`
+- `PopularPostsList`, `RecentList`
+- `PageFindSearch`, `NavSearchButton`
+- `UtilPageContent`, `UtilPageHeader`, `UtilSubPageHeader`
+
+### Doc components (available in markdown)
+
+Registered globally in the theme:
+
+- `<AudioFile url="/audio/file.mp3" />`
+- `<FileDownload url="/files/doc.pdf" />`
+- `<YouTubeEmbed video-id="dQw4w9WgXcQ" />`
+
+See [docs/README_COMPONENTS.md](docs/README_COMPONENTS.md) for full component documentation.
+
+## Styling
+
+The theme ships Tailwind v4 sources, not prebuilt CSS. Your site must compile Tailwind itself.
 
 ### 1. Install the Vite plugin
 
@@ -66,10 +315,10 @@ the theme's `.vue` / `.js` files.
 pnpm add -D @tailwindcss/vite tailwindcss
 ```
 
-### 2. Wire it into VitePress
+### 2. Add to VitePress config
 
-```js
-// .vitepress/config.js
+```ts
+// .vitepress/config.ts
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 
@@ -78,171 +327,70 @@ export default defineConfig({
 })
 ```
 
-### 3. Author your CSS
+### 3. Import theme source in your CSS
 
 ```css
 /* .vitepress/theme/styles.css */
 @import "tailwindcss";
 @import "vitepress-theme-neptu-blog/tailwind-source.css";
 
-/* Optional: customise tokens that the theme reads */
+/* Optional: custom design tokens */
 @theme {
   --color-brand-1: oklch(0.55 0.2 240);
   --font-sans: "Inter Variable", sans-serif;
 }
 ```
 
-```js
-// .vitepress/theme/index.js
-import './styles.css'
-```
+You get a single deduplicated stylesheet and customisable tokens via `@theme {}`.
 
-You get a single deduplicated stylesheet, customisable design tokens via
-`@theme {}`, and your own utilities can extend the same Tailwind cascade
-the theme uses. See `example/blog` for a complete reference.
+### Customizing fonts
 
-### Customizing Fonts
+See [docs/FONTS.md](docs/FONTS.md) for a guide on using custom fonts (Google Fonts, etc.).
 
-See [docs/FONTS.md](docs/FONTS.md) for a guide on how to change the default typography and use custom fonts (like Google Fonts).
+## Multilingual Setup
 
-## Config
+The theme is multilingual by design. Key rules:
 
-```
-export default {
-  themeConfig: {
-    // show author name on the posts list items
-    showAuthorInPostList: true
-    authors:
-      - id: john-smith
-        name: John Smith
-        descr: Some MD descr
-        link?: If defined then this link will be used. If not then will be use link to author page
-    homeBgParallaxOffset: 150
-    sidebarLogoSrc: "/img/sidebar-logo.webp",
-  },
-};
-```
+- Content always lives inside a locale directory, even for single-language sites.
+- Locale indexes are user-defined route segments (`en`, `ru`, `en-US`, `pt-BR`, `zh-CN`).
+- `lang` in locale config is the language tag used for SEO and browser formatting.
+- UI locale and content locale are separate; users can read content in one language with UI in another.
 
-### Optional VitePress build options
-
-The theme does not enable experimental VitePress options by default. If your
-blog has many pages and you want smaller initial HTML payloads, you can enable
-VitePress metadata chunk extraction in your own `.vitepress/config.js`:
-
-```js
-export default {
-  metaChunk: true,
-}
-```
-
-## Site config
-
-```
-  topBar:
-    links:
-      - text: "${PROPS.t.links.donate}"
-        href: "${PROPS.siteUrl}/${PROPS.localeIndex}/page/donate"
-        icon: "${PROPS.donateIcon}"
-        # show on desktop and on mobile
-        mobileToo: true
-        # show only on mobile and don't show on desktop
-        mobileOnly: true
-
-```
-
-## Post meta data
-
-You can publish all types of posts - article, post, video and audio. They are the same.
-
-### All the posts have common parameters
-
-```
----
-title?: Use it only if you want to replace title which is got from H1 tag
-description: content of meta descr and preview text if it allowed
-# If true - then use description or first part of the post in a list and article
-# If false | undefined - then use first part of the post in a list and don't use in article
-descrAsPreview: true | false
-# If has text - then use this text in a list and in an article
-# If not set - then depend of descrAsPreview
-# It won't shown in a post if media, or cover is set
-previewText: text for list item and article preview
-pubDate: Publication date in iso format. Better to use time to order posts which are published at the same day
-# The main image of article. Optional
-cover: /media/img.jpg
-coverDescr: description of cover image in MD format
-# ID of author of site team. It it some other author just put his name into the text
-authorId: john-smith
-# Url where you can find comments of it post in social media
-commentUrl: https://...
-# List of tags. Tags can include spaces
-tags:
-  - some
-# Add canonical link to page head for SEO (prevents duplicate content issues)
-canonical: "https://example.com/en/post/post-slug"  # URL канонической страницы
-# или
-canonical: "self"  # Ссылка на саму страницу
-# или
-canonical: "s"     # Сокращенная версия
-
-...special params
----
-```
-
-### Special parameters of posts
-
-```
----
-...common params
-
-# Link to a video on youtube or another platform. It is used in a watch video button
-videoLink: htts://...
-# Language of video link if it doesn't equal the language of the page
-videoLinkLang: en | ru | ...
-# Links to poscast of this post
-podcasts:
-  # means special page of this podcast e.g on https://mave.digital
-  site: "https://..",
-  castbox: "https://..",
-  soundstream: "https://..",
-  spotify: "https://..",
-  vk: "https://..",
-  yandexmusic: "https://..",
-  deezer: "https://..",
-  pocketcasts: "https://..",
-  applepodcasts: "https://..",
-  overcast: "https://..",
-  zvuk: "https://..",
-  podcastaddiction: "https://..",
-# Language of podcast if it doesn't equal the language of the page
-podcastLang: en | ru | ...
----
-
-If the post doesn't have any media then the first image will be used as main image to show in lists.
+See [docs/LOCALES.md](docs/LOCALES.md) for the full locale model, UI resolution, switcher behavior, and admin overrides.
 
 ## SEO Features
 
-### Canonical Links
-Add `canonical` parameter to your post frontmatter to automatically include a canonical link in the page head. This helps search engines understand which version of a page is the primary one, preventing duplicate content issues.
+| Feature | Description | Docs |
+|---------|-------------|------|
+| JSON-LD | Automatic `BlogPosting`, `WebPage`, `Person` structured data | [docs/JSON_LD_GUIDE.md](docs/JSON_LD_GUIDE.md) |
+| Hreflang | Alternate locale links for multilingual pages | [docs/HREFLANG_README.md](docs/HREFLANG_README.md) |
+| Canonical | Configurable canonical links per post | [docs/CANONICAL_LINKS.md](docs/CANONICAL_LINKS.md) |
+| Open Graph | Auto-generated OG meta tags | Built-in |
+| RSS/Atom/JSON | Per-locale feeds | [docs/rss-feed-guide.md](docs/rss-feed-guide.md) |
+| Sitemap | Automatic filtering of non-content pages | Built-in |
 
-**Options:**
-- `canonical: "https://example.com/en/post/post-slug"` - Link to another page
-- `canonical: "self"` - Link to the current page itself
-- `canonical: "s"` - Short version of "self"
+## Development
 
-See [CANONICAL_LINKS.md](CANONICAL_LINKS.md) for detailed documentation.
+This repo is a pnpm workspace. Clone and run:
+
+```sh
+pnpm install
+pnpm --filter vitepress-theme-neptu-blog-example-blog dev
 ```
 
-## Publish
+The example site under `example/blog` is linked via `workspace:*`, so changes in `src/` are reflected immediately.
 
+### Scripts
+
+```sh
+pnpm test          # run unit tests
+pnpm test:watch    # watch mode
+pnpm lint          # eslint check
+pnpm typecheck     # typescript check
 ```
+
+## Publishing
+
+```sh
 pnpm publish
-```
-
-## Youtube
-
-see https://github.com/miletorix/vitepress-youtube-embed
-
-```
-<YouTubeEmbed video-id="vidid" />
 ```

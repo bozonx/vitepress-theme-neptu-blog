@@ -10,6 +10,9 @@ describe('NeptuAuthors', () => {
         { id: 'john', name: 'John', description: 'Writer' },
         { id: 'jane', name: 'Jane', description: 'Editor' },
       ],
+      t: {
+        postsCountForms: ['post', 'posts'],
+      },
     }
     mockFrontmatter.value = { title: 'Authors' }
     mockLocaleIndex.value = 'en'
@@ -33,12 +36,13 @@ describe('NeptuAuthors', () => {
     expect(items.length).toBe(2)
   })
 
-  it('renders nothing when no posts', () => {
+  it('renders empty list when no posts', () => {
     const wrapper = mount(NeptuAuthors, {
       global: {
         provide: { posts: {} },
       },
     })
-    expect(wrapper.find('ul').exists()).toBe(false)
+    expect(wrapper.find('ul').exists()).toBe(true)
+    expect(wrapper.findAll('li').length).toBe(0)
   })
 })
