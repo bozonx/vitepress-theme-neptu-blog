@@ -4,9 +4,8 @@ import { mdToHtml } from './markdown.ts'
 import { getImageDimensions } from './image.ts'
 import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
-import type { BlogUserConfig } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
-import type { UiLocaleDefinition, LocaleDefinition, Author } from '../../types.d.ts'
+import type { UiLocaleDefinition, LocaleDefinition, Author, BlogUserConfig } from '../../types.d.ts'
 
 function resolveInitialUiLocaleKey(
   localeIndex: string,
@@ -73,7 +72,10 @@ export async function loadBlogLocale(
   )
 
   const resolvedTheme = deepMerge(
-    { ...blogCommon.themeConfig, ...config.themeConfig } as Record<string, unknown>,
+    {
+      ...(blogCommon.themeConfig || {}),
+      ...(config.themeConfig || {}),
+    } as Record<string, unknown>,
     {
       ...(baseLocale.themeConfig || {}),
       ...(uiLocale.themeConfig || {}),
@@ -106,10 +108,10 @@ export async function loadBlogLocale(
   })
 
   return {
-    lang,
+    lang: typeof lang === 'string' ? lang : undefined,
     label: baseLocale.label,
-    title,
-    description,
+    title: typeof title === 'string' ? title : undefined,
+    description: typeof description === 'string' ? description : undefined,
     themeConfig: {
       ...baseLocale.themeConfig,
       ...(uiLocale.themeConfig || {}),
@@ -117,12 +119,11 @@ export async function loadBlogLocale(
       editLink: {
         pattern: `${config.repo}/edit/main/src/:path`,
         ...baseLocale.themeConfig?.editLink,
-        ...((uiLocale.themeConfig || {}) as Record<string, { text?: string }>).editLink,
-        ...editLink,
+        ...(((uiLocale.themeConfig || {}) as Record<string, unknown>).editLink as Record<string, unknown> | undefined),
+        ...(editLink as Record<string, unknown> | undefined),
       },
-      t: { ...baseLocale.t, ...(uiLocale.t || {}), ...t },
+      t: { ...baseLocale.t, ...(uiLocale.t || {}), ...(t as Record<string, unknown> | undefined) },
       authors,
     },
   }
 }
-

@@ -54,7 +54,9 @@ export function addCanonicalLink({
       return
     }
 
-    head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+    if (canonicalUrl) {
+      head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+    }
   } catch (error) {
     console.error(`Error adding canonical link for ${page}:`, (error as Error).message)
   }

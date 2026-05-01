@@ -6,6 +6,7 @@ import { addHreflang } from '../transformers/addHreflang.ts'
 import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
 import { addRssLinks } from '../transformers/addRssLinks.ts'
 import { filterSitemap } from '../transformers/filterSitemap.ts'
+import type { SitemapItem } from '../transformers/filterSitemap.ts'
 import { generateRssFeed } from '../transformers/generateRssFeed.ts'
 import { transformPageMeta } from '../transformers/transformPageMeta.ts'
 import { transformTitle } from '../transformers/transformTitle.ts'
@@ -13,18 +14,67 @@ import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
-import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+import type { ExtendedPageData, ExtendedSiteConfig, BlogUserConfig, ThemeConfig } from '../types.d.ts'
 
-export type BlogUserConfig = UserConfig & {
-  repo?: string
-  siteUrl?: string
-  maxPostsInRssFeed?: number
-  rssFormats?: string[]
-  maxDescriptionLength?: number
-  [key: string]: unknown
+type ResolvedBlogConfig = BlogUserConfig & {
+  head: NonNullable<UserConfig['head']>
+  locales: NonNullable<BlogUserConfig['locales']>
+  markdown: NonNullable<UserConfig['markdown']> & {
+    image: NonNullable<NonNullable<UserConfig['markdown']>['image']>
+  }
+  sitemap: NonNullable<UserConfig['sitemap']> & {
+    transformItems: NonNullable<NonNullable<UserConfig['sitemap']>['transformItems']>
+  }
+  themeConfig: Partial<ThemeConfig> & {
+    googleAnalytics: NonNullable<ThemeConfig['googleAnalytics']>
+    popularPosts: NonNullable<ThemeConfig['popularPosts']>
+  }
+  vite: NonNullable<UserConfig['vite']> & {
+    ssr: NonNullable<NonNullable<UserConfig['vite']>['ssr']>
+    build: NonNullable<NonNullable<UserConfig['vite']>['build']>
+  }
 }
 
-export const common: Record<string, unknown> = {
+const commonThemeConfig = {
+  externalLinkIcon: true,
+  mainHeroImg: '/img/home-logo.webp',
+
+  perPage: 10,
+  sidebarTagsCount: 15,
+  similarPostsCount: 5,
+  homeBgParallaxOffset: 300,
+  paginationMaxItems: 5,
+  showAuthorInPostList: true,
+
+  googleAnalytics: {
+    propertyId: null,
+    credentialsJson: null,
+    dataPeriodDays: 30,
+    dataLimit: 1000,
+  },
+  popularPosts: {
+    enabled: false,
+    sortBy: 'pageviews',
+  },
+
+  tagsBaseUrl: 'tags',
+  archiveBaseUrl: 'archive',
+  popularBaseUrl: 'popular',
+  recentBaseUrl: 'recent',
+  authorsBaseUrl: 'authors',
+
+  donateIcon: 'fa6-solid:hand-holding-heart',
+  recentIcon: 'fa6-solid:bolt',
+  popularIcon: 'fa6-solid:star',
+  byDateIcon: 'fa6-solid:calendar-days',
+  authorsIcon: 'mdi:users',
+  rssIcon: 'bi:rss-fill',
+  atomIcon: 'vscode-icons:file-type-atom',
+  youtubeIcon: 'fa6-brands:youtube',
+  tagsIcon: 'fa6-solid:tag',
+} satisfies Partial<ThemeConfig>
+
+export const common: BlogUserConfig = {
   head: [
     ['meta', { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }],
 
@@ -49,59 +99,22 @@ export const common: Record<string, unknown> = {
   rssFormats: ['rss', 'atom', 'json'],
   maxDescriptionLength: 300,
 
-  themeConfig: {
-    externalLinkIcon: true,
-    mainHeroImg: '/img/home-logo.webp',
-
-    perPage: 10,
-    sidebarTagsCount: 15,
-    similarPostsCount: 5,
-    homeBgParallaxOffset: 300,
-    paginationMaxItems: 5,
-    showAuthorInPostList: true,
-
-    googleAnalytics: {
-      propertyId: null,
-      credentialsJson: null,
-      dataPeriodDays: 30,
-      dataLimit: 1000,
-    },
-    popularPosts: {
-      enabled: false,
-      sortBy: 'pageviews',
-    },
-
-    tagsBaseUrl: 'tags',
-    archiveBaseUrl: 'archive',
-    popularBaseUrl: 'popular',
-    recentBaseUrl: 'recent',
-    authorsBaseUrl: 'authors',
-
-    donateIcon: 'fa6-solid:hand-holding-heart',
-    recentIcon: 'fa6-solid:bolt',
-    popularIcon: 'fa6-solid:star',
-    byDateIcon: 'fa6-solid:calendar-days',
-    authorsIcon: 'mdi:users',
-    rssIcon: 'bi:rss-fill',
-    atomIcon: 'vscode-icons:file-type-atom',
-    youtubeIcon: 'fa6-brands:youtube',
-    tagsIcon: 'fa6-solid:tag',
-  },
+  themeConfig: commonThemeConfig,
 }
 
-export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
+export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
-      : common.themeConfig.externalLinkIcon
+      : commonThemeConfig.externalLinkIcon
 
   return {
     ...common,
     ...config,
     title: config.title || config.en?.title,
     description: config.description || config.en?.description,
-    head: [...common.head, ...(config.head || [])],
-    locales: { ...common.locales, ...config.locales },
+    head: [...(common.head || []), ...(config.head || [])],
+    locales: { ...(common.locales || {}), ...(config.locales || {}) },
     vite: {
       ...config.vite,
       plugins: [
@@ -114,8 +127,8 @@ export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
     },
     sitemap: {
       hostname: config.siteUrl,
-      transformItems: (items: unknown[]) => {
-        return filterSitemap(items)
+      transformItems: (items) => {
+        return filterSitemap(items as unknown as SitemapItem[])
       },
       ...config.sitemap,
     } as UserConfig['sitemap'],
@@ -126,7 +139,7 @@ export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
         target: '_blank',
         class: externalLinkIcon ? 'vp-external-link-icon' : undefined,
       }),
-      config: (md: { use: (plugin: unknown, options?: unknown) => void }) => {
+      config: (md) => {
         md.use(mdImage, { srcDir: config.srcDir })
 
         if (config.markdown?.config) {
@@ -140,37 +153,42 @@ export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
       ...config.themeConfig,
 
       googleAnalytics: {
-        ...common.themeConfig.googleAnalytics,
+        ...commonThemeConfig.googleAnalytics,
         ...config.themeConfig?.googleAnalytics,
       },
       popularPosts: {
-        ...common.themeConfig.popularPosts,
+        ...commonThemeConfig.popularPosts,
         ...config.themeConfig?.popularPosts,
       },
     },
 
-    async transformPageData(pageData: ExtendedPageData, { siteConfig }: { siteConfig: ExtendedSiteConfig }) {
-      collectImageDimensions(pageData, siteConfig)
-      transformTitle(pageData, { siteConfig })
-      transformPageMeta(pageData)
-      resolveDescription(pageData, { siteConfig })
+    async transformPageData(pageData, ctx) {
+      const extendedPageData = pageData as ExtendedPageData
+      const extendedSiteConfig = ctx.siteConfig as unknown as ExtendedSiteConfig
+
+      collectImageDimensions(extendedPageData, extendedSiteConfig)
+      transformTitle(extendedPageData, { siteConfig: extendedSiteConfig })
+      transformPageMeta(extendedPageData)
+      resolveDescription(extendedPageData, { siteConfig: extendedSiteConfig })
 
       if (config.transformPageData) {
-        await config.transformPageData(pageData, { siteConfig })
+        await config.transformPageData(pageData, ctx)
       }
     },
 
-    async transformHead(ctx: {
-      head: HeadConfig[]
-      pageData: ExtendedPageData
-      siteConfig: ExtendedSiteConfig
-      page: string
-    }) {
-      addOgMetaTags(ctx)
-      addJsonLd(ctx)
-      addHreflang(ctx)
-      addCanonicalLink(ctx)
-      addRssLinks(ctx)
+    async transformHead(ctx) {
+      const extendedCtx = ctx as unknown as {
+        head: HeadConfig[]
+        pageData: ExtendedPageData
+        siteConfig: ExtendedSiteConfig
+        page: string
+      }
+
+      addOgMetaTags(extendedCtx)
+      addJsonLd(extendedCtx)
+      addHreflang(extendedCtx)
+      addCanonicalLink(extendedCtx)
+      addRssLinks(extendedCtx)
 
       if (config.transformHead) {
         await config.transformHead(ctx as unknown as TransformContext)
@@ -181,13 +199,13 @@ export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
 
 
     buildEnd: async (cfg: SiteConfig) => {
-      await generateRssFeed(cfg)
+      await generateRssFeed(cfg as unknown as ExtendedSiteConfig)
 
       if (config.buildEnd) {
         await config.buildEnd(cfg)
       }
     },
-  }
+  } as ResolvedBlogConfig
 }
 
 export const defineBlogConfig = mergeBlogConfig

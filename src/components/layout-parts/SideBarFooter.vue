@@ -18,8 +18,9 @@ const props = defineProps<{
 }>()
 const { localeIndex, site } = useData()
 const { theme } = useUiTheme()
-const configuredFormats = Array.isArray((site.value as Record<string, unknown>).rssFormats)
-  ? ((site.value as Record<string, unknown>).rssFormats as string[])
+const siteConfig = site.value as unknown as Record<string, unknown>
+const configuredFormats = Array.isArray(siteConfig.rssFormats)
+  ? (siteConfig.rssFormats as string[])
       .filter((format) => typeof format === 'string')
       .map((format) => format.trim().toLowerCase())
   : ['rss', 'atom', 'json']

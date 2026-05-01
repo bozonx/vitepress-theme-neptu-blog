@@ -23,6 +23,8 @@ export function resolveDescription(
   }
 
   try {
+    if (!siteConfig.srcDir) return
+
     const rawContent = fs.readFileSync(
       path.join(siteConfig.srcDir, pageData.filePath),
       DEFAULT_ENCODE

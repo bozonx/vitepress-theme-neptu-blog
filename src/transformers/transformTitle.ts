@@ -16,7 +16,7 @@ export function transformTitle(
   const localeIndex = pageData.filePath.split('/')[0]!
 
   const options = {
-    theme: siteConfig.site.locales[localeIndex]?.themeConfig,
+    theme: siteConfig.site?.locales?.[localeIndex]?.themeConfig,
     params: pageData.params || {},
   }
 

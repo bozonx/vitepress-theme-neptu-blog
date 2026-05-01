@@ -4,16 +4,38 @@ export interface MdImageOptions {
   srcDir?: string
 }
 
+interface MarkdownToken {
+  type: string
+  tag?: string
+  content?: string
+  children?: MarkdownToken[]
+  attrGet(name: string): string | null
+  attrPush(attr: [string, string | undefined]): void
+}
+
+interface MdImageState {
+  tokens: MarkdownToken[]
+  Token: new (type: string, tag: string, nesting: number) => MarkdownToken
+}
+
+interface MdImageMarkdown {
+  core: {
+    ruler: {
+      before(target: string, name: string, fn: (state: MdImageState) => void): void
+    }
+  }
+}
+
 /**
  * Markdown-it plugin that wraps standalone images in `<figure>` tags with
  * captions (similar to @mdit/plugin-figure). Also reads image dimensions and
  * injects width/height attributes.
  */
-export function mdImage(md: { core: { ruler: { before: (target: string, name: string, fn: (state: unknown) => void) => void } } }, { srcDir }: MdImageOptions = {}): void {
-  md.core.ruler.before('linkify', 'figure', (state: unknown) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const s = state as any
-    const tokens = s.tokens
+export function mdImage(md: unknown, { srcDir }: MdImageOptions = {}): void {
+  const markdown = md as MdImageMarkdown
+
+  markdown.core.ruler.before('linkify', 'figure', (state) => {
+    const tokens = state.tokens
 
     for (let i = 1; i < tokens.length - 1; i++) {
       const token = tokens[i]
@@ -64,7 +86,7 @@ export function mdImage(md: { core: { ruler: { before: (target: string, name: st
             linkToken.attrPush(['class', 'lightbox'])
           } else {
             const linkOpen = new state.Token('link_open', 'a', 1)
-            linkOpen.attrPush(['href', imageSrc])
+            linkOpen.attrPush(['href', imageSrc || undefined])
             linkOpen.attrPush(['class', 'lightbox'])
 
             const linkClose = new state.Token('link_close', 'a', -1)

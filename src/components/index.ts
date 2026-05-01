@@ -21,6 +21,8 @@ export { default as UtilPageContent } from './utility/UtilPageContent.vue'
 export { default as UtilPageHeader } from './utility/UtilPageHeader.vue'
 export { default as UtilSubPageHeader } from './utility/UtilSubPageHeader.vue'
 export { default as NeptuYears } from './utility/NeptuYears.vue'
+export { default as Years } from './utility/NeptuYears.vue'
+export { default as Authors } from './utility/NeptuAuthors.vue'
 
 export { default as AudioFile } from './doc-components/AudioFile.vue'
 export { default as FileDownload } from './doc-components/FileDownload.vue'

@@ -12,7 +12,9 @@ export function resolveNavigatorLang(
   navigator: Navigator,
   locales: string[] = []
 ): string | undefined {
-  const navLang = navigator.language || (navigator as Record<string, unknown>).userLanguage as string
+  const navLang =
+    navigator.language ||
+    ((navigator as unknown as Record<string, unknown>).userLanguage as string | undefined)
   if (!navLang) return undefined
 
   const shortLang = navLang.split('-')[0]

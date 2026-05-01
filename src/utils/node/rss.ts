@@ -2,6 +2,13 @@ import type { Feed } from 'feed'
 import { normalizeTag } from '../shared/tags.ts'
 import type { ExtendedSiteConfig, PostFrontmatter, Author } from '../../types.d.ts'
 
+type RssSiteConfig = Partial<Omit<ExtendedSiteConfig, 'userConfig' | 'site'>> & {
+  site?: {
+    locales?: Record<string, Partial<ExtendedSiteConfig['site']['locales'][string]>>
+  }
+  userConfig?: Partial<ExtendedSiteConfig['userConfig']>
+}
+
 /** Validates required frontmatter fields for RSS. */
 export function validatePostForRss(frontmatter: PostFrontmatter, url: string): boolean {
   const errors: string[] = []
@@ -103,7 +110,7 @@ export function formatTagsForRss(
 }
 
 /** Validates RSS generation configuration. */
-export function validateRssConfig(config: ExtendedSiteConfig): boolean {
+export function validateRssConfig(config: RssSiteConfig): boolean {
   const errors: string[] = []
 
   if (!config.site?.locales) {
@@ -160,9 +167,9 @@ export function getFormatInfo(format: string): RssFormatInfo {
 }
 
 /** Gets RSS format settings from configuration */
-export function getRssFormats(config: ExtendedSiteConfig): string[] {
+export function getRssFormats(config: RssSiteConfig): string[] {
   const configuredFormats =
-    config?.userConfig?.rssFormats ?? config?.userConfig?.themeConfig?.rssFormats
+    config.userConfig?.rssFormats ?? config.userConfig?.themeConfig?.rssFormats
   const knownFormats = new Set(['rss', 'atom', 'json'])
 
   if (!Array.isArray(configuredFormats) || configuredFormats.length === 0) {
@@ -176,7 +183,7 @@ export function getRssFormats(config: ExtendedSiteConfig): string[] {
 }
 
 export function makeAuthorForRss(
-  config: ExtendedSiteConfig,
+  config: RssSiteConfig,
   frontmatter: PostFrontmatter,
   siteUrl: string,
   localeIndex: string

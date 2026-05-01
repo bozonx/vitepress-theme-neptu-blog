@@ -27,8 +27,10 @@ export function isUtilPage(frontmatter: Frontmatter | null | undefined): boolean
 }
 
 export function isPopularRoute(routPath: string, theme: ThemeRef): boolean {
-  const themeValue = 'value' in theme ? theme.value : theme
-  return routPath.includes(`/${themeValue.popularBaseUrl}/`)
+  const themeValue = ('value' in theme ? theme.value : theme) as ThemeConfig
+  return typeof themeValue.popularBaseUrl === 'string'
+    ? routPath.includes(`/${themeValue.popularBaseUrl}/`)
+    : false
 }
 
 function escapeRegExp(str: string): string {
@@ -38,7 +40,7 @@ function escapeRegExp(str: string): string {
 export function isAuthorPage(filePath: string | null | undefined, siteConfig: ExtendedSiteConfig): boolean {
   if (!filePath) return false
 
-  const authorsBaseUrl = siteConfig.userConfig.themeConfig.authorsBaseUrl
+  const authorsBaseUrl = siteConfig.userConfig?.themeConfig?.authorsBaseUrl
 
   if (!authorsBaseUrl) return false
 

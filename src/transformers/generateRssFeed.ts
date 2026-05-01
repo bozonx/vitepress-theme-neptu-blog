@@ -19,7 +19,7 @@ import {
   validatePostForRss,
   validateRssConfig,
 } from '../utils/node/index.ts'
-import type { ExtendedSiteConfig, PostFrontmatter, BlogUserConfig } from '../types.d.ts'
+import type { ExtendedSiteConfig, PostFrontmatter, BlogUserConfig, Author } from '../types.d.ts'
 
 /**
  * Generates RSS and Atom feeds for all locales.
@@ -32,16 +32,16 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
     }
 
     const feeds: Record<string, Feed> = {}
-    const siteUrl = normalizeSiteUrl(config.userConfig.siteUrl!)
+    const siteUrl = normalizeSiteUrl(config.userConfig!.siteUrl!)
     const rssFormats = getRssFormats(config)
     const generationErrors: Error[] = []
 
-    for (const localeIndex of Object.keys(config.site.locales)) {
-      const locale = config.site.locales[localeIndex]!
+    for (const localeIndex of Object.keys(config.site!.locales!)) {
+      const locale = config.site!.locales![localeIndex]!
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
       const tagsBaseUrl =
         normalizePathSegment(locale.themeConfig?.tagsBaseUrl) ||
-        normalizePathSegment(config.userConfig.themeConfig?.tagsBaseUrl) ||
+        normalizePathSegment(config.userConfig?.themeConfig?.tagsBaseUrl) ||
         'tags'
       const feedLinks = Object.fromEntries(
         rssFormats
@@ -61,9 +61,9 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
           makeAbsoluteUrl(
             siteUrl,
             locale.themeConfig?.sidebarLogoSrc ||
-              config.userConfig.themeConfig?.sidebarLogoSrc ||
+              config.userConfig?.themeConfig?.sidebarLogoSrc ||
               locale.themeConfig?.mainHeroImg ||
-              config.userConfig.themeConfig?.mainHeroImg
+              config.userConfig?.themeConfig?.mainHeroImg
           ) || `${siteUrl}/img/favicon-32x32.png`,
         generator: 'VitePress Neptu Blog Theme',
         updated: new Date(),
@@ -100,7 +100,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
               ? fm.description
               : extractDescriptionFromMd(
                   src!,
-                  (config.userConfig as BlogUserConfig).maxDescriptionLength
+                  (config.userConfig as BlogUserConfig).maxDescriptionLength || 300
                 )
             const guid = createPostGuid(siteUrl, url, fm.date)
             const categories = formatTagsForRss(fm.tags, siteUrl, localeIndex, tagsBaseUrl)
@@ -141,7 +141,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
 
     for (const localeIndex of Object.keys(feeds)) {
       try {
-        const feedDir = path.join(config.outDir, localeIndex)
+        const feedDir = path.join(config.outDir!, localeIndex)
         fs.mkdirSync(feedDir, { recursive: true })
 
         for (const format of rssFormats) {

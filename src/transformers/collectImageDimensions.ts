@@ -8,6 +8,7 @@ export function collectImageDimensions(
 ): void {
 
   if (!pageData.frontmatter.cover) return
+  if (!siteConfig.srcDir) return
 
   const imageDimensions = getImageDimensions(
     pageData.frontmatter.cover,

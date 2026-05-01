@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-import { DefaultTheme, PageData, SiteConfig } from 'vitepress'
+import { DefaultTheme, PageData, UserConfig, HeadConfig } from 'vitepress'
 
 export namespace NeptuBlogTheme {
   export type DeepPartial<T> = {
@@ -20,6 +20,30 @@ export namespace NeptuBlogTheme {
     label?: string
     themeConfig?: DeepPartial<Config>
     t?: DeepPartial<I18n>
+  }
+
+  export type BlogUserConfig = Omit<UserConfig<Config>, 'locales' | 'themeConfig'> & {
+    themeConfig?: Partial<Config>
+    locales?: Record<string, {
+      label?: string
+      link?: string
+      lang?: string
+      title?: string
+      description?: string
+      themeConfig?: Partial<Config>
+      [key: string]: unknown
+    }>
+    repo?: string
+    siteUrl?: string
+    maxPostsInRssFeed?: number
+    rssFormats?: string[]
+    maxDescriptionLength?: number
+    en?: {
+      title?: string
+      description?: string
+      [key: string]: unknown
+    }
+    [key: string]: unknown
   }
 
   export interface Config extends DefaultTheme.Config {
@@ -265,15 +289,21 @@ export namespace NeptuBlogTheme {
     filePath: string
   }
 
-  export interface ExtendedSiteConfig extends SiteConfig<Config> {
-    userConfig: {
-      themeConfig: Config
-      siteUrl?: string
-      maxPostsInRssFeed?: number
-      rssFormats?: string[]
-      maxDescriptionLength?: number
-      [key: string]: unknown
+  export interface ExtendedSiteConfig {
+    root?: string
+    srcDir?: string
+    outDir?: string
+    site: {
+      locales: Record<string, LocaleDefinition & {
+        label?: string
+        themeConfig?: Partial<Config>
+      }>
     }
+    userConfig: BlogUserConfig & {
+      themeConfig: Partial<Config>
+    }
+    head?: HeadConfig[]
+    [key: string]: unknown
   }
 }
 
@@ -289,3 +319,4 @@ export type UiLocaleDefinition = NeptuBlogTheme.UiLocaleDefinition
 export type LocaleDefinition = NeptuBlogTheme.LocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
+export type BlogUserConfig = NeptuBlogTheme.BlogUserConfig

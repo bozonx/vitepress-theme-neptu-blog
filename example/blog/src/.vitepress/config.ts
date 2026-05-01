@@ -9,12 +9,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const PER_PAGE = 20
 
 export const popularPosts = {
-  enabled: true,
+  enabled: Boolean(process.env.GA_PROPERTY_ID),
   sortBy: 'pageviews', // 'pageviews', 'uniquePageviews'
 }
 
 export const googleAnalytics = {
-  propertyId: '123456789',
+  propertyId: process.env.GA_PROPERTY_ID,
   credentialsJson: process.env.GA_CREDENTIALS_JSON,
 }
 

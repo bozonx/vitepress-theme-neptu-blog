@@ -19,6 +19,7 @@
   },
   "files": [
     "src",
+    "!src/.vitepress",
     "README.md",
     "LICENSE"
   ],
