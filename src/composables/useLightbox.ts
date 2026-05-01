@@ -27,7 +27,7 @@ export interface UseLightboxReturn {
 
 export const LightboxLocalesKey: InjectionKey<Record<string, string> | ComputedRef<Record<string, string>>> = Symbol('lightbox-locales')
 
-export function useLightbox(doc: Document = document): UseLightboxReturn {
+export function useLightbox(doc?: Document): UseLightboxReturn {
   const isOpen = ref(false)
   const currentIndex = ref(0)
   const items = ref<LightboxItem[]>([])
@@ -35,8 +35,11 @@ export function useLightbox(doc: Document = document): UseLightboxReturn {
   let links: HTMLAnchorElement[] = []
   let observer: MutationObserver | null = null
 
+  const resolvedDoc = doc || (inBrowser ? document : undefined)
+
   const refreshItems = () => {
-    links = getLightboxLinks(doc)
+    if (!resolvedDoc) return
+    links = getLightboxLinks(resolvedDoc)
     items.value = buildItems(links)
   }
 
@@ -44,15 +47,15 @@ export function useLightbox(doc: Document = document): UseLightboxReturn {
     if (index < 0 || index >= items.value.length) return
     currentIndex.value = index
     isOpen.value = true
-    if (inBrowser) {
-      addBodyClass(doc, 'modal-open')
+    if (inBrowser && resolvedDoc) {
+      addBodyClass(resolvedDoc, 'modal-open')
     }
   }
 
   const close = () => {
     isOpen.value = false
-    if (inBrowser) {
-      removeBodyClass(doc, 'modal-open')
+    if (inBrowser && resolvedDoc) {
+      removeBodyClass(resolvedDoc, 'modal-open')
     }
   }
 
@@ -75,22 +78,22 @@ export function useLightbox(doc: Document = document): UseLightboxReturn {
   }
 
   onMounted(() => {
-    if (!inBrowser) return
+    if (!inBrowser || !resolvedDoc) return
     refreshItems()
-    doc.addEventListener('click', onClick, true)
+    resolvedDoc.addEventListener('click', onClick, true)
 
     observer = new MutationObserver(() => {
       refreshItems()
     })
-    observer.observe(doc.body, { childList: true, subtree: true })
+    observer.observe(resolvedDoc.body, { childList: true, subtree: true })
   })
 
   onUnmounted(() => {
-    if (!inBrowser) return
-    doc.removeEventListener('click', onClick, true)
+    if (!inBrowser || !resolvedDoc) return
+    resolvedDoc.removeEventListener('click', onClick, true)
     observer?.disconnect()
-    if (bodyHasClass(doc, 'modal-open')) {
-      removeBodyClass(doc, 'modal-open')
+    if (bodyHasClass(resolvedDoc, 'modal-open')) {
+      removeBodyClass(resolvedDoc, 'modal-open')
     }
   })
 
