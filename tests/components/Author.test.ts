@@ -1,10 +1,17 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Author from '../../src/components/NeptuAuthor.vue'
 
 describe('Author', () => {
+  let wrapper: ReturnType<typeof mount>
+
+  afterEach(() => {
+    wrapper?.unmount()
+  })
+
   it('renders author image with correct attributes', () => {
-    const wrapper = mount(Author, {
+    wrapper = mount(Author, {
+      attachTo: document.body,
       props: {
         author: {
           name: 'John Doe',
@@ -25,7 +32,8 @@ describe('Author', () => {
   })
 
   it('does not render image when absent', () => {
-    const wrapper = mount(Author, {
+    wrapper = mount(Author, {
+      attachTo: document.body,
       props: {
         author: {
           name: 'Jane',
@@ -39,7 +47,8 @@ describe('Author', () => {
   })
 
   it('renders description html', () => {
-    const wrapper = mount(Author, {
+    wrapper = mount(Author, {
+      attachTo: document.body,
       props: {
         author: {
           name: 'John',
@@ -52,7 +61,8 @@ describe('Author', () => {
   })
 
   it('passes filtered social links to SocialMediaLinks', () => {
-    const wrapper = mount(Author, {
+    wrapper = mount(Author, {
+      attachTo: document.body,
       props: {
         author: {
           name: 'John',
@@ -74,7 +84,8 @@ describe('Author', () => {
   })
 
   it('does not render SocialMediaLinks when no valid links', () => {
-    const wrapper = mount(Author, {
+    wrapper = mount(Author, {
+      attachTo: document.body,
       props: {
         author: {
           links: [

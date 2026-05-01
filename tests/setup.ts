@@ -1,4 +1,5 @@
-import { vi } from 'vitest'
+import { vi, afterEach } from 'vitest'
+import { cleanup } from '@testing-library/vue'
 import { mockTheme, mockLocaleIndex, mockRoute, mockPage, mockFrontmatter, mockIsDark } from './mocks/vitepress'
 
 vi.mock('vitepress', () => ({
@@ -13,3 +14,7 @@ vi.mock('vitepress', () => ({
   }),
   useRoute: () => mockRoute.value,
 }))
+
+afterEach(() => {
+  cleanup()
+})

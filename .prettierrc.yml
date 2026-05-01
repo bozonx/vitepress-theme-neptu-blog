@@ -1,4 +1,3 @@
-# Основные настройки форматирования
 printWidth: 80
 tabWidth: 2
 useTabs: false
@@ -11,11 +10,9 @@ bracketSameLine: false
 arrowParens: always
 objectWrap: collapse
 
-# Плагины
 plugins:
   - prettier-plugin-jsdoc
 
-# Настройки для JSDoc
 jsdocSpaces: 1
 jsdocDescriptionWithDot: false
 jsdocDescriptionTag: false
