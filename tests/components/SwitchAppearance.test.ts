@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import SwitchAppearance from '../../src/components/layout-parts/SwitchAppearance.vue'
 import { mockIsDark, mockTheme } from '../mocks/vitepress'
