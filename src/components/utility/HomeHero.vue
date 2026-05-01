@@ -13,7 +13,7 @@
       </div>
       <a
         v-if="props.img"
-        aria-hidden="true"
+        aria-label="Главная"
         class="home-logo flex justify-center"
         :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
       >

@@ -22,7 +22,7 @@ interface SocialLink {
   type: string
 }
 
-const props = defineProps<{
+defineProps<{
   links: SocialLink[]
 }>()
 
