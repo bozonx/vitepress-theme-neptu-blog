@@ -40,17 +40,34 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
 
     const lang = locale.lang || code
 
-    return [[
-      'link',
-      {
-        rel: 'alternate',
-        hreflang: lang,
-        href: url,
-      },
-    ]]
+    return [{
+      code,
+      tag: [
+        'link',
+        {
+          rel: 'alternate',
+          hreflang: lang,
+          href: url,
+        },
+      ],
+    }]
   })
 
   if (alternates.length <= 1) return
 
-  head.push(...alternates)
+  const defaultAlternate =
+    alternates.find((alternate) => alternate.code === Object.keys(locales)[0]) ||
+    alternates[0]
+
+  head.push(
+    ...alternates.map((alternate) => alternate.tag),
+    [
+      'link',
+      {
+        rel: 'alternate',
+        hreflang: 'x-default',
+        href: defaultAlternate.tag[1].href,
+      },
+    ]
+  )
 }

@@ -60,7 +60,7 @@ describe('addHreflang', () => {
   it('adds hreflang links for all locales', () => {
     const ctx = createContext()
     addHreflang(ctx)
-    expect(ctx.head).toHaveLength(2) // 2 locales * 1 link
+    expect(ctx.head).toHaveLength(3) // 2 locales + x-default
   })
 
   it('constructs correct locale paths', () => {
@@ -68,8 +68,10 @@ describe('addHreflang', () => {
     addHreflang(ctx)
     const enLink = ctx.head.find((h) => h[1]?.hreflang === 'en')
     const ruLink = ctx.head.find((h) => h[1]?.hreflang === 'ru')
+    const defaultLink = ctx.head.find((h) => h[1]?.hreflang === 'x-default')
     expect(enLink?.[1]?.href).toBe('https://example.com/en/post/hello')
     expect(ruLink?.[1]?.href).toBe('https://example.com/ru/post/hello')
+    expect(defaultLink?.[1]?.href).toBe('https://example.com/en/post/hello')
   })
 
   it('uses locale code when lang is missing', () => {
