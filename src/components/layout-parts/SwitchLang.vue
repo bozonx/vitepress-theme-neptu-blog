@@ -15,15 +15,16 @@ const props = defineProps<{ noBg?: boolean | string }>()
     v-if="localeLinks.length"
     :no-bg="props.noBg"
     :title="theme.langMenuLabel || 'Change language'"
+    :aria-label="theme.langMenuLabel || 'Change language'"
     class="switch-lang-btn px-0"
   >
     <template #btn-text>
       <span class="pt-1" aria-hidden="true">
         <Icon
-          alt="Translation icon"
           icon="material-symbols:translate"
           width="1.2rem"
           height="1.2rem"
+          aria-hidden="true"
         />
       </span>
     </template>

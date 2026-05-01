@@ -9,6 +9,7 @@ interface Props {
   tag?: string
   href?: string
   target?: string
+  rel?: string
   disabled?: boolean
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
 }
@@ -31,6 +32,11 @@ const target = computed(() => {
     }
   }
   return undefined
+})
+const rel = computed(() => {
+  if (tag.value !== 'a') return undefined
+  if (props.rel) return props.rel
+  return target.value === '_blank' ? 'noopener noreferrer' : undefined
 })
 // Normalize path — removes the trailing numeric segment if path ends with /\d+
 const normalizePath = (path = '') => {
@@ -88,6 +94,7 @@ watch(
   <component
     :is="tag"
     :target="target"
+    :rel="rel"
     :href="resolvedHref"
     :disabled="props.disabled"
     :class="[active && 'active', props.customClass]"
