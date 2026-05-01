@@ -18,6 +18,12 @@ export interface UiLocaleOption {
   label: string
 }
 
+interface UiLocaleLabelSource {
+  label?: string
+}
+
+type UiLocaleLabelsInput = Record<string, string | UiLocaleLabelSource | undefined>
+
 export function resolveUiLocaleKey({
   availableLocales,
   contentLocale,
@@ -76,10 +82,15 @@ export function writeStoredUiLocale(
 
 export function buildUiLocaleOptions(
   availableLocales: string[],
-  customLabels: Record<string, string | undefined> = {}
+  customLabels: UiLocaleLabelsInput = {}
 ): UiLocaleOption[] {
   return availableLocales.map((key) => ({
     key,
-    label: customLabels[key] || BUILTIN_UI_LOCALE_LABELS[key] || key,
+    label:
+      (typeof customLabels[key] === 'string'
+        ? customLabels[key]
+        : customLabels[key]?.label) ||
+      BUILTIN_UI_LOCALE_LABELS[key] ||
+      key,
   }))
 }

@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { mockTheme, mockLocaleIndex, mockRoute, mockPage, mockFrontmatter } from './mocks/vitepress'
+import { mockTheme, mockLocaleIndex, mockRoute, mockPage, mockFrontmatter, mockIsDark } from './mocks/vitepress'
 
 vi.mock('vitepress', () => ({
   inBrowser: true,
@@ -8,6 +8,7 @@ vi.mock('vitepress', () => ({
     localeIndex: mockLocaleIndex,
     page: mockPage,
     frontmatter: mockFrontmatter,
+    isDark: mockIsDark,
     lang: 'en',
   }),
   useRoute: () => mockRoute.value,

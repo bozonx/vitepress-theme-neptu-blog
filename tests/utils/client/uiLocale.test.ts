@@ -67,4 +67,12 @@ describe('buildUiLocaleOptions', () => {
       { key: 'en-GB', label: 'English (UK)' },
     ])
   })
+
+  it('reads labels from admin locale definitions', () => {
+    expect(
+      buildUiLocaleOptions(['pt-BR'], {
+        'pt-BR': { label: 'Português (Brasil)' },
+      })
+    ).toEqual([{ key: 'pt-BR', label: 'Português (Brasil)' }])
+  })
 })

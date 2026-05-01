@@ -5,6 +5,7 @@ export default {
     prev: 'Предыдущее',
     next: 'Следующее',
     close: 'Закрыть',
+    resetZoom: 'Сбросить масштаб',
     dialogTitle: 'Изображение',
     loadingIndicatorLabel: 'Загрузка...',
   },

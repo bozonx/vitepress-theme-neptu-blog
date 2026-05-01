@@ -5,6 +5,7 @@ export default {
     prev: 'Previous',
     next: 'Next',
     close: 'Close',
+    resetZoom: 'Reset zoom',
     dialogTitle: 'Image',
     loadingIndicatorLabel: 'Loading...',
   },

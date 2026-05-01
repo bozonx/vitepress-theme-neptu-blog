@@ -41,8 +41,8 @@ describe('addRssLinks', () => {
         },
         site: {
           locales: {
-            en: { title: 'English Blog', lang: 'en', label: 'English', link: '/en/' },
-            ru: { title: 'Russian Blog', lang: 'ru', label: 'Russian', link: '/ru/' },
+            en: { title: 'English Blog', lang: 'en-US', label: 'English', link: '/en/' },
+            ru: { title: 'Russian Blog', lang: 'ru-RU', label: 'Russian', link: '/ru/' },
           },
         },
       }) as any,
@@ -72,7 +72,7 @@ describe('addRssLinks', () => {
         type: 'application/rss+xml',
         title: 'English Blog - RSS Feed',
         href: 'https://example.com/en/feed.rss',
-        hreflang: 'en',
+        hreflang: 'en-US',
       },
     ])
     expect(ctx.head).toContainEqual([
@@ -82,7 +82,7 @@ describe('addRssLinks', () => {
         type: 'application/atom+xml',
         title: 'English Blog - Atom Feed',
         href: 'https://example.com/en/feed.atom',
-        hreflang: 'en',
+        hreflang: 'en-US',
       },
     ])
   })
@@ -97,7 +97,7 @@ describe('addRssLinks', () => {
         type: 'application/rss+xml',
         title: 'Russian Blog - RSS Feed',
         href: 'https://example.com/ru/feed.rss',
-        hreflang: 'ru',
+        hreflang: 'ru-RU',
       },
     ])
     expect(ctx.head).toContainEqual([
@@ -107,7 +107,7 @@ describe('addRssLinks', () => {
         type: 'application/atom+xml',
         title: 'Russian Blog - Atom Feed',
         href: 'https://example.com/ru/feed.atom',
-        hreflang: 'ru',
+        hreflang: 'ru-RU',
       },
     ])
   })
@@ -116,7 +116,7 @@ describe('addRssLinks', () => {
     const ctx = createContext({ page: 'ru/index.md' })
     addRssLinks(ctx)
     const ruAlts = ctx.head.filter(
-      (h) => h[1]?.hreflang === 'ru'
+      (h) => h[1]?.hreflang === 'ru-RU'
     )
     expect(ruAlts).toHaveLength(2)
   })

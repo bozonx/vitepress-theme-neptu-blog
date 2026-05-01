@@ -27,6 +27,8 @@ export function addRssLinks({ head, pageData, siteConfig }: AddRssLinksContext):
   const rssFormats = getRssFormats(siteConfig)
 
   for (const locale of supportedLocales) {
+    const localeConfig = siteConfig.site.locales[locale]
+
     for (const format of rssFormats) {
       const feedUrl = getFeedUrl(siteUrl, locale, format)
       const formatInfo = getFormatInfo(format)
@@ -35,9 +37,9 @@ export function addRssLinks({ head, pageData, siteConfig }: AddRssLinksContext):
         {
           rel: 'alternate',
           type: formatInfo.mimeType,
-          title: `${siteConfig.site.locales[locale].title} - ${formatInfo.title}`,
+          title: `${localeConfig.title} - ${formatInfo.title}`,
           href: feedUrl,
-          hreflang: locale,
+          hreflang: localeConfig.lang || locale,
         },
       ])
     }

@@ -39,6 +39,7 @@ export default {
     allPostsOfAuthor: 'Posts of the author',
     closeMenu: 'Close menu',
     allPostsOfYear: 'All posts of the year',
+    pageNotFound: '404 not found',
     postsCount: 'Publications',
     postsCountForms: ['Publication', 'Publications'],
     ...shared,

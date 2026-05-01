@@ -109,6 +109,7 @@ export namespace NeptuBlogTheme {
     allPostsOfAuthor: string
     closeMenu: string
     allPostsOfYear: string
+    pageNotFound: string
     postsCount: string
     postsCountForms: string[]
     search: string
@@ -287,4 +288,3 @@ export type UiLocaleDefinition = NeptuBlogTheme.UiLocaleDefinition
 export type LocaleDefinition = NeptuBlogTheme.LocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
-

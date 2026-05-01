@@ -106,6 +106,7 @@ describe('generateRssFeed', () => {
       site: {
         locales: {
           en: {
+            lang: 'en-US',
             title: 'English Blog',
             description: 'Desc',
             themeConfig: {
@@ -143,6 +144,7 @@ describe('generateRssFeed', () => {
     )
 
     const rssPayload = JSON.parse(writeFileSync.mock.calls[0]![1])
+    expect(rssPayload.options.language).toBe('en-US')
     expect(rssPayload.options.feedLinks).toEqual({
       rss: 'https://example.com/en/feed.rss',
     })
@@ -169,6 +171,7 @@ describe('generateRssFeed', () => {
       site: {
         locales: {
           ru: {
+            lang: 'ru-RU',
             title: 'Russian Blog',
             description: 'Desc',
             themeConfig: {},
@@ -187,6 +190,7 @@ describe('generateRssFeed', () => {
     } as any)
 
     const rssPayload = JSON.parse(writeFileSync.mock.calls[0]![1])
+    expect(rssPayload.options.language).toBe('ru-RU')
     expect(rssPayload.options.feedLinks).toEqual({
       rss: 'https://example.com/ru/feed.rss',
       atom: 'https://example.com/ru/feed.atom',
@@ -201,10 +205,11 @@ describe('generateRssFeed', () => {
         outDir: '/tmp/dist',
         site: {
           locales: {
-            en: {
-              title: 'English Blog',
-              description: 'Desc',
-              themeConfig: {},
+          en: {
+            lang: 'en-US',
+            title: 'English Blog',
+            description: 'Desc',
+            themeConfig: {},
             },
           },
         },

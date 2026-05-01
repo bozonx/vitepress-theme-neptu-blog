@@ -50,7 +50,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
       )
 
       feeds[localeIndex] = new Feed({
-        language: localeIndex,
+        language: locale.lang || localeIndex,
         title: locale.title || '',
         description: locale.description || '',
         copyright: locale.themeConfig?.footer?.copyright || '',

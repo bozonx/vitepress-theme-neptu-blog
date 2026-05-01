@@ -156,6 +156,7 @@ onUnmounted(() => {
         class="lightbox-overlay"
         role="dialog"
         aria-modal="true"
+        :aria-label="locales.dialogTitle || 'Image'"
         tabindex="-1"
         @click="onBackdropClick"
         @touchstart.passive="onTouchStart"
@@ -230,7 +231,7 @@ onUnmounted(() => {
           <button
             v-if="isZoomed"
             class="lightbox-zoom-level"
-            aria-label="Reset zoom"
+            :aria-label="locales.resetZoom || 'Reset zoom'"
             @click="resetZoom"
           >
             {{ Math.round(scale * 100) }}%
