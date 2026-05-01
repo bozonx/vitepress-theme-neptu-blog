@@ -1,149 +1,88 @@
-# Канонические ссылки (Canonical Links)
+# Canonical Links
 
-## Описание
+## Overview
 
-Канонические ссылки помогают поисковым системам понять, какая версия страницы является основной, что помогает избежать проблем с дублированным контентом.
+Canonical links help search engines understand which version of a page is the primary one, preventing duplicate content issues.
 
-## Использование
+Add the `canonical` field to any post or page frontmatter:
 
-Чтобы добавить каноническую ссылку на страницу, добавьте параметр `canonical` в frontmatter:
-
-**Поддерживаемые форматы:**
-
-- `canonical: "https://example.com/en/post/post-slug"` (полный URL)
-- `canonical: "self"` (ссылка на саму страницу)
-- `canonical: "s"` (сокращенная версия "self")
+- `canonical: "https://example.com/en/post/post-slug"` — absolute URL
+- `canonical: "self"` — auto-generate a link to the current page
+- `canonical: "s"` — short alias for `"self"`
 
 ```yaml
 ---
 title: My Post Title
 description: Post description
 date: 2024-01-15
-canonical: "https://example.com/en/post/post-slug"  # URL канонической страницы
-# или
-canonical: "self"  # Ссылка на саму страницу
-# или
-canonical: "s"     # Сокращенная версия
+canonical: "https://example.com/en/post/post-slug"
+# or
+canonical: "self"
+# or short alias
+canonical: "s"
 tags:
   - tag1
   - tag2
 ---
 ```
 
-## Что происходит
+## Behavior
 
-### С указанным URL
+### With an explicit URL
 
-Когда параметр `canonical` установлен с URL:
+The `addCanonicalLink` transformer inserts a `<link rel="canonical">` tag into the page `<head>` using the provided absolute URL.
 
-1. Трансформер `addCanonicalLink` автоматически добавляет тег в head страницы
-2. Используется указанный URL как каноническая ссылка
-3. Добавляется тег: `<link rel="canonical" href="https://example.com/en/post/post-slug">`
+```html
+<link rel="canonical" href="https://example.com/en/post/post-slug" />
+```
 
-### С self/s
+### With `"self"` or `"s"`
 
-Когда параметр `canonical` установлен как `"self"` или `"s"`:
+The transformer builds the current page URL from `siteUrl` and the page path.
 
-1. Трансформер автоматически генерирует URL текущей страницы
-2. Используется сгенерированный URL как каноническая ссылка
-3. Добавляется тег: `<link rel="canonical" href="https://example.com/en/post/current-page">`
+```html
+<link rel="canonical" href="https://example.com/en/post/current-page" />
+```
 
-## Примеры
+## Examples
 
-### С канонической ссылкой на другую страницу
+### Link to another page
 
 ```yaml
 ---
-title: 'Как настроить VitePress'
-description: 'Пошаговое руководство по настройке VitePress'
+title: 'How to set up VitePress'
+description: 'Step-by-step VitePress setup guide'
 date: 2024-01-15
 canonical: 'https://example.com/en/post/how-to-setup-vitepress'
 ---
 ```
 
-Результат в HTML:
-
-```html
-<link
-  rel="canonical"
-  href="https://example.com/en/post/how-to-setup-vitepress"
-/>
-```
-
-### С канонической ссылкой на саму страницу
+### Link to the current page
 
 ```yaml
 ---
-title: 'Страница с self canonical'
-description: 'Ссылка на саму страницу'
+title: 'Page with self canonical'
+description: 'Self-referencing canonical link'
 date: 2024-01-15
 canonical: 'self'
 ---
 ```
 
-Результат в HTML:
-
-```html
-<link rel="canonical" href="https://example.com/en/post/current-page" />
-```
-
-### С сокращенной версией
+### Without a canonical link
 
 ```yaml
 ---
-title: 'Страница с s canonical'
-description: 'Сокращенная версия self'
-date: 2024-01-15
-canonical: 's'
----
-```
-
-Результат в HTML (тот же, что и с `"self"`):
-
-```html
-<link rel="canonical" href="https://example.com/en/post/current-page" />
-```
-
-### Без канонической ссылки
-
-```yaml
----
-title: 'Обычная страница'
-description: 'Страница без канонической ссылки'
+title: 'Regular page'
+description: 'No canonical link added'
 date: 2024-01-15
 ---
 ```
 
-Результат: каноническая ссылка не добавляется.
+No `<link rel="canonical">` tag is emitted.
 
-## Технические детали
+## Technical details
 
-- Трансформер работает только для страниц с языковым префиксом (например, `/en/`, `/ru/`)
-- URL должен быть валидным (проверяется автоматически)
-- Функция безопасно обрабатывает ошибки и логирует предупреждения
-- Значения `"self"` и `"s"` автоматически генерируют URL текущей страницы
-- При использовании `"self"` или `"s"` требуется настройка `siteUrl` в конфигурации
-
-## Когда использовать
-
-### `canonical: "URL"`
-
-- Основные страницы постов
-- Страницы с важным контентом
-- Страницы, которые могут быть доступны по разным URL
-- Страницы с дублированным контентом (указывать на оригинальную страницу)
-
-### `canonical: "self"` или `canonical: "s"`
-
-- Страницы, которые должны указывать на себя как на каноническую версию
-- Основные версии страниц
-- Страницы, которые не являются дубликатами других страниц
-
-## Примечания
-
-- Каноническая ссылка указывает на указанный URL или на текущую страницу
-- Это помогает поисковым системам понять, какая версия страницы является основной
-- Используйте `"self"` или `"s"` для указания на саму страницу
-- Используйте полный URL для указания на другую страницу
-- URL должен быть абсолютным (с протоколом и доменом)
-- Значения `"self"` и `"s"` эквивалентны
+- The transformer only runs on locale-prefixed paths (e.g. `/en/`, `/ru/`).
+- Explicit URLs are validated.
+- `"self"` and `"s"` require `siteUrl` to be configured.
+- Errors are handled safely with build-time warnings.

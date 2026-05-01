@@ -1,18 +1,18 @@
-# Конфигурация внешних ссылок
+# External Links Configuration
 
-## Проблема
+## Problem
 
-По умолчанию VitePress автоматически добавляет атрибут `rel="noreferrer"` ко всем внешним ссылкам в постах. Это поведение встроено в VitePress и предназначено для повышения безопасности, но может быть нежелательным в некоторых случаях.
+By default VitePress adds `rel="noreferrer"` to all external links in posts. This is a security feature, but may be undesirable in some cases.
 
-## Решение
+## Solution
 
-В конфигурационных файлах `blogConfigBase.js` и `siteConfigBase.js` добавлена опция `externalLinks` в секцию `markdown`:
+The theme configures `externalLinks` in the `markdown` section of `blogConfigBase`:
 
 ```javascript
 markdown: {
   ...config.markdown,
   image: { lazyLoading: true, ...config.markdown?.image },
-  // Отключаем rel="noreferrer" для внешних ссылок
+  // Disable rel="noreferrer" for external links
   externalLinks: { target: '_blank', rel: [] },
   config: (md) => {
     md.use(mdImage, { srcDir: config.srcDir })
@@ -24,39 +24,37 @@ markdown: {
 },
 ```
 
-## Как это работает
+## Behavior
 
-- `target: '_blank'` - ссылки по-прежнему открываются в новой вкладке
-- `rel: []` - пустой массив отключает добавление атрибутов `rel`, включая `noreferrer`
+- `target: '_blank'` — links still open in a new tab
+- `rel: []` — an empty array disables all `rel` attributes, including `noreferrer`
 
-## Альтернативные варианты
+## Customizing rel attributes
 
-Если вы хотите добавить другие атрибуты `rel`, вы можете изменить массив:
+You can use different `rel` values in your own config:
 
 ```javascript
-// Добавить только noopener (рекомендуется для безопасности)
+// Keep only noopener (recommended for security)
 externalLinks: { target: '_blank', rel: ['noopener'] },
 
-// Добавить noopener и nofollow
+// Add noopener and nofollow
 externalLinks: { target: '_blank', rel: ['noopener', 'nofollow'] },
 
-// Полностью отключить все атрибуты rel
+// Disable all rel attributes
 externalLinks: { target: '_blank', rel: [] },
 ```
 
-## Безопасность
+## Security note
 
-**Важно**: Атрибут `noreferrer` добавляется для безопасности, чтобы предотвратить:
+`noreferrer` prevents:
 
-- Утечку информации о реферере
-- Потенциальные атаки через `window.opener`
+- Referrer information leakage
+- `window.opener` attacks
 
-Если вы отключаете `noreferrer`, рекомендуется добавить `noopener` для базовой защиты:
+If you disable `noreferrer`, keep `noopener` for basic protection:
 
 ```javascript
 externalLinks: { target: '_blank', rel: ['noopener'] },
 ```
 
-## Применение изменений
-
-Изменения вступят в силу после перезапуска сервера разработки или пересборки проекта.
+Changes take effect after restarting the dev server or rebuilding.

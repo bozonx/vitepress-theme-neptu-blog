@@ -396,11 +396,6 @@ Examples:
 - date formatting should use the resolved page `lang`
 - SEO tags should use the locale `lang` value where available
 
-## Open implementation tasks
-
-- document example-site patterns for `/` redirect and custom `uiLocales`
-- add tests for UI locale fallback and persistence
-
 ## Current status
 
 Already implemented in the repo:
@@ -416,6 +411,3 @@ Already implemented in the repo:
 - frontmatter-based translated page matching via `translations`
 - admin-defined `uiLocales` with partial override and `extends`
 - initial SSR merge for content-derived UI locale and admin overrides
-
-Not implemented yet:
-- no additional content-locale matching mode beyond `translations` and same-path fallback

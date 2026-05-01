@@ -1,55 +1,46 @@
-# 🏗️ Build-Time Analytics
+# Build-Time Analytics
 
-Система интеграции аналитики во время сборки (build time) для статических сайтов на базе VitePress. Статистика запрашивается один раз при сборке и встраивается напрямую в статические файлы страниц (Data Loaders).
+Build-time analytics integration for static VitePress sites. Statistics are fetched once during the build and baked into page data loaders.
 
-## 🎯 Преимущества Build-Time подхода
+## Why build-time
 
-- ⚡ **Быстрая загрузка** - нет клиентских запросов к API Google во время работы сайта.
-- 🔒 **Безопасность** - приватные ключи (credentials) используются только на сервере при сборке и не попадают в продакшен-бандл.
-- 📦 **Статичность** - полностью статический сайт (SSG).
-- 💰 **Экономия** - нет риска превысить лимиты API из-за наплыва пользователей.
+- **Fast** — no client-side requests to Google APIs.
+- **Secure** — private credentials are used only on the build server and never ship to the browser.
+- **Static** — fully static SSG output.
+- **Cost-effective** — no risk of exceeding API quotas from traffic spikes.
 
-## 🔧 Как это работает
+## How it works
 
-1. **Во время сборки** (`npm run build`):
-   - Система читает переменные окружения с доступами.
-   - Запрашивает статистику по просмотрам из Google Analytics 4 (GA4).
-   - "Впекает" (подмешивает) полученные данные напрямую в объекты `post` (через механизм data loaders VitePress).
+1. **At build time** (`pnpm run build`):
+   - Reads environment variables.
+   - Fetches view statistics from Google Analytics 4 (GA4).
+   - Merges data into `post.analyticsStats` via VitePress data loaders.
 
-2. **Во время работы сайта**:
-   - Компоненты сайта используют заранее подготовленные данные из объектов `post.analyticsStats` для сортировки и отображения.
+2. **At runtime**:
+   - Components consume the pre-baked `post.analyticsStats` for sorting and display.
 
-## ⚙️ Настройка Google Analytics 4
+## GA4 service account setup
 
-Для того чтобы система могла забрать данные из GA4, вам потребуется настроить сервисный аккаунт:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a **Service Account**.
+3. Create a new **JSON** key for the account and download it.
+4. Open the JSON and copy the `client_email` value.
+5. Open your **Google Analytics 4** admin panel.
+6. Add the copied email as a user with **Viewer** permissions.
 
-1. Зайдите в [Google Cloud Console](https://console.cloud.google.com/).
-2. Создайте **Service Account** (Сервисный аккаунт).
-3. Создайте новый ключ для этого аккаунта в формате **JSON** и скачайте его.
-4. Откройте скачанный JSON и скопируйте `client_email`.
-5. Перейдите в панель администратора вашей **Google Analytics 4**.
-6. Добавьте скопированный email в список пользователей и выдайте ему права **Viewer (Читатель)**.
+### Environment variables
 
-### Переменные окружения
-
-Для безопасности мы используем переменные окружения. **Никогда не коммитьте ваш JSON-ключ в репозиторий!**
-
-Создайте файл `.env` (или настройте секреты в CI/CD):
+Never commit the JSON key to your repository. Use `.env` or CI/CD secrets:
 
 ```bash
-# ID вашего ресурса в GA4 (находится в админке GA -> Property Settings)
 GA_PROPERTY_ID=123456789
-
-# Полное содержимое скачанного JSON-файла в виде одной строки.
-# Для локальной разработки вы можете просто скопировать содержимое файла сюда.
-GA_CREDENTIALS_JSON='{"type": "service_account", "project_id": "...", "private_key_id": "...", "private_key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n", "client_email": "..."}'
+GA_CREDENTIALS_JSON='{"type": "service_account", ...}'
 ```
 
-### Конфигурация в `.vitepress/config.ts`
+### Blog config
 
-В конфигурационном файле блога (`.vitepress/config.ts`) укажите эти переменные:
-
-```javascript
+```ts
+// .vitepress/config.ts
 import { defineConfig } from 'vitepress'
 import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 import dotenv from 'dotenv'
@@ -62,21 +53,20 @@ export default defineConfig(
       googleAnalytics: {
         propertyId: process.env.GA_PROPERTY_ID,
         credentialsJson: process.env.GA_CREDENTIALS_JSON,
-        // За сколько последних дней запрашивать статистику (по умолчанию 30)
-        dataPeriodDays: 30, 
+        dataPeriodDays: 30,
       },
       popularPosts: {
         enabled: true,
-        sortBy: 'pageviews', // Возможные значения: 'pageviews', 'uniquePageviews', 'avgTimeOnPage'
-      }
+        sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
+      },
     },
   })
 )
 ```
 
-## 🔄 Процесс сборки и Логи
+## Build logs
 
-При сборке (`npm run build` или `npm run dev`) вы увидите в консоли процесс загрузки:
+During build you will see:
 
 ```bash
 🔍 Fetching GA stats for property 123456789...
@@ -84,29 +74,18 @@ export default defineConfig(
 📈 Merged GA stats for 15 posts.
 ```
 
-### Обработка ошибок
+## Error handling
 
-Система безопасна к сбоям. Если произойдет ошибка сети, ключ будет недействителен или GA вернет пустой ответ, система выведет предупреждение в консоль, но **сборка не упадет**. Посты просто соберутся без статистики (сортировка по популярности откатится к сортировке по дате).
+The system is failure-safe. If the network fails, the key is invalid, or GA returns an empty response, a warning is logged and **the build continues**. Posts are built without stats and popular-posts sorting falls back to date sorting.
 
-Примеры ошибок:
-```bash
-# Если нет данных за указанный период:
-⚠️ GA returned no data for this period.
+## CI/CD example (GitHub Actions)
 
-# Если неверные доступы или нет прав:
-❌ Critical error fetching Google Analytics data:
-Request failed with status code 403
-```
-
-## 🚀 CI/CD интеграция (GitHub Actions)
-
-В настройках репозитория на GitHub перейдите в **Settings -> Secrets and variables -> Actions** и добавьте два секрета:
-1. `GA_PROPERTY_ID`
-2. `GA_CREDENTIALS_JSON` (вставьте всё содержимое JSON-ключа).
-
-Пример workflow (`.github/workflows/deploy.yml`):
+Add two secrets under **Settings -> Secrets and variables -> Actions**:
+- `GA_PROPERTY_ID`
+- `GA_CREDENTIALS_JSON`
 
 ```yaml
+# .github/workflows/deploy.yml
 name: Deploy
 on:
   push:
@@ -116,18 +95,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - run: npm ci
-
-      - name: Build Blog
+          node-version: '20'
+      - run: pnpm install
+      - name: Build
         env:
           GA_PROPERTY_ID: ${{ secrets.GA_PROPERTY_ID }}
           GA_CREDENTIALS_JSON: ${{ secrets.GA_CREDENTIALS_JSON }}
-        run: npm run build
+        run: pnpm run build
 ```

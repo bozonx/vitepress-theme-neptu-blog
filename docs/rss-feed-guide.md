@@ -1,196 +1,86 @@
 # RSS Feed Guide
 
-## Обзор
+## Overview
 
-Система генерации RSS feed была значительно улучшена для соответствия современным стандартам и требованиям.
+RSS, Atom, and JSON feeds are generated automatically per locale during the build.
 
-## Поддерживаемые форматы
+## Supported formats
 
-Теперь генерируются три формата feed:
+| Format | File name | MIME type |
+|--------|-----------|-----------|
+| RSS 2.0 | `feed-{locale}.rss` | `application/rss+xml` |
+| Atom 1.0 | `feed-{locale}.atom` | `application/atom+xml` |
+| JSON Feed 1.1 | `feed-{locale}.json` | `application/feed+json` |
 
-1. **RSS 2.0** (`feed-{locale}.rss`) - классический формат
-2. **Atom 1.0** (`feed-{locale}.atom`) - современный XML формат
-3. **JSON Feed 1.1** (`feed-{locale}.json`) - современный JSON формат
+## Configuration
 
-## Улучшения
+Control output with root-level config (inside `defineBlogConfig`):
 
-### 1. Обработка ошибок
+```ts
+export default defineConfig(
+  defineBlogConfig({
+    maxPostsInRssFeed: 50,
+    rssFormats: ['rss', 'atom', 'json'],
+  })
+)
+```
 
-- Добавлена полная обработка ошибок с try-catch блоками
-- Валидация конфигурации перед генерацией
-- Пропуск некорректных постов с логированием
+## Frontmatter
 
-### 2. Валидация данных
-
-- Проверка обязательных полей (title, date)
-- Валидация формата даты
-- Очистка HTML тегов из описаний
-
-### 3. Дополнительные поля
-
-- **Author** - информация об авторе
-- **Categories** - теги как категории
-- **Published/Updated** - даты публикации и обновления
-- **GUID** - уникальные идентификаторы
-- **Content** - полный контент (опционально)
-
-### 4. Безопасность
-
-- Экранирование специальных символов
-- Удаление HTML тегов из описаний
-- Валидация URL и путей
-
-## Конфигурация
-
-### Обязательные поля в frontmatter
+Required fields:
 
 ```yaml
 ---
-title: 'Заголовок поста'
+title: 'Post title'
 date: '2024-01-15'
 ---
 ```
 
-### Опциональные поля
+Optional fields used by feeds:
 
 ```yaml
 ---
-title: 'Заголовок поста'
+title: 'Post title'
 date: '2024-01-15'
-author: 'Имя автора'
-authorEmail: 'author@example.com'
-authorLink: 'https://example.com/author'
+authorId: 'john-smith'
 tags: ['tag1', 'tag2']
 cover: '/img/post-cover.jpg'
-previewText: 'Краткое описание поста'
-includeContent: true # Включить полный контент в feed
-updated: '2024-01-20' # Дата обновления
+previewText: 'Short preview text'
+# Not built-in; feed generation strips HTML from descriptions automatically
 ---
 ```
 
-## Использование
-
-### Автоматическая генерация
-
-RSS feeds генерируются автоматически при сборке сайта:
-
-```bash
-npm run build
-```
-
-### Ручная генерация
-
-```javascript
-import { generateRssFeed } from './src/page-helpers/generateRssFeed.js'
-
-const config = {
-  site: {
-    locales: {
-      en: { title: 'Blog', description: 'My blog' },
-      ru: { title: 'Блог', description: 'Мой блог' },
-    },
-  },
-  userConfig: { hostname: 'https://example.com' },
-  outDir: './dist',
-}
-
-await generateRssFeed(config)
-```
-
-## Структура файлов
+## Output file structure
 
 ```
 dist/
-├── feed-en.rss      # RSS 2.0 для английского
-├── feed-en.atom     # Atom 1.0 для английского
-├── feed-en.json     # JSON Feed для английского
-├── feed-ru.rss      # RSS 2.0 для русского
-├── feed-ru.atom     # Atom 1.0 для русского
-└── feed-ru.json     # JSON Feed для русского
+├── feed-en.rss
+├── feed-en.atom
+├── feed-en.json
+├── feed-ru.rss
+├── feed-ru.atom
+└── feed-ru.json
 ```
 
-## Валидация
+## Validation
 
-### Онлайн валидаторы
-
-- **RSS**: https://validator.w3.org/feed/
-- **Atom**: https://validator.w3.org/feed/ (поддерживает Atom)
+- **RSS/Atom**: https://validator.w3.org/feed/
 - **JSON Feed**: https://jsonfeed.org/validator/
 
-### Локальная валидация
+Local validation:
 
 ```bash
-# Проверка RSS
 xmllint --noout feed-en.rss
-
-# Проверка Atom
 xmllint --noout feed-en.atom
-
-# Проверка JSON
 jq . feed-en.json
 ```
 
-## Совместимость
+## Error handling
 
-### RSS читатели
+- Invalid posts are skipped with a warning instead of crashing the build.
+- Missing titles or malformed dates are caught during generation.
+- HTML is stripped from descriptions automatically.
 
-- ✅ Feedly
-- ✅ Inoreader
-- ✅ NewsBlur
-- ✅ NetNewsWire
-- ✅ RSSOwl
+## Compatibility
 
-### Платформы
-
-- ✅ WordPress
-- ✅ Medium
-- ✅ Substack
-- ✅ Ghost
-
-## Логирование
-
-Система предоставляет подробное логирование:
-
-```
-Generated RSS feed: /path/to/feed-en.rss
-Generated Atom feed: /path/to/feed-en.atom
-Generated JSON feed: /path/to/feed-en.json
-RSS feed generation completed successfully
-```
-
-При ошибках:
-
-```
-Post /post/example.md validation failed: missing title, invalid date format
-Error processing post /post/example.md: Error message
-```
-
-## Производительность
-
-- Генерация происходит асинхронно
-- Обработка ошибок не прерывает генерацию других постов
-- Кэширование результатов для оптимизации
-
-## Безопасность
-
-- Валидация всех входных данных
-- Экранирование специальных символов
-- Проверка путей файлов
-- Ограничение размера описаний
-
-## Расширение
-
-Для добавления новых полей или форматов:
-
-1. Обновите `rssValidator.js` для валидации новых полей
-2. Добавьте логику в `generateRssFeed.js`
-3. Обновите документацию
-
-## Поддержка
-
-При возникновении проблем:
-
-1. Проверьте логи сборки
-2. Убедитесь в корректности frontmatter
-3. Проверьте конфигурацию сайта
-4. Используйте валидаторы для проверки выходных файлов
+Tested with Feedly, Inoreader, NewsBlur, NetNewsWire, and major platforms such as WordPress, Medium, Substack, and Ghost.
