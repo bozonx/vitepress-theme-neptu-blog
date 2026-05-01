@@ -39,7 +39,7 @@ export async function loadPostsData(
   const cacheKey = path.resolve(postsDir)
   const cache = globalThis.neptuBlogCache!
 
-  if (cache[cacheKey]?.length! > 0 && !ignoreCache) {
+  if (cache[cacheKey] && cache[cacheKey].length > 0 && !ignoreCache) {
     return cache[cacheKey]!
   }
 
@@ -80,7 +80,7 @@ export async function loadPostsDataFromFiles(
 
   if (!fullPaths.length) return []
 
-  if (cache[cacheKey]?.length! > 0 && !ignoreCache) {
+  if (cache[cacheKey] && cache[cacheKey].length > 0 && !ignoreCache) {
     return cache[cacheKey]!
   }
 

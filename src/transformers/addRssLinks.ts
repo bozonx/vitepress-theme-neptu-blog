@@ -1,15 +1,17 @@
 import { getFeedUrl, getFormatInfo, getRssFormats, normalizeSiteUrl } from '../utils/node/index.ts'
 import { isHomePage } from '../utils/shared/index.ts'
 
+import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
+
 export interface AddRssLinksContext {
   page: string
   head: any[]
-  pageData: any
-  siteConfig: any
+  pageData: ExtendedPageData
+  siteConfig: ExtendedSiteConfig
 }
 
 /** Adds RSS feed links to the head of the home page */
-export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksContext): void {
+export function addRssLinks({ head, pageData, siteConfig }: AddRssLinksContext): void {
   if (!isHomePage(pageData.frontmatter)) return
 
   const rawSiteUrl = siteConfig.userConfig.siteUrl

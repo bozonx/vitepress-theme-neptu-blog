@@ -5,7 +5,7 @@ export namespace NeptuBlogTheme {
   export type DeepPartial<T> = {
     [K in keyof T]?: T[K] extends Array<infer U>
       ? Array<DeepPartial<U>>
-      : T[K] extends Record<string, any>
+      : T[K] extends Record<string, unknown>
       ? DeepPartial<T[K]>
       : T[K]
   }
@@ -66,7 +66,7 @@ export namespace NeptuBlogTheme {
 
     t: I18n
 
-    search?: (DefaultTheme.Config['search'] & { bodyMarker?: string }) | { provider: string; options?: any; bodyMarker?: string }
+    search?: (DefaultTheme.Config['search'] & { bodyMarker?: string }) | { provider: string; options?: unknown; bodyMarker?: string }
 
     publisher?: {
       name?: string
@@ -205,7 +205,7 @@ export namespace NeptuBlogTheme {
     count?: number
   }
 
-  export interface PostFrontmatter extends Record<string, any> {
+  export interface PostFrontmatter extends Record<string, unknown> {
     layout?: 'post' | 'home' | 'page' | 'util' | 'tag' | 'archive' | 'author' | string
     title?: string
     description?: string
@@ -247,7 +247,7 @@ export namespace NeptuBlogTheme {
     userConfig: {
       themeConfig: Config
       siteUrl?: string
-      [key: string]: any
+      [key: string]: unknown
     }
   }
 }

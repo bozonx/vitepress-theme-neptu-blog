@@ -4,8 +4,8 @@ const POSTS_DIR_REGEXP = new RegExp(`^[^/]+/(${POSTS_DIR}|page)`)
 
 export interface SitemapItem {
   url: string
-  links: Array<{ url?: string; [key: string]: any }>
-  [key: string]: any
+  links: Array<{ url?: string; [key: string]: unknown }>
+  [key: string]: unknown
 }
 
 /** Filter sitemap items only for blog config */

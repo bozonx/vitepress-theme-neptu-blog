@@ -135,8 +135,8 @@ const isAudioLoaded = ref(false)
 const errorMessage = ref('')
 
 // Debounce function for performance optimization
-const debounce = (func: Function, wait: number) => {
-  let timeout: any
+const debounce = (func: (...args: any[]) => void, wait: number) => {
+  let timeout: ReturnType<typeof setTimeout> | undefined
   return function executedFunction(...args: any[]) {
     const later = () => {
       clearTimeout(timeout)
@@ -307,14 +307,14 @@ const handleLoadStart = () => {
   errorMessage.value = ''
 }
 
-const handleError = (event: any) => {
+const handleError = (event: Event) => {
   hasError.value = true
   isLoading.value = false
   isPlaying.value = false
   isAudioLoaded.value = false
 
   // Detailed error handling
-  const error = event.target.error
+  const error = (event.target as HTMLAudioElement)?.error
   if (error) {
     switch (error.code) {
       case error.MEDIA_ERR_ABORTED:
@@ -343,7 +343,7 @@ const handleError = (event: any) => {
 }
 
 // Time formatting
-const formatTime = (time: any) => {
+const formatTime = (time: number | undefined) => {
   if (!time || !isFinite(time)) return '0:00'
 
   const minutes = Math.floor(time / 60)
