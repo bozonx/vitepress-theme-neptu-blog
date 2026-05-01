@@ -18,11 +18,12 @@ const props = defineProps<{
 }>()
 const { localeIndex, site } = useData()
 const { theme } = useUiTheme()
-const configuredFormats = Array.isArray((site.value as Record<string, any>).rssFormats)
-  ? ((site.value as Record<string, any>).rssFormats as string[])
+const configuredFormats = Array.isArray((site.value as Record<string, unknown>).rssFormats)
+  ? ((site.value as Record<string, unknown>).rssFormats as string[])
       .filter((format) => typeof format === 'string')
       .map((format) => format.trim().toLowerCase())
   : ['rss', 'atom', 'json']
+
 const hasFormat = (format: string) => configuredFormats.includes(format)
 const socialLinks: SocialLinkItem[] = [
   ...(theme.value.sideBar?.socialLinks || []).map((item) => ({

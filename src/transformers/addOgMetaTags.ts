@@ -1,13 +1,14 @@
+import type { HeadConfig } from 'vitepress'
 import {
   generatePageUrlPath,
   isPost,
   makeAbsoluteUrl,
   normalizeSiteUrl,
 } from '../utils/shared/index.ts'
-import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author } from '../types.d.ts'
+import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author, Tag } from '../types.d.ts'
 
 export interface AddOgMetaTagsContext {
-  head: any[]
+  head: HeadConfig[]
   pageData: ExtendedPageData
   siteConfig: ExtendedSiteConfig
 }
@@ -104,9 +105,10 @@ export function addOgMetaTags({
         ? pageData.frontmatter.tags
         : [pageData.frontmatter.tags]
 
-      tagsList.forEach((tag: any) => {
-        tags.push(['property', 'article:tag', tag.name || tag])
+      tagsList.forEach((tag: string | Tag) => {
+        tags.push(['property', 'article:tag', typeof tag === 'string' ? tag : tag.name])
       })
+
     }
     if (authorUrl) {
       tags.push(['property', 'article:author', authorUrl])

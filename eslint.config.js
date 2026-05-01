@@ -21,6 +21,13 @@ export default tseslint.config(
     },
   },
   {
+    files: ['tests/**'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
+
+  {
     files: ['*.vue', '**/*.vue'],
     languageOptions: {
       parser: vueParser,

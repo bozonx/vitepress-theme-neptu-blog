@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Badge from './Badge.vue'
+import NeptuBadge from './NeptuBadge.vue'
 import SimpleLink from './SimpleLink.vue'
 
 interface Props {
@@ -17,6 +17,6 @@ const props = defineProps<Props>()
     class="no-underline text-2xl my-5 inline-flex gap-x-2"
   >
     <span>{{ props.text }}</span>
-    <Badge v-if="typeof props.count === 'number'" :count="props.count" />
+    <NeptuBadge v-if="typeof props.count === 'number'" :count="props.count" />
   </SimpleLink>
 </template>

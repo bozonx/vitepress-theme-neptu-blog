@@ -89,10 +89,10 @@ export async function loadBlogLocale(
     theme: resolvedTheme,
     t: (resolvedTheme as Record<string, unknown>).t as Record<string, unknown>,
   }
-  const site = parseLocaleSite(config.srcDir || '', params) as any
+  const site = parseLocaleSite(config.srcDir || '', params) as Record<string, unknown>
   const { lang, title, description, t, editLink, ...themeConfig } = site
 
-  const authors = (themeConfig.authors as Author[] | undefined)?.map((item: Author) => {
+  const authors = (themeConfig.authors as Author[] | undefined)?.map((item) => {
     const imageDimensions = item.image
       ? getImageDimensions(item.image as string, config.srcDir || '')
       : null

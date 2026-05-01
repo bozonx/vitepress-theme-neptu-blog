@@ -16,10 +16,10 @@ import './styles/blog-vars.css'
 import './styles/blog-styles.css'
 
 import type { EnhanceAppContext } from 'vitepress'
-import Layout from './layouts/Layout.vue'
+import NeptuLayout from './layouts/NeptuLayout.vue'
 
 export default {
-  Layout,
+  Layout: NeptuLayout,
   enhanceApp(ctx: EnhanceAppContext) {
     ctx.app.config.globalProperties.getLocales = () =>
       resolveTranslationsByFilePath(ctx.router.route.path)

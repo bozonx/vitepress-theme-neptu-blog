@@ -28,7 +28,7 @@ describe('PostDate', () => {
     const wrapper = mount(PostDate, {
       global: { stubs: { BaseLink: BaseLinkStub } },
     })
-    const yearLink = wrapper.findAllComponents({ name: 'BaseLink' }).find((l) => l.attributes('href')?.includes('/2024/'))
+    const yearLink = wrapper.findAllComponents({ name: 'BaseLink' }).find((l) => l.props('href')?.includes('/2024/'))
     expect(yearLink).toBeDefined()
   })
 
@@ -37,7 +37,7 @@ describe('PostDate', () => {
     const wrapper = mount(PostDate, {
       global: { stubs: { BaseLink: BaseLinkStub } },
     })
-    const monthLink = wrapper.findAllComponents({ name: 'BaseLink' }).find((l) => l.attributes('href')?.includes('/month/6'))
+    const monthLink = wrapper.findAllComponents({ name: 'BaseLink' }).find((l) => l.props('href')?.includes('/month/6'))
     expect(monthLink).toBeDefined()
   })
 

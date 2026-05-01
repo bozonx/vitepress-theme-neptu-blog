@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BaseLink from './BaseLink.vue'
-import Badge from './Badge.vue'
+import NeptuBadge from './NeptuBadge.vue'
 import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
@@ -33,7 +33,7 @@ const className =
     :active-compare-method="props.activeCompareMethod"
   >
     <span>{{ props.name }}</span>
-    <Badge
+    <NeptuBadge
       v-if="props.count"
       :count="props.count"
       :title="theme.t.tagBadgeCount"

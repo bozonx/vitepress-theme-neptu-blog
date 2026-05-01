@@ -9,9 +9,11 @@ export interface MdImageOptions {
  * captions (similar to @mdit/plugin-figure). Also reads image dimensions and
  * injects width/height attributes.
  */
-export function mdImage(md: any, { srcDir }: MdImageOptions = {}): void {
-  md.core.ruler.before('linkify', 'figure', (state: any) => {
-    const tokens = state.tokens
+export function mdImage(md: { core: { ruler: { before: (target: string, name: string, fn: (state: unknown) => void) => void } } }, { srcDir }: MdImageOptions = {}): void {
+  md.core.ruler.before('linkify', 'figure', (state: unknown) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const s = state as any
+    const tokens = s.tokens
 
     for (let i = 1; i < tokens.length - 1; i++) {
       const token = tokens[i]

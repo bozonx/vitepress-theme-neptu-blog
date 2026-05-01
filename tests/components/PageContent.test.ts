@@ -46,7 +46,7 @@ describe('PageContent', () => {
   })
 
   it('renders preview text when available and no cover', () => {
-    mockFrontmatter.value = { layout: 'post', preview: 'Some preview text' }
+    mockFrontmatter.value = { layout: 'post', previewText: 'Some preview text' }
     const wrapper = mount(PageContent, {
       global: { stubs: { PostFooter: PostFooterStub, PostDate: PostDateStub, PostTopBar: PostTopBarStub, PostImage: PostImageStub, Content: true } },
     })

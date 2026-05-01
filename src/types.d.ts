@@ -80,7 +80,7 @@ export namespace NeptuBlogTheme {
       links?: NavLink[]
     }
 
-    [key: string]: any
+    [key: string]: unknown
   }
 
 
@@ -132,7 +132,7 @@ export namespace NeptuBlogTheme {
     fileDownload: Record<string, string>
     lightbox: Record<string, string>
 
-    [key: string]: any
+    [key: string]: unknown
   }
 
 

@@ -1,3 +1,4 @@
+import type { HeadConfig } from 'vitepress'
 import fs from 'node:fs'
 import path from 'node:path'
 import {
@@ -9,7 +10,7 @@ import {
 import type { ExtendedPageData, ExtendedSiteConfig, LocaleDefinition } from '../types.d.ts'
 
 export interface AddHreflangContext {
-  head: any[]
+  head: HeadConfig[]
   pageData?: ExtendedPageData
   siteConfig: ExtendedSiteConfig
 }
@@ -50,7 +51,7 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
             hreflang: lang,
             href: url,
           },
-        ] as [string, Record<string, string>],
+        ] as HeadConfig,
       },
     ]
   })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
 import { inject } from 'vue'
-import Author from '../Author.vue'
+import NeptuAuthor from '../NeptuAuthor.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts, isPopularRoute, pluralize } from '../../utils/shared/index.ts'
@@ -46,7 +46,7 @@ const author = theme.value.authors?.find(
 
 <template>
   <UtilPageHeader>{{ frontmatter.title }}</UtilPageHeader>
-  <Author :author="author" class="mb-15" />
+  <NeptuAuthor :author="author" class="mb-15" />
 
   <ListPageHeader
     :base-url="`/${localeIndex}/${theme.authorsBaseUrl}/${props.authorId}`"

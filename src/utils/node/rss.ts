@@ -1,7 +1,9 @@
+import type { Feed } from 'feed'
 import { normalizeTag } from '../shared/tags.ts'
+import type { ExtendedSiteConfig, PostFrontmatter, Author } from '../../types.d.ts'
 
 /** Validates required frontmatter fields for RSS. */
-export function validatePostForRss(frontmatter: any, url: string): boolean {
+export function validatePostForRss(frontmatter: PostFrontmatter, url: string): boolean {
   const errors: string[] = []
 
   if (!frontmatter.title) {
@@ -101,7 +103,7 @@ export function formatTagsForRss(
 }
 
 /** Validates RSS generation configuration. */
-export function validateRssConfig(config: any): boolean {
+export function validateRssConfig(config: ExtendedSiteConfig): boolean {
   const errors: string[] = []
 
   if (!config.site?.locales) {
@@ -128,7 +130,7 @@ export interface RssFormatInfo {
   mimeType: string
   title: string
   extension: string
-  generator: (feed: any) => string
+  generator: (feed: Feed) => string
 }
 
 /** Returns information about the RSS format */
@@ -158,7 +160,7 @@ export function getFormatInfo(format: string): RssFormatInfo {
 }
 
 /** Gets RSS format settings from configuration */
-export function getRssFormats(config: any): string[] {
+export function getRssFormats(config: ExtendedSiteConfig): string[] {
   const configuredFormats =
     config?.userConfig?.rssFormats ?? config?.userConfig?.themeConfig?.rssFormats
   const knownFormats = new Set(['rss', 'atom', 'json'])
@@ -174,8 +176,8 @@ export function getRssFormats(config: any): string[] {
 }
 
 export function makeAuthorForRss(
-  config: any,
-  frontmatter: any,
+  config: ExtendedSiteConfig,
+  frontmatter: PostFrontmatter,
   siteUrl: string,
   localeIndex: string
 ): { name: string; link: string } | undefined {
@@ -187,7 +189,7 @@ export function makeAuthorForRss(
 
   if (!Array.isArray(authors)) return
 
-  const author = authors.find((item: any) => item.id === frontmatter.authorId)
+  const author = (authors as Author[]).find((item) => item.id === frontmatter.authorId)
 
   if (!author) return
 

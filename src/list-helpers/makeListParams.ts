@@ -2,7 +2,7 @@ interface PostWithDate {
   date: string | number | Date
   tags?: Array<{ name?: string; slug?: string } | string>
   authorId?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export function makeAllPostsParams(

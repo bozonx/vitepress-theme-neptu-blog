@@ -1,3 +1,4 @@
+import type { HeadConfig } from 'vitepress'
 import yaml from 'yaml'
 import { omitUndefined } from '../utils/shared/index.ts'
 import {
@@ -14,11 +15,12 @@ import type {
   ThemeConfig,
   Author,
   LocaleDefinition,
+  Tag,
 } from '../types.d.ts'
 
 export interface AddJsonLdContext {
   page: string
-  head: any[]
+  head: HeadConfig[]
   pageData: ExtendedPageData
   siteConfig: ExtendedSiteConfig
 }
@@ -154,7 +156,7 @@ function createPostJsonLd(
     dateModified: toIsoDate(pageData.lastUpdated) as JsonLdValue,
     keywords:
       tags && tags.length > 0
-        ? (tags as any[]).map((tag: any) => tag.name || tag).join(', ')
+        ? (tags as Array<string | Tag>).map((tag) => (typeof tag === 'string' ? tag : tag.name)).join(', ')
         : undefined,
     image: (cover &&
       omitUndefined({

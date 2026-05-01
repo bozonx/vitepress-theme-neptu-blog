@@ -1,10 +1,11 @@
+import type { HeadConfig } from 'vitepress'
 import { generatePageUrlPath, makeAbsoluteUrl, normalizeSiteUrl } from '../utils/shared/index.ts'
 
 import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 export interface AddCanonicalLinkContext {
   page: string
-  head: any[]
+  head: HeadConfig[]
   pageData: ExtendedPageData
   siteConfig: ExtendedSiteConfig
 }

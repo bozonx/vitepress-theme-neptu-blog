@@ -1,5 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
-import type { UserConfig } from 'vitepress'
+import type { UserConfig, HeadConfig, TransformContext, SiteConfig } from 'vitepress'
 import { omitUndefined } from '../utils/shared/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
@@ -21,10 +21,10 @@ export type BlogUserConfig = UserConfig & {
   maxPostsInRssFeed?: number
   rssFormats?: string[]
   maxDescriptionLength?: number
-  [key: string]: any
+  [key: string]: unknown
 }
 
-export const common: Record<string, any> = {
+export const common: Record<string, unknown> = {
   head: [
     ['meta', { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' }],
 
@@ -89,7 +89,7 @@ export const common: Record<string, any> = {
   },
 }
 
-export function mergeBlogConfig(config: BlogUserConfig): any {
+export function mergeBlogConfig(config: BlogUserConfig): UserConfig {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
@@ -105,7 +105,7 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
     vite: {
       ...config.vite,
       plugins: [
-        ...(config.vite?.plugins?.some((p: any) => p?.name === 'tailwindcss')
+        ...(config.vite?.plugins?.some((p: unknown) => (p as { name: string })?.name === 'tailwindcss')
           ? []
           : [tailwindcss()]),
         ...(config.vite?.plugins || []),
@@ -114,11 +114,11 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
     },
     sitemap: {
       hostname: config.siteUrl,
-      transformItems: (items: any[]) => {
-        return filterSitemap(items as any)
+      transformItems: (items: unknown[]) => {
+        return filterSitemap(items)
       },
       ...config.sitemap,
-    } as any,
+    } as UserConfig['sitemap'],
     markdown: {
       ...config.markdown,
       image: { lazyLoading: true, ...config.markdown?.image },
@@ -126,7 +126,7 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
         target: '_blank',
         class: externalLinkIcon ? 'vp-external-link-icon' : undefined,
       }),
-      config: (md: any) => {
+      config: (md: { use: (plugin: unknown, options?: unknown) => void }) => {
         md.use(mdImage, { srcDir: config.srcDir })
 
         if (config.markdown?.config) {
@@ -161,7 +161,7 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
     },
 
     async transformHead(ctx: {
-      head: any[]
+      head: HeadConfig[]
       pageData: ExtendedPageData
       siteConfig: ExtendedSiteConfig
       page: string
@@ -173,14 +173,14 @@ export function mergeBlogConfig(config: BlogUserConfig): any {
       addRssLinks(ctx)
 
       if (config.transformHead) {
-        await config.transformHead(ctx as any)
+        await config.transformHead(ctx as unknown as TransformContext)
       }
 
     },
 
 
 
-    buildEnd: async (cfg: any) => {
+    buildEnd: async (cfg: SiteConfig) => {
       await generateRssFeed(cfg)
 
       if (config.buildEnd) {

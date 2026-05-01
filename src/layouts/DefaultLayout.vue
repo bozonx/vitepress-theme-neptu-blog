@@ -4,7 +4,7 @@ import { ref } from 'vue'
 
 import PageContent from '../components/PageContent.vue'
 import LayoutAside from '../components/layout-parts/LayoutAside.vue'
-import Footer from '../components/layout-parts/Footer.vue'
+import NeptuFooter from '../components/layout-parts/NeptuFooter.vue'
 import SideBar from '../components/layout-parts/SideBar.vue'
 import ToTheTop from '../components/layout-parts/ToTheTop.vue'
 import TopBar from '../components/layout-parts/TopBar.vue'
@@ -64,11 +64,11 @@ useSwipeDrawer({
           </div>
 
           <div class="mt-30 pb-12">
-            <Footer>
+            <NeptuFooter>
               <template v-if="$slots['footer-before']" #footer-before>
                 <slot name="footer-before" />
               </template>
-            </Footer>
+            </NeptuFooter>
           </div>
         </main>
 

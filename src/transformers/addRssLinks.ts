@@ -1,3 +1,4 @@
+import type { HeadConfig } from 'vitepress'
 import { getFeedUrl, getFormatInfo, getRssFormats, normalizeSiteUrl } from '../utils/node/index.ts'
 import { isHomePage } from '../utils/shared/index.ts'
 
@@ -5,7 +6,7 @@ import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 
 export interface AddRssLinksContext {
   page: string
-  head: any[]
+  head: HeadConfig[]
   pageData: ExtendedPageData
   siteConfig: ExtendedSiteConfig
 }

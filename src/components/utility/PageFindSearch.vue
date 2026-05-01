@@ -35,7 +35,9 @@ import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants.ts'
 
 declare global {
   interface Window {
-    PagefindUI: any
+    PagefindUI: {
+      new (options: unknown): { destroy(): void }
+    }
   }
 }
 

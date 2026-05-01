@@ -83,7 +83,7 @@ const encodeAudioUrl = (url: string) => {
     // For relative paths, encode the entire path
     return url
       .split('/')
-      .map((segment: any) => (segment ? encodeURIComponent(segment) : segment))
+      .map((segment) => (segment ? encodeURIComponent(segment) : segment))
       .join('/')
   } catch {
     // If URL parsing failed, return the original
@@ -135,9 +135,9 @@ const isAudioLoaded = ref(false)
 const errorMessage = ref('')
 
 // Debounce function for performance optimization
-const debounce = (func: (...args: any[]) => void, wait: number) => {
+const debounce = (func: (...args: unknown[]) => void, wait: number) => {
   let timeout: ReturnType<typeof setTimeout> | undefined
-  return function executedFunction(...args: any[]) {
+  return function executedFunction(...args: unknown[]) {
     const later = () => {
       clearTimeout(timeout)
       func(...args)
