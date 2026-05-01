@@ -56,6 +56,18 @@ describe('transformPageMeta', () => {
     expect(pageData.frontmatter.tags).toEqual([{ name: 'Foo', slug: 'custom-slug' }])
   })
 
+  it('normalizes object tags without slug', () => {
+    const pageData = createPageData({
+      filePath: 'en/post/hello.md',
+      frontmatter: {
+        layout: 'post',
+        tags: [{ name: 'Foo Bar' }],
+      },
+    })
+    transformPageMeta(pageData, {})
+    expect(pageData.frontmatter.tags).toEqual([{ name: 'Foo Bar', slug: 'foo-bar' }])
+  })
+
   it('transforms coverDescr markdown to HTML', () => {
     const pageData = createPageData({
       frontmatter: {

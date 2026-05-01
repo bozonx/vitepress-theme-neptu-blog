@@ -216,7 +216,7 @@ export namespace NeptuBlogTheme {
     coverWidth?: number
     coverDescr?: string
     coverAlt?: string
-    tags?: string[]
+    tags?: Array<string | Tag>
     previewText?: string
     descrAsPreview?: boolean
     jsonLd?: string

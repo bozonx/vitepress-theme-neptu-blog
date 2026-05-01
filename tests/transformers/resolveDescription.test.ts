@@ -82,7 +82,10 @@ describe('resolveDescription', () => {
 
     resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: {} } as any })
     expect(pageData.description).toBeUndefined()
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Failed to read file'), 'ENOENT')
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Failed to resolve description for en/post/missing.md:',
+      'ENOENT'
+    )
     warnSpy.mockRestore()
   })
 })

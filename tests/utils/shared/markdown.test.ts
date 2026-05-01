@@ -26,6 +26,11 @@ describe('removeTitleFromMd', () => {
     expect(removeTitleFromMd(md)).toBe('\n\nContent')
   })
 
+  it('removes setext H1 titles', () => {
+    const md = 'Hello World\n===\n\nContent'
+    expect(removeTitleFromMd(md)).toBe('\n\nContent')
+  })
+
   it('returns empty string for null', () => {
     expect(removeTitleFromMd(null)).toBe('')
   })

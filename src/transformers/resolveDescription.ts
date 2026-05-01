@@ -30,12 +30,15 @@ export function resolveDescription(
 
     pageData.description = extractDescriptionFromMd(
       rawContent,
-      (siteConfig.userConfig as any).maxDescriptionLength
+      (siteConfig.userConfig as any).maxDescriptionLength,
+      undefined,
+      pageData.filePath
     )
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
     console.warn(
-      `Failed to read file for description: ${pageData.filePath}`,
-      (error as Error).message
+      `Failed to resolve description for ${pageData.filePath}:`,
+      message
     )
   }
 }

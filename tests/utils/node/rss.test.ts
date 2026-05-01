@@ -95,6 +95,14 @@ describe('formatTagsForRss', () => {
     ])
   })
 
+  it('supports tag objects with explicit slug', () => {
+    expect(
+      formatTagsForRss([{ name: 'Web Dev', slug: 'custom-web-dev' }], 'https://site.com', 'en')
+    ).toEqual([
+      { name: 'Web Dev', domain: 'https://site.com/en/tags/custom-web-dev/1' },
+    ])
+  })
+
   it('returns empty array for null', () => {
     expect(formatTagsForRss(null, 'https://site.com', 'en')).toEqual([])
   })

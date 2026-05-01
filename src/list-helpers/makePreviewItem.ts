@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
 import { parseMdFile, extractDescriptionFromMd } from '../utils/node/markdown.ts'
-import { transliterate } from '../utils/shared/index.ts'
+import { normalizeTags } from '../utils/shared/index.ts'
 import { getImageDimensions } from '../utils/node/image.ts'
 import type { PostFrontmatter, Tag } from '../types.d.ts'
 
@@ -29,13 +29,13 @@ export function makePreviewItem(filePath: string): PreviewItem {
 
   const url = '/' + relativePath.replace(/\.md$/, '')
   const rawContent = fs.readFileSync(filePath, DEFAULT_ENCODE)
-  const { frontmatter, content } = parseMdFile(rawContent)
+  const { frontmatter, content } = parseMdFile(rawContent, filePath)
   const fm = frontmatter as PostFrontmatter
   
   let preview = resolvePreview(fm)
   // make preview from content as description
   if (!preview)
-    preview = extractDescriptionFromMd(content, PREVIEW_LENGTH, false)
+    preview = extractDescriptionFromMd(content, PREVIEW_LENGTH, false, filePath)
 
   // Get image dimensions if cover is provided
   let coverDimensions = null
@@ -48,10 +48,7 @@ export function makePreviewItem(filePath: string): PreviewItem {
     date: fm.date,
     authorId: fm.authorId,
     title: fm.title,
-    tags: [...(fm.tags || [])].map((item: string) => ({
-      name: item,
-      slug: transliterate(item, lang),
-    })),
+    tags: normalizeTags(fm.tags, lang) || [],
     preview,
     thumbnail: fm.cover,
     cover: fm.cover,

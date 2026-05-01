@@ -47,6 +47,13 @@ describe('mdToHtml', () => {
   it('adds target=_blank to external links', () => {
     const result = mdToHtml('[link](https://example.com)')
     expect(result).toContain('target="_blank"')
+    expect(result).toContain('rel="noopener noreferrer"')
+  })
+
+  it('strips unsafe javascript links', () => {
+    const result = mdToHtml('[link](javascript:alert(1))')
+    expect(result).not.toContain('javascript:alert(1)')
+    expect(result).toContain('<a>link</a>')
   })
 
   it('returns empty string for null', () => {
@@ -83,6 +90,12 @@ describe('parseMdFile', () => {
     const result = parseMdFile(raw)
     expect(result.frontmatter).toEqual({})
   })
+
+  it('throws with source context for invalid frontmatter', () => {
+    expect(() => parseMdFile('---\ntitle: [\n---\nBody', 'broken.md')).toThrow(
+      'Failed to parse frontmatter in broken.md'
+    )
+  })
 })
 
 describe('extractDescriptionFromMd', () => {
@@ -95,6 +108,13 @@ describe('extractDescriptionFromMd', () => {
 
   it('removes H1 before extraction', () => {
     const raw = '# Title\n\nContent here'
+    const result = extractDescriptionFromMd(raw, 100)
+    expect(result).toContain('Content')
+    expect(result).not.toContain('Title')
+  })
+
+  it('removes setext H1 before extraction', () => {
+    const raw = 'Title\n===\n\nContent here'
     const result = extractDescriptionFromMd(raw, 100)
     expect(result).toContain('Content')
     expect(result).not.toContain('Title')

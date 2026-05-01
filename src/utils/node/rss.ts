@@ -1,3 +1,5 @@
+import { normalizeTag } from '../shared/tags.ts'
+
 /** Validates required frontmatter fields for RSS. */
 export function validatePostForRss(frontmatter: any, url: string): boolean {
   const errors: string[] = []
@@ -89,13 +91,12 @@ export function formatTagsForRss(
   const baseUrl = normalizeSiteUrl(siteUrl)
 
   return (tags as unknown[])
-    .filter((tag): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+    .map((tag) => normalizeTag(tag, localeIndex))
+    .filter((tag): tag is NonNullable<ReturnType<typeof normalizeTag>> => !!tag)
     .map((tag) => ({
-      name: tag.trim(),
+      name: tag.name,
       domain: `${baseUrl}/${localeIndex}/${cleanTagsBaseUrl}/${tag
-        .trim()
-        .toLowerCase()
-        .replace(/\s+/g, '-')}/1`,
+        .slug}/1`,
     }))
 }
 
