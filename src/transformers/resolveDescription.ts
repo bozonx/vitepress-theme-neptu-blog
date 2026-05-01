@@ -9,10 +9,13 @@ import type { ExtendedPageData, ExtendedSiteConfig } from '../types.d.ts'
 /**
  * If description = "" in frontmatter, set description from content for posts
  * and pages.
+ *
+ * @param readFile — optional file reader for dependency injection in tests.
  */
 export function resolveDescription(
   pageData: ExtendedPageData,
-  { siteConfig }: { siteConfig: ExtendedSiteConfig }
+  { siteConfig }: { siteConfig: ExtendedSiteConfig },
+  readFile: (filePath: string) => string = (filePath) => fs.readFileSync(filePath, DEFAULT_ENCODE)
 ): void {
   if (!isPost(pageData.frontmatter) && !isPage(pageData.frontmatter)) return
 
@@ -25,10 +28,7 @@ export function resolveDescription(
   try {
     if (!siteConfig.srcDir) return
 
-    const rawContent = fs.readFileSync(
-      path.join(siteConfig.srcDir, pageData.filePath),
-      DEFAULT_ENCODE
-    )
+    const rawContent = readFile(path.join(siteConfig.srcDir, pageData.filePath))
 
     pageData.description = extractDescriptionFromMd(
       rawContent,

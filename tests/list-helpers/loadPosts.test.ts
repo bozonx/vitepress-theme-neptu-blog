@@ -51,6 +51,16 @@ describe('loadPostsData', () => {
     expect(mockReaddir).toHaveBeenCalledTimes(2)
   })
 
+  it('uses injected cache instead of global cache', async () => {
+    mockReaddir.mockResolvedValue(['x.md'])
+    const isolatedCache: Record<string, any> = {}
+    const posts = await loadPostsData('/content/en', { cache: isolatedCache })
+    expect(posts).toHaveLength(1)
+    // global cache should remain untouched
+    const globalCache = globalThis.neptuBlogCache ?? {}
+    expect(Object.keys(globalCache)).not.toContain(expect.stringContaining('/content/en'))
+  })
+
   it('throws on fs error', async () => {
     mockReaddir.mockRejectedValue(new Error('ENOENT'))
     await expect(loadPostsData('/content/en')).rejects.toThrow('Error loading posts')
@@ -82,5 +92,16 @@ describe('loadPostsDataFromFiles', () => {
     const first = await loadPostsDataFromFiles(files)
     const second = await loadPostsDataFromFiles(files)
     expect(second).toEqual(first)
+  })
+
+  it('uses injected cache instead of global cache', async () => {
+    const isolatedCache: Record<string, any> = {}
+    const files = ['/a.md', '/b.md']
+    const posts = await loadPostsDataFromFiles(files, { cache: isolatedCache })
+    expect(posts).toHaveLength(2)
+    const globalCache = globalThis.neptuBlogCache ?? {}
+    const cacheKeys = Object.keys(globalCache)
+    // No global key should match our file list
+    expect(cacheKeys.some((k) => k.includes('/a.md'))).toBe(false)
   })
 })

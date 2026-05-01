@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { defineComponent, h, nextTick } from 'vue'
+import { defineComponent, h, nextTick, provide, type ComputedRef, computed } from 'vue'
 import { mount } from '@vue/test-utils'
-import { useLightbox } from '../../src/composables/useLightbox.ts'
+import { useLightbox, useLightboxLocales, LightboxLocalesKey } from '../../src/composables/useLightbox.ts'
 
 vi.mock('vitepress', () => ({ inBrowser: true }))
 
@@ -14,11 +14,11 @@ describe('useLightbox', () => {
     vi.restoreAllMocks()
   })
 
-  function mountComposable() {
+  function mountComposable(doc: Document = document) {
     const result = { isOpen: false, currentIndex: 0, items: [], open: () => {}, close: () => {}, next: () => {}, prev: () => {} }
     const TestComp = defineComponent({
       setup() {
-        const lb = useLightbox()
+        const lb = useLightbox(doc)
         Object.assign(result, { isOpen: lb.isOpen, currentIndex: lb.currentIndex, items: lb.items, open: lb.open, close: lb.close, next: lb.next, prev: lb.prev })
         return () => h('div')
       },
@@ -102,5 +102,68 @@ describe('useLightbox', () => {
     lb.close()
     await nextTick()
     expect(document.body.classList.contains('modal-open')).toBe(false)
+  })
+
+  it('works with an injected Document instance', () => {
+    const parser = new DOMParser()
+    const fakeDoc = parser.parseFromString(
+      '<a class="lightbox" href="/x.jpg"><img alt="X" /></a>',
+      'text/html'
+    )
+    const lb = mountComposable(fakeDoc)
+    lb.open(0)
+    expect(lb.isOpen.value).toBe(true)
+    expect(lb.items.value).toEqual([{ src: '/x.jpg', alt: 'X' }])
+    expect(fakeDoc.body.classList.contains('modal-open')).toBe(true)
+    lb.close()
+    expect(fakeDoc.body.classList.contains('modal-open')).toBe(false)
+  })
+})
+
+describe('useLightboxLocales', () => {
+  it('returns empty object when no provider is present', () => {
+    const TestComp = defineComponent({
+      setup() {
+        const locales = useLightboxLocales()
+        return () => h('div', JSON.stringify(locales))
+      },
+    })
+    const wrapper = mount(TestComp)
+    expect(wrapper.text()).toBe('{}')
+  })
+
+  it('returns provided plain object', () => {
+    const Child = defineComponent({
+      setup() {
+        const locales = useLightboxLocales()
+        return () => h('div', `${locales.close},${locales.next}`)
+      },
+    })
+    const Parent = defineComponent({
+      setup() {
+        provide(LightboxLocalesKey, { close: 'Close', next: 'Next' })
+        return () => h(Child)
+      },
+    })
+    const wrapper = mount(Parent)
+    expect(wrapper.text()).toBe('Close,Next')
+  })
+
+  it('unwraps provided ComputedRef', () => {
+    const Child = defineComponent({
+      setup() {
+        const locales = useLightboxLocales()
+        return () => h('div', locales.prev)
+      },
+    })
+    const Parent = defineComponent({
+      setup() {
+        const refLocales: ComputedRef<Record<string, string>> = computed(() => ({ prev: 'Previous' }))
+        provide(LightboxLocalesKey, refLocales)
+        return () => h(Child)
+      },
+    })
+    const wrapper = mount(Parent)
+    expect(wrapper.text()).toBe('Previous')
   })
 })

@@ -1,11 +1,14 @@
 import { inBrowser } from 'vitepress'
+import { inject, isRef, onMounted, onUnmounted, ref, type Ref, type InjectionKey, type ComputedRef } from 'vue'
+
 import {
-  getCurrentInstance,
-  onMounted,
-  onUnmounted,
-  ref,
-  type Ref,
-} from 'vue'
+  addBodyClass,
+  bodyHasClass,
+  buildItems,
+  getClickIndex,
+  getLightboxLinks,
+  removeBodyClass,
+} from '../utils/client/lightboxDOM.ts'
 
 export interface LightboxItem {
   src: string
@@ -22,26 +25,9 @@ export interface UseLightboxReturn {
   prev: () => void
 }
 
-function getLightboxLinks(): HTMLAnchorElement[] {
-  if (!inBrowser) return []
-  return Array.from(document.querySelectorAll('a.lightbox'))
-}
+export const LightboxLocalesKey: InjectionKey<Record<string, string> | ComputedRef<Record<string, string>>> = Symbol('lightbox-locales')
 
-function buildItems(links: HTMLAnchorElement[]): LightboxItem[] {
-  return links.map((el) => ({
-    src: el.getAttribute('href') || '',
-    alt: el.querySelector('img')?.getAttribute('alt') || '',
-  }))
-}
-
-function getClickIndex(target: EventTarget | null, links: HTMLAnchorElement[]): number {
-  if (!(target instanceof Element)) return -1
-  const anchor = target.closest('a.lightbox')
-  if (!anchor) return -1
-  return links.indexOf(anchor as HTMLAnchorElement)
-}
-
-export function useLightbox(): UseLightboxReturn {
+export function useLightbox(doc: Document = document): UseLightboxReturn {
   const isOpen = ref(false)
   const currentIndex = ref(0)
   const items = ref<LightboxItem[]>([])
@@ -50,7 +36,7 @@ export function useLightbox(): UseLightboxReturn {
   let observer: MutationObserver | null = null
 
   const refreshItems = () => {
-    links = getLightboxLinks()
+    links = getLightboxLinks(doc)
     items.value = buildItems(links)
   }
 
@@ -59,14 +45,14 @@ export function useLightbox(): UseLightboxReturn {
     currentIndex.value = index
     isOpen.value = true
     if (inBrowser) {
-      document.body.classList.add('modal-open')
+      addBodyClass(doc, 'modal-open')
     }
   }
 
   const close = () => {
     isOpen.value = false
     if (inBrowser) {
-      document.body.classList.remove('modal-open')
+      removeBodyClass(doc, 'modal-open')
     }
   }
 
@@ -91,20 +77,20 @@ export function useLightbox(): UseLightboxReturn {
   onMounted(() => {
     if (!inBrowser) return
     refreshItems()
-    document.addEventListener('click', onClick, true)
+    doc.addEventListener('click', onClick, true)
 
     observer = new MutationObserver(() => {
       refreshItems()
     })
-    observer.observe(document.body, { childList: true, subtree: true })
+    observer.observe(doc.body, { childList: true, subtree: true })
   })
 
   onUnmounted(() => {
     if (!inBrowser) return
-    document.removeEventListener('click', onClick, true)
+    doc.removeEventListener('click', onClick, true)
     observer?.disconnect()
-    if (document.body.classList.contains('modal-open')) {
-      document.body.classList.remove('modal-open')
+    if (bodyHasClass(doc, 'modal-open')) {
+      removeBodyClass(doc, 'modal-open')
     }
   })
 
@@ -120,10 +106,6 @@ export function useLightbox(): UseLightboxReturn {
 }
 
 export function useLightboxLocales(): Record<string, string> {
-  const instance = getCurrentInstance()
-  const getLocales = instance?.appContext.config.globalProperties.getLocales as
-    | (() => { t: { lightbox: Record<string, string> } })
-    | undefined
-
-  return getLocales?.().t.lightbox ?? {}
+  const val = inject(LightboxLocalesKey, {})
+  return isRef(val) ? val.value : val
 }

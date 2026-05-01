@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
-import { computed } from 'vue'
+import { useData, useRoute } from 'vitepress'
+import { computed, provide } from 'vue'
 
 import NotFound from '../components/layout-parts/NotFound.vue'
 import { useScrollY } from '../composables/useScrollY.ts'
 import ImageLightbox from '../components/doc-components/ImageLightbox.vue'
 import BlogHome from './BlogHome.vue'
 import DefaultLayout from './DefaultLayout.vue'
+import { LightboxLocalesKey } from '../composables/useLightbox.ts'
+import { resolveTranslationsByFilePath } from '../utils/shared/index.ts'
 
 const { page, frontmatter } = useData()
+const route = useRoute()
 const { scrollY } = useScrollY()
 
 // `layout: false` -> raw <Content />
@@ -22,6 +25,9 @@ const layoutKind = computed(() => {
   if (l === 'home') return 'home'
   return 'default'
 })
+
+const lightboxLocales = computed(() => resolveTranslationsByFilePath(route.path).t.lightbox ?? {})
+provide(LightboxLocalesKey, lightboxLocales)
 </script>
 
 <template>

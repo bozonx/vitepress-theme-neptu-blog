@@ -11,14 +11,19 @@ declare global {
   var neptuBlogCache: Record<string, Post[]> | undefined
 }
 
-if (!globalThis.neptuBlogCache) {
-  globalThis.neptuBlogCache = {}
+function getDefaultCache(): Record<string, Post[]> {
+  if (!globalThis.neptuBlogCache) {
+    globalThis.neptuBlogCache = {}
+  }
+  return globalThis.neptuBlogCache
 }
 
 export interface LoadPostsOptions {
   popularPostsEnabled?: boolean
   googleAnalytics?: GoogleAnalyticsConfig | null
   ignoreCache?: boolean
+  /** Cache store for dependency injection. Falls back to the global singleton. */
+  cache?: Record<string, Post[]>
 }
 
 /** Loads all posts from the `<localeDir>/post` directory. */
@@ -30,6 +35,7 @@ export async function loadPostsData(
     popularPostsEnabled = false,
     googleAnalytics = null,
     ignoreCache = false,
+    cache: cacheOpt,
   } = options
   const localeIndex = path.basename(localeDir)
 
@@ -37,7 +43,7 @@ export async function loadPostsData(
 
   const postsDir = path.join(localeDir, POSTS_DIR)
   const cacheKey = path.resolve(postsDir)
-  const cache = globalThis.neptuBlogCache!
+  const cache = cacheOpt ?? getDefaultCache()
 
   if (cache[cacheKey] && cache[cacheKey].length > 0 && !ignoreCache) {
     return cache[cacheKey]!
@@ -69,13 +75,14 @@ export async function loadPostsDataFromFiles(
     popularPostsEnabled = false,
     googleAnalytics = null,
     ignoreCache = false,
+    cache: cacheOpt,
   } = options
   const fullPaths = files
     .filter((file) => file.endsWith('.md'))
     .map((file) => path.resolve(file))
     .sort()
   const cacheKey = fullPaths.join('|')
-  const cache = globalThis.neptuBlogCache!
+  const cache = cacheOpt ?? getDefaultCache()
 
   if (!fullPaths.length) return []
 
