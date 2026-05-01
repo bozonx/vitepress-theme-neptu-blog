@@ -1,6 +1,6 @@
 import { POSTS_DIR } from '../constants.ts'
 
-const POSTS_DIR_REGEXP = new RegExp(`^[^/]+\/(${POSTS_DIR}|page)`)
+const POSTS_DIR_REGEXP = new RegExp(`^[^/]+/(${POSTS_DIR}|page)`)
 
 export interface SitemapItem {
   url: string

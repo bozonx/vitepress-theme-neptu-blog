@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import Btn from '../Btn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'

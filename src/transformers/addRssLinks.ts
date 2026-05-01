@@ -19,7 +19,6 @@ export function addRssLinks({ page, head, pageData, siteConfig }: AddRssLinksCon
   }
 
   const siteUrl = normalizeSiteUrl(rawSiteUrl)
-  const localeIndex = page.split('/')[0]!
   const supportedLocales = Object.keys(siteConfig.site.locales)
 
   const rssFormats = getRssFormats(siteConfig)

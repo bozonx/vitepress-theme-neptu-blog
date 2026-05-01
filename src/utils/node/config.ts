@@ -1,5 +1,3 @@
-import { standardTemplate } from '../shared/string.ts'
-import { isExternalUrl } from '../shared/url.ts'
 import { deepMerge } from '../shared/merge.ts'
 import { parseLocaleSite } from './i18n.ts'
 import { mdToHtml } from './markdown.ts'

@@ -63,7 +63,7 @@ const isMonth = (item: string) => {
   return (
     cleanItem.length >= 3 &&
     !excludedWords.includes(cleanItem) &&
-    /^[^\d\.\-\,]{3,}$/.test(item)
+    /^[^\d.\-,]{3,}$/.test(item)
   )
 }
 

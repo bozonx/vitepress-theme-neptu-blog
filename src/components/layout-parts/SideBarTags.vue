@@ -39,7 +39,7 @@ const { localeIndex } = useData()
 const { theme } = useUiTheme()
 const allTags = makeTagsList(props.localePosts)
 const tags = allTags
-  .map(({ count, ...tag }) => tag)
+  .map(({ count: _count, ...tag }) => tag)
   .slice(0, theme.value.sidebarTagsCount || 0)
 const allTagsUrl = `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
 const showAllTags = allTags.length > (theme.value.sidebarTagsCount || 0)

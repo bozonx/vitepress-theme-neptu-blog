@@ -2,14 +2,14 @@
 import { computed } from 'vue'
 import TagItem from './TagItem.vue'
 
-interface TagItem {
+interface TagInfo {
   name?: string
   slug?: string
   count?: number
 }
 
 const props = defineProps<{
-  tags: TagItem[]
+  tags: TagInfo[]
   sizeXl?: boolean | string
   sizeSm?: boolean | string
   class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
