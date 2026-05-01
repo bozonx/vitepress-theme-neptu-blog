@@ -133,4 +133,108 @@ describe('addHreflang', () => {
 
     expect(ctx.head).toEqual([])
   })
+
+  it('uses explicit frontmatter translations for hreflang alternates', () => {
+    const ctx = createContext({
+      pageData: {
+        relativePath: 'en/post/hello-world.md',
+        frontmatter: {
+          translations: {
+            ru: '/ru/post/privet-mir',
+          },
+        },
+      } as any,
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com' },
+        srcDir: '/src',
+        site: {
+          locales: {
+            en: { lang: 'en-US' },
+            ru: { lang: 'ru-RU' },
+          },
+        },
+      } as any,
+    })
+
+    vi.spyOn(fs, 'existsSync').mockImplementation((filePath: fs.PathLike) =>
+      String(filePath).endsWith('/en/post/hello-world.md') ||
+      String(filePath).endsWith('/ru/post/privet-mir.md')
+    )
+
+    addHreflang(ctx)
+
+    expect(ctx.head).toContainEqual([
+      'link',
+      { rel: 'alternate', hreflang: 'en-US', href: 'https://example.com/en/post/hello-world' },
+    ])
+    expect(ctx.head).toContainEqual([
+      'link',
+      { rel: 'alternate', hreflang: 'ru-RU', href: 'https://example.com/ru/post/privet-mir' },
+    ])
+  })
+
+  it('does not use same-path fallback when explicit translations are present', () => {
+    const ctx = createContext({
+      pageData: {
+        relativePath: 'en/post/hello-world.md',
+        frontmatter: {
+          translations: {},
+        },
+      } as any,
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com' },
+        srcDir: '/src',
+        site: {
+          locales: {
+            en: { lang: 'en-US' },
+            ru: { lang: 'ru-RU' },
+          },
+        },
+      } as any,
+    })
+
+    vi.spyOn(fs, 'existsSync').mockImplementation((filePath: fs.PathLike) =>
+      String(filePath).endsWith('/en/post/hello-world.md') ||
+      String(filePath).endsWith('/ru/post/hello-world.md')
+    )
+
+    addHreflang(ctx)
+
+    expect(ctx.head).toEqual([])
+  })
+
+  it('supports full locale codes in explicit translations', () => {
+    const ctx = createContext({
+      pageData: {
+        relativePath: 'en-US/post/hello-world.md',
+        frontmatter: {
+          translations: {
+            'pt-BR': '/pt-BR/artigos/ola-mundo',
+          },
+        },
+      } as any,
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com' },
+        srcDir: '/src',
+        site: {
+          locales: {
+            'en-US': { lang: 'en-US' },
+            'pt-BR': { lang: 'pt-BR' },
+          },
+        },
+      } as any,
+    })
+
+    vi.spyOn(fs, 'existsSync').mockImplementation((filePath: fs.PathLike) =>
+      String(filePath).endsWith('/en-US/post/hello-world.md') ||
+      String(filePath).endsWith('/pt-BR/artigos/ola-mundo.md')
+    )
+
+    addHreflang(ctx)
+
+    expect(ctx.head).toContainEqual([
+      'link',
+      { rel: 'alternate', hreflang: 'pt-BR', href: 'https://example.com/pt-BR/artigos/ola-mundo' },
+    ])
+  })
 })

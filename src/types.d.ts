@@ -230,6 +230,7 @@ export namespace NeptuBlogTheme {
     searchIncluded?: boolean
     podcasts?: Record<string, string>
     canonical?: string
+    translations?: Record<string, string>
   }
 
 

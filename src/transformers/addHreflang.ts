@@ -3,9 +3,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   generatePageUrlPath,
+  getFrontmatterTranslations,
   makeAbsoluteUrl,
   normalizeSiteUrl,
-  replaceRelativePathLocale,
+  pickExistingTranslationRelativePath,
+  resolveTranslationRelativePathCandidates,
 } from '../utils/shared/index.ts'
 import type { ExtendedPageData, ExtendedSiteConfig, LocaleDefinition } from '../types.d.ts'
 
@@ -27,14 +29,18 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
 
   const relativePath = pageData.relativePath
   const srcDir = siteConfig.srcDir
+  const translations = getFrontmatterTranslations(pageData.frontmatter)
 
   const alternates = Object.entries(locales).flatMap(([code, locale]) => {
-    const localeRelativePath = replaceRelativePathLocale(relativePath, code)
+    const localeRelativePath = pickExistingTranslationRelativePath(
+      resolveTranslationRelativePathCandidates(relativePath, code, translations),
+      {
+        fileExists: srcDir
+          ? (candidate) => fs.existsSync(path.join(srcDir, candidate))
+          : undefined,
+      }
+    )
     if (!localeRelativePath) return []
-
-    if (srcDir && !fs.existsSync(path.join(srcDir, localeRelativePath))) {
-      return []
-    }
 
     const url = makeAbsoluteUrl(siteUrl, generatePageUrlPath(localeRelativePath))
     if (!url) return []
@@ -73,4 +79,3 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
     ]
   )
 }
-

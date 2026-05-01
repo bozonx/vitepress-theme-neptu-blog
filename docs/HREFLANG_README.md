@@ -23,6 +23,25 @@ The transformer:
 5. Adds one `<link rel="alternate">` tag per existing locale page.
 6. Adds one `x-default` alternate link that points to the first configured locale version of the page.
 
+Locale-matching behavior in the theme is:
+
+1. If `frontmatter.translations` exists, use it as the source of truth for alternate locale pages.
+2. Otherwise, fall back to the same relative path in another locale.
+
+Example:
+
+```yaml
+---
+title: Hello world
+translations:
+  ru: /ru/post/privet-mir
+  'en-US': /en-US/post/hello-world
+  'pt-BR': /pt-BR/artigos/ola-mundo
+---
+```
+
+When `translations` is omitted, hreflang generation still works automatically for pages that keep the same relative path across locale folders.
+
 For `en/post/hello.md` with locales `en` and `ru`, it generates:
 
 ```html
@@ -70,3 +89,4 @@ Even a single-language site should still use a locale folder such as `src/en/`.
 - If only one locale version of a page exists, hreflang tags are omitted for that page.
 - `x-default` points to the first configured locale version that exists for the current page.
 - Links without a locale prefix are outside the supported routing model.
+- Different localized slugs are supported through `frontmatter.translations`.

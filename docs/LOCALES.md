@@ -195,6 +195,67 @@ Purpose:
 
 This control is conceptually different from the topbar UI switcher.
 
+### Matching translated pages
+
+The theme should support two ways to match translated versions of the same content page.
+
+Priority:
+
+1. Explicit `frontmatter.translations`
+2. Fallback to the same relative path in another locale
+
+There is no `translationKey` in the model.
+
+There is no theme-level switch for choosing one matching strategy globally.
+
+The fallback exists for backward compatibility and for simple sites that keep the same file name and folder structure across locales.
+
+#### 1. Explicit translations in frontmatter
+
+When `translations` is present in frontmatter, it is the source of truth for matching translated pages.
+
+Example:
+
+```yaml
+---
+title: Hello world
+translations:
+  ru: /ru/post/privet-mir
+  'en-US': /en-US/post/hello-world
+  'pt-BR': /pt-BR/artigos/ola-mundo
+---
+```
+
+This allows:
+
+- different localized slugs
+- different folder structure by locale
+- explicit omission of some locales for a given page
+
+#### 2. Relative-path fallback
+
+If `frontmatter.translations` is not provided, the theme falls back to the current behavior:
+
+- keep the same relative path
+- replace only the locale segment
+- use the page if that source file exists
+
+Example:
+
+```text
+en/post/hello-world.md
+ru/post/hello-world.md
+de/post/hello-world.md
+```
+
+This fallback assumes that translated pages use the same file name and the same folder structure in every locale tree.
+
+It does not support:
+
+- localized slugs with different file names
+- locale-specific folder layout
+- arbitrary page-to-page matching across locales
+
 ## Config shape
 
 The implementation should stay close to standard VitePress locale configuration where possible.
@@ -352,9 +413,9 @@ Already implemented in the repo:
 - lazy loading of built-in UI locales
 - topbar switcher for UI locale selection
 - separate post-level content locale switcher
+- frontmatter-based translated page matching via `translations`
 - admin-defined `uiLocales` with partial override and `extends`
 - initial SSR merge for content-derived UI locale and admin overrides
 
 Not implemented yet:
-
-- cross-page content-locale matching for translated pages beyond VitePress locale links
+- no additional content-locale matching mode beyond `translations` and same-path fallback

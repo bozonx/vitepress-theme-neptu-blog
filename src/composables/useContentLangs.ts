@@ -1,7 +1,11 @@
 import { useData, type SiteData } from 'vitepress'
 import { computed } from 'vue'
 import type { NeptuBlogTheme } from '../types.d.ts'
-import { replaceRelativePathLocale } from '../utils/shared/index.ts'
+import {
+  getFrontmatterTranslations,
+  pickExistingTranslationRelativePath,
+  resolveTranslationRelativePathCandidates,
+} from '../utils/shared/index.ts'
 
 interface LocaleLink {
   text: string
@@ -59,6 +63,10 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
 
   const localeLinks = computed<LocaleLink[]>(() => {
     const knownPages = (site.value as SiteData<NeptuBlogTheme.Config> & { pages?: SitePageRef[] }).pages
+    const translations = getFrontmatterTranslations(page.value.frontmatter)
+    const knownRelativePaths = knownPages?.flatMap((sitePage) =>
+      sitePage.relativePath ? [sitePage.relativePath] : []
+    )
 
     return Object.entries(
       site.value.locales as SiteData<NeptuBlogTheme.Config>['locales']
@@ -69,15 +77,11 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
         }
 
         const localeBaseLink = `/${key}/`
-        const localeRelativePath = replaceRelativePathLocale(page.value.relativePath, key)
+        const localeRelativePath = pickExistingTranslationRelativePath(
+          resolveTranslationRelativePathCandidates(page.value.relativePath, key, translations),
+          { knownRelativePaths }
+        )
         if (!localeRelativePath) return []
-
-        if (
-          knownPages &&
-          !knownPages.some((sitePage) => sitePage.relativePath === localeRelativePath)
-        ) {
-          return []
-        }
 
         const relativePath = localeRelativePath.slice(localeBaseLink.length - 1)
 
