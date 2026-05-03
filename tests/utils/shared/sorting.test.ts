@@ -124,4 +124,24 @@ describe('sortSimilarPosts', () => {
     const result = sortSimilarPosts(extended, [{ slug: 'js' }], 'current')
     expect(result.find((p) => p.url === 'e')).toBeUndefined()
   })
+
+  it('excludes current post when URLs differ by trailing slash', () => {
+    const result = sortSimilarPosts(posts, [{ slug: 'js' }], 'current/')
+    expect(result.find((p) => p.url === 'current')).toBeUndefined()
+  })
+
+  it('excludes current post when URL has .html extension', () => {
+    const result = sortSimilarPosts(posts, [{ slug: 'js' }], 'current.html')
+    expect(result.find((p) => p.url === 'current')).toBeUndefined()
+  })
+
+  it('prefers posts with stats over posts without when tag count is equal', () => {
+    const extended = [
+      ...posts,
+      { url: 'f', date: '2024-01-06', tags: [{ slug: 'js' }] },
+    ]
+    const result = sortSimilarPosts(extended, [{ slug: 'js' }], 'current', 'v')
+    // b (stats=20) > a (stats=10) > f (no stats)
+    expect(result.map((p) => p.url)).toEqual(['b', 'a', 'f'])
+  })
 })

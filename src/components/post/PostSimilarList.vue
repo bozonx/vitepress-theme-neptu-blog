@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
 import { sortSimilarPosts } from '../../utils/shared/index.ts'
@@ -19,17 +20,19 @@ const { theme } = useUiTheme()
 const route = useRoute()
 
 // Get similar posts using the helper
-const items = frontmatter.value.tags
-  ? sortSimilarPosts(
-      props.localePosts || [],
-      frontmatter.value.tags,
-      route.path,
-      theme.value.popularPosts?.enabled
-        ? theme.value.popularPosts.sortBy
-        : undefined,
-      theme.value.similarPostsCount
-    )
-  : []
+const items = computed(() =>
+  frontmatter.value.tags
+    ? sortSimilarPosts(
+        props.localePosts || [],
+        frontmatter.value.tags,
+        route.path,
+        theme.value.popularPosts?.enabled
+          ? theme.value.popularPosts.sortBy
+          : undefined,
+        theme.value.similarPostsCount
+      )
+    : []
+)
 </script>
 
 <template>

@@ -86,3 +86,15 @@ export function generatePageUrlPath(relativePath: string): string {
 
   return finalPath
 }
+
+/**
+ * Normalizes a URL path for safe comparison by stripping `.html` and
+ * trailing slashes.
+ */
+export function normalizeUrlPath(url: string | null | undefined): string {
+  if (typeof url !== 'string') return ''
+
+  return url
+    .replace(/\.html$/i, '')
+    .replace(/\/+$/, '')
+}

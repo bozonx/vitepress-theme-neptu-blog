@@ -1,4 +1,5 @@
 import { arraysIntersection } from './array.ts'
+import { normalizeUrlPath } from './url.ts'
 
 
 /** Safely parse a date string/number into a timestamp. Returns 0 for invalid values. */
@@ -50,6 +51,20 @@ export function sortPosts<T extends SortablePost>(
   })
 }
 
+function getTagsIntersection(
+  tags1: Array<{ slug?: string }> | undefined,
+  tags2: Array<{ slug?: string }> | undefined
+): string[] {
+  if (!Array.isArray(tags1) || !Array.isArray(tags2)) {
+    return []
+  }
+
+  const slugs1 = tags1.map((tag) => tag?.slug).filter(Boolean) as string[]
+  const slugs2 = tags2.map((tag) => tag?.slug).filter(Boolean) as string[]
+
+  return arraysIntersection(slugs1, slugs2)
+}
+
 /**
  * Sorts posts to display similar ones. Priority: number of matching
  * tags > popularity > date
@@ -64,53 +79,46 @@ export function sortSimilarPosts<T extends SortablePost>(
   if (!posts || !Array.isArray(posts)) return []
   if (!currentPostTags || !Array.isArray(currentPostTags)) return []
 
-  const getTagsIntersection = (
-    tags1: Array<{ slug?: string }> | undefined,
-    tags2: Array<{ slug?: string }> | undefined
-  ): string[] => {
-    if (!Array.isArray(tags1) || !Array.isArray(tags2)) {
-      return []
+  const normalizedCurrentUrl = normalizeUrlPath(currentPostUrl)
+
+  const scoredPosts = posts
+    .map((post) => {
+      const normalizedPostUrl = normalizeUrlPath(post.url)
+      const tagIntersection = getTagsIntersection(post.tags, currentPostTags)
+      const hasStats =
+        sortBy && Number.isFinite(post.analyticsStats?.[sortBy])
+      const popularity =
+        hasStats && post.analyticsStats ? post.analyticsStats[sortBy] : 0
+
+      return {
+        post,
+        isCurrent: normalizedPostUrl === normalizedCurrentUrl,
+        tagScore: tagIntersection.length,
+        hasStats,
+        popularity: popularity as number,
+        dateTime: safeDateTime(post.date),
+      }
+    })
+    .filter(
+      (item) =>
+        !item.isCurrent && item.tagScore > 0
+    )
+
+  scoredPosts.sort((a, b) => {
+    if (a.tagScore !== b.tagScore) {
+      return b.tagScore - a.tagScore
     }
 
-    const slugs1 = tags1.map((tag) => tag?.slug).filter(Boolean) as string[]
-    const slugs2 = tags2.map((tag) => tag?.slug).filter(Boolean) as string[]
+    if (a.hasStats !== b.hasStats) {
+      return a.hasStats ? -1 : 1
+    }
 
-    return arraysIntersection(slugs1, slugs2)
-  }
+    if (a.popularity !== b.popularity) {
+      return b.popularity - a.popularity
+    }
 
-  const getPopularityValue = (post: SortablePost): number => {
-    if (!sortBy) return 0
+    return b.dateTime - a.dateTime
+  })
 
-    const stats = post.analyticsStats?.[sortBy]
-    return stats !== undefined && stats !== null ? stats : 0
-  }
-
-  return [...posts]
-    .filter((item) => {
-      const isCurrentPost = item.url === currentPostUrl
-      if (isCurrentPost) return false
-
-      if (!item.tags || !Array.isArray(item.tags)) return false
-
-      const intersection = getTagsIntersection(item.tags, currentPostTags)
-      return intersection.length > 0
-    })
-    .sort((a, b) => {
-      const aIntersection = getTagsIntersection(a.tags, currentPostTags).length
-      const bIntersection = getTagsIntersection(b.tags, currentPostTags).length
-
-      if (aIntersection !== bIntersection) {
-        return bIntersection - aIntersection
-      }
-
-      const aPopularity = getPopularityValue(a)
-      const bPopularity = getPopularityValue(b)
-
-      if (aPopularity !== bPopularity) {
-        return bPopularity - aPopularity
-      }
-
-      return safeDateTime(b.date) - safeDateTime(a.date)
-    })
-    .slice(0, limit)
+  return scoredPosts.slice(0, limit).map((item) => item.post)
 }
