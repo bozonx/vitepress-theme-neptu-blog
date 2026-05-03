@@ -56,7 +56,8 @@ const showMorePosts = localePosts.length > (theme.value.perPage || 0)
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  will-change: transform, box-shadow, filter;
   animation: glassmorphism-fade-in 0.6s ease-out;
 }
 

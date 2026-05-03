@@ -81,6 +81,7 @@ const btnProps = computed(() => {
 .btn-base {
   background: var(--btn-bg);
   color: var(--btn-text);
+  will-change: transform, box-shadow, filter;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,

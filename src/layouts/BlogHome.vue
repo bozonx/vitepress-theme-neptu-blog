@@ -41,7 +41,7 @@ watchEffect(() => {
 <template>
   <div
     ref="wrapperRef"
-    class="dark home-layout flex flex-col justify-center items-center w-full min-h-screen bg-no-repeat bg-center bg-fixed text-white! transition-[background-position-y] duration-100 ease-out"
+    class="dark home-layout flex flex-col justify-center items-center w-full min-h-screen bg-no-repeat bg-center bg-fixed text-white! transition-[background-position-y] duration-100 ease-out will-change-[background-position]"
     :style="`background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);`"
   >
     <div class="home-layout-page max-w-[800px] my-20 mx-7">

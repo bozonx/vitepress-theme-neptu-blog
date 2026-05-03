@@ -42,6 +42,7 @@ const props = defineProps<Props>()
 }
 
 .menu-item .btn-base-inner {
+  will-change: transform;
   transition: transform 0.2s ease-in-out;
 }
 

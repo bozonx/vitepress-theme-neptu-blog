@@ -31,7 +31,7 @@ watch(
 
 <template>
   <div
-:class="['bottom-0 right-0 fixed transition-opacity', !showed && 'hidden']"
+:class="['bottom-0 right-0 fixed transition-opacity will-change-[opacity]', !showed && 'hidden']"
     :style="{ opacity, 'transition-duration': `${animationMs}ms` }" aria-hidden="true">
     <div class="to-the-top-mobile flex justify-center items-center w-14 h-14 rounded-full text-white mr-12 mb-12 bg-[var(--primary-btn-bg)] shadow-[0px_8px_16px_0px_rgba(0,0,0,0.3)]" :title="theme.returnToTopLabel" @click.prevent.stop="handleClick">
       <Icon icon="fa6-solid:arrow-up" />
