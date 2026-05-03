@@ -9,7 +9,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 export const PER_PAGE = 20
 
 export const popularPosts = {
-  enabled: Boolean(process.env.GA_PROPERTY_ID),
+  // enabled: Boolean(process.env.GA_PROPERTY_ID),
+  enabled: true,
   sortBy: 'pageviews', // 'pageviews', 'uniquePageviews'
 }
 
