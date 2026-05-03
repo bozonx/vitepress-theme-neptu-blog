@@ -43,9 +43,9 @@ body: |
       #   icon: "${theme.donateIcon}"
       #   iconClass: donate-icon
       #   mobileToo: true
-      - text: "Guide"
-        href: "${theme.mainSiteUrl}/${localeIndex}/doc"
-        icon: "${theme.docIcon}"
+      - text: "Some link"
+        href: "https://example.org/${localeIndex}/"
+        icon: "solar:document-linear"
     socialLinks:
       - icon: 'fa6-brands:github-alt'
         href: "${config.repo}"
@@ -83,7 +83,7 @@ body: |
         mobile: true
       - text: "Guide"
         href: "${theme.mainSiteUrl}/${localeIndex}/doc"
-        icon: "${theme.docIcon}"
+        icon: "solar:document-linear"
         mobile: true
       - { header: "${t.links.links}" }
       - text: "Our Youtube channel"

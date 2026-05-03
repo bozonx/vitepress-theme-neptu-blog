@@ -81,6 +81,7 @@ export namespace NeptuBlogTheme {
     donate?: DonateConfig
 
     sidebarLogoSrc?: string
+    sidebarLogoHeight?: number
     siteTitle?: string
     sidebarMenuLabel?: string
 
@@ -258,19 +259,24 @@ export namespace NeptuBlogTheme {
   }
 
 
-  export interface Post {
+  export interface PostLite {
     url: string
     title?: string
-    date?: string | Date
-    excerpt?: string
-    preview?: string
-    frontmatter: PostFrontmatter
-    tags?: Tag[]
-    analyticsStats?: Record<string, number>
+    date?: string | number | Date
+    tags?: Array<{ slug?: string; name?: string; count?: number }>
     authorId?: string
+    preview?: string
     thumbnail?: string
     cover?: string
+    coverHeight?: number | string
+    coverWidth?: number | string
+    analyticsStats?: Record<string, number>
     [key: string]: unknown
+  }
+
+  export interface Post extends PostLite {
+    excerpt?: string
+    frontmatter: PostFrontmatter
   }
 
   export interface LocaleDefinition {
@@ -309,6 +315,7 @@ export namespace NeptuBlogTheme {
 
 export type ThemeConfig = NeptuBlogTheme.Config
 export type DeepPartial<T> = NeptuBlogTheme.DeepPartial<T>
+export type PostLite = NeptuBlogTheme.PostLite
 export type Post = NeptuBlogTheme.Post
 export type PostFrontmatter = NeptuBlogTheme.PostFrontmatter
 export type Tag = NeptuBlogTheme.Tag

@@ -2,18 +2,9 @@
 import PreviewListItem from './PreviewListItem.vue'
 import NeptuPagination from './NeptuPagination.vue'
 import { useData } from 'vitepress'
+import type { PostLite } from '../types.d.ts'
 
 const { theme } = useData()
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  analyticsStats?: Record<string, number>
-  [key: string]: unknown
-}
 
 const props = defineProps<{
   localePosts: PostLite[]

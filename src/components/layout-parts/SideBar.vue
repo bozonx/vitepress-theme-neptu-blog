@@ -161,7 +161,8 @@ onUnmounted(() => {
             loading="lazy"
             decoding="async"
             width="320"
-            height="158"
+            :height="theme.sidebarLogoHeight || 158"
+            class="max-w-full h-auto"
             aria-hidden="true"
           />
         </a>

@@ -3,21 +3,11 @@ import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
 import PreviewWithImage from './PreviewWithImage.vue'
+import type { PostLite } from '../types.d.ts'
 
 const { lang, theme } = useData()
-interface PreviewItem {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string; count?: number }>
-  preview?: string
-  authorId?: string
-  thumbnail?: string
-  coverHeight?: number | string
-  coverWidth?: number | string
-}
 
-const props = defineProps<{ item: PreviewItem }>()
+const props = defineProps<{ item: PostLite }>()
 function formatPreview(preview: string | undefined): string | undefined {
   const normalized = typeof preview === 'string' ? preview.trim() : ''
   if (!normalized) return undefined

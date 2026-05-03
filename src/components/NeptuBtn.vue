@@ -116,11 +116,11 @@ const btnProps = computed(() => {
 
 .btn-base.active {
   color: black;
-  border: 3px solid var(--gray-350);
+  outline: 3px solid var(--gray-350);
 }
 
 .dark .btn-base.active {
-  border-color: var(--gray-700);
+  outline-color: var(--gray-700);
   color: white;
 }
 

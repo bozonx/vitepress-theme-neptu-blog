@@ -4,15 +4,7 @@ import { useData, useRoute } from 'vitepress'
 import PreviewList from '../PreviewList.vue'
 import { sortSimilarPosts } from '../../utils/shared/index.ts'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
 const { frontmatter } = useData()

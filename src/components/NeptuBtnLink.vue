@@ -18,4 +18,13 @@ const props = defineProps<Props>()
 .btn-link.active .btn-base-inner {
   text-decoration: underline;
 }
+
+.btn-link .btn-base.active {
+  outline: none;
+  color: var(--gray-400);
+}
+
+.btn-link .btn-base.active .btn-base-inner {
+  text-decoration: none;
+}
 </style>
