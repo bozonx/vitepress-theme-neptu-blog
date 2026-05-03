@@ -38,11 +38,11 @@ body: |
     # Show donate button in top bar. Default is false.
     donate: true
     links:
-      - text: "${t.links.donate}"
-        href: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
-        icon: "${theme.donateIcon}"
-        iconClass: donate-icon
-        mobileToo: true
+      # - text: "${t.links.donate}"
+      #   href: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
+      #   icon: "${theme.donateIcon}"
+      #   iconClass: donate-icon
+      #   mobileToo: true
       - text: "Guide"
         href: "${theme.mainSiteUrl}/${localeIndex}/doc"
         icon: "${theme.docIcon}"
