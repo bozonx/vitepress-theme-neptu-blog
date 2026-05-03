@@ -1,6 +1,5 @@
 import { describe, it, expect, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { ref } from 'vue'
 import PostSimilarList from '../../src/components/post/PostSimilarList.vue'
 import {
   mockTheme,

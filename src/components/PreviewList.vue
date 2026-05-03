@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import PreviewListItem from './PreviewListItem.vue'
 import NeptuPagination from './NeptuPagination.vue'
 import { useData } from 'vitepress'
@@ -13,10 +14,14 @@ const props = defineProps<{
   paginationMaxItems?: number
   paginationBaseUrl?: string
 }>()
-const perPage = props.perPage || theme.value.perPage
-const start = props.curPage === 1 ? 0 : (props.curPage - 1) * perPage
-const items = props.localePosts.slice(start, start + perPage)
-const totalPages = Math.ceil(props.localePosts.length / perPage)
+const perPage = computed(() => props.perPage || theme.value.perPage || 1)
+const start = computed(() =>
+  props.curPage === 1 ? 0 : (props.curPage - 1) * perPage.value
+)
+const items = computed(() =>
+  props.localePosts.slice(start.value, start.value + perPage.value)
+)
+const totalPages = computed(() => Math.ceil(props.localePosts.length / perPage.value))
 </script>
 
 <template>

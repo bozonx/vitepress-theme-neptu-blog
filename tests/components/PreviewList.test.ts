@@ -37,6 +37,19 @@ describe('PreviewList', () => {
     expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(10)
   })
 
+  it('updates rendered items when posts prop changes', async () => {
+    const wrapper = mount(PreviewList, {
+      props: { localePosts: posts.slice(0, 2), curPage: 1, perPage: 10 },
+      global: { stubs: { PreviewListItem: PreviewListItemStub, NeptuPagination: PaginationStub } },
+    })
+
+    expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(2)
+
+    await wrapper.setProps({ localePosts: posts.slice(0, 4) })
+
+    expect(wrapper.findAllComponents({ name: 'PreviewListItem' })).toHaveLength(4)
+  })
+
   it('renders last partial page', () => {
     const wrapper = mount(PreviewList, {
       props: { localePosts: posts, curPage: 3, perPage: 10 },

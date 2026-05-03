@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { useData } from 'vitepress'
 import PostSimilarList from './PostSimilarList.vue'
 import PostAuthor from './PostAuthor.vue'
@@ -16,7 +16,9 @@ const props = defineProps<{ localePosts?: PostLite[] }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || []
+const localePosts = computed(() =>
+  props.localePosts || allPosts[localeIndex.value] || []
+)
 </script>
 
 <template>

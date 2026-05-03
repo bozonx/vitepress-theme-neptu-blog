@@ -115,6 +115,33 @@ See the `example/blog` directory in this repo for a complete working project.
 | `siteTitle` | `string` | - | Override site title in sidebar |
 | `sidebarMenuLabel` | `string` | - | Custom sidebar menu label |
 
+### Similar posts
+
+Post pages render a "similar posts" block when the current post and other posts
+share at least one tag. Ranking is based on matching tag count, then GA
+popularity when `popularPosts.enabled` is on, then date.
+
+The theme reads post lists from Vue injection, so your wrapper layout must load
+posts and provide them by locale:
+
+```vue
+<script setup lang="ts">
+import Theme from 'vitepress-theme-neptu-blog'
+import { provide } from 'vue'
+import { data as enData } from '../../en/loadPosts.data'
+
+provide('posts', { en: enData.posts })
+
+const { Layout } = Theme
+</script>
+
+<template>
+  <Layout />
+</template>
+```
+
+Use `similarPostsCount` to control the maximum number of rendered items.
+
 ### Authors
 
 ```ts

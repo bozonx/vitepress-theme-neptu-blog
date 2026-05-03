@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { provide } from 'vue'
 import NeptuYears from '../../src/components/utility/NeptuYears.vue'
 import { mockTheme, mockFrontmatter, mockLocaleIndex } from '../mocks/vitepress'
 

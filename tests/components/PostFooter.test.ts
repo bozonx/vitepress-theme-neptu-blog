@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { afterEach, describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PostFooter from '../../src/components/post/PostFooter.vue'
-import { mockTheme } from '../mocks/vitepress'
+import { mockLocaleIndex, mockTheme } from '../mocks/vitepress'
 
 const PostAuthorStub = { name: 'PostAuthor', template: '<div class="post-author-stub" />' }
 const PostDonateLinkStub = { name: 'PostDonateLink', template: '<div class="post-donate-stub" />' }
@@ -13,6 +13,11 @@ const PostSimilarListStub = { name: 'PostSimilarList', template: '<div class="po
 const NeptuBtnLinkStub = { name: 'NeptuBtnLink', template: '<a class="btn-link-stub"><slot /></a>', props: ['href', 'text', 'icon'] }
 
 describe('PostFooter', () => {
+  afterEach(() => {
+    mockLocaleIndex.value = 'en'
+    mockTheme.value = { popularPosts: { enabled: false } }
+  })
+
   it('renders child components', () => {
     const wrapper = mount(PostFooter, {
       global: {
@@ -76,5 +81,40 @@ describe('PostFooter', () => {
     expect(link.exists()).toBe(true)
     expect(link.props('href')).toBe('/popular/1')
     expect(link.props('text')).toBe('Popular posts')
+  })
+
+  it('updates similar posts source when locale changes', async () => {
+    mockLocaleIndex.value = 'en'
+    const wrapper = mount(PostFooter, {
+      global: {
+        provide: {
+          posts: {
+            en: [{ url: '/en/post/a' }],
+            ru: [{ url: '/ru/post/a' }],
+          },
+        },
+        stubs: {
+          PostAuthor: PostAuthorStub,
+          PostDonateLink: PostDonateLinkStub,
+          PostComments: PostCommentsStub,
+          PostSocialShare: PostSocialShareStub,
+          PostTags: PostTagsStub,
+          EditLink: EditLinkStub,
+          PostSimilarList: PostSimilarListStub,
+          NeptuBtnLink: NeptuBtnLinkStub,
+        },
+      },
+    })
+
+    expect(wrapper.findComponent({ name: 'PostSimilarList' }).props('localePosts')).toEqual([
+      { url: '/en/post/a' },
+    ])
+
+    mockLocaleIndex.value = 'ru'
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.findComponent({ name: 'PostSimilarList' }).props('localePosts')).toEqual([
+      { url: '/ru/post/a' },
+    ])
   })
 })
