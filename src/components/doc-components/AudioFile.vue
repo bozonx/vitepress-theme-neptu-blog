@@ -694,7 +694,7 @@ onUnmounted(() => {
 .volume-slider {
   appearance: none;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 .volume-slider:focus {

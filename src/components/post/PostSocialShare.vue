@@ -89,7 +89,7 @@ onMounted(() => {
           :title="item.title"
           v-bind="item.attrs"
           :class="[
-            'hover-animation-rise inline-flex items-center justify-center w-12 h-12 rounded-lg no-underline social-btn transition-all duration-200 ease-in-out hover:-translate-y-0.5 hover:filter-none',
+            'hover-animation-rise inline-flex items-center justify-center w-12 h-12 rounded-lg no-underline social-btn transition-transform duration-200 ease-in-out hover:-translate-y-0.5 hover:filter-none will-change-[transform]',
             item.title === 'VK' && 'text-[#0077ff] hover:text-[#0077ff]',
           ]">
           <Icon :icon="item.icon" aria-hidden="true" class="w-9 h-9" />

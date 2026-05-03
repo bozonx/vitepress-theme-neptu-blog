@@ -99,6 +99,22 @@ describe('sortSimilarPosts', () => {
     expect(result[0].url).toBe('a')
   })
 
+  it('counts duplicate tag slugs only once', () => {
+    const duplicatedTagsPosts = [
+      { url: 'a', date: '2024-01-01', tags: [{ slug: 'js' }, { slug: 'js' }] },
+      { url: 'b', date: '2024-01-02', tags: [{ slug: 'js' }] },
+      { url: 'current', date: '2024-01-03', tags: [{ slug: 'js' }] },
+    ]
+
+    const result = sortSimilarPosts(
+      duplicatedTagsPosts,
+      [{ slug: 'js' }, { slug: 'js' }],
+      'current'
+    )
+
+    expect(result.map((p) => p.url)).toEqual(['b', 'a'])
+  })
+
   it('sorts by popularity when tag count is equal', () => {
     const result = sortSimilarPosts(posts, [{ slug: 'js' }], 'current', 'v')
     expect(result.map((p) => p.url)).toEqual(['b', 'a'])

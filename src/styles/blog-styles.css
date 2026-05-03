@@ -42,7 +42,7 @@ body.modal-open {
   padding: 1.25rem;
   margin-bottom: 1.25rem;
   /* Анимация для hover эффекта */
-  transition: all 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
 }
 
 .dark .card-item {

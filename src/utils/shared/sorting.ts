@@ -59,8 +59,8 @@ function getTagsIntersection(
     return []
   }
 
-  const slugs1 = tags1.map((tag) => tag?.slug).filter(Boolean) as string[]
-  const slugs2 = tags2.map((tag) => tag?.slug).filter(Boolean) as string[]
+  const slugs1 = [...new Set(tags1.map((tag) => tag?.slug).filter(Boolean) as string[])]
+  const slugs2 = [...new Set(tags2.map((tag) => tag?.slug).filter(Boolean) as string[])]
 
   return arraysIntersection(slugs1, slugs2)
 }

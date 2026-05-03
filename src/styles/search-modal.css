@@ -16,8 +16,6 @@
   justify-content: center;
   align-items: flex-start;
   backdrop-filter: blur(8px);
-  /* Плавные переходы для анимации */
-  transition: background-color 0.3s ease-out;
 }
 
 .search-modal-inner-wrapper {
@@ -107,12 +105,6 @@
 /* Анимация исчезновения для внутреннего контента */
 .search-modal.fade-out .search-modal-inner-wrapper {
   animation: modalContentFadeOut 0.3s ease-out forwards;
-}
-
-/* Убираем transition когда применяется анимация */
-.search-modal.fade-in,
-.search-modal.fade-out {
-  transition: none;
 }
 
 /* Анимация появления фона модального окна */

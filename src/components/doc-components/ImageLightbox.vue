@@ -195,7 +195,7 @@ onUnmounted(() => {
             v-show="loaded"
             :src="currentItem?.src"
             :alt="currentItem?.alt || ''"
-            class="lightbox-img"
+            class="lightbox-img will-change-[transform]"
             :class="{ 'lightbox-img--zoomed': isZoomed }"
             :style="imgStyle"
             @load="loaded = true"

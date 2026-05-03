@@ -18,7 +18,7 @@ const props = defineProps<{
         :width="props.width"
         fetchpriority="high"
         decoding="async"
-        class="max-w-full h-auto rounded-md transition-[transform,box-shadow] duration-200 ease-in-out"
+        class="max-w-full h-auto rounded-md transition-[transform,box-shadow] duration-200 ease-in-out will-change-[transform]"
       />
     </a>
     <figcaption
