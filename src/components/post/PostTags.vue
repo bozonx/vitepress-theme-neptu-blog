@@ -16,13 +16,15 @@ const tags = [...(frontmatter.value.tags || [])].sort((a, b) =>
     <div class="md:flex">
       <p class="md:mt-1 md:mr-2 max-md:mb-3 muted">{{ theme.t.tags }}:</p>
 
-      <TagsList :tags="tags" />
-    </div>
-
-    <div class="mt-3">
-      <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
-        theme.t.allTagsCall
-      }}</NeptuBtnLink>
+      <TagsList :tags="tags">
+        <template #after>
+          <li class="flex items-center ml-2 max-md:mt-2">
+            <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
+              theme.t.allTagsCall
+            }}</NeptuBtnLink>
+          </li>
+        </template>
+      </TagsList>
     </div>
   </div>
 </template>

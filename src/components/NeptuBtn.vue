@@ -44,8 +44,8 @@ const btnProps = computed(() => {
   <BaseLink
     v-bind="btnProps"
     :custom-class="[
-      'flex cursor-pointer items-center rounded-lg py-2 px-5 leading-6',
-      !hasText && 'p-3',
+      'flex cursor-pointer items-center rounded-lg leading-6',
+      hasText ? 'py-2 px-5' : 'p-3',
       'btn-base',
       btnProps.disabled && 'disabled',
       props.primary && 'btn--primary',

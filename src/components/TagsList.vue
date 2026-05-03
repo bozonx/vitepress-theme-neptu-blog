@@ -43,5 +43,6 @@ const sizeClass = computed(() => {
         @click="emit('itemClick')"
       />
     </li>
+    <slot name="after" />
   </ul>
 </template>

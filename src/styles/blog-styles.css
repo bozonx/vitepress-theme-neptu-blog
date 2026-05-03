@@ -103,14 +103,21 @@ body.modal-open {
 /**** Content page */
 
 /**** Lightbox */
-.lightbox img:hover {
+.lightbox img:hover,
+.vp-doc img:hover {
   transform: scale(1.02);
   cursor: pointer;
   box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.3);
 }
 
-.dark .lightbox img:hover {
+.dark .lightbox img:hover,
+.dark .vp-doc img:hover {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.vp-doc img {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border-radius: 0.375rem;
 }
 
 /* Стили для figure элементов, созданных плагином mdImage */
@@ -212,6 +219,10 @@ body.modal-open {
 
 .vp-doc a:hover {
   filter: brightness(130%);
+}
+
+.vp-doc a:hover:has(img) {
+  filter: none;
 }
 
 .vp-doc blockquote,

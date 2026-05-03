@@ -9,8 +9,8 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-  <NeptuBtn v-bind="$attrs" :custom-class="['inline-flex p-0 bg-transparent! shadow-none! border-0 btn-link', props.customClass]">
-    <slot />
+  <NeptuBtn v-bind="$attrs" :custom-class="['inline-flex p-0! bg-transparent! shadow-none! border-0! btn-link', props.customClass]">
+    <slot v-if="$slots.default" />
   </NeptuBtn>
 </template>
 

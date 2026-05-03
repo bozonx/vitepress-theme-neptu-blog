@@ -5,7 +5,7 @@ import { mockFrontmatter, mockTheme } from '../mocks/vitepress'
 
 const TagsListStub = {
   name: 'TagsList',
-  template: '<div class="tags-stub" />',
+  template: '<div class="tags-stub"><slot name="after" /></div>',
   props: ['tags'],
 }
 

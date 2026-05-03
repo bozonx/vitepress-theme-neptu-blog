@@ -19,7 +19,7 @@ const props = defineProps<Props>()
   </NeptuBtn>
 </template>
 
-<style scoped>
+<style>
 /**** Lighter Btn for use on lighter background */
 .menu-item:hover {
   filter: brightness(99%);
@@ -41,11 +41,11 @@ const props = defineProps<Props>()
   filter: brightness(107%);
 }
 
-.menu-item :deep(.btn-base-inner) {
+.menu-item .btn-base-inner {
   transition: transform 0.2s ease-in-out;
 }
 
-.menu-item:not([disabled]):hover :deep(.btn-base-inner) {
+.menu-item:not([disabled]):hover .btn-base-inner {
   transform: translateX(3px);
 }
 </style>
