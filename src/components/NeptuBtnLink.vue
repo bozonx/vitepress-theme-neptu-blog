@@ -20,7 +20,6 @@ const props = defineProps<Props>()
 }
 
 .btn-link .btn-base.active {
-  outline: none;
   color: var(--gray-400);
 }
 

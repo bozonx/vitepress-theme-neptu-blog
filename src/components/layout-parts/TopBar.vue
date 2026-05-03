@@ -99,7 +99,6 @@ const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((ite
 
 <style scoped>
 .top-bar .btn-base.active {
-  outline: none;
   background: var(--btn-bg-active);
   color: var(--btn-text);
 }
