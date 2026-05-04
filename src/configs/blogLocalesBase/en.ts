@@ -9,7 +9,6 @@ export default {
     darkModeSwitchTitle: 'Switch to Dark Mode',
     lightModeSwitchTitle: 'Switch to Light Mode',
     langMenuLabel: 'Change language',
-    editLink: { text: 'Edit this page on GitHub' },
     // you can overwrite it in site config
     socialMediaShares: 'telegram,whatsapp,vk,x,facebook',
   },
@@ -25,6 +24,7 @@ export default {
     paginationToStart: 'First Page',
     paginationToEnd: 'Last Page',
     toHome: 'Go to the home page',
+    editLink: 'Edit this page',
     // It is used in the index page of language
     toBlog: 'Go to blog',
     author: 'Author',

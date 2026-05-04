@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import { useData, inBrowser } from 'vitepress'
-import { ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 
-const props = defineProps<{
-  scrollY: number
-}>()
-const { theme } = useData()
+const props = withDefaults(
+  defineProps<{
+    scrollY?: number
+  }>(),
+  { scrollY: 0 }
+)
+const { theme, frontmatter } = useData()
 const valueY = ref(0)
 const wrapperRef = ref<HTMLElement | null>(null)
-const BG_HEIGHT_OFFSET = theme.value.homeBgParallaxOffset || 0
+
+const homeTheme = computed(() => (frontmatter.value?.homeTheme as string) || 'dark')
+const homeMaxWidth = computed(() => (frontmatter.value?.homeMaxWidth as number) || 800)
+const homeBackground = computed(() => (frontmatter.value?.homeBackground as string) || 'parallax')
+const homeBackgroundImage = computed(() => (frontmatter.value?.homeBackgroundImage as string) || '')
+const BG_HEIGHT_OFFSET = computed(
+  () => (frontmatter.value?.homeBgParallaxOffset as number) ?? theme.value.homeBgParallaxOffset ?? 0
+)
 
 watchEffect(() => {
   if (!inBrowser) return
+  if (homeBackground.value === 'none') {
+    valueY.value = 0
+    return
+  }
 
   const totalHeight = wrapperRef.value?.scrollHeight || 0
   const windowHeight = window.innerHeight
@@ -34,18 +48,28 @@ watchEffect(() => {
   // Logic:
   // - scrollProgress = 0: background at 0 (top of image visible)
   // - scrollProgress = 1: background at -BG_HEIGHT_OFFSET (bottom of image visible)
-  valueY.value = -(BG_HEIGHT_OFFSET * scrollProgress)
+  valueY.value = -(BG_HEIGHT_OFFSET.value * scrollProgress)
 })
 </script>
 
 <template>
   <div
     ref="wrapperRef"
-    class="dark home-layout flex flex-col justify-center items-center w-full min-h-screen bg-no-repeat bg-center bg-fixed text-white! transition-[background-position-y] duration-100 ease-out will-change-[background-position]"
-    :style="`background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);`"
+    class="home-layout flex flex-col justify-center items-center w-full min-h-screen transition-[background-position-y] duration-100 ease-out will-change-[background-position]"
+    :class="[
+      homeTheme,
+      homeBackground === 'none' ? '' : 'bg-no-repeat bg-center bg-fixed',
+      homeTheme === 'dark' ? 'text-white!' : '',
+    ]"
+    :style="[
+      homeBackground !== 'none' ? `background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);` : '',
+      homeBackgroundImage ? `background-image: url(${homeBackgroundImage});` : '',
+    ].join(' ')"
   >
-    <div class="home-layout-page max-w-[800px] my-20 mx-7">
+    <slot name="home-before" />
+    <div class="home-layout-page my-20 mx-7" :style="{ maxWidth: `${homeMaxWidth}px` }">
       <Content />
     </div>
+    <slot name="home-after" />
   </div>
 </template>

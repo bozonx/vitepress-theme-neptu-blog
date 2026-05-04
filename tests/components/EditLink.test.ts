@@ -7,7 +7,7 @@ describe('EditLink', () => {
   let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
-    mockTheme.value = { editLink: { text: 'Edit', pattern: 'https://example.com/edit/:path' } }
+    mockTheme.value = { t: { editLink: 'Edit' }, editLink: { pattern: 'https://example.com/edit/:path' } }
     mockPage.value = { relativePath: 'posts/hello.md' }
     mockFrontmatter.value = {}
   })
@@ -42,8 +42,8 @@ describe('EditLink', () => {
   })
 
   it('uses function pattern for href', () => {
+    mockTheme.value.t = { editLink: 'Edit' }
     mockTheme.value.editLink = {
-      text: 'Edit',
       pattern: (page: any) => `https://git.example.com/${page.relativePath}`,
     }
     mockFrontmatter.value = { layout: 'page' }
@@ -52,7 +52,7 @@ describe('EditLink', () => {
   })
 
   it('hides when editLink config is missing', () => {
-    mockTheme.value = {}
+    mockTheme.value = { t: {} }
     mockFrontmatter.value = { layout: 'page' }
     wrapper = mount(EditLink, { attachTo: document.body })
     expect(wrapper.find('a').exists()).toBe(false)

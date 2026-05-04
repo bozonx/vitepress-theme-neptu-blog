@@ -33,7 +33,13 @@ export function addOgMetaTags({
   if (!langConfig) return
 
   const themeConfig = langConfig.themeConfig as ThemeConfig
-  const pageUrl = makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
+  const explicitCanonical = pageData.frontmatter.canonical
+  const pageUrl =
+    typeof explicitCanonical === 'string' &&
+    explicitCanonical !== 'self' &&
+    explicitCanonical !== 's'
+      ? explicitCanonical.trim()
+      : makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
   const title =
     normalizeText(pageData.frontmatter.title) ||
     normalizeText(pageData.title) ||

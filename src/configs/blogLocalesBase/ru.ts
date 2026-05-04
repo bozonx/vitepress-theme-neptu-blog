@@ -9,7 +9,6 @@ export default {
     darkModeSwitchTitle: 'Переключиться на тёмную тему',
     lightModeSwitchTitle: 'Переключиться на светлую тему',
     langMenuLabel: 'Сменить язык',
-    editLink: { text: 'Редактировать эту страницу на GitHub' },
     // you can overwrite it in site config
     socialMediaShares: 'telegram,whatsapp,vk,x,facebook',
   },
@@ -25,6 +24,7 @@ export default {
     paginationToStart: 'На первую страницу',
     paginationToEnd: 'На последнюю страницу',
     toHome: 'На главную',
+    editLink: 'Редактировать эту страницу',
     // It is used in the index page of language
     toBlog: 'Перейти к блогу',
     author: 'Автор',

@@ -238,6 +238,20 @@ describe('addOgMetaTags', () => {
     expect(ctx.head).toContainEqual(['meta', { name: 'twitter:image:alt', content: 'Cover alt text' }])
   })
 
+  it('uses explicit canonical URL for og:url when frontmatter has canonical', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.canonical = 'https://other.com/page'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:url', content: 'https://other.com/page' }])
+  })
+
+  it('uses self page URL for og:url when canonical is self', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.canonical = 'self'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual(['meta', { property: 'og:url', content: 'https://example.com/en/post/hello' }])
+  })
+
   it('handles trailing slash in siteUrl without producing malformed URLs', () => {
     const ctx = createContext()
     ctx.siteConfig.userConfig.siteUrl = 'https://example.com/'

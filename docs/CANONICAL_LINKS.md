@@ -4,7 +4,7 @@
 
 Canonical links help search engines understand which version of a page is the primary one, preventing duplicate content issues.
 
-Add the `canonical` field to any post or page frontmatter:
+By default, every page automatically gets a self-referencing canonical link (via `themeConfig.autoCanonical: true`). You can override this on a per-page basis using the `canonical` field in frontmatter:
 
 - `canonical: "https://example.com/en/post/post-slug"` — absolute URL
 - `canonical: "self"` — auto-generate a link to the current page
@@ -24,6 +24,19 @@ tags:
   - tag1
   - tag2
 ---
+```
+
+### Disabling auto-canonical
+
+To disable automatic canonical links and require explicit frontmatter, set `themeConfig.autoCanonical: false`:
+
+```ts
+// .vitepress/config.ts
+export default defineBlogConfig({
+  themeConfig: {
+    autoCanonical: false,
+  },
+})
 ```
 
 ## Behavior
@@ -68,7 +81,9 @@ canonical: 'self'
 ---
 ```
 
-### Without a canonical link
+### Without a canonical link (when autoCanonical is disabled)
+
+If `themeConfig.autoCanonical` is set to `false`, pages without an explicit `canonical` field will not emit a `<link rel="canonical">` tag.
 
 ```yaml
 ---
@@ -82,7 +97,9 @@ No `<link rel="canonical">` tag is emitted.
 
 ## Technical details
 
+- `themeConfig.autoCanonical` defaults to `true`; every page gets a self-referencing canonical link automatically.
 - The transformer only runs on locale-prefixed paths (e.g. `/en/`, `/ru/`).
 - Explicit URLs are validated.
 - `"self"` and `"s"` require `siteUrl` to be configured.
+- When an explicit canonical URL is used, `og:url` meta tag is synchronized to match it.
 - Errors are handled safely with build-time warnings.

@@ -37,6 +37,7 @@ type ResolvedBlogConfig = BlogUserConfig & {
 
 const commonThemeConfig = {
   externalLinkIcon: true,
+  autoCanonical: true,
   mainHeroImg: '/img/home-logo.webp',
 
   perPage: 10,

@@ -14,12 +14,14 @@ describe('addCanonicalLink', () => {
     return {
       page: overrides.page ?? 'en/post/hello.md',
       head: [],
-      pageData: (overrides.pageData ?? {
+      pageData: ({
         filePath: overrides.page ?? 'en/post/hello.md',
         frontmatter: {},
+        ...(overrides.pageData || {}),
       }) as any,
       siteConfig: (overrides.siteConfig ?? {
-        userConfig: { siteUrl: 'https://example.com' },
+        userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: true } },
+        site: { locales: {} },
       }) as any,
       ...overrides,
     } as AddCanonicalLinkContext
@@ -38,8 +40,19 @@ describe('addCanonicalLink', () => {
     expect(ctx.head).toEqual([])
   })
 
-  it('does nothing without canonical frontmatter', () => {
+  it('adds self-canonical automatically when autoCanonical is enabled and no frontmatter canonical', () => {
     const ctx = createContext()
+    addCanonicalLink(ctx)
+    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+  })
+
+  it('does nothing without canonical frontmatter when autoCanonical is disabled', () => {
+    const ctx = createContext({
+      siteConfig: {
+        userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: false } },
+        site: { locales: {} },
+      } as any,
+    })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
   })
@@ -67,7 +80,7 @@ describe('addCanonicalLink', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const ctx = createContext({
       pageData: { frontmatter: { canonical: 'self' } } as any,
-      siteConfig: { userConfig: {} } as any,
+      siteConfig: { userConfig: { themeConfig: {} }, site: { locales: {} } } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
@@ -133,5 +146,24 @@ describe('addCanonicalLink', () => {
     expect(ctx.head).toEqual([])
     expect(errorSpy).toHaveBeenCalled()
     errorSpy.mockRestore()
+  })
+
+  it('auto-canonical respects locale themeConfig over userConfig themeConfig', () => {
+    const ctx = createContext({
+      pageData: { filePath: 'en/post/hello.md', frontmatter: {} } as any,
+      siteConfig: {
+        userConfig: {
+          siteUrl: 'https://example.com',
+          themeConfig: { autoCanonical: false },
+        },
+        site: {
+          locales: {
+            en: { themeConfig: { autoCanonical: true } },
+          },
+        },
+      } as any,
+    })
+    addCanonicalLink(ctx)
+    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
   })
 })

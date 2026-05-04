@@ -5,6 +5,7 @@ import { getImageDimensions } from './image.ts'
 import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
+import { resolveEditLinkPattern } from './editLink.ts'
 import type { UiLocaleDefinition, LocaleDefinition, Author, BlogUserConfig } from '../../types.d.ts'
 
 function resolveInitialUiLocaleKey(
@@ -117,11 +118,13 @@ export async function loadBlogLocale(
       ...(uiLocale.themeConfig || {}),
       ...themeConfig,
       editLink: {
-        pattern: `${config.repo}/edit/main/src/:path`,
+        ...(config.repo
+          ? { pattern: resolveEditLinkPattern(config.repo) }
+          : {}),
         ...baseLocale.themeConfig?.editLink,
         ...(((uiLocale.themeConfig || {}) as Record<string, unknown>).editLink as Record<string, unknown> | undefined),
         ...(editLink as Record<string, unknown> | undefined),
-      },
+      } as any,
       t: { ...baseLocale.t, ...(uiLocale.t || {}), ...(t as Record<string, unknown> | undefined) },
       authors,
     },

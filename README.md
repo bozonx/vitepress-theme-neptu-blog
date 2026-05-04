@@ -115,6 +115,51 @@ See the `example/blog` directory in this repo for a complete working project.
 | `siteTitle` | `string` | - | Override site title in sidebar |
 | `sidebarMenuLabel` | `string` | - | Custom sidebar menu label |
 
+### Edit link
+
+Set `repo` at the top level of `defineBlogConfig` to enable an "Edit this page" button. The theme auto-detects the hosting platform from the URL and generates the correct edit-link pattern.
+
+```ts
+export default defineConfig(
+  defineBlogConfig({
+    repo: 'https://github.com/username/repo',
+  })
+)
+```
+
+Supported platforms: **GitHub**, **GitLab**, **Bitbucket**, **Gitea / Forgejo / Codeberg**.
+
+If your provider is not auto-detected or you need a custom path, override `editLink.pattern` explicitly via `themeConfig`:
+
+```ts
+themeConfig: {
+  editLink: {
+    pattern: 'https://my-gitea.example.com/user/repo/_edit/main/src/:path',
+  },
+}
+```
+
+To change the button label, override it via `uiLocales`:
+
+```ts
+themeConfig: {
+  uiLocales: {
+    en: {
+      extends: 'en',
+      t: { editLink: 'Improve this page' },
+    },
+  },
+}
+```
+
+Disable per-page via frontmatter:
+
+```yaml
+---
+editLink: false
+---
+```
+
 ### Similar posts
 
 Post pages render a "similar posts" block when the current post and other posts
@@ -321,6 +366,43 @@ Import from `vitepress-theme-neptu-blog/components`:
 - `PopularPostsList`, `RecentList`
 - `PageFindSearch`, `NavSearchButton`
 - `UtilPageContent`, `UtilPageHeader`, `UtilSubPageHeader`
+
+### Home page customization
+
+The `layout: home` frontmatter activates the full-bleed home layout with parallax background. You can customize it via frontmatter options in your `index.md`:
+
+```yaml
+---
+layout: home
+homeTheme: dark          # 'dark' | 'light' (default: 'dark')
+homeMaxWidth: 800        # content max-width in px (default: 800)
+homeBackground: parallax # 'parallax' | 'none' (default: 'parallax')
+homeBackgroundImage: /img/my-bg.jpg  # optional custom background image
+homeBgParallaxOffset: 300          # parallax scroll offset (default: from themeConfig)
+---
+```
+
+When `homeBackground: none`, the parallax effect is disabled and the wrapper renders as a plain flex container, making it easier to apply your own CSS background.
+
+For total control, use `layout: false` and import `BlogHome` (or any other layout/component) directly:
+
+```vue
+---
+layout: false
+---
+<script setup>
+import { BlogHome } from 'vitepress-theme-neptu-blog/layouts'
+import { HomeHero, HomeTags } from 'vitepress-theme-neptu-blog/components'
+</script>
+
+<BlogHome>
+  <template #home-before>
+    <MyCustomBackground />
+  </template>
+  <HomeHero ... />
+  <HomeTags />
+</BlogHome>
+```
 
 ### Doc components (available in markdown)
 

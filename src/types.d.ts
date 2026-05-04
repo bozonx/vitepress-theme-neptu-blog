@@ -85,6 +85,7 @@ export namespace NeptuBlogTheme {
     siteTitle?: string
     sidebarMenuLabel?: string
 
+    autoCanonical?: boolean
     socialMediaShares?: string
     uiLocale?: UiLocaleConfig
     uiLocales?: Record<string, UiLocaleDefinition>
@@ -136,6 +137,7 @@ export namespace NeptuBlogTheme {
     allPostsOfYear: string
     pageNotFound: string
     postsCount: string
+    editLink: string
     postsCountForms: string[]
     search: string
     searchInBlog: string
@@ -256,6 +258,13 @@ export namespace NeptuBlogTheme {
     podcasts?: Record<string, string>
     canonical?: string
     translations?: Record<string, string>
+
+    // Home page customization
+    homeTheme?: 'dark' | 'light'
+    homeMaxWidth?: number
+    homeBackground?: 'parallax' | 'none'
+    homeBackgroundImage?: string
+    homeBgParallaxOffset?: number
   }
 
 
