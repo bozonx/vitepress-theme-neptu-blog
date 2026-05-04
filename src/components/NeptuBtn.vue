@@ -7,6 +7,7 @@ import BaseLink from './BaseLink.vue'
 
 interface Props {
   customClass?: unknown
+  innerClass?: unknown
   href?: string
   target?: string
   disabled?: boolean
@@ -54,7 +55,7 @@ const btnProps = computed(() => {
     ]"
     :active-compare-method="props.activeCompareMethod"
   >
-    <span class="flex items-center gap-x-2 btn-base-inner">
+    <span :class="['flex items-center gap-x-2 btn-base-inner', props.innerClass]">
       <span
         v-if="props.icon"
         aria-hidden="true"

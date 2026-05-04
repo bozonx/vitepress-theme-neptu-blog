@@ -12,6 +12,7 @@ const props = defineProps<Props>()
   <NeptuBtn
     v-bind="$attrs"
     :custom-class="['menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]', props.customClass]"
+    inner-class="menu-item-inner"
     icon-class="muted"
     :no-bg="true"
   >
@@ -41,12 +42,13 @@ const props = defineProps<Props>()
   filter: brightness(107%);
 }
 
-.menu-item .btn-base-inner {
+.menu-item-inner {
+  display: inline-flex;
   will-change: transform;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out !important;
 }
 
-.menu-item:not([disabled]):hover .btn-base-inner {
-  transform: translateX(3px);
+.menu-item:not(.disabled):hover .menu-item-inner {
+  transform: translateX(4px) !important;
 }
 </style>
