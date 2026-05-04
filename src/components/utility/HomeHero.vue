@@ -13,7 +13,7 @@
       </div>
       <a
         v-if="props.img"
-        aria-label="Главная"
+        :aria-label="theme.t.toHome"
         class="home-logo flex justify-center"
         :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
       >
