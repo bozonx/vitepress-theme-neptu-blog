@@ -11,19 +11,28 @@ vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
 
 describe('addCanonicalLink', () => {
   function createContext(overrides: Partial<AddCanonicalLinkContext> = {}): AddCanonicalLinkContext {
+    const page = overrides.page ?? 'en/post/hello.md'
+    const pageData = overrides.pageData === null
+      ? null
+      : ({
+          filePath: page,
+          frontmatter: {},
+          ...(overrides.pageData || {}),
+        }) as any
+
+    const siteConfig = overrides.siteConfig === null
+      ? null
+      : ({
+          userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: true } },
+          site: { locales: {} },
+          ...(overrides.siteConfig || {}),
+        }) as any
+
     return {
-      page: overrides.page ?? 'en/post/hello.md',
-      head: [],
-      pageData: ({
-        filePath: overrides.page ?? 'en/post/hello.md',
-        frontmatter: {},
-        ...(overrides.pageData || {}),
-      }) as any,
-      siteConfig: (overrides.siteConfig ?? {
-        userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: true } },
-        site: { locales: {} },
-      }) as any,
-      ...overrides,
+      page,
+      head: overrides.head ?? [],
+      pageData,
+      siteConfig,
     } as AddCanonicalLinkContext
   }
 

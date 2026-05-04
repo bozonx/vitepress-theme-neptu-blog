@@ -17,8 +17,6 @@ function resolveCanonicalUrl(
 ): string | null {
   if (canonicalValue === 'self' || canonicalValue === 's') {
     const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
-    console.error('DEBUG self', siteUrl, page, generatePageUrlPath(page), makeAbsoluteUrl(siteUrl, generatePageUrlPath(page)))
-
     if (!siteUrl) {
       console.warn('Canonical link not added: siteUrl not configured in siteConfig')
       return null
@@ -55,7 +53,6 @@ export function addCanonicalLink({
   if (!pageData?.frontmatter) return
 
   const canonicalValue = pageData.frontmatter.canonical
-  console.error('DEBUG canonicalValue', canonicalValue, typeof canonicalValue, JSON.stringify(pageData.frontmatter))
 
   try {
     const localeIndex = pageData.filePath.split('/')[0]!
@@ -73,8 +70,6 @@ export function addCanonicalLink({
     } else if (autoCanonical) {
       canonicalUrl = resolveCanonicalUrl('self', page, siteConfig)
     }
-
-    console.error('DEBUG canonicalUrl', canonicalUrl)
 
     if (canonicalUrl) {
       head.push(['link', { rel: 'canonical', href: canonicalUrl }])
