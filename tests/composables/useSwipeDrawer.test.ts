@@ -9,19 +9,24 @@ describe('useSwipeDrawer', () => {
   let onOpen: () => void
   let onClose: () => void
   let enabled: () => boolean
+  let wrappers: Array<ReturnType<typeof mount>> = []
 
   beforeEach(() => {
     onOpen = vi.fn() as unknown as () => void
     onClose = vi.fn() as unknown as () => void
     enabled = () => true
+    wrappers = []
   })
 
   afterEach(() => {
+    wrappers.forEach((wrapper) => wrapper.unmount())
     vi.restoreAllMocks()
   })
 
   function mountComposable(options: Partial<{
     enabled: () => boolean
+    canOpen: () => boolean
+    canClose: () => boolean
     onOpen: () => void
     onClose: () => void
     edgePx: number
@@ -31,6 +36,8 @@ describe('useSwipeDrawer', () => {
       setup() {
         useSwipeDrawer({
           enabled: options.enabled ?? enabled,
+          canOpen: options.canOpen,
+          canClose: options.canClose,
           onOpen: options.onOpen ?? onOpen,
           onClose: options.onClose ?? onClose,
           edgePx: options.edgePx ?? 50,
@@ -39,7 +46,9 @@ describe('useSwipeDrawer', () => {
         return () => h('div')
       },
     })
-    mount(TestComp)
+    const wrapper = mount(TestComp)
+    wrappers.push(wrapper)
+    return wrapper
   }
 
   function createTouchEvent(type: string, touches: Array<{ clientX: number; clientY: number }>): TouchEvent {
@@ -84,6 +93,30 @@ describe('useSwipeDrawer', () => {
 
     expect(onClose).toHaveBeenCalled()
     expect(onOpen).not.toHaveBeenCalled()
+  })
+
+  it('does not prevent default or close when canClose returns false', () => {
+    mountComposable({ canClose: () => false })
+
+    window.dispatchEvent(createTouchEvent('touchstart', [{ clientX: 200, clientY: 100 }]))
+    const touchMove = createTouchEvent('touchmove', [{ clientX: 100, clientY: 100 }])
+    const preventDefaultSpy = vi.spyOn(touchMove, 'preventDefault')
+    window.dispatchEvent(touchMove)
+
+    expect(onClose).not.toHaveBeenCalled()
+    expect(preventDefaultSpy).not.toHaveBeenCalled()
+  })
+
+  it('does not prevent default or open when canOpen returns false', () => {
+    mountComposable({ canOpen: () => false })
+
+    window.dispatchEvent(createTouchEvent('touchstart', [{ clientX: 20, clientY: 100 }]))
+    const touchMove = createTouchEvent('touchmove', [{ clientX: 80, clientY: 100 }])
+    const preventDefaultSpy = vi.spyOn(touchMove, 'preventDefault')
+    window.dispatchEvent(touchMove)
+
+    expect(onOpen).not.toHaveBeenCalled()
+    expect(preventDefaultSpy).not.toHaveBeenCalled()
   })
 
   it('does not trigger if vertical movement dominates', () => {

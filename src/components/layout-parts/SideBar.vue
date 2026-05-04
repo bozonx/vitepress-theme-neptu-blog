@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ref, watch, inject, onUnmounted, computed } from 'vue'
+import { ref, watch, inject, onUnmounted, computed, nextTick } from 'vue'
 
 import { SIDEBAR_WIDTH } from '../../constants.ts'
 import SideBarFooter from './SideBarFooter.vue'
@@ -39,9 +39,68 @@ const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const animationTimeMs = 400
 const drawerOpen = ref(!props.isMobile)
-const animationLeftPx = ref(-SIDEBAR_WIDTH)
+const drawerTranslateXPx = ref(props.isMobile ? -SIDEBAR_WIDTH : 0)
 const backdropOpacity = ref(0)
+const drawerRef = ref<HTMLElement | null>(null)
 let animationTimeout: ReturnType<typeof setTimeout> | null = null
+let animationFrame: number | null = null
+let previousBodyOverflow: string | null = null
+let previousActiveElement: HTMLElement | null = null
+
+const clearAnimationTimeout = () => {
+  if (!animationTimeout) return
+  clearTimeout(animationTimeout)
+  animationTimeout = null
+}
+
+const clearAnimationFrame = () => {
+  if (animationFrame === null) return
+  cancelAnimationFrame(animationFrame)
+  animationFrame = null
+}
+
+const setBodyScrollLocked = (locked: boolean) => {
+  if (typeof document === 'undefined') return
+
+  if (locked) {
+    if (previousBodyOverflow === null) {
+      previousBodyOverflow = document.body.style.overflow
+    }
+    document.body.style.overflow = 'hidden'
+    return
+  }
+
+  if (previousBodyOverflow !== null) {
+    document.body.style.overflow = previousBodyOverflow
+    previousBodyOverflow = null
+  }
+}
+
+const restoreFocus = () => {
+  previousActiveElement?.focus?.()
+  previousActiveElement = null
+}
+
+const getFocusableElements = () =>
+  drawerRef.value?.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  ) || []
+
+const focusDrawer = async () => {
+  await nextTick()
+  const focusTarget = getFocusableElements()[0] || drawerRef.value
+  focusTarget?.focus()
+}
+
+const runOpenAnimation = async () => {
+  clearAnimationFrame()
+  await nextTick()
+  animationFrame = requestAnimationFrame(() => {
+    drawerTranslateXPx.value = 0
+    backdropOpacity.value = 1
+    animationFrame = null
+  })
+}
 
 const sideBarConfig = theme.value.sideBar || {}
 const links = computed<SideBarItem[]>(() => {
@@ -96,33 +155,71 @@ const bottomLinks = computed<SideBarItem[]>(() => {
   return items
 })
 const openDrawer = () => {
-  if (!props.isMobile || drawerOpen.value) return
+  if (!props.isMobile) return
 
+  clearAnimationTimeout()
+  if (!drawerOpen.value) {
+    previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  }
   drawerOpen.value = true
+  setBodyScrollLocked(true)
+  void focusDrawer()
+  void runOpenAnimation()
+}
 
-  // Small delay to guarantee CSS transition fires
-  setTimeout(() => {
-    animationLeftPx.value = 0
-    backdropOpacity.value = 1
-  }, 10)
+const finishClose = () => {
+  drawerOpen.value = false
+  animationTimeout = null
+  setBodyScrollLocked(false)
+  restoreFocus()
 }
 
 const closeDrawer = () => {
   if (!props.isMobile || !drawerOpen.value) return
 
-  animationLeftPx.value = -SIDEBAR_WIDTH
+  clearAnimationFrame()
+  drawerTranslateXPx.value = -SIDEBAR_WIDTH
   backdropOpacity.value = 0
 
-  if (animationTimeout) clearTimeout(animationTimeout)
+  clearAnimationTimeout()
 
   animationTimeout = setTimeout(() => {
-    drawerOpen.value = false
-    animationTimeout = null
+    finishClose()
   }, animationTimeMs)
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (!props.isMobile || !drawerOpen.value) return
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    closeDrawer()
+    return
+  }
+
+  if (event.key !== 'Tab') return
+
+  const focusable = Array.from(getFocusableElements())
+  if (!focusable.length) {
+    event.preventDefault()
+    drawerRef.value?.focus()
+    return
+  }
+
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault()
+    last.focus()
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault()
+    first.focus()
+  }
 }
 
 defineExpose({
   openDrawer,
+  isDrawerOpen: () => drawerOpen.value,
   handleLeftSwipe() {
     if (props.isMobile) closeDrawer()
   },
@@ -131,23 +228,37 @@ defineExpose({
 watch(
   () => props.isMobile,
   (isMobile) => {
+    clearAnimationTimeout()
+    clearAnimationFrame()
     drawerOpen.value = !isMobile
+    drawerTranslateXPx.value = isMobile ? -SIDEBAR_WIDTH : 0
+    backdropOpacity.value = 0
+    setBodyScrollLocked(false)
+    previousActiveElement = null
   }
 )
 
 onUnmounted(() => {
-  if (animationTimeout) clearTimeout(animationTimeout)
+  clearAnimationTimeout()
+  clearAnimationFrame()
+  setBodyScrollLocked(false)
 })
 </script>
 
 <template>
   <div :class="{ hidden: !drawerOpen }">
     <div
+      ref="drawerRef"
+      :role="props.isMobile ? 'dialog' : undefined"
+      :aria-modal="props.isMobile ? 'true' : undefined"
+      :aria-label="props.isMobile ? theme.sidebarMenuLabel : undefined"
+      :tabindex="props.isMobile ? -1 : undefined"
       :style="{
-        left: props.isMobile ? `${animationLeftPx}px` : '0',
+        transform: props.isMobile ? `translate3d(${drawerTranslateXPx}px, 0, 0)` : 'none',
         width: `${SIDEBAR_WIDTH}px`,
       }"
-      class="max-lg:overflow-y-auto max-lg:overflow-x-clip max-lg:fixed lg:h-fit app-drawer z-10 top-0 bottom-0 transition-[left] duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[left]"
+      class="max-lg:overflow-y-auto max-lg:overflow-x-clip max-lg:fixed lg:h-fit app-drawer z-10 top-0 bottom-0 left-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform"
+      @keydown="handleKeydown"
     >
       <div>
         <a
@@ -214,7 +325,9 @@ onUnmounted(() => {
     >
       <div class="sidebar-closebtn-wrapper absolute h-0 right-0">
         <button
+          type="button"
           :title="theme.t.closeMenu"
+          :aria-label="theme.t.closeMenu"
           class="py-6 px-6 cursor-pointer text-gray-300 hover:text-white"
           @click.prevent.stop="closeDrawer"
         >

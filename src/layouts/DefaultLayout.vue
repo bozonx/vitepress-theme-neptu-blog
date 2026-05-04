@@ -23,6 +23,8 @@ const bodyMarker = resolveBodyMarker(theme.value, frontmatter.value)
 
 useSwipeDrawer({
   enabled: () => isMobile.value,
+  canOpen: () => !sidebarRef.value?.isDrawerOpen(),
+  canClose: () => Boolean(sidebarRef.value?.isDrawerOpen()),
   onOpen: () => sidebarRef.value?.openDrawer(),
   onClose: () => sidebarRef.value?.handleLeftSwipe(),
 })

@@ -6,6 +6,10 @@ import { SWIPE_OFFSET } from '../constants.ts'
 export interface UseSwipeDrawerOptions {
   /** Gate, e.g. isMobile. */
   enabled: () => boolean
+  /** Additional gate for opening, e.g. drawer is currently closed. */
+  canOpen?: () => boolean
+  /** Additional gate for closing, e.g. drawer is currently open. */
+  canClose?: () => boolean
   /** Called when user swipes to open. */
   onOpen?: () => void
   /** Called when user swipes to close. */
@@ -22,6 +26,8 @@ export interface UseSwipeDrawerOptions {
  */
 export function useSwipeDrawer({
   enabled,
+  canOpen = () => true,
+  canClose = () => true,
   onOpen,
   onClose,
   edgePx = 50,
@@ -63,15 +69,17 @@ export function useSwipeDrawer({
     processed = true
 
     if (dx > 0) {
-      if (initialX <= edgePx) {
+      if (initialX <= edgePx && canOpen()) {
         if (e.cancelable) e.preventDefault()
         onOpen?.()
         reset()
       }
     } else {
-      if (e.cancelable) e.preventDefault()
-      onClose?.()
-      reset()
+      if (canClose()) {
+        if (e.cancelable) e.preventDefault()
+        onClose?.()
+        reset()
+      }
     }
   }
 
