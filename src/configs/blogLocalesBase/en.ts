@@ -24,7 +24,7 @@ export default {
     paginationToStart: 'First Page',
     paginationToEnd: 'Last Page',
     toHome: 'Go to the home page',
-    editLink: 'Edit this page',
+    editLink: 'Found an error? Suggest an edit',
     // It is used in the index page of language
     toBlog: 'Go to blog',
     author: 'Author',

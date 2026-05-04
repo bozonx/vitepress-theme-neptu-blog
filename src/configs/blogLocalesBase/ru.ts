@@ -24,7 +24,7 @@ export default {
     paginationToStart: 'На первую страницу',
     paginationToEnd: 'На последнюю страницу',
     toHome: 'На главную',
-    editLink: 'Редактировать эту страницу',
+    editLink: 'Нашли ошибку? Предложите правку',
     // It is used in the index page of language
     toBlog: 'Перейти к блогу',
     author: 'Автор',
