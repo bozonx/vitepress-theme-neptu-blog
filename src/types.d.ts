@@ -58,6 +58,7 @@ export namespace NeptuBlogTheme {
     paginationMaxItems?: number
     showAuthorInPostList?: boolean
 
+    /** @deprecated Use `popularPosts.dataSource` instead. */
     googleAnalytics?: GoogleAnalyticsConfig
     popularPosts?: PopularPostsConfig
 
@@ -158,7 +159,16 @@ export namespace NeptuBlogTheme {
     [key: string]: unknown
   }
 
+  /** @deprecated Use `AnalyticsDataSource` instead. */
   export interface GoogleAnalyticsConfig {
+    propertyId?: string | null
+    credentialsJson?: string | null
+    dataPeriodDays?: number
+    dataLimit?: number
+  }
+
+  export interface AnalyticsDataSource {
+    provider: 'ga4'
     propertyId?: string | null
     credentialsJson?: string | null
     dataPeriodDays?: number
@@ -168,6 +178,7 @@ export namespace NeptuBlogTheme {
   export interface PopularPostsConfig {
     enabled?: boolean
     sortBy?: 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
+    dataSource?: AnalyticsDataSource
   }
 
   export interface Author {

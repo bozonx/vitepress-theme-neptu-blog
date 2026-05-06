@@ -39,7 +39,6 @@ type ResolvedBlogConfig = BlogUserConfig & {
     >
   }
   themeConfig: Partial<ThemeConfig> & {
-    googleAnalytics: NonNullable<ThemeConfig['googleAnalytics']>
     popularPosts: NonNullable<ThemeConfig['popularPosts']>
   }
   vite: NonNullable<UserConfig['vite']> & {
@@ -60,13 +59,17 @@ const commonThemeConfig = {
   paginationMaxItems: 5,
   showAuthorInPostList: true,
 
-  googleAnalytics: {
-    propertyId: null,
-    credentialsJson: null,
-    dataPeriodDays: 30,
-    dataLimit: 1000,
+  popularPosts: {
+    enabled: false,
+    sortBy: 'pageviews',
+    dataSource: {
+      provider: 'ga4' as const,
+      propertyId: null,
+      credentialsJson: null,
+      dataPeriodDays: 30,
+      dataLimit: 1000,
+    },
   },
-  popularPosts: { enabled: false, sortBy: 'pageviews' },
 
   tagsBaseUrl: 'tags',
   archiveBaseUrl: 'archive',
@@ -165,13 +168,20 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       ...common.themeConfig,
       ...config.themeConfig,
 
-      googleAnalytics: {
-        ...commonThemeConfig.googleAnalytics,
-        ...config.themeConfig?.googleAnalytics,
-      },
       popularPosts: {
         ...commonThemeConfig.popularPosts,
         ...config.themeConfig?.popularPosts,
+        dataSource: {
+          ...commonThemeConfig.popularPosts.dataSource,
+          ...config.themeConfig?.popularPosts?.dataSource,
+          // Fallback for deprecated themeConfig.googleAnalytics
+          ...(config.themeConfig?.googleAnalytics
+            ? {
+                provider: 'ga4' as const,
+                ...config.themeConfig.googleAnalytics,
+              }
+            : {}),
+        },
       },
     },
 

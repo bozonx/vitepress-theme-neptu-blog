@@ -1,7 +1,7 @@
 import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants'
 import { loadPostsDataFromFiles } from 'vitepress-theme-neptu-blog/list-helpers/node'
 
-import { popularPosts, googleAnalytics } from '../.vitepress/config.js'
+import { popularPosts } from '../.vitepress/config.js'
 
 export default {
   watch: [`./${POSTS_DIR}/*.md`],
@@ -9,7 +9,7 @@ export default {
     return {
       posts: await loadPostsDataFromFiles(watchedFiles, {
         popularPostsEnabled: popularPosts.enabled,
-        googleAnalytics,
+        dataSource: popularPosts.dataSource,
         ignoreCache: process.env.NODE_ENV !== 'production',
       }),
     }

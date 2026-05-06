@@ -39,6 +39,8 @@ GA_CREDENTIALS_JSON='{"type": "service_account", ...}'
 
 ### Blog config
 
+> **Note:** Build-time analytics currently supports **only Google Analytics 4**. Other providers (Plausible, Yandex.Metrika, Umami, etc.) are not available for popular-posts data because they lack a unified, zero-config API for fetching historical page-level statistics at build time.
+
 ```ts
 // .vitepress/config.ts
 import { defineConfig } from 'vitepress'
@@ -50,14 +52,15 @@ dotenv.config()
 export default defineConfig(
   defineBlogConfig({
     themeConfig: {
-      googleAnalytics: {
-        propertyId: process.env.GA_PROPERTY_ID,
-        credentialsJson: process.env.GA_CREDENTIALS_JSON,
-        dataPeriodDays: 30,
-      },
       popularPosts: {
         enabled: true,
         sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
+        dataSource: {
+          provider: 'ga4',
+          propertyId: process.env.GA_PROPERTY_ID,
+          credentialsJson: process.env.GA_CREDENTIALS_JSON,
+          dataPeriodDays: 30,
+        },
       },
     },
   })

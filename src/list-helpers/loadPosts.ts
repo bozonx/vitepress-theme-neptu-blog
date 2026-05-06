@@ -2,12 +2,14 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import { POSTS_DIR } from '../constants.ts'
-import { mergeWithAnalytics, type GoogleAnalyticsConfig } from './loadPostsStats.ts'
+import {
+  mergeWithAnalytics,
+  type AnalyticsDataSource,
+} from './loadPostsStats.ts'
 import { makePreviewItem } from './makePreviewItem.ts'
 import type { Post } from '../types.d.ts'
 
 declare global {
-   
   var neptuBlogCache: Record<string, Post[]> | undefined
 }
 
@@ -20,7 +22,9 @@ function getDefaultCache(): Record<string, Post[]> {
 
 export interface LoadPostsOptions {
   popularPostsEnabled?: boolean
-  googleAnalytics?: GoogleAnalyticsConfig | null
+  dataSource?: AnalyticsDataSource | null
+  /** @deprecated Use `dataSource` instead. */
+  googleAnalytics?: AnalyticsDataSource | null
   ignoreCache?: boolean
   /** Cache store for dependency injection. Falls back to the global singleton. */
   cache?: Record<string, Post[]>
@@ -33,10 +37,13 @@ export async function loadPostsData(
 ): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
+    dataSource: dataSourceOpt = null,
     googleAnalytics = null,
     ignoreCache = false,
     cache: cacheOpt,
   } = options
+
+  const dataSource = dataSourceOpt ?? googleAnalytics
   const localeIndex = path.basename(localeDir)
 
   if (!localeIndex) return []
@@ -53,17 +60,22 @@ export async function loadPostsData(
     const files = await fs.readdir(postsDir)
     const mdFiles = files.filter((file) => file.endsWith('.md'))
     const fullPaths = mdFiles.map((file) => path.join(postsDir, file))
-    const posts = fullPaths.map((filePath) => makePreviewItem(filePath)) as Post[]
+    const posts = fullPaths.map((filePath) =>
+      makePreviewItem(filePath)
+    ) as Post[]
 
     cache[cacheKey] = posts
 
-    if (popularPostsEnabled && googleAnalytics) {
-      cache[cacheKey] = await mergeWithAnalytics(posts, googleAnalytics)
+    if (popularPostsEnabled && dataSource) {
+      cache[cacheKey] = await mergeWithAnalytics(posts, dataSource)
     }
 
     return cache[cacheKey]!
   } catch (error) {
-    throw new Error(`Error loading posts for locale ${localeIndex}: ${(error as Error).message}`, { cause: error })
+    throw new Error(
+      `Error loading posts for locale ${localeIndex}: ${(error as Error).message}`,
+      { cause: error }
+    )
   }
 }
 
@@ -73,10 +85,12 @@ export async function loadPostsDataFromFiles(
 ): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
+    dataSource: dataSourceOpt = null,
     googleAnalytics = null,
     ignoreCache = false,
     cache: cacheOpt,
   } = options
+  const dataSource = dataSourceOpt ?? googleAnalytics
   const fullPaths = files
     .filter((file) => file.endsWith('.md'))
     .map((file) => path.resolve(file))
@@ -91,16 +105,21 @@ export async function loadPostsDataFromFiles(
   }
 
   try {
-    const posts = fullPaths.map((filePath) => makePreviewItem(filePath)) as Post[]
+    const posts = fullPaths.map((filePath) =>
+      makePreviewItem(filePath)
+    ) as Post[]
 
     cache[cacheKey] = posts
 
-    if (popularPostsEnabled && googleAnalytics) {
-      cache[cacheKey] = await mergeWithAnalytics(posts, googleAnalytics)
+    if (popularPostsEnabled && dataSource) {
+      cache[cacheKey] = await mergeWithAnalytics(posts, dataSource)
     }
 
     return cache[cacheKey]!
   } catch (error) {
-    throw new Error(`Error loading posts from watched files: ${(error as Error).message}`, { cause: error })
+    throw new Error(
+      `Error loading posts from watched files: ${(error as Error).message}`,
+      { cause: error }
+    )
   }
 }

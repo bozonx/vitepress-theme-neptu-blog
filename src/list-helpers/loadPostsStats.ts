@@ -4,8 +4,10 @@ import { POSTS_DIR } from '../constants.ts'
 import type { Post } from '../types.d.ts'
 
 declare global {
-   
-  var loadingGaStatsPromise: Promise<Record<string, AnalyticsStats>> | null | undefined
+  var loadingGaStatsPromise:
+    | Promise<Record<string, AnalyticsStats>>
+    | null
+    | undefined
 }
 
 if (!globalThis.loadingGaStatsPromise) {
@@ -15,12 +17,16 @@ if (!globalThis.loadingGaStatsPromise) {
 // GA4 Data API v1beta
 const GA_VERSION = 'v1beta'
 
-export interface GoogleAnalyticsConfig {
+export interface AnalyticsDataSource {
+  provider: 'ga4'
   propertyId?: string | null
   credentialsJson?: string | null
   dataPeriodDays?: number
   dataLimit?: number
 }
+
+/** @deprecated Use `AnalyticsDataSource` instead. */
+export type GoogleAnalyticsConfig = AnalyticsDataSource
 
 export interface AnalyticsStats extends Record<string, number> {
   pageviews: number
@@ -40,9 +46,9 @@ function normalizePath(p: string): string {
 
 export async function mergeWithAnalytics(
   posts: Post[],
-  gaCfg: GoogleAnalyticsConfig | null | undefined
+  dataSource: AnalyticsDataSource | null | undefined
 ): Promise<Post[]> {
-  if (!gaCfg?.propertyId) {
+  if (dataSource?.provider !== 'ga4' || !dataSource?.propertyId) {
     return posts
   }
 
@@ -50,7 +56,7 @@ export async function mergeWithAnalytics(
     let stats: Record<string, AnalyticsStats> | null = null
 
     if (!globalThis.loadingGaStatsPromise) {
-      globalThis.loadingGaStatsPromise = loadGoogleAnalytics(gaCfg)
+      globalThis.loadingGaStatsPromise = loadGoogleAnalytics(dataSource)
     }
 
     stats = await globalThis.loadingGaStatsPromise!
@@ -69,9 +75,11 @@ export async function mergeWithAnalytics(
 
       return { ...post, analyticsStats: analyticsData || {} } as Post
     })
-    
+
     if (postsWithStatsCount > 0) {
-       console.info(`\x1b[32m📈 Merged GA stats for ${postsWithStatsCount} posts.\x1b[0m`)
+      console.info(
+        `\x1b[32m📈 Merged GA stats for ${postsWithStatsCount} posts.\x1b[0m`
+      )
     }
 
     return postsWithStats
@@ -82,14 +90,14 @@ export async function mergeWithAnalytics(
 }
 
 export async function loadGoogleAnalytics(
-  gaCfg: GoogleAnalyticsConfig
+  dataSource: AnalyticsDataSource
 ): Promise<Record<string, AnalyticsStats>> {
   try {
     const scopes = ['https://www.googleapis.com/auth/analytics.readonly']
     let credentials: { client_email: string; private_key: string } | null = null
 
-    if (gaCfg.credentialsJson) {
-      credentials = JSON.parse(gaCfg.credentialsJson)
+    if (dataSource.credentialsJson) {
+      credentials = JSON.parse(dataSource.credentialsJson)
     }
 
     const authClient: Auth.JWT | Auth.AuthClient = credentials
@@ -107,39 +115,42 @@ export async function loadGoogleAnalytics(
     const endDate = new Date()
     const startDate = new Date()
 
-    startDate.setDate(startDate.getDate() - (gaCfg.dataPeriodDays || 30))
+    startDate.setDate(startDate.getDate() - (dataSource.dataPeriodDays || 30))
 
-    const requestParams: analyticsdata_v1beta.Params$Resource$Properties$Runreport = {
-      property: `properties/${gaCfg.propertyId}`,
-      requestBody: {
-        dateRanges: [
-          {
-            startDate: startDate.toISOString().split('T')[0],
-            endDate: endDate.toISOString().split('T')[0],
-          },
-        ],
-        metrics: [
-          { name: 'screenPageViews' },
-          { name: 'totalUsers' },
-          { name: 'averageSessionDuration' },
-        ],
-        dimensions: [{ name: 'pagePath' }],
-        dimensionFilter: {
-          filter: {
-            fieldName: 'pagePath',
-            stringFilter: {
-              matchType: 'CONTAINS',
-              value: `/${POSTS_DIR}/`,
-              caseSensitive: false,
+    const requestParams: analyticsdata_v1beta.Params$Resource$Properties$Runreport =
+      {
+        property: `properties/${dataSource.propertyId}`,
+        requestBody: {
+          dateRanges: [
+            {
+              startDate: startDate.toISOString().split('T')[0],
+              endDate: endDate.toISOString().split('T')[0],
+            },
+          ],
+          metrics: [
+            { name: 'screenPageViews' },
+            { name: 'totalUsers' },
+            { name: 'averageSessionDuration' },
+          ],
+          dimensions: [{ name: 'pagePath' }],
+          dimensionFilter: {
+            filter: {
+              fieldName: 'pagePath',
+              stringFilter: {
+                matchType: 'CONTAINS',
+                value: `/${POSTS_DIR}/`,
+                caseSensitive: false,
+              },
             },
           },
+          orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
+          limit: (dataSource.dataLimit || 1000).toString(),
         },
-        orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
-        limit: (gaCfg.dataLimit || 1000).toString(),
-      },
-    }
+      }
 
-    console.info(`\x1b[36m🔍 Fetching GA stats for property ${gaCfg.propertyId}...\x1b[0m`)
+    console.info(
+      `\x1b[36m🔍 Fetching GA stats for property ${dataSource.propertyId}...\x1b[0m`
+    )
 
     const response = await analyticsdata.properties.runReport(requestParams)
 
@@ -163,16 +174,20 @@ export async function loadGoogleAnalytics(
         avgTimeOnPage: parseFloat(row.metricValues[2].value || '0'),
       }
     })
-    
-    console.info(`\x1b[32m✅ Loaded GA stats for ${Object.keys(stats).length} paths.\x1b[0m`)
+
+    console.info(
+      `\x1b[32m✅ Loaded GA stats for ${Object.keys(stats).length} paths.\x1b[0m`
+    )
 
     return stats
   } catch (err: unknown) {
-    console.error('\x1b[31m❌ Critical error fetching Google Analytics data:\x1b[0m')
+    console.error(
+      '\x1b[31m❌ Critical error fetching Google Analytics data:\x1b[0m'
+    )
     if (err instanceof Error) {
-        console.error(err.message)
+      console.error(err.message)
     } else {
-        console.error(err)
+      console.error(err)
     }
     return {}
   }

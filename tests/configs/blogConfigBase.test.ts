@@ -1,5 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mergeBlogConfig, defineBlogConfig } from '../../src/configs/blogConfigBase.ts'
+import {
+  mergeBlogConfig,
+  defineBlogConfig,
+} from '../../src/configs/blogConfigBase.ts'
 
 vi.mock('../../src/transformers/filterSitemap.ts', () => ({
   filterSitemap: vi.fn((items: any[]) => items),
@@ -25,9 +28,7 @@ vi.mock('../../src/transformers/addOgMetaTags.ts', () => ({
   addOgMetaTags: vi.fn(),
 }))
 
-vi.mock('../../src/transformers/addJsonLd.ts', () => ({
-  addJsonLd: vi.fn(),
-}))
+vi.mock('../../src/transformers/addJsonLd.ts', () => ({ addJsonLd: vi.fn() }))
 
 vi.mock('../../src/transformers/addHreflang.ts', () => ({
   addHreflang: vi.fn(),
@@ -80,16 +81,12 @@ describe('mergeBlogConfig', () => {
   })
 
   it('merges locales', () => {
-    const result = mergeBlogConfig({
-      locales: { de: { label: 'Deutsch' } },
-    })
+    const result = mergeBlogConfig({ locales: { de: { label: 'Deutsch' } } })
     expect(result.locales.de).toEqual({ label: 'Deutsch' })
   })
 
   it('preserves rssFormats array', () => {
-    const result = mergeBlogConfig({
-      rssFormats: ['rss', 'atom'],
-    })
+    const result = mergeBlogConfig({ rssFormats: ['rss', 'atom'] })
     expect(result.rssFormats).toEqual(['rss', 'atom'])
   })
 
@@ -121,21 +118,28 @@ describe('mergeBlogConfig', () => {
     expect(result.sitemap.hostname).toBe('https://blog.example.com')
   })
 
-  it('deep merges themeConfig.googleAnalytics', () => {
+  it('deep merges themeConfig.popularPosts.dataSource', () => {
     const result = mergeBlogConfig({
       themeConfig: {
-        googleAnalytics: { propertyId: '123' },
+        popularPosts: { dataSource: { provider: 'ga4', propertyId: '123' } },
       },
     })
-    expect(result.themeConfig.googleAnalytics.propertyId).toBe('123')
-    expect(result.themeConfig.googleAnalytics.dataPeriodDays).toBe(30)
+    expect(result.themeConfig.popularPosts.dataSource?.propertyId).toBe('123')
+    expect(result.themeConfig.popularPosts.dataSource?.dataPeriodDays).toBe(30)
+  })
+
+  it('falls back deprecated themeConfig.googleAnalytics into popularPosts.dataSource', () => {
+    const result = mergeBlogConfig({
+      themeConfig: { googleAnalytics: { propertyId: '456', dataLimit: 500 } },
+    })
+    expect(result.themeConfig.popularPosts.dataSource?.propertyId).toBe('456')
+    expect(result.themeConfig.popularPosts.dataSource?.dataLimit).toBe(500)
+    expect(result.themeConfig.popularPosts.dataSource?.provider).toBe('ga4')
   })
 
   it('deep merges themeConfig.popularPosts', () => {
     const result = mergeBlogConfig({
-      themeConfig: {
-        popularPosts: { enabled: true },
-      },
+      themeConfig: { popularPosts: { enabled: true } },
     })
     expect(result.themeConfig.popularPosts.enabled).toBe(true)
     expect(result.themeConfig.popularPosts.sortBy).toBe('pageviews')
@@ -152,9 +156,7 @@ describe('mergeBlogConfig', () => {
   })
 
   it('vite merges with provided config', () => {
-    const result = mergeBlogConfig({
-      vite: { build: { target: 'esnext' } },
-    })
+    const result = mergeBlogConfig({ vite: { build: { target: 'esnext' } } })
     expect(result.vite.build.target).toBe('esnext')
     expect(result.vite.ssr.noExternal).toContain('vitepress-theme-neptu-blog')
   })
@@ -171,9 +173,7 @@ describe('mergeBlogConfig', () => {
 
   it('calls custom transformPageData if provided', async () => {
     const customFn = vi.fn()
-    const result = mergeBlogConfig({
-      transformPageData: customFn,
-    })
+    const result = mergeBlogConfig({ transformPageData: customFn })
     const pageData = { frontmatter: {} }
     const ctx = { siteConfig: {} }
     await (result.transformPageData as any)(pageData, ctx)
@@ -182,9 +182,7 @@ describe('mergeBlogConfig', () => {
 
   it('calls custom transformHead if provided', async () => {
     const customFn = vi.fn()
-    const result = mergeBlogConfig({
-      transformHead: customFn,
-    })
+    const result = mergeBlogConfig({ transformHead: customFn })
     const ctx = { head: [], pageData: {}, siteConfig: {} }
     await (result.transformHead as any)(ctx)
     expect(customFn).toHaveBeenCalledWith(ctx)
@@ -192,9 +190,7 @@ describe('mergeBlogConfig', () => {
 
   it('calls custom buildEnd if provided', async () => {
     const customFn = vi.fn()
-    const result = mergeBlogConfig({
-      buildEnd: customFn,
-    })
+    const result = mergeBlogConfig({ buildEnd: customFn })
     const cfg = {}
     await (result.buildEnd as any)(cfg)
     expect(customFn).toHaveBeenCalledWith(cfg)
