@@ -1,9 +1,0 @@
-User-agent: *
-Disallow: /admin
-
-Disallow: /*utm_
-Disallow: /*?m=1
-Allow: /
-
-###### Please put your sitemap URL here
-#Sitemap: https://.../sitemap.xml

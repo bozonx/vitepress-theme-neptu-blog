@@ -1,5 +1,10 @@
 import tailwindcss from '@tailwindcss/vite'
-import type { UserConfig, HeadConfig, TransformContext, SiteConfig } from 'vitepress'
+import type {
+  UserConfig,
+  HeadConfig,
+  TransformContext,
+  SiteConfig,
+} from 'vitepress'
 import { omitUndefined } from '../utils/shared/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
@@ -8,13 +13,19 @@ import { addRssLinks } from '../transformers/addRssLinks.ts'
 import { filterSitemap } from '../transformers/filterSitemap.ts'
 import type { SitemapItem } from '../transformers/filterSitemap.ts'
 import { generateRssFeed } from '../transformers/generateRssFeed.ts'
+import { generateRobotsTxt } from '../transformers/generateRobotsTxt.ts'
 import { transformPageMeta } from '../transformers/transformPageMeta.ts'
 import { transformTitle } from '../transformers/transformTitle.ts'
 import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
-import type { ExtendedPageData, ExtendedSiteConfig, BlogUserConfig, ThemeConfig } from '../types.d.ts'
+import type {
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  BlogUserConfig,
+  ThemeConfig,
+} from '../types.d.ts'
 
 type ResolvedBlogConfig = BlogUserConfig & {
   head: NonNullable<UserConfig['head']>
@@ -23,7 +34,9 @@ type ResolvedBlogConfig = BlogUserConfig & {
     image: NonNullable<NonNullable<UserConfig['markdown']>['image']>
   }
   sitemap: NonNullable<UserConfig['sitemap']> & {
-    transformItems: NonNullable<NonNullable<UserConfig['sitemap']>['transformItems']>
+    transformItems: NonNullable<
+      NonNullable<UserConfig['sitemap']>['transformItems']
+    >
   }
   themeConfig: Partial<ThemeConfig> & {
     googleAnalytics: NonNullable<ThemeConfig['googleAnalytics']>
@@ -53,10 +66,7 @@ const commonThemeConfig = {
     dataPeriodDays: 30,
     dataLimit: 1000,
   },
-  popularPosts: {
-    enabled: false,
-    sortBy: 'pageviews',
-  },
+  popularPosts: { enabled: false, sortBy: 'pageviews' },
 
   tagsBaseUrl: 'tags',
   archiveBaseUrl: 'archive',
@@ -119,7 +129,9 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     vite: {
       ...config.vite,
       plugins: [
-        ...(config.vite?.plugins?.some((p: unknown) => (p as { name: string })?.name === 'tailwindcss')
+        ...(config.vite?.plugins?.some(
+          (p: unknown) => (p as { name: string })?.name === 'tailwindcss'
+        )
           ? []
           : [tailwindcss()]),
         ...(config.vite?.plugins || []),
@@ -194,13 +206,11 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       if (config.transformHead) {
         await config.transformHead(ctx as unknown as TransformContext)
       }
-
     },
-
-
 
     buildEnd: async (cfg: SiteConfig) => {
       await generateRssFeed(cfg as unknown as ExtendedSiteConfig)
+      generateRobotsTxt(cfg as unknown as ExtendedSiteConfig)
 
       if (config.buildEnd) {
         await config.buildEnd(cfg)
