@@ -6,8 +6,8 @@ export namespace NeptuBlogTheme {
     [K in keyof T]?: T[K] extends Array<infer U>
       ? Array<DeepPartial<U>>
       : T[K] extends Record<string, unknown>
-      ? DeepPartial<T[K]>
-      : T[K]
+        ? DeepPartial<T[K]>
+        : T[K]
   }
 
   export interface UiLocaleConfig {
@@ -22,27 +22,29 @@ export namespace NeptuBlogTheme {
     t?: DeepPartial<I18n>
   }
 
-  export type BlogUserConfig = Omit<UserConfig<Config>, 'locales' | 'themeConfig'> & {
+  export type BlogUserConfig = Omit<
+    UserConfig<Config>,
+    'locales' | 'themeConfig'
+  > & {
     themeConfig?: Partial<Config>
-    locales?: Record<string, {
-      label?: string
-      link?: string
-      lang?: string
-      title?: string
-      description?: string
-      themeConfig?: Partial<Config>
-      [key: string]: unknown
-    }>
+    locales?: Record<
+      string,
+      {
+        label?: string
+        link?: string
+        lang?: string
+        title?: string
+        description?: string
+        themeConfig?: Partial<Config>
+        [key: string]: unknown
+      }
+    >
     repo?: string
     siteUrl?: string
     maxPostsInRssFeed?: number
     rssFormats?: string[]
     maxDescriptionLength?: number
-    en?: {
-      title?: string
-      description?: string
-      [key: string]: unknown
-    }
+    en?: { title?: string; description?: string; [key: string]: unknown }
     [key: string]: unknown
   }
 
@@ -86,29 +88,22 @@ export namespace NeptuBlogTheme {
     sidebarMenuLabel?: string
 
     autoCanonical?: boolean
-    socialMediaShares?: string
+    socialMediaShares?: SocialMediaShare[]
     uiLocale?: UiLocaleConfig
     uiLocales?: Record<string, UiLocaleDefinition>
 
     t: I18n
 
-    search?: (DefaultTheme.Config['search'] & { bodyMarker?: string }) | { provider: string; options?: unknown; bodyMarker?: string }
+    search?:
+      | (DefaultTheme.Config['search'] & { bodyMarker?: string })
+      | { provider: string; options?: unknown; bodyMarker?: string }
 
-    publisher?: {
-      name?: string
-      url?: string
-      logo?: string
-    }
+    publisher?: { name?: string; url?: string; logo?: string }
 
-    footer?: {
-      message?: string
-      copyright?: string
-      links?: NavLink[]
-    }
+    footer?: { message?: string; copyright?: string; links?: NavLink[] }
 
     [key: string]: unknown
   }
-
 
   export interface I18n {
     popularPosts: string
@@ -162,7 +157,6 @@ export namespace NeptuBlogTheme {
 
     [key: string]: unknown
   }
-
 
   export interface GoogleAnalyticsConfig {
     propertyId?: string | null
@@ -233,6 +227,14 @@ export namespace NeptuBlogTheme {
     postDonateCall?: string
   }
 
+  export interface SocialMediaShare {
+    name: string
+    icon: string
+    title: string
+    urlTemplate: string
+    class?: string
+  }
+
   export interface Tag {
     name: string
     slug: string
@@ -240,7 +242,15 @@ export namespace NeptuBlogTheme {
   }
 
   export interface PostFrontmatter extends Record<string, unknown> {
-    layout?: 'post' | 'home' | 'page' | 'util' | 'tag' | 'archive' | 'author' | string
+    layout?:
+      | 'post'
+      | 'home'
+      | 'page'
+      | 'util'
+      | 'tag'
+      | 'archive'
+      | 'author'
+      | string
     title?: string
     description?: string
     date?: string | Date
@@ -266,7 +276,6 @@ export namespace NeptuBlogTheme {
     homeBackgroundImage?: string
     homeBgParallaxOffset?: number
   }
-
 
   export interface PostLite {
     url: string
@@ -309,14 +318,12 @@ export namespace NeptuBlogTheme {
     srcDir?: string
     outDir?: string
     site: {
-      locales: Record<string, LocaleDefinition & {
-        label?: string
-        themeConfig?: Partial<Config>
-      }>
+      locales: Record<
+        string,
+        LocaleDefinition & { label?: string; themeConfig?: Partial<Config> }
+      >
     }
-    userConfig: BlogUserConfig & {
-      themeConfig: Partial<Config>
-    }
+    userConfig: BlogUserConfig & { themeConfig: Partial<Config> }
     head?: HeadConfig[]
     [key: string]: unknown
   }

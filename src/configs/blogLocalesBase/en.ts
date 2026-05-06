@@ -10,7 +10,46 @@ export default {
     lightModeSwitchTitle: 'Switch to Light Mode',
     langMenuLabel: 'Change language',
     // you can overwrite it in site config
-    socialMediaShares: 'telegram,whatsapp,vk,x,facebook',
+    socialMediaShares: [
+      {
+        name: 'telegram',
+        icon: 'logos:telegram',
+        title: 'Telegram',
+        urlTemplate: 'https://t.me/share/url?url={url}&text={title}',
+      },
+      {
+        name: 'whatsapp',
+        icon: 'logos:whatsapp-icon',
+        title: 'WhatsApp',
+        urlTemplate: 'https://api.whatsapp.com/send?text={title}%20{url}',
+      },
+      {
+        name: 'vk',
+        icon: 'cib:vk',
+        title: 'VK',
+        urlTemplate: 'https://vk.com/share.php?url={url}&title={title}',
+        class: 'text-[#0077ff] hover:text-[#0077ff]',
+      },
+      {
+        name: 'x',
+        icon: 'ri:twitter-x-fill',
+        title: 'X (Twitter)',
+        urlTemplate: 'https://x.com/intent/tweet?text={title}&url={url}',
+      },
+      {
+        name: 'facebook',
+        icon: 'logos:facebook',
+        title: 'Facebook',
+        urlTemplate: 'https://www.facebook.com/sharer/sharer.php?u={url}',
+      },
+      {
+        name: 'linkedin',
+        icon: 'logos:linkedin-icon',
+        title: 'LinkedIn',
+        urlTemplate:
+          'https://www.linkedin.com/sharing/share-offsite/?url={url}',
+      },
+    ],
   },
   t: {
     popularPosts: 'Popular Posts',
