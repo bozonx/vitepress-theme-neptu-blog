@@ -8,6 +8,7 @@ VitePress blog theme with i18n, RSS/Atom/JSON feeds, JSON-LD structured data, hr
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
+- [Social Sharing](#social-sharing)
 - [Post Frontmatter](#post-frontmatter)
 - [Layouts & Components](#layouts--components)
 - [Styling](#styling)
@@ -279,6 +280,27 @@ themeConfig: {
 ```
 
 See [docs/JSON_LD_GUIDE.md](docs/JSON_LD_GUIDE.md) for structured-data documentation.
+
+### Social sharing
+
+Control which networks appear below every post:
+
+```ts
+themeConfig: {
+  socialMediaShares: [
+    { name: 'telegram', icon: 'logos:telegram', title: 'Telegram', urlTemplate: 'https://t.me/share/url?url={url}&text={title}' },
+    { name: 'x', icon: 'ri:twitter-x-fill', title: 'X (Twitter)', urlTemplate: 'https://x.com/intent/tweet?text={title}&url={url}' },
+    { name: 'linkedin', icon: 'logos:linkedin-icon', title: 'LinkedIn', urlTemplate: 'https://www.linkedin.com/sharing/share-offsite/?url={url}' },
+  ]
+}
+```
+
+- `urlTemplate` accepts `{url}` and `{title}` placeholders.
+- You can add any network — Threads, Reddit, Bluesky, Mastodon, etc.
+- Set to `[]` or omit to hide the block entirely.
+- Use `uiLocales` for per-language overrides.
+
+See [docs/SOCIAL_SHARES.md](docs/SOCIAL_SHARES.md) for the full guide.
 
 ### Optional VitePress build options
 
