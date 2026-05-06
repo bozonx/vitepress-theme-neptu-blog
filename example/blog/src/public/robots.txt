@@ -5,4 +5,5 @@ Disallow: /*utm_
 Disallow: /*?m=1
 Allow: /
 
-Sitemap: https://.../sitemap.xml
+###### Please put your sitemap URL here
+#Sitemap: https://.../sitemap.xml

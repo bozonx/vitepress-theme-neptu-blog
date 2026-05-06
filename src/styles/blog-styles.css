@@ -42,7 +42,10 @@ body.modal-open {
   padding: 1.25rem;
   margin-bottom: 1.25rem;
   /* Анимация для hover эффекта */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out,
+    filter 0.3s ease-in-out;
 }
 
 .dark .card-item {
@@ -59,7 +62,7 @@ body.modal-open {
 .dark .card-item:hover {
   filter: brightness(107%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
 
 .card-item.preview:hover {
@@ -73,8 +76,6 @@ body.modal-open {
 .card-item:visited .card-item-header {
   color: var(--link-a-visited);
 }
-
-
 
 .card-item-img-col {
   width: var(--list-item-thumb-width);
@@ -116,7 +117,9 @@ body.modal-open {
 }
 
 .vp-doc img {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
   border-radius: 0.375rem;
 }
 
