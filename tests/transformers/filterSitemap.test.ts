@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { filterSitemap, type SitemapItem } from '../../src/transformers/filterSitemap.ts'
+import {
+  filterSitemap,
+  type SitemapItem,
+} from '../../src/transformers/filterSitemap.ts'
 
 describe('filterSitemap', () => {
   it('returns empty array for empty input', () => {
@@ -72,10 +75,33 @@ describe('filterSitemap', () => {
     expect(filterSitemap(items)).toEqual(items)
   })
 
-  it('filters out non-matching paths', () => {
+  it('keeps custom content paths', () => {
     const items: SitemapItem[] = [
       { url: 'en/about', links: [] },
-      { url: 'en/something-else', links: [] },
+      { url: 'en/projects/my-app', links: [] },
+      { url: 'en/docs/guide', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual(items)
+  })
+
+  it('filters out utility routes', () => {
+    const items: SitemapItem[] = [
+      { url: 'en/tags', links: [] },
+      { url: 'en/tags/foo', links: [] },
+      { url: 'en/archive', links: [] },
+      { url: 'en/archive/2024', links: [] },
+      { url: 'en/authors', links: [] },
+      { url: 'en/authors/john', links: [] },
+      { url: 'en/popular', links: [] },
+      { url: 'en/recent', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual([])
+  })
+
+  it('filters out utility routes with non-latin locale', () => {
+    const items: SitemapItem[] = [
+      { url: 'рус/tags', links: [] },
+      { url: '中文/archive', links: [] },
     ]
     expect(filterSitemap(items)).toEqual([])
   })
@@ -84,11 +110,7 @@ describe('filterSitemap', () => {
     const items: SitemapItem[] = [
       {
         url: 'en/',
-        links: [
-          { url: 'https://example.com/en/' },
-          { href: 'not-url' },
-          {},
-        ],
+        links: [{ url: 'https://example.com/en/' }, { href: 'not-url' }, {}],
       },
     ]
     const result = filterSitemap(items)
