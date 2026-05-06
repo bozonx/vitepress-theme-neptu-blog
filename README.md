@@ -355,6 +355,40 @@ Import from `vitepress-theme-neptu-blog/layouts`:
 - `DefaultLayout` — plain content layout
 - `BlogHome` — home page layout
 
+### Custom layouts
+
+The theme supports custom layouts without forking. Register your layout component globally in `.vitepress/theme/index.ts` and reference it by name in frontmatter:
+
+```ts
+// .vitepress/theme/index.ts
+import DefaultTheme from 'vitepress-theme-neptu-blog'
+import PodcastEpisode from './PodcastEpisode.vue'
+
+export default {
+  ...DefaultTheme,
+  enhanceApp(ctx) {
+    DefaultTheme.enhanceApp?.(ctx)
+    ctx.app.component('PodcastEpisode', PodcastEpisode)
+  },
+}
+```
+
+```yaml
+---
+layout: PodcastEpisode
+---
+```
+
+How it resolves:
+
+- If the layout name matches a **built-in** (`home`, `post`, `page`, `util`, `tag`, `archive`, `author`), the theme uses its native logic.
+- If the layout name matches a **globally registered Vue component**, that component is used instead.
+  - In `NeptuLayout.vue` the custom component replaces the entire page chrome (sidebar, topbar, footer).
+  - In `PageContent.vue` the custom component replaces only the central content area while keeping the `DefaultLayout` chrome around it.
+- If no component is found for an unknown layout name, the theme falls back to the standard `post` layout.
+
+This also works with kebab-case names (`layout: podcast-episode`) as long as the registered component name matches.
+
 ### Utility components
 
 Import from `vitepress-theme-neptu-blog/components`:
