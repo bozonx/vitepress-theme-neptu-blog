@@ -284,6 +284,7 @@ themeConfig: {
 ```
 
 See [docs/BUILD_TIME_ANALYTICS.md](docs/BUILD_TIME_ANALYTICS.md) for the full GA4 service-account setup.
+For SPA pageview tracking in client-side analytics, see the note in [docs/BUILD_TIME_ANALYTICS.md](docs/BUILD_TIME_ANALYTICS.md#spa-navigation-and-client-side-analytics).
 
 ### RSS feed options
 

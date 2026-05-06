@@ -81,6 +81,37 @@ During build you will see:
 
 The system is failure-safe. If the network fails, the key is invalid, or GA returns an empty response, a warning is logged and **the build continues**. Posts are built without stats and popular-posts sorting falls back to date sorting.
 
+## SPA navigation and client-side analytics
+
+This feature is **build-time only**. It does not send pageview events from the browser.
+
+VitePress uses SPA navigation, so client-side analytics may need extra setup for route changes. Whether anything is required depends on the provider and how it is integrated:
+
+- Some tools handle History API navigation automatically.
+- Some require manual pageview tracking after route changes.
+
+If your analytics does not track SPA transitions automatically, hook into the VitePress router in your site theme:
+
+```ts
+// .vitepress/theme/index.ts
+import Theme from 'vitepress-theme-neptu-blog'
+
+export default {
+  ...Theme,
+  enhanceApp(ctx) {
+    Theme.enhanceApp?.(ctx)
+
+    if (typeof window !== 'undefined') {
+      ctx.router.onAfterRouteChange = (to) => {
+        window.ym?.(12345678, 'hit', to)
+      }
+    }
+  },
+}
+```
+
+Check your analytics provider docs to confirm whether SPA pageviews are tracked automatically or need a manual call.
+
 ## CI/CD example (GitHub Actions)
 
 Add two secrets under **Settings -> Secrets and variables -> Actions**:
