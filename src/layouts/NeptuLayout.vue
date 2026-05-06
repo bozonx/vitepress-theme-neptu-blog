@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import { computed, provide } from 'vue'
+import { computed, provide, resolveDynamicComponent } from 'vue'
 
 import NotFound from '../components/layout-parts/NotFound.vue'
 import { useScrollY } from '../composables/useScrollY.ts'
@@ -14,19 +14,41 @@ const { page, frontmatter } = useData()
 const route = useRoute()
 const { scrollY } = useScrollY()
 
+const BUILTIN_LAYOUTS = [
+  'home',
+  'post',
+  'page',
+  'util',
+  'tag',
+  'archive',
+  'author',
+]
+
+const customLayout = computed(() => {
+  const l = frontmatter.value?.layout
+  if (!l || typeof l !== 'string') return null
+  if (BUILTIN_LAYOUTS.includes(l)) return null
+  const resolved = resolveDynamicComponent(l)
+  return typeof resolved === 'object' ? resolved : null
+})
+
 // `layout: false` -> raw <Content />
 // `layout: home`  -> BlogHome (parallax full-takeover)
 // otherwise (`post`, `page`, `util`, `tag`, `archive`, `author`, undefined) -> DefaultLayout chrome,
 // inner content is dispatched by PageContent.vue based on the same `frontmatter.layout`.
+// Custom globally-registered components can override the layout entirely.
 const layoutKind = computed(() => {
   if (page.value.isNotFound) return 'not-found'
   const l = frontmatter.value?.layout
   if (l === false) return 'raw'
   if (l === 'home') return 'home'
+  if (customLayout.value) return 'custom'
   return 'default'
 })
 
-const lightboxLocales = computed(() => resolveTranslationsByFilePath(route.path).t.lightbox ?? {})
+const lightboxLocales = computed(
+  () => resolveTranslationsByFilePath(route.path).t.lightbox ?? {}
+)
 provide(LightboxLocalesKey, lightboxLocales)
 </script>
 
@@ -40,6 +62,8 @@ provide(LightboxLocalesKey, lightboxLocales)
   <Content v-else-if="layoutKind === 'raw'" />
 
   <BlogHome v-else-if="layoutKind === 'home'" :scroll-y="scrollY" />
+
+  <component :is="customLayout" v-else-if="layoutKind === 'custom'" />
 
   <DefaultLayout v-else>
     <template v-if="$slots['sidebar-top']" #sidebar-top>

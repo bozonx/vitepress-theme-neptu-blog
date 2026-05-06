@@ -11,7 +11,12 @@ interface Props {
   slug?: string
   sizeXl?: boolean | string
   sizeSm?: boolean | string
-  activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
+  activeCompareMethod?:
+    | 'soft'
+    | 'pagination'
+    | 'softPagination'
+    | 'none'
+    | 'strict'
 }
 
 const props = defineProps<Props>()
@@ -47,8 +52,7 @@ const className =
 }
 
 .tag-item.active {
-  filter: brightness(90%);
-  transform: scale(0.96) translateY(1px);
+  background: var(--tag-item-bg-active);
 }
 
 .tag-item:hover {

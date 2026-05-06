@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
-import { ref, watchEffect } from 'vue'
+import { computed, ref, resolveDynamicComponent, watchEffect } from 'vue'
 import {
   resolveArticlePreview,
   isPage,
@@ -16,17 +16,44 @@ const { page, frontmatter } = useData()
 const articlePreviewText = ref<string | null | undefined>(null)
 
 watchEffect(() => {
-  articlePreviewText.value = resolveArticlePreview(frontmatter.value as PostFrontmatter)
+  articlePreviewText.value = resolveArticlePreview(
+    frontmatter.value as PostFrontmatter
+  )
+})
+
+const BUILTIN_CONTENT_LAYOUTS = [
+  'post',
+  'page',
+  'util',
+  'tag',
+  'archive',
+  'author',
+  'home',
+]
+
+const customContent = computed(() => {
+  const l = frontmatter.value?.layout
+  if (!l || typeof l !== 'string') return null
+  if (BUILTIN_CONTENT_LAYOUTS.includes(l)) return null
+  const resolved = resolveDynamicComponent(l)
+  return typeof resolved === 'object' ? resolved : null
 })
 </script>
 
 <template>
-  <div v-if="isUtilPage(frontmatter)" class="content-page min-h-[calc(100vh-400px)]">
+  <component :is="customContent" v-if="customContent" />
+  <div
+    v-else-if="isUtilPage(frontmatter)"
+    class="content-page min-h-[calc(100vh-400px)]"
+  >
     <div class="simple-page mt-4">
       <Content />
     </div>
   </div>
-  <div v-else-if="isPage(frontmatter)" class="content-page min-h-[calc(100vh-400px)]">
+  <div
+    v-else-if="isPage(frontmatter)"
+    class="content-page min-h-[calc(100vh-400px)]"
+  >
     <div class="simple-page mt-4 vp-doc">
       <Content />
     </div>
