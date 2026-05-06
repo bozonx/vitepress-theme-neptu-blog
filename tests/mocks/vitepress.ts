@@ -14,10 +14,20 @@ export const mockTheme = ref<any>({
   },
   popularPosts: { enabled: false },
   externalLinkIcon: true,
+  postList: {
+    showDate: true,
+    showTags: true,
+    showThumbnail: true,
+    showPreview: true,
+    showAuthor: true,
+  },
 })
 
 export const mockLocaleIndex = ref<any>('en')
 export const mockRoute = ref<any>({ path: '/en/blog/1' })
-export const mockPage = ref<any>({ relativePath: 'posts/hello.md', title: 'Hello' })
+export const mockPage = ref<any>({
+  relativePath: 'posts/hello.md',
+  title: 'Hello',
+})
 export const mockFrontmatter = ref<any>({})
 export const mockIsDark = ref<any>(false)

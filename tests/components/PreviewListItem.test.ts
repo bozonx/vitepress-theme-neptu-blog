@@ -6,12 +6,25 @@ import { mockTheme } from '../mocks/vitepress'
 const PreviewWithImageStub = {
   name: 'PreviewWithImage',
   template: '<div class="preview-stub" />',
-  props: ['tags', 'date', 'localeDate', 'preview', 'authorName', 'thumbnail', 'coverHeight', 'coverWidth'],
+  props: [
+    'tags',
+    'date',
+    'localeDate',
+    'preview',
+    'authorName',
+    'thumbnail',
+    'coverHeight',
+    'coverWidth',
+    'showDate',
+    'showTags',
+    'showThumbnail',
+    'showPreview',
+  ],
 }
 
 describe('PreviewListItem', () => {
   beforeEach(() => {
-    mockTheme.value = { showAuthorInPostList: false, authors: [] }
+    mockTheme.value = { postList: { showAuthor: false }, authors: [] }
   })
 
   it('renders title as link', () => {
@@ -52,7 +65,7 @@ describe('PreviewListItem', () => {
 
   it('passes author name when configured', () => {
     mockTheme.value = {
-      showAuthorInPostList: true,
+      postList: { showAuthor: true },
       authors: [{ id: 'alice', name: 'Alice' }],
     }
     const wrapper = mount(PreviewListItem, {
@@ -63,9 +76,19 @@ describe('PreviewListItem', () => {
     expect(stub.props('authorName')).toBe('Alice')
   })
 
+  it('passes author name by default when postList is missing', () => {
+    mockTheme.value = { authors: [{ id: 'alice', name: 'Alice' }] }
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', title: 'T', authorId: 'alice' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('authorName')).toBe('Alice')
+  })
+
   it('passes undefined author when author not found', () => {
     mockTheme.value = {
-      showAuthorInPostList: true,
+      postList: { showAuthor: true },
       authors: [{ id: 'bob', name: 'Bob' }],
     }
     const wrapper = mount(PreviewListItem, {
@@ -74,5 +97,26 @@ describe('PreviewListItem', () => {
     })
     const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
     expect(stub.props('authorName')).toBeUndefined()
+  })
+
+  it('passes postList flags to PreviewWithImage', () => {
+    mockTheme.value = {
+      postList: {
+        showDate: false,
+        showTags: false,
+        showThumbnail: false,
+        showPreview: false,
+        showAuthor: false,
+      },
+    }
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', title: 'T' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('showDate')).toBe(false)
+    expect(stub.props('showTags')).toBe(false)
+    expect(stub.props('showThumbnail')).toBe(false)
+    expect(stub.props('showPreview')).toBe(false)
   })
 })

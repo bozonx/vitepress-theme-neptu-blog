@@ -6,10 +6,7 @@ const { readFileSyncMock, existsSyncMock } = vi.hoisted(() => ({
 }))
 
 vi.mock('node:fs', () => ({
-  default: {
-    readFileSync: readFileSyncMock,
-    existsSync: existsSyncMock,
-  },
+  default: { readFileSync: readFileSyncMock, existsSync: existsSyncMock },
   readFileSync: readFileSyncMock,
   existsSync: existsSyncMock,
 }))
@@ -50,5 +47,18 @@ Body content`)
     expect(() => makePreviewItem('/tmp/site/src/en/post/broken.md')).toThrow(
       'Failed to parse frontmatter in /tmp/site/src/en/post/broken.md'
     )
+  })
+
+  it('respects custom maxPreviewLength', () => {
+    readFileSyncMock.mockReturnValue(`---
+title: Hello
+---
+
+This is a very long body content that should be truncated according to the custom maxPreviewLength parameter passed to the function.`)
+
+    const item = makePreviewItem('/tmp/site/src/en/post/hello.md', 20)
+
+    expect(item.preview).toBeDefined()
+    expect(item.preview!.length).toBeLessThanOrEqual(20)
   })
 })

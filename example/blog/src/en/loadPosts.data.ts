@@ -1,7 +1,7 @@
 import { POSTS_DIR } from 'vitepress-theme-neptu-blog/constants'
 import { loadPostsDataFromFiles } from 'vitepress-theme-neptu-blog/list-helpers/node'
 
-import { popularPosts } from '../.vitepress/config.js'
+import { popularPosts, postList } from '../.vitepress/config.js'
 
 export default {
   watch: [`./${POSTS_DIR}/*.md`],
@@ -11,6 +11,7 @@ export default {
         popularPostsEnabled: popularPosts.enabled,
         dataSource: popularPosts.dataSource,
         ignoreCache: process.env.NODE_ENV !== 'production',
+        maxPreviewLength: postList?.maxPreviewLength,
       }),
     }
   },

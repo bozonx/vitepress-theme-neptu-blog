@@ -57,7 +57,14 @@ const commonThemeConfig = {
   similarPostsCount: 5,
   homeBgParallaxOffset: 300,
   paginationMaxItems: 5,
-  showAuthorInPostList: true,
+  postList: {
+    showDate: true,
+    showTags: true,
+    showThumbnail: true,
+    showPreview: true,
+    showAuthor: true,
+    maxPreviewLength: 300,
+  },
 
   popularPosts: {
     enabled: false,
@@ -182,6 +189,11 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
               }
             : {}),
         },
+      },
+
+      postList: {
+        ...commonThemeConfig.postList,
+        ...config.themeConfig?.postList,
       },
     },
 

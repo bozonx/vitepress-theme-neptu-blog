@@ -22,6 +22,15 @@ export const popularPosts = {
   },
 }
 
+export const postList = {
+  showDate: true,
+  showTags: true,
+  showThumbnail: true,
+  showPreview: true,
+  showAuthor: true,
+  maxPreviewLength: 300,
+}
+
 export default async () => {
   const config = defineConfig({
     srcDir: path.resolve(__dirname, '../'),
@@ -48,6 +57,8 @@ export default async () => {
       search: { bodyMarker: 'data-pagefind-body' } as Record<string, unknown>,
 
       popularPosts,
+
+      postList,
 
       // Add there some variables specified for your blog
     } as Record<string, unknown>,

@@ -56,7 +56,14 @@ export namespace NeptuBlogTheme {
     similarPostsCount?: number
     homeBgParallaxOffset?: number
     paginationMaxItems?: number
-    showAuthorInPostList?: boolean
+    postList?: {
+      showDate?: boolean
+      showTags?: boolean
+      showThumbnail?: boolean
+      showPreview?: boolean
+      showAuthor?: boolean
+      maxPreviewLength?: number
+    }
 
     /** @deprecated Use `popularPosts.dataSource` instead. */
     googleAnalytics?: GoogleAnalyticsConfig

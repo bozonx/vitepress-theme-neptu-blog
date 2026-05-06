@@ -106,7 +106,6 @@ See the `example/blog` directory in this repo for a complete working project.
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `showAuthorInPostList` | `boolean` | `true` | Show author name in post list items |
 | `perPage` | `number` | `10` | Posts per page |
 | `sidebarTagsCount` | `number` | `15` | Max tags shown in sidebar |
 | `similarPostsCount` | `number` | `5` | Similar posts count on post page |
@@ -115,6 +114,38 @@ See the `example/blog` directory in this repo for a complete working project.
 | `sidebarLogoSrc` | `string` | - | Logo image in sidebar |
 | `siteTitle` | `string` | - | Override site title in sidebar |
 | `sidebarMenuLabel` | `string` | - | Custom sidebar menu label |
+
+### Post list preview
+
+Control what is shown in post list items via the `postList` object:
+
+| Option                      | Type      | Default | Description                               |
+| --------------------------- | --------- | ------- | ----------------------------------------- |
+| `postList.showDate`         | `boolean` | `true`  | Show post date in list items              |
+| `postList.showTags`         | `boolean` | `true`  | Show tags in list items                   |
+| `postList.showThumbnail`    | `boolean` | `true`  | Show thumbnail/cover image in list items  |
+| `postList.showPreview`      | `boolean` | `true`  | Show excerpt/preview text in list items   |
+| `postList.showAuthor`       | `boolean` | `true`  | Show author name in list items            |
+| `postList.maxPreviewLength` | `number`  | `300`   | Max length of auto-generated preview text |
+
+```ts
+export default defineConfig(
+  defineBlogConfig({
+    themeConfig: {
+      postList: {
+        showDate: true,
+        showTags: false,
+        showThumbnail: true,
+        showPreview: true,
+        showAuthor: false,
+        maxPreviewLength: 200,
+      },
+    },
+  })
+)
+```
+
+`postList.maxPreviewLength` only affects preview text generated from post content. A `preview` value specified in post frontmatter is used as-is.
 
 ### Edit link
 

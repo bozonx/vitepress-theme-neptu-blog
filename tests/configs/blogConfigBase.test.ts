@@ -145,6 +145,16 @@ describe('mergeBlogConfig', () => {
     expect(result.themeConfig.popularPosts.sortBy).toBe('pageviews')
   })
 
+  it('deep merges themeConfig.postList', () => {
+    const result = mergeBlogConfig({
+      themeConfig: { postList: { showTags: false, maxPreviewLength: 120 } },
+    })
+    expect(result.themeConfig.postList?.showTags).toBe(false)
+    expect(result.themeConfig.postList?.showDate).toBe(true)
+    expect(result.themeConfig.postList?.showAuthor).toBe(true)
+    expect(result.themeConfig.postList?.maxPreviewLength).toBe(120)
+  })
+
   it('markdown config includes lazyLoading image', () => {
     const result = mergeBlogConfig({})
     expect(result.markdown.image.lazyLoading).toBe(true)

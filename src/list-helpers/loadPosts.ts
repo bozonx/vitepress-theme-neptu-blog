@@ -28,6 +28,7 @@ export interface LoadPostsOptions {
   ignoreCache?: boolean
   /** Cache store for dependency injection. Falls back to the global singleton. */
   cache?: Record<string, Post[]>
+  maxPreviewLength?: number
 }
 
 /** Loads all posts from the `<localeDir>/post` directory. */
@@ -61,7 +62,7 @@ export async function loadPostsData(
     const mdFiles = files.filter((file) => file.endsWith('.md'))
     const fullPaths = mdFiles.map((file) => path.join(postsDir, file))
     const posts = fullPaths.map((filePath) =>
-      makePreviewItem(filePath)
+      makePreviewItem(filePath, options.maxPreviewLength)
     ) as Post[]
 
     cache[cacheKey] = posts
@@ -106,7 +107,7 @@ export async function loadPostsDataFromFiles(
 
   try {
     const posts = fullPaths.map((filePath) =>
-      makePreviewItem(filePath)
+      makePreviewItem(filePath, options.maxPreviewLength)
     ) as Post[]
 
     cache[cacheKey] = posts

@@ -1,7 +1,13 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { loadPostsData, loadPostsDataFromFiles } from '../../src/list-helpers/loadPosts.ts'
+import {
+  loadPostsData,
+  loadPostsDataFromFiles,
+} from '../../src/list-helpers/loadPosts.ts'
 
 const mockReaddir = vi.fn()
+const mockMakePreviewItem = vi.fn((path: string) => ({
+  url: path.replace(/\\/g, '/').replace('.md', '.html'),
+}))
 
 vi.mock('node:fs/promises', () => ({
   default: { readdir: (...args: any[]) => mockReaddir(...args) },
@@ -9,14 +15,17 @@ vi.mock('node:fs/promises', () => ({
 }))
 
 vi.mock('../../src/list-helpers/makePreviewItem.ts', () => ({
-  makePreviewItem: (path: string) => ({ url: path.replace(/\\/g, '/').replace('.md', '.html') }),
+  makePreviewItem: (...args: Parameters<typeof mockMakePreviewItem>) =>
+    mockMakePreviewItem(...args),
 }))
 
 describe('loadPostsData', () => {
   beforeEach(() => {
     mockReaddir.mockReset()
     if (globalThis.neptuBlogCache) {
-      Object.keys(globalThis.neptuBlogCache).forEach((k) => delete (globalThis.neptuBlogCache as any)[k])
+      Object.keys(globalThis.neptuBlogCache).forEach(
+        (k) => delete (globalThis.neptuBlogCache as any)[k]
+      )
     }
   })
 
@@ -58,19 +67,34 @@ describe('loadPostsData', () => {
     expect(posts).toHaveLength(1)
     // global cache should remain untouched
     const globalCache = globalThis.neptuBlogCache ?? {}
-    expect(Object.keys(globalCache)).not.toContain(expect.stringContaining('/content/en'))
+    expect(Object.keys(globalCache)).not.toContain(
+      expect.stringContaining('/content/en')
+    )
+  })
+
+  it('passes maxPreviewLength to preview item builder', async () => {
+    mockReaddir.mockResolvedValue(['a.md'])
+    await loadPostsData('/content/en', { maxPreviewLength: 120 })
+    expect(mockMakePreviewItem).toHaveBeenCalledWith(
+      expect.stringContaining('/content/en/post/a.md'),
+      120
+    )
   })
 
   it('throws on fs error', async () => {
     mockReaddir.mockRejectedValue(new Error('ENOENT'))
-    await expect(loadPostsData('/content/en')).rejects.toThrow('Error loading posts')
+    await expect(loadPostsData('/content/en')).rejects.toThrow(
+      'Error loading posts'
+    )
   })
 })
 
 describe('loadPostsDataFromFiles', () => {
   beforeEach(() => {
     if (globalThis.neptuBlogCache) {
-      Object.keys(globalThis.neptuBlogCache).forEach((k) => delete (globalThis.neptuBlogCache as any)[k])
+      Object.keys(globalThis.neptuBlogCache).forEach(
+        (k) => delete (globalThis.neptuBlogCache as any)[k]
+      )
     }
   })
 
@@ -103,5 +127,10 @@ describe('loadPostsDataFromFiles', () => {
     const cacheKeys = Object.keys(globalCache)
     // No global key should match our file list
     expect(cacheKeys.some((k) => k.includes('/a.md'))).toBe(false)
+  })
+
+  it('passes maxPreviewLength to preview item builder', async () => {
+    await loadPostsDataFromFiles(['/a.md'], { maxPreviewLength: 80 })
+    expect(mockMakePreviewItem).toHaveBeenCalledWith('/a.md', 80)
   })
 })

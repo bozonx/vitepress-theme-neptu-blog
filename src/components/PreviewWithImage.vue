@@ -7,20 +7,27 @@ interface TagItem {
   count?: number
 }
 
-const props = defineProps<{
-  date?: string
-  localeDate?: string
-  tags?: TagItem[]
-  preview?: string
-  authorName?: string
-  thumbnail?: string
-  coverHeight?: number | string
-  coverWidth?: number | string
-}>()
+const props = withDefaults(
+  defineProps<{
+    date?: string
+    localeDate?: string
+    tags?: TagItem[]
+    preview?: string
+    authorName?: string
+    thumbnail?: string
+    coverHeight?: number | string
+    coverWidth?: number | string
+    showDate?: boolean
+    showTags?: boolean
+    showThumbnail?: boolean
+    showPreview?: boolean
+  }>(),
+  { showDate: true, showTags: true, showThumbnail: true, showPreview: true }
+)
 </script>
 
 <template>
-  <div v-if="props.thumbnail" class="md:flex w-full">
+  <div v-if="props.thumbnail && props.showThumbnail" class="md:flex w-full">
     <div class="card-item-img-col shrink-0 mr-4">
       <img
         :src="props.thumbnail"
@@ -33,14 +40,18 @@ const props = defineProps<{
         alt=""
       />
 
-      <div class="mt-2 space-x-2 muted card-item-author-date text-sm leading-5">
+      <div
+        v-if="props.showDate || props.authorName"
+        class="mt-2 space-x-2 muted card-item-author-date text-sm leading-5"
+      >
         <span v-if="props.authorName">{{ props.authorName }}.</span>
-        <time v-if="props.date" :datetime="props.date">
+        <time v-if="props.showDate && props.date" :datetime="props.date">
           {{ props.localeDate }}
         </time>
       </div>
 
       <TagsList
+        v-if="props.showTags"
         :tags="props.tags || []"
         class="mt-2"
         :size-sm="true"
@@ -48,20 +59,25 @@ const props = defineProps<{
       />
     </div>
 
-    <p v-if="props.preview" class="max-md:mt-5 flex-1 card-item-description">
+    <p
+      v-if="props.showPreview && props.preview"
+      class="max-md:mt-5 flex-1 card-item-description"
+    >
       {{ props.preview }}
     </p>
   </div>
   <div v-else>
-    <p v-if="props.preview" class="card-item-description">
+    <p v-if="props.showPreview && props.preview" class="card-item-description">
       {{ props.preview }}
     </p>
 
     <div
+      v-if="props.showTags || props.showDate || props.authorName"
       class="flex max-sm:flex-col-reverse sm:items-end gap-x-1"
-      :class="{ 'sm:mt-4': props.preview }"
+      :class="{ 'sm:mt-4': props.showPreview && props.preview }"
     >
       <TagsList
+        v-if="props.showTags"
         :tags="props.tags || []"
         class="flex-1"
         :size-sm="true"
@@ -69,10 +85,11 @@ const props = defineProps<{
       />
 
       <div
+        v-if="props.showDate || props.authorName"
         class="space-x-2 max-sm:mt-2 max-sm:mb-4 text-right muted card-item-author-date text-sm leading-5"
       >
         <span v-if="props.authorName">{{ props.authorName }}.</span>
-        <time v-if="props.date" :datetime="props.date">
+        <time v-if="props.showDate && props.date" :datetime="props.date">
           {{ props.localeDate }}
         </time>
       </div>

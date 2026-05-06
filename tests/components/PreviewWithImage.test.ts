@@ -4,7 +4,8 @@ import PreviewWithImage from '../../src/components/PreviewWithImage.vue'
 
 const TagsListStub = {
   name: 'TagsList',
-  template: '<ul class="tags-list-stub"><li v-for="t in tags" :key="t.slug">{{ t.name }}</li></ul>',
+  template:
+    '<ul class="tags-list-stub"><li v-for="t in tags" :key="t.slug">{{ t.name }}</li></ul>',
   props: ['tags', 'class', 'sizeSm', 'activeCompareMethod'],
 }
 
@@ -27,7 +28,9 @@ describe('PreviewWithImage', () => {
     expect(img.attributes('alt')).toBe('')
     expect(wrapper.find('p.card-item-description').text()).toBe('Preview text')
     expect(wrapper.find('.card-item-author-date').text()).toContain('Alice')
-    expect(wrapper.find('.card-item-author-date').text()).toContain('January 1, 2024')
+    expect(wrapper.find('.card-item-author-date').text()).toContain(
+      'January 1, 2024'
+    )
     expect(wrapper.findComponent({ name: 'TagsList' }).exists()).toBe(true)
   })
 
@@ -73,5 +76,36 @@ describe('PreviewWithImage', () => {
       global: { stubs: { TagsList: TagsListStub } },
     })
     expect(wrapper.find('.card-item-description').exists()).toBe(false)
+  })
+
+  it('hides thumbnail layout when showThumbnail is false', () => {
+    const wrapper = mount(PreviewWithImage, {
+      props: {
+        thumbnail: '/img.jpg',
+        showThumbnail: false,
+        preview: 'Preview text',
+      },
+      global: { stubs: { TagsList: TagsListStub } },
+    })
+    expect(wrapper.find('img').exists()).toBe(false)
+    expect(wrapper.find('.card-item-description').text()).toBe('Preview text')
+  })
+
+  it('hides preview, tags, and date when disabled', () => {
+    const wrapper = mount(PreviewWithImage, {
+      props: {
+        preview: 'Preview text',
+        date: '2024-01-01',
+        localeDate: 'Jan 1',
+        tags: [{ name: 'Vue', slug: 'vue' }],
+        showPreview: false,
+        showTags: false,
+        showDate: false,
+      },
+      global: { stubs: { TagsList: TagsListStub } },
+    })
+    expect(wrapper.find('.card-item-description').exists()).toBe(false)
+    expect(wrapper.findComponent({ name: 'TagsList' }).exists()).toBe(false)
+    expect(wrapper.find('time').exists()).toBe(false)
   })
 })

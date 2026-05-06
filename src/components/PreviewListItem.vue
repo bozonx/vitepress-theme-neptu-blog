@@ -20,21 +20,33 @@ const params = computed(() => ({
   date: props.item.date ? String(props.item.date) : undefined,
   localeDate: makeHumanDate(props.item.date, lang.value),
   preview: formatPreview(props.item.preview),
-  authorName: theme.value.showAuthorInPostList
-    ? theme.value.authors?.find((item: { id: string; name: string }) => item.id === props.item.authorId)?.name
-    : undefined,
+  authorName:
+    (theme.value.postList?.showAuthor ?? true)
+      ? theme.value.authors?.find(
+          (item: { id: string; name: string }) =>
+            item.id === props.item.authorId
+        )?.name
+      : undefined,
 }))
 </script>
 
 <template>
   <a :href="props.item.url" class="card-item preview">
-    <h2 class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight">{{ props.item.title }}</h2>
+    <h2
+      class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight"
+    >
+      {{ props.item.title }}
+    </h2>
 
     <PreviewWithImage
       v-bind="params"
       :thumbnail="props.item.thumbnail"
       :cover-height="props.item.coverHeight"
       :cover-width="props.item.coverWidth"
+      :show-date="theme.postList?.showDate ?? true"
+      :show-tags="theme.postList?.showTags ?? true"
+      :show-thumbnail="theme.postList?.showThumbnail ?? true"
+      :show-preview="theme.postList?.showPreview ?? true"
     />
   </a>
 </template>

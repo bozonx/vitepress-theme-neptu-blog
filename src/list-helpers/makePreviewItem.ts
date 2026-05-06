@@ -2,7 +2,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
-import { parseMdFile, extractDescriptionFromMd } from '../utils/node/markdown.ts'
+import {
+  parseMdFile,
+  extractDescriptionFromMd,
+} from '../utils/node/markdown.ts'
 import { normalizeTags } from '../utils/shared/index.ts'
 import { getImageDimensions } from '../utils/node/image.ts'
 import type { PostFrontmatter, Tag } from '../types.d.ts'
@@ -22,7 +25,10 @@ export interface PreviewItem {
   [key: string]: unknown
 }
 
-export function makePreviewItem(filePath: string): PreviewItem {
+export function makePreviewItem(
+  filePath: string,
+  maxPreviewLength?: number
+): PreviewItem {
   const baseDir = path.resolve(filePath, '../../../')
   const relativePath = path.relative(baseDir, filePath)
   const lang = relativePath.split('/')[0]!
@@ -31,11 +37,16 @@ export function makePreviewItem(filePath: string): PreviewItem {
   const rawContent = fs.readFileSync(filePath, DEFAULT_ENCODE)
   const { frontmatter, content } = parseMdFile(rawContent, filePath)
   const fm = frontmatter as PostFrontmatter
-  
+
   let preview = resolvePreview(fm)
   // make preview from content as description
   if (!preview)
-    preview = extractDescriptionFromMd(content, PREVIEW_LENGTH, false, filePath)
+    preview = extractDescriptionFromMd(
+      content,
+      maxPreviewLength ?? PREVIEW_LENGTH,
+      false,
+      filePath
+    )
 
   // Get image dimensions if cover is provided
   let coverDimensions = null
