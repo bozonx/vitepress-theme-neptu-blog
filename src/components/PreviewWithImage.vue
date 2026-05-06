@@ -44,7 +44,7 @@ const props = defineProps<{
         :tags="props.tags || []"
         class="mt-2"
         :size-sm="true"
-        :active-compare-method="'none'"
+        :active-compare-method="'softPagination'"
       />
     </div>
 
@@ -53,14 +53,19 @@ const props = defineProps<{
     </p>
   </div>
   <div v-else>
-    <p v-if="props.preview" class="card-item-description">{{ props.preview }}</p>
+    <p v-if="props.preview" class="card-item-description">
+      {{ props.preview }}
+    </p>
 
-    <div class="flex max-sm:flex-col-reverse sm:items-end gap-x-1" :class="{ 'sm:mt-4': props.preview }">
+    <div
+      class="flex max-sm:flex-col-reverse sm:items-end gap-x-1"
+      :class="{ 'sm:mt-4': props.preview }"
+    >
       <TagsList
         :tags="props.tags || []"
         class="flex-1"
         :size-sm="true"
-        :active-compare-method="'none'"
+        :active-compare-method="'softPagination'"
       />
 
       <div
