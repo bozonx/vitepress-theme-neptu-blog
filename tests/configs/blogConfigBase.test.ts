@@ -3,11 +3,6 @@ import {
   mergeBlogConfig,
   defineBlogConfig,
 } from '../../src/configs/blogConfigBase.ts'
-import { addOgMetaTags } from '../../src/transformers/addOgMetaTags.ts'
-import { addJsonLd } from '../../src/transformers/addJsonLd.ts'
-import { addHreflang } from '../../src/transformers/addHreflang.ts'
-import { addCanonicalLink } from '../../src/transformers/addCanonicalLink.ts'
-import { addRssLinks } from '../../src/transformers/addRssLinks.ts'
 
 vi.mock('../../src/transformers/filterSitemap.ts', () => ({
   filterSitemap: vi.fn((items: any[]) => items),

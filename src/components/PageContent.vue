@@ -32,7 +32,7 @@ const BUILTIN_CONTENT_LAYOUTS = [
 ]
 
 const customContent = computed(() => {
-  const l = frontmatter.value?.layout
+  const l = frontmatter.value?.contentLayout || frontmatter.value?.layout
   if (!l || typeof l !== 'string') return null
   if (BUILTIN_CONTENT_LAYOUTS.includes(l)) return null
   const resolved = resolveDynamicComponent(l)

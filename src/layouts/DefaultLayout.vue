@@ -62,7 +62,20 @@ useSwipeDrawer({
           class="lg:ml-4 xl:ml-24 mt-20 lg:mt-4 px-4 sm:px-8 app-page flex flex-col w-full max-w-[var(--page-max-width)]"
         >
           <div class="flex-1" v-bind="bodyMarker ? { [bodyMarker]: true } : {}">
-            <PageContent />
+            <PageContent>
+              <template v-if="$slots['post-header-before']" #post-header-before>
+                <slot name="post-header-before" />
+              </template>
+              <template v-if="$slots['post-header-after']" #post-header-after>
+                <slot name="post-header-after" />
+              </template>
+              <template v-if="$slots['post-content-before']" #post-content-before>
+                <slot name="post-content-before" />
+              </template>
+              <template v-if="$slots['post-content-after']" #post-content-after>
+                <slot name="post-content-after" />
+              </template>
+            </PageContent>
           </div>
 
           <div class="mt-30 pb-12">

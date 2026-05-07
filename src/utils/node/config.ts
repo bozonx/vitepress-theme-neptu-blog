@@ -11,7 +11,11 @@ import type {
   LocaleDefinition,
   Author,
   BlogUserConfig,
+  ThemeConfig,
+  I18n,
 } from '../../types.d.ts'
+
+type EditLinkConfig = NonNullable<ThemeConfig['editLink']>
 
 function resolveInitialUiLocaleKey(
   localeIndex: string,
@@ -132,12 +136,12 @@ export async function loadBlogLocale(
         ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)
           .editLink as Record<string, unknown> | undefined),
         ...(editLink as Record<string, unknown> | undefined),
-      } as any,
+      } as EditLinkConfig,
       t: {
         ...baseLocale.t,
         ...(uiLocale.t || {}),
         ...(t as Record<string, unknown> | undefined),
-      } as any,
+      } as I18n,
       authors,
     },
   }

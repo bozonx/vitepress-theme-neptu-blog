@@ -24,20 +24,59 @@
     "LICENSE"
   ],
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./src/types.d.ts",
+      "import": "./src/index.ts"
+    },
     "./package.json": "./package.json",
-    "./components": "./src/components/index.ts",
-    "./configs": "./src/configs/index.ts",
-    "./helpers": "./src/helpers.ts",
-    "./utils": "./src/utils/shared/index.ts",
-    "./utils/node": "./src/utils/node/index.ts",
-    "./utils/client": "./src/utils/client/index.ts",
-    "./layouts": "./src/layouts/index.ts",
-    "./list-helpers": "./src/list-helpers/index.ts",
-    "./list-helpers/node": "./src/list-helpers/node.ts",
-    "./constants": "./src/constants.ts",
-    "./transformers": "./src/transformers/index.ts",
-    "./composables": "./src/composables/index.ts",
+    "./components": {
+      "types": "./src/components/index.ts",
+      "import": "./src/components/index.ts"
+    },
+    "./configs": {
+      "types": "./src/configs/index.ts",
+      "import": "./src/configs/index.ts"
+    },
+    "./helpers": {
+      "types": "./src/helpers.ts",
+      "import": "./src/helpers.ts"
+    },
+    "./utils": {
+      "types": "./src/utils/shared/index.ts",
+      "import": "./src/utils/shared/index.ts"
+    },
+    "./utils/node": {
+      "types": "./src/utils/node/index.ts",
+      "import": "./src/utils/node/index.ts"
+    },
+    "./utils/client": {
+      "types": "./src/utils/client/index.ts",
+      "import": "./src/utils/client/index.ts"
+    },
+    "./layouts": {
+      "types": "./src/layouts/index.ts",
+      "import": "./src/layouts/index.ts"
+    },
+    "./list-helpers": {
+      "types": "./src/list-helpers/index.ts",
+      "import": "./src/list-helpers/index.ts"
+    },
+    "./list-helpers/node": {
+      "types": "./src/list-helpers/node.ts",
+      "import": "./src/list-helpers/node.ts"
+    },
+    "./constants": {
+      "types": "./src/constants.ts",
+      "import": "./src/constants.ts"
+    },
+    "./transformers": {
+      "types": "./src/transformers/index.ts",
+      "import": "./src/transformers/index.ts"
+    },
+    "./composables": {
+      "types": "./src/composables/index.ts",
+      "import": "./src/composables/index.ts"
+    },
     "./tailwind-source.css": "./src/styles/tailwind-source.css",
     "./blue-theme.css": "./src/styles/themes/blue.css",
     "./green-theme.css": "./src/styles/themes/green.css",
@@ -49,8 +88,14 @@
     "./monochrome-theme.css": "./src/styles/themes/monochrome.css",
     "./pagefind-fix.css": "./src/styles/vendor/pagefind-fix.css",
     "./search-modal.css": "./src/styles/search-modal.css",
-    "./configs/sharedLocalesBase/en": "./src/configs/sharedLocalesBase/en.ts",
-    "./configs/sharedLocalesBase/ru": "./src/configs/sharedLocalesBase/ru.ts"
+    "./configs/sharedLocalesBase/en": {
+      "types": "./src/configs/sharedLocalesBase/en.ts",
+      "import": "./src/configs/sharedLocalesBase/en.ts"
+    },
+    "./configs/sharedLocalesBase/ru": {
+      "types": "./src/configs/sharedLocalesBase/ru.ts",
+      "import": "./src/configs/sharedLocalesBase/ru.ts"
+    }
   },
   "peerDependencies": {
     "tailwindcss": "^4.0.0",

@@ -16,7 +16,7 @@
 
 import { computed } from 'vue'
 
-const props = defineProps<{ id: string }>()
+const props = defineProps<{ id?: string; videoId?: string }>()
 
 /** Validates a YouTube video ID (11 chars, alphanumeric, hyphens, underscores). */
 function isValidYouTubeId(id: string): boolean {
@@ -24,10 +24,11 @@ function isValidYouTubeId(id: string): boolean {
 }
 
 const url = computed(() => {
-  if (!isValidYouTubeId(props.id)) {
-    console.warn(`Invalid YouTube ID: ${props.id}`)
+  const id = props.id || props.videoId || ''
+  if (!isValidYouTubeId(id)) {
+    console.warn(`Invalid YouTube ID: ${id}`)
     return ''
   }
-  return `https://www.youtube.com/embed/${props.id}`
+  return `https://www.youtube.com/embed/${id}`
 })
 </script>

@@ -66,6 +66,18 @@ provide(LightboxLocalesKey, lightboxLocales)
   <component :is="customLayout" v-else-if="layoutKind === 'custom'" />
 
   <DefaultLayout v-else>
+    <template v-if="$slots['post-header-before']" #post-header-before>
+      <slot name="post-header-before" />
+    </template>
+    <template v-if="$slots['post-header-after']" #post-header-after>
+      <slot name="post-header-after" />
+    </template>
+    <template v-if="$slots['post-content-before']" #post-content-before>
+      <slot name="post-content-before" />
+    </template>
+    <template v-if="$slots['post-content-after']" #post-content-after>
+      <slot name="post-content-after" />
+    </template>
     <template v-if="$slots['sidebar-top']" #sidebar-top>
       <slot name="sidebar-top" />
     </template>

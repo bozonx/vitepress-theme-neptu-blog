@@ -24,6 +24,14 @@ vi.mock('vitepress', () => ({
   useRoute: () => mockRoute.value,
 }))
 
+vi.mock('@iconify/vue', () => ({
+  Icon: {
+    name: 'Icon',
+    props: ['icon'],
+    template: '<i class="iconify-stub" :data-icon="icon" />',
+  },
+}))
+
 afterEach(() => {
   cleanup()
 })

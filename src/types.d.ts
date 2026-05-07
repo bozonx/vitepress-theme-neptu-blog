@@ -299,6 +299,8 @@ export namespace NeptuBlogTheme {
       | 'archive'
       | 'author'
       | string
+    /** Custom component name that replaces only the central content area. */
+    contentLayout?: string
     title?: string
     description?: string
     date?: string | Date

@@ -140,6 +140,29 @@ describe('PageContent', () => {
     expect(wrapper.find('article').exists()).toBe(false)
   })
 
+  it('renders custom content component from contentLayout while keeping builtin page layout kind', () => {
+    const CustomContentStub = {
+      name: 'CustomContent',
+      template: '<div class="custom-content-stub">Custom</div>',
+    }
+    mockFrontmatter.value = { layout: 'post', contentLayout: 'CustomContent' }
+    const wrapper = mount(PageContent, {
+      global: {
+        components: { CustomContent: CustomContentStub },
+        stubs: {
+          PostFooter: PostFooterStub,
+          PostDate: PostDateStub,
+          PostTopBar: PostTopBarStub,
+          PostImage: PostImageStub,
+          Content: true,
+        },
+      },
+    })
+
+    expect(wrapper.find('.custom-content-stub').exists()).toBe(true)
+    expect(wrapper.find('article').exists()).toBe(false)
+  })
+
   it('falls back to article layout for unknown layout without a registered component', () => {
     mockFrontmatter.value = { layout: 'unknown-layout' }
     const wrapper = mount(PageContent, {

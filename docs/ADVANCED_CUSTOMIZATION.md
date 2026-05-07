@@ -83,11 +83,13 @@ Then reference it in frontmatter:
 
 ```yaml
 ---
-layout: CustomPost
+layout: post
+contentLayout: CustomPost
 ---
 ```
 
 > Register `CustomPost` as a global component in `.vitepress/theme/index.ts` (see README "Custom layouts").
+> Use `layout: CustomPost` only when the component should replace the whole page chrome.
 
 ### Available post components
 
