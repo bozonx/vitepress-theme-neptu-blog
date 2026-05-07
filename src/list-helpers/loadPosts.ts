@@ -23,8 +23,6 @@ function getDefaultCache(): Record<string, Post[]> {
 export interface LoadPostsOptions {
   popularPostsEnabled?: boolean
   dataSource?: AnalyticsDataSource | null
-  /** @deprecated Use `dataSource` instead. */
-  googleAnalytics?: AnalyticsDataSource | null
   ignoreCache?: boolean
   /** Cache store for dependency injection. Falls back to the global singleton. */
   cache?: Record<string, Post[]>
@@ -38,13 +36,10 @@ export async function loadPostsData(
 ): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
-    dataSource: dataSourceOpt = null,
-    googleAnalytics = null,
+    dataSource = null,
     ignoreCache = false,
     cache: cacheOpt,
   } = options
-
-  const dataSource = dataSourceOpt ?? googleAnalytics
   const localeIndex = path.basename(localeDir)
 
   if (!localeIndex) return []
@@ -86,12 +81,10 @@ export async function loadPostsDataFromFiles(
 ): Promise<Post[]> {
   const {
     popularPostsEnabled = false,
-    dataSource: dataSourceOpt = null,
-    googleAnalytics = null,
+    dataSource = null,
     ignoreCache = false,
     cache: cacheOpt,
   } = options
-  const dataSource = dataSourceOpt ?? googleAnalytics
   const fullPaths = files
     .filter((file) => file.endsWith('.md'))
     .map((file) => path.resolve(file))

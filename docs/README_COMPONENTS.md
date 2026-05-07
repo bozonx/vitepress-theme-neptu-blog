@@ -88,10 +88,10 @@ Supported formats: MP3, WAV, OGG, FLAC, AAC, M4A, WMA.
 
 Auto-detected icons for: PDF, DOC/DOCX, XLS/XLSX, PPT/PPTX, TXT, ZIP/RAR/7Z, images, video, audio, JSON, JS, TS, HTML, CSS, XML.
 
-### YouTubeEmbed
+### YoutubeVideo
 
 See the dedicated package: [vitepress-youtube-embed](https://github.com/miletorix/vitepress-youtube-embed)
 
 ```vue
-<YouTubeEmbed video-id="dQw4w9WgXcQ" />
+<YoutubeVideo id="dQw4w9WgXcQ" />
 ```

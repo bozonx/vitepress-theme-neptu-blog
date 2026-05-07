@@ -271,15 +271,16 @@ themeConfig: {
 
 ```ts
 themeConfig: {
-  googleAnalytics: {
-    propertyId: process.env.GA_PROPERTY_ID,
-    credentialsJson: process.env.GA_CREDENTIALS_JSON,
-    dataPeriodDays: 30,
-    dataLimit: 1000,
-  },
   popularPosts: {
     enabled: true,
     sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
+    dataSource: {
+      provider: 'ga4',
+      propertyId: process.env.GA_PROPERTY_ID,
+      credentialsJson: process.env.GA_CREDENTIALS_JSON,
+      dataPeriodDays: 30,
+      dataLimit: 1000,
+    },
   },
 }
 ```
@@ -580,7 +581,7 @@ Registered globally in the theme:
 
 - `<AudioFile url="/audio/file.mp3" />`
 - `<FileDownload url="/files/doc.pdf" />`
-- `<YouTubeEmbed video-id="dQw4w9WgXcQ" />`
+- `<YoutubeVideo id="dQw4w9WgXcQ" />`
 
 See [docs/README_COMPONENTS.md](docs/README_COMPONENTS.md) for full component documentation.
 

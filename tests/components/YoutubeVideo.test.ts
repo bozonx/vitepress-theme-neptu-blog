@@ -7,14 +7,9 @@ describe('YoutubeVideo', () => {
     const wrapper = mount(YoutubeVideo, { props: { id: 'dQw4w9WgXcQ' } })
     const iframe = wrapper.find('iframe')
     expect(iframe.exists()).toBe(true)
-    expect(iframe.attributes('src')).toBe('https://www.youtube.com/embed/dQw4w9WgXcQ')
-  })
-
-  it('accepts videoId prop for YouTubeEmbed markdown alias', () => {
-    const wrapper = mount(YoutubeVideo, { props: { videoId: 'dQw4w9WgXcQ' } })
-    const iframe = wrapper.find('iframe')
-    expect(iframe.exists()).toBe(true)
-    expect(iframe.attributes('src')).toBe('https://www.youtube.com/embed/dQw4w9WgXcQ')
+    expect(iframe.attributes('src')).toBe(
+      'https://www.youtube.com/embed/dQw4w9WgXcQ'
+    )
   })
 
   it('does not render iframe for invalid ID', () => {

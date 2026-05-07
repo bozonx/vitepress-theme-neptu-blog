@@ -25,9 +25,6 @@ export interface AnalyticsDataSource {
   dataLimit?: number
 }
 
-/** @deprecated Use `AnalyticsDataSource` instead. */
-export type GoogleAnalyticsConfig = AnalyticsDataSource
-
 export interface AnalyticsStats extends Record<string, number> {
   pageviews: number
   uniquePageviews: number

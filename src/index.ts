@@ -27,6 +27,5 @@ export default {
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)
     ctx.app.component('YoutubeVideo', YoutubeVideo)
-    ctx.app.component('YouTubeEmbed', YoutubeVideo)
   },
 }

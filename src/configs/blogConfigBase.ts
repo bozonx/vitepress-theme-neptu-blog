@@ -140,15 +140,6 @@ function runTransformPageDataHooks(
   )
 }
 
-function warnDeprecated(config: BlogUserConfig): void {
-  if (config.themeConfig?.googleAnalytics) {
-    console.warn(
-      '[vitepress-theme-neptu-blog] `themeConfig.googleAnalytics` is deprecated. ' +
-        'Use `themeConfig.popularPosts.dataSource` instead.'
-    )
-  }
-}
-
 function warnMissingRequired(config: BlogUserConfig): void {
   if (!config.siteUrl) {
     console.warn(
@@ -223,13 +214,6 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         dataSource: {
           ...commonThemeConfig.popularPosts.dataSource,
           ...config.themeConfig?.popularPosts?.dataSource,
-          // Fallback for deprecated themeConfig.googleAnalytics
-          ...(config.themeConfig?.googleAnalytics
-            ? {
-                provider: 'ga4' as const,
-                ...config.themeConfig.googleAnalytics,
-              }
-            : {}),
         },
       },
 
@@ -261,10 +245,6 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         extendedPageData,
         ctx as unknown as TransformContext
       )
-
-      if (config.transformPageData) {
-        await config.transformPageData(pageData, ctx)
-      }
     },
 
     async transformHead(ctx) {
@@ -306,7 +286,6 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
 }
 
 export function defineBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
-  warnDeprecated(config)
   warnMissingRequired(config)
 
   return mergeBlogConfig(config)

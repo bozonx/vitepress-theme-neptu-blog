@@ -37,7 +37,6 @@ Hook order:
 1. `hooks.transformPageData.before[]`
 2. Built-in: `collectImageDimensions` → `transformTitle` → `transformPageMeta` → `resolveDescription`
 3. `hooks.transformPageData.after[]`
-4. User-provided `config.transformPageData` (legacy callback)
 
 ## Post Components
 
@@ -208,6 +207,6 @@ function myHelper(frontmatter) {
 
 - Missing `siteUrl` — SEO features may produce broken URLs.
 - Empty `locales` — the theme requires at least one locale.
-- Deprecated `themeConfig.googleAnalytics` — directs you to `popularPosts.dataSource`.
+
 
 These warnings appear only during the build / dev server startup.

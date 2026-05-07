@@ -128,15 +128,6 @@ describe('mergeBlogConfig', () => {
     expect(result.themeConfig.popularPosts.dataSource?.dataPeriodDays).toBe(30)
   })
 
-  it('falls back deprecated themeConfig.googleAnalytics into popularPosts.dataSource', () => {
-    const result = mergeBlogConfig({
-      themeConfig: { googleAnalytics: { propertyId: '456', dataLimit: 500 } },
-    })
-    expect(result.themeConfig.popularPosts.dataSource?.propertyId).toBe('456')
-    expect(result.themeConfig.popularPosts.dataSource?.dataLimit).toBe(500)
-    expect(result.themeConfig.popularPosts.dataSource?.provider).toBe('ga4')
-  })
-
   it('deep merges themeConfig.popularPosts', () => {
     const result = mergeBlogConfig({
       themeConfig: { popularPosts: { enabled: true } },
@@ -179,15 +170,6 @@ describe('mergeBlogConfig', () => {
   it('resolves title from en locale fallback', () => {
     const result = mergeBlogConfig({ en: { title: 'EN Title' } })
     expect(result.title).toBe('EN Title')
-  })
-
-  it('calls custom transformPageData if provided', async () => {
-    const customFn = vi.fn()
-    const result = mergeBlogConfig({ transformPageData: customFn })
-    const pageData = { frontmatter: {} }
-    const ctx = { siteConfig: {} }
-    await (result.transformPageData as any)(pageData, ctx)
-    expect(customFn).toHaveBeenCalledWith(pageData, ctx)
   })
 
   it('calls custom transformHead if provided', async () => {
@@ -288,19 +270,6 @@ describe('defineBlogConfig', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     defineBlogConfig({ siteUrl: 'https://example.com' })
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('locales'))
-    warnSpy.mockRestore()
-  })
-
-  it('warns about deprecated googleAnalytics', () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    defineBlogConfig({
-      siteUrl: 'https://example.com',
-      locales: { en: { lang: 'en-US' } },
-      themeConfig: { googleAnalytics: { propertyId: '123' } },
-    })
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('googleAnalytics')
-    )
     warnSpy.mockRestore()
   })
 

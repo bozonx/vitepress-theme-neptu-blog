@@ -87,8 +87,6 @@ export namespace NeptuBlogTheme {
       maxPreviewLength?: number
     }
 
-    /** @deprecated Use `popularPosts.dataSource` instead. */
-    googleAnalytics?: GoogleAnalyticsConfig
     popularPosts?: PopularPostsConfig
 
     tagsBaseUrl?: string
@@ -185,14 +183,6 @@ export namespace NeptuBlogTheme {
     audioFile: Record<string, string>
     fileDownload: Record<string, string>
     lightbox: Record<string, string>
-  }
-
-  /** @deprecated Use `AnalyticsDataSource` instead. */
-  export interface GoogleAnalyticsConfig {
-    propertyId?: string | null
-    credentialsJson?: string | null
-    dataPeriodDays?: number
-    dataLimit?: number
   }
 
   export interface AnalyticsDataSource {
