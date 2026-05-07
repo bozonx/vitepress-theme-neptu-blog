@@ -59,6 +59,8 @@ const customContent = computed(() => {
     </div>
   </div>
   <article v-else class="content-page min-h-[calc(100vh-400px)]">
+    <slot name="post-header-before" />
+
     <header>
       <h1
         v-if="page.title"
@@ -72,6 +74,8 @@ const customContent = computed(() => {
       <PostTopBar class="mt-10" />
     </header>
 
+    <slot name="post-header-after" />
+
     <div v-if="articlePreviewText && !frontmatter.cover" class="mt-10 italic">
       {{ articlePreviewText }}
     </div>
@@ -84,9 +88,13 @@ const customContent = computed(() => {
       :width="frontmatter.coverWidth"
     />
 
+    <slot name="post-content-before" />
+
     <div class="mt-10 vp-doc">
       <Content />
     </div>
+
+    <slot name="post-content-after" />
 
     <PostFooter />
   </article>

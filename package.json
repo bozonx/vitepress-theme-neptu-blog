@@ -37,6 +37,7 @@
     "./list-helpers/node": "./src/list-helpers/node.ts",
     "./constants": "./src/constants.ts",
     "./transformers": "./src/transformers/index.ts",
+    "./composables": "./src/composables/index.ts",
     "./tailwind-source.css": "./src/styles/tailwind-source.css",
     "./blue-theme.css": "./src/styles/themes/blue.css",
     "./green-theme.css": "./src/styles/themes/green.css",

@@ -26,6 +26,7 @@ import type {
   BlogUserConfig,
   ThemeConfig,
   SeoConfig,
+  BlogHooks,
 } from '../types.d.ts'
 
 type ResolvedBlogConfig = BlogUserConfig & {
@@ -124,6 +125,46 @@ export const common: BlogUserConfig = {
   themeConfig: commonThemeConfig,
 }
 
+function runTransformPageDataHooks(
+  hooks: BlogHooks['transformPageData'] | undefined,
+  phase: 'before' | 'after',
+  pageData: ExtendedPageData,
+  ctx: TransformContext
+): Promise<void> {
+  const fns = hooks?.[phase]
+  if (!fns) return Promise.resolve()
+
+  return fns.reduce<Promise<void>>(
+    (promise, fn) => promise.then(() => fn(pageData, ctx)),
+    Promise.resolve()
+  )
+}
+
+function warnDeprecated(config: BlogUserConfig): void {
+  if (config.themeConfig?.googleAnalytics) {
+    console.warn(
+      '[vitepress-theme-neptu-blog] `themeConfig.googleAnalytics` is deprecated. ' +
+        'Use `themeConfig.popularPosts.dataSource` instead.'
+    )
+  }
+}
+
+function warnMissingRequired(config: BlogUserConfig): void {
+  if (!config.siteUrl) {
+    console.warn(
+      '[vitepress-theme-neptu-blog] `siteUrl` is not set. ' +
+        'SEO features (sitemap, RSS, canonical links) may produce broken URLs.'
+    )
+  }
+
+  if (!config.locales || Object.keys(config.locales).length === 0) {
+    console.warn(
+      '[vitepress-theme-neptu-blog] `locales` is empty. ' +
+        'The theme requires at least one locale (e.g. `{ en: { lang: "en-US" } }`).'
+    )
+  }
+}
+
 export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
@@ -202,10 +243,24 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       const extendedPageData = pageData as ExtendedPageData
       const extendedSiteConfig = ctx.siteConfig as unknown as ExtendedSiteConfig
 
+      await runTransformPageDataHooks(
+        config.hooks?.transformPageData,
+        'before',
+        extendedPageData,
+        ctx as unknown as TransformContext
+      )
+
       collectImageDimensions(extendedPageData, extendedSiteConfig)
       transformTitle(extendedPageData, { siteConfig: extendedSiteConfig })
       transformPageMeta(extendedPageData)
       resolveDescription(extendedPageData, { siteConfig: extendedSiteConfig })
+
+      await runTransformPageDataHooks(
+        config.hooks?.transformPageData,
+        'after',
+        extendedPageData,
+        ctx as unknown as TransformContext
+      )
 
       if (config.transformPageData) {
         await config.transformPageData(pageData, ctx)
@@ -250,4 +305,9 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   } as ResolvedBlogConfig
 }
 
-export const defineBlogConfig = mergeBlogConfig
+export function defineBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
+  warnDeprecated(config)
+  warnMissingRequired(config)
+
+  return mergeBlogConfig(config)
+}

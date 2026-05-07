@@ -1,5 +1,11 @@
 /// <reference types="vite/client" />
-import { DefaultTheme, PageData, UserConfig, HeadConfig } from 'vitepress'
+import {
+  DefaultTheme,
+  PageData,
+  UserConfig,
+  HeadConfig,
+  TransformContext,
+} from 'vitepress'
 
 export namespace NeptuBlogTheme {
   export type DeepPartial<T> = {
@@ -22,6 +28,23 @@ export namespace NeptuBlogTheme {
     t?: DeepPartial<I18n>
   }
 
+  export interface BlogHooks {
+    transformPageData?: {
+      before?: Array<
+        (
+          pageData: ExtendedPageData,
+          ctx: TransformContext
+        ) => void | Promise<void>
+      >
+      after?: Array<
+        (
+          pageData: ExtendedPageData,
+          ctx: TransformContext
+        ) => void | Promise<void>
+      >
+    }
+  }
+
   export type BlogUserConfig = Omit<
     UserConfig<Config>,
     'locales' | 'themeConfig'
@@ -36,7 +59,6 @@ export namespace NeptuBlogTheme {
         title?: string
         description?: string
         themeConfig?: Partial<Config>
-        [key: string]: unknown
       }
     >
     repo?: string
@@ -44,8 +66,8 @@ export namespace NeptuBlogTheme {
     maxPostsInRssFeed?: number
     rssFormats?: string[]
     maxDescriptionLength?: number
-    en?: { title?: string; description?: string; [key: string]: unknown }
-    [key: string]: unknown
+    en?: { title?: string; description?: string }
+    hooks?: BlogHooks
   }
 
   export interface Config extends DefaultTheme.Config {
@@ -111,7 +133,7 @@ export namespace NeptuBlogTheme {
 
     footer?: { message?: string; copyright?: string; links?: NavLink[] }
 
-    [key: string]: unknown
+    rssFormats?: string[]
   }
 
   export interface I18n {
@@ -163,8 +185,6 @@ export namespace NeptuBlogTheme {
     audioFile: Record<string, string>
     fileDownload: Record<string, string>
     lightbox: Record<string, string>
-
-    [key: string]: unknown
   }
 
   /** @deprecated Use `AnalyticsDataSource` instead. */
@@ -189,6 +209,7 @@ export namespace NeptuBlogTheme {
     hreflang?: boolean
     canonical?: boolean
     rss?: boolean
+    [key: string]: boolean | undefined
   }
 
   export interface PopularPostsConfig {
@@ -371,3 +392,5 @@ export type LocaleDefinition = NeptuBlogTheme.LocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
 export type BlogUserConfig = NeptuBlogTheme.BlogUserConfig
+export type SeoConfig = NeptuBlogTheme.SeoConfig
+export type BlogHooks = NeptuBlogTheme.BlogHooks

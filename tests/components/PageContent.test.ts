@@ -156,4 +156,62 @@ describe('PageContent', () => {
     expect(wrapper.find('article').exists()).toBe(true)
     expect(wrapper.find('.post-footer-stub').exists()).toBe(true)
   })
+
+  it('renders post-header-before slot inside article', () => {
+    mockFrontmatter.value = { layout: 'post' }
+    const wrapper = mount(PageContent, {
+      slots: {
+        'post-header-before': '<div class="header-before">Before</div>',
+      },
+      global: {
+        stubs: {
+          PostFooter: PostFooterStub,
+          PostDate: PostDateStub,
+          PostTopBar: PostTopBarStub,
+          PostImage: PostImageStub,
+          Content: true,
+        },
+      },
+    })
+    expect(wrapper.find('.header-before').exists()).toBe(true)
+    expect(wrapper.find('article').find('.header-before').exists()).toBe(true)
+  })
+
+  it('renders post-header-after slot inside article', () => {
+    mockFrontmatter.value = { layout: 'post' }
+    const wrapper = mount(PageContent, {
+      slots: { 'post-header-after': '<div class="header-after">After</div>' },
+      global: {
+        stubs: {
+          PostFooter: PostFooterStub,
+          PostDate: PostDateStub,
+          PostTopBar: PostTopBarStub,
+          PostImage: PostImageStub,
+          Content: true,
+        },
+      },
+    })
+    expect(wrapper.find('.header-after').exists()).toBe(true)
+  })
+
+  it('renders post-content-before and post-content-after slots', () => {
+    mockFrontmatter.value = { layout: 'post' }
+    const wrapper = mount(PageContent, {
+      slots: {
+        'post-content-before': '<div class="content-before">Before</div>',
+        'post-content-after': '<div class="content-after">After</div>',
+      },
+      global: {
+        stubs: {
+          PostFooter: PostFooterStub,
+          PostDate: PostDateStub,
+          PostTopBar: PostTopBarStub,
+          PostImage: PostImageStub,
+          Content: true,
+        },
+      },
+    })
+    expect(wrapper.find('.content-before').exists()).toBe(true)
+    expect(wrapper.find('.content-after').exists()).toBe(true)
+  })
 })

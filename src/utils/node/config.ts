@@ -6,7 +6,12 @@ import { resolveBaseLocaleKey } from '../shared/i18n.ts'
 import { common as blogCommon } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
 import { resolveEditLinkPattern } from './editLink.ts'
-import type { UiLocaleDefinition, LocaleDefinition, Author, BlogUserConfig } from '../../types.d.ts'
+import type {
+  UiLocaleDefinition,
+  LocaleDefinition,
+  Author,
+  BlogUserConfig,
+} from '../../types.d.ts'
 
 function resolveInitialUiLocaleKey(
   localeIndex: string,
@@ -20,7 +25,10 @@ function resolveInitialUiLocaleKey(
 
   if (defaultLocale && uiLocales[defaultLocale]) return defaultLocale
 
-  return resolveBaseLocaleKey(localeIndex, blogBaseLocales as Record<string, unknown>)
+  return resolveBaseLocaleKey(
+    localeIndex,
+    blogBaseLocales as Record<string, unknown>
+  )
 }
 
 function resolveUiLocaleDefinition(
@@ -37,12 +45,8 @@ function resolveUiLocaleDefinition(
   const parent = custom.extends
     ? resolveUiLocaleDefinition(custom.extends, builtIns, uiLocales, visited)
     : builtIn
-    ? {
-        label: builtIn.label,
-        themeConfig: builtIn.themeConfig,
-        t: builtIn.t,
-      }
-    : {}
+      ? { label: builtIn.label, themeConfig: builtIn.themeConfig, t: builtIn.t }
+      : {}
 
   return {
     label: custom.label || parent.label,
@@ -58,7 +62,10 @@ export async function loadBlogLocale(
   localeIndex: string,
   config: BlogUserConfig
 ): Promise<LocaleDefinition & { label?: string }> {
-  const localeMap = blogBaseLocales as unknown as Record<string, LocaleDefinition>
+  const localeMap = blogBaseLocales as unknown as Record<
+    string,
+    LocaleDefinition
+  >
   const baseLocaleKey = resolveBaseLocaleKey(localeIndex, localeMap)
   const baseLocale = localeMap[baseLocaleKey]
   const uiLocaleKey = resolveInitialUiLocaleKey(
@@ -80,10 +87,7 @@ export async function loadBlogLocale(
     {
       ...(baseLocale.themeConfig || {}),
       ...(uiLocale.themeConfig || {}),
-      t: {
-        ...baseLocale.t,
-        ...(uiLocale.t || {}),
-      },
+      t: { ...baseLocale.t, ...(uiLocale.t || {}) },
     }
   )
   const params = {
@@ -92,7 +96,10 @@ export async function loadBlogLocale(
     theme: resolvedTheme,
     t: (resolvedTheme as Record<string, unknown>).t as Record<string, unknown>,
   }
-  const site = parseLocaleSite(config.srcDir || '', params) as Record<string, unknown>
+  const site = parseLocaleSite(config.srcDir || '', params) as Record<
+    string,
+    unknown
+  >
   const { lang, title, description, t, editLink, ...themeConfig } = site
 
   const authors = (themeConfig.authors as Author[] | undefined)?.map((item) => {
@@ -122,10 +129,15 @@ export async function loadBlogLocale(
           ? { pattern: resolveEditLinkPattern(config.repo) }
           : {}),
         ...baseLocale.themeConfig?.editLink,
-        ...(((uiLocale.themeConfig || {}) as Record<string, unknown>).editLink as Record<string, unknown> | undefined),
+        ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)
+          .editLink as Record<string, unknown> | undefined),
         ...(editLink as Record<string, unknown> | undefined),
       } as any,
-      t: { ...baseLocale.t, ...(uiLocale.t || {}), ...(t as Record<string, unknown> | undefined) },
+      t: {
+        ...baseLocale.t,
+        ...(uiLocale.t || {}),
+        ...(t as Record<string, unknown> | undefined),
+      } as any,
       authors,
     },
   }

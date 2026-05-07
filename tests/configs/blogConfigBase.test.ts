@@ -273,7 +273,55 @@ describe('mergeBlogConfig', () => {
 })
 
 describe('defineBlogConfig', () => {
-  it('is an alias for mergeBlogConfig', () => {
-    expect(defineBlogConfig).toBe(mergeBlogConfig)
+  it('is a factory that calls mergeBlogConfig', () => {
+    const result = defineBlogConfig({
+      siteUrl: 'https://example.com',
+      locales: { en: { lang: 'en-US' } },
+    })
+    expect(result.themeConfig).toBeDefined()
+    expect(result.themeConfig.perPage).toBe(10)
+  })
+
+  it('warns when siteUrl is missing', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    defineBlogConfig({ locales: { en: { lang: 'en-US' } } })
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('siteUrl'))
+    warnSpy.mockRestore()
+  })
+
+  it('warns when locales are empty', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    defineBlogConfig({ siteUrl: 'https://example.com' })
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('locales'))
+    warnSpy.mockRestore()
+  })
+
+  it('warns about deprecated googleAnalytics', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    defineBlogConfig({
+      siteUrl: 'https://example.com',
+      locales: { en: { lang: 'en-US' } },
+      themeConfig: { googleAnalytics: { propertyId: '123' } },
+    })
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('googleAnalytics')
+    )
+    warnSpy.mockRestore()
+  })
+
+  it('calls hooks.transformPageData.before before built-in transformers', async () => {
+    const beforeFn = vi.fn()
+    const afterFn = vi.fn()
+    const result = mergeBlogConfig({
+      hooks: { transformPageData: { before: [beforeFn], after: [afterFn] } },
+    })
+    const pageData = { frontmatter: {}, filePath: 'en/post/test.md' }
+    const ctx = { siteConfig: {} }
+    await (result.transformPageData as any)(pageData, ctx)
+    expect(beforeFn).toHaveBeenCalledWith(pageData, ctx)
+    expect(afterFn).toHaveBeenCalledWith(pageData, ctx)
+    expect(beforeFn.mock.invocationCallOrder[0]).toBeLessThan(
+      afterFn.mock.invocationCallOrder[0]
+    )
   })
 })

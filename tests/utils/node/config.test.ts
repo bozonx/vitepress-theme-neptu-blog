@@ -32,7 +32,7 @@ describe('loadBlogLocale', () => {
 
     expect(result.lang).toBe('en-US')
     expect(result.label).toBe('English')
-    expect(result.themeConfig!.t!.customKey).toBe('Custom value')
+    expect((result.themeConfig!.t as any).customKey).toBe('Custom value')
     expect(result.themeConfig!.t!.toBlog).toBeDefined()
   })
 
@@ -55,11 +55,10 @@ describe('loadBlogLocale', () => {
     expect(result.themeConfig!.t!.viewInAnotherLanguage).toBe(
       'Read in another language'
     )
-    expect(result.themeConfig!.resolvedUiLabel).toBe('UI language')
-    expect(result.themeConfig!.resolvedViewInAnotherLanguage).toBe(
+    expect((result.themeConfig as any).resolvedUiLabel).toBe('UI language')
+    expect((result.themeConfig as any).resolvedViewInAnotherLanguage).toBe(
       'Read in another language'
     )
-
   })
 
   it('passes build-resolved interface translations into site parsing', async () => {

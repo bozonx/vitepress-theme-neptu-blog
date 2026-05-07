@@ -54,7 +54,7 @@ export default async () => {
       mainHeroImg:
         'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
 
-      search: { bodyMarker: 'data-pagefind-body' } as Record<string, unknown>,
+      search: { bodyMarker: 'data-pagefind-body' } as { bodyMarker: string },
 
       popularPosts,
 
@@ -85,7 +85,7 @@ export default async () => {
       ['link', { rel: 'stylesheet', href: '/pagefind/pagefind-ui.css' }],
       ['script', { src: '/pagefind/pagefind-ui.js' }],
     ],
-  } as Record<string, unknown>)
+  })
 
   return defineBlogConfig({
     ...config,

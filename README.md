@@ -14,6 +14,7 @@ VitePress blog theme with i18n, RSS/Atom/JSON feeds, JSON-LD structured data, hr
 - [Styling](#styling)
 - [Multilingual Setup](#multilingual-setup)
 - [SEO Features](#seo-features)
+- [Advanced Customization](#advanced-customization)
 - [Development](#development)
 - [Publishing](#publishing)
 
@@ -455,6 +456,79 @@ Import from `vitepress-theme-neptu-blog/components`:
 - `PageFindSearch`, `NavSearchButton`
 - `UtilPageContent`, `UtilPageHeader`, `UtilSubPageHeader`
 
+### Post building blocks
+
+Import from `vitepress-theme-neptu-blog/components` to assemble your own post layout:
+
+- `PostAuthor`, `PostDate`, `PostImage`
+- `PostTags`, `PostSocialShare`, `PostSimilarList`
+- `PostTopBar`, `PostFooter`, `PostComments`
+- `PostDonateLink`, `PostVideoLink`
+- `PodcastDropdown`, `PodcastIcon`
+
+```vue
+<script setup>
+import {
+  PostAuthor,
+  PostDate,
+  PostTags,
+  PostSocialShare,
+  PostFooter,
+} from 'vitepress-theme-neptu-blog/components'
+</script>
+
+<template>
+  <PostDate />
+  <PostAuthor />
+  <PostTags />
+  <slot />
+  <PostSocialShare />
+  <PostFooter />
+</template>
+```
+
+### Composables
+
+Import from `vitepress-theme-neptu-blog/composables` in your custom Vue components:
+
+- `useUiTheme()` — typed access to `themeConfig`
+- `useLightbox()` — programmatic lightbox control
+- `useBreakpoint()` — reactive breakpoint checks
+- `useScrollY()` — reactive scroll position
+- `useContentLangs()` — content/UI locale resolution
+- `useToTheTop()` — scroll-to-top logic
+- `useSwipeDrawer()` — mobile drawer swipe gestures
+
+### Post layout slots
+
+When using the built-in `post` layout, you can inject content via named slots without forking the theme:
+
+```vue
+<!-- .vitepress/theme/Layout.vue -->
+<script setup>
+import Theme from 'vitepress-theme-neptu-blog'
+const { Layout } = Theme
+</script>
+
+<template>
+  <Layout>
+    <template #post-header-before>
+      <MyBreadcrumb />
+    </template>
+    <template #post-content-after>
+      <MyNewsletterForm />
+    </template>
+  </Layout>
+</template>
+```
+
+Available slots inside `PageContent.vue` (post layout):
+
+- `post-header-before` — before the `<header>` element
+- `post-header-after` — after the `<header>` element
+- `post-content-before` — before the markdown content
+- `post-content-after` — after the markdown content
+
 ### Home page customization
 
 The `layout: home` frontmatter activates the full-bleed home layout with parallax background. You can customize it via frontmatter options in your `index.md`:
@@ -565,6 +639,15 @@ See [docs/LOCALES.md](docs/LOCALES.md) for the full locale model, UI resolution,
 | Open Graph | Auto-generated OG meta tags | Built-in |
 | RSS/Atom/JSON | Per-locale feeds | [docs/rss-feed-guide.md](docs/rss-feed-guide.md) |
 | Sitemap | Automatic filtering of non-content pages | Built-in |
+
+## Advanced Customization
+
+See [docs/ADVANCED_CUSTOMIZATION.md](docs/ADVANCED_CUSTOMIZATION.md) for:
+
+- Using `hooks.transformPageData` to inject logic between built-in transformers
+- Building custom post layouts from exported post components
+- Reusing theme composables (`useLightbox`, `useBreakpoint`, etc.)
+- Layout helpers (`isPage`, `isUtilPage`, `resolveArticlePreview`)
 
 ## Development
 
