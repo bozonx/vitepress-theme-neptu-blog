@@ -25,6 +25,7 @@ import type {
   ExtendedSiteConfig,
   BlogUserConfig,
   ThemeConfig,
+  SeoConfig,
 } from '../types.d.ts'
 
 type ResolvedBlogConfig = BlogUserConfig & {
@@ -219,11 +220,19 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         page: string
       }
 
-      addOgMetaTags(extendedCtx)
-      addJsonLd(extendedCtx)
-      addHreflang(extendedCtx)
-      addCanonicalLink(extendedCtx)
-      addRssLinks(extendedCtx)
+      const pageSeo = extendedCtx.pageData.frontmatter?.seo
+      const globalSeo = extendedCtx.siteConfig.userConfig?.themeConfig?.seo
+      const isSeoEnabled = (key: keyof SeoConfig): boolean => {
+        if (pageSeo?.[key] !== undefined) return pageSeo[key] !== false
+        if (globalSeo?.[key] !== undefined) return globalSeo[key] !== false
+        return true
+      }
+
+      if (isSeoEnabled('og')) addOgMetaTags(extendedCtx)
+      if (isSeoEnabled('jsonLd')) addJsonLd(extendedCtx)
+      if (isSeoEnabled('hreflang')) addHreflang(extendedCtx)
+      if (isSeoEnabled('canonical')) addCanonicalLink(extendedCtx)
+      if (isSeoEnabled('rss')) addRssLinks(extendedCtx)
 
       if (config.transformHead) {
         await config.transformHead(ctx as unknown as TransformContext)

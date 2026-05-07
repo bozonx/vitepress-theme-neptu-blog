@@ -96,6 +96,7 @@ export namespace NeptuBlogTheme {
     sidebarMenuLabel?: string
 
     autoCanonical?: boolean
+    seo?: SeoConfig
     socialMediaShares?: SocialMediaShare[]
     uiLocale?: UiLocaleConfig
     uiLocales?: Record<string, UiLocaleDefinition>
@@ -180,6 +181,14 @@ export namespace NeptuBlogTheme {
     credentialsJson?: string | null
     dataPeriodDays?: number
     dataLimit?: number
+  }
+
+  export interface SeoConfig {
+    og?: boolean
+    jsonLd?: boolean
+    hreflang?: boolean
+    canonical?: boolean
+    rss?: boolean
   }
 
   export interface PopularPostsConfig {
@@ -285,6 +294,7 @@ export namespace NeptuBlogTheme {
     searchIncluded?: boolean
     podcasts?: Record<string, string>
     canonical?: string
+    seo?: SeoConfig
     translations?: Record<string, string>
 
     // Home page customization

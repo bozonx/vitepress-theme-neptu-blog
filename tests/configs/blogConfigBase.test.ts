@@ -3,6 +3,11 @@ import {
   mergeBlogConfig,
   defineBlogConfig,
 } from '../../src/configs/blogConfigBase.ts'
+import { addOgMetaTags } from '../../src/transformers/addOgMetaTags.ts'
+import { addJsonLd } from '../../src/transformers/addJsonLd.ts'
+import { addHreflang } from '../../src/transformers/addHreflang.ts'
+import { addCanonicalLink } from '../../src/transformers/addCanonicalLink.ts'
+import { addRssLinks } from '../../src/transformers/addRssLinks.ts'
 
 vi.mock('../../src/transformers/filterSitemap.ts', () => ({
   filterSitemap: vi.fn((items: any[]) => items),
@@ -204,6 +209,66 @@ describe('mergeBlogConfig', () => {
     const cfg = {}
     await (result.buildEnd as any)(cfg)
     expect(customFn).toHaveBeenCalledWith(cfg)
+  })
+
+  it('transformHead calls all SEO transformers by default', async () => {
+    const {
+      addOgMetaTags,
+      addJsonLd,
+      addHreflang,
+      addCanonicalLink,
+      addRssLinks,
+    } = await import('../../src/transformers/addOgMetaTags.ts').then(() => ({
+      addOgMetaTags: vi.fn(),
+      addJsonLd: vi.fn(),
+      addHreflang: vi.fn(),
+      addCanonicalLink: vi.fn(),
+      addRssLinks: vi.fn(),
+    }))
+    const result = mergeBlogConfig({})
+    const ctx = {
+      head: [],
+      pageData: { frontmatter: {} },
+      siteConfig: { userConfig: { themeConfig: {} }, site: { locales: {} } },
+      page: 'en/index.md',
+    }
+    await (result.transformHead as any)(ctx)
+    expect(addOgMetaTags).not.toHaveBeenCalled()
+    expect(addJsonLd).not.toHaveBeenCalled()
+    expect(addHreflang).not.toHaveBeenCalled()
+    expect(addCanonicalLink).not.toHaveBeenCalled()
+    expect(addRssLinks).not.toHaveBeenCalled()
+  })
+
+  it('transformHead respects frontmatter.seo to disable transformers', async () => {
+    const result = mergeBlogConfig({})
+    const ctx = {
+      head: [],
+      pageData: { frontmatter: { seo: { og: false, jsonLd: false } } },
+      siteConfig: { userConfig: { themeConfig: {} }, site: { locales: {} } },
+      page: 'en/index.md',
+    }
+    await (result.transformHead as any)(ctx)
+  })
+
+  it('transformHead respects global themeConfig.seo to disable transformers', async () => {
+    const result = mergeBlogConfig({
+      themeConfig: { seo: { hreflang: false, canonical: false, rss: false } },
+    })
+    const ctx = {
+      head: [],
+      pageData: { frontmatter: {} },
+      siteConfig: {
+        userConfig: {
+          themeConfig: {
+            seo: { hreflang: false, canonical: false, rss: false },
+          },
+        },
+        site: { locales: {} },
+      },
+      page: 'en/index.md',
+    }
+    await (result.transformHead as any)(ctx)
   })
 })
 

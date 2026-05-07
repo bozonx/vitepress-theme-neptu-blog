@@ -40,7 +40,14 @@ function toIsoDate(value: unknown): string | undefined {
   return date.toISOString()
 }
 
-type JsonLdValue = string | number | boolean | null | undefined | JsonLdObject | JsonLdArray
+type JsonLdValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | JsonLdObject
+  | JsonLdArray
 interface JsonLdObject {
   [key: string]: JsonLdValue
 }
@@ -52,7 +59,9 @@ function parseYamlToJsonLd(strYaml: string): unknown {
 
 function warnInvalidJsonLd(pagePath: string, error: unknown): void {
   const message = error instanceof Error ? error.message : String(error)
-  console.warn(`[addJsonLd] Failed to parse frontmatter.jsonLd for "${pagePath}": ${message}`)
+  console.warn(
+    `[addJsonLd] Failed to parse frontmatter.jsonLd for "${pagePath}": ${message}`
+  )
 }
 
 function parseCustomJsonLd(
@@ -66,7 +75,8 @@ function parseCustomJsonLd(
 
     if (Array.isArray(parsed)) {
       return parsed.filter(
-        (item): item is JsonLdObject => !!item && typeof item === 'object' && !Array.isArray(item)
+        (item): item is JsonLdObject =>
+          !!item && typeof item === 'object' && !Array.isArray(item)
       )
     }
 
@@ -80,10 +90,16 @@ function parseCustomJsonLd(
 
 function hasJsonLdEntries(jsonLdData: unknown): boolean {
   if (Array.isArray(jsonLdData)) return jsonLdData.length > 0
-  return !!jsonLdData && typeof jsonLdData === 'object' && Object.keys(jsonLdData).length > 0
+  return (
+    !!jsonLdData &&
+    typeof jsonLdData === 'object' &&
+    Object.keys(jsonLdData).length > 0
+  )
 }
 
-function withSchemaContext(jsonLdData: JsonLdObject | JsonLdArray): JsonLdObject {
+function withSchemaContext(
+  jsonLdData: JsonLdObject | JsonLdArray
+): JsonLdObject {
   if (Array.isArray(jsonLdData)) {
     return {
       '@context': 'https://schema.org',
@@ -91,10 +107,7 @@ function withSchemaContext(jsonLdData: JsonLdObject | JsonLdArray): JsonLdObject
     }
   }
 
-  return {
-    '@context': 'https://schema.org',
-    ...(jsonLdData as JsonLdObject),
-  }
+  return { '@context': 'https://schema.org', ...(jsonLdData as JsonLdObject) }
 }
 
 /** Creates JSON-LD structured data for a post. */
@@ -108,15 +121,16 @@ function createPostJsonLd(
   pageUrl: string,
   publisher: JsonLdObject | undefined
 ): JsonLdObject {
-  const title = normalizeText(pageData.frontmatter.title) || normalizeText(pageData.title)
+  const title =
+    normalizeText(pageData.frontmatter.title) || normalizeText(pageData.title)
   const description =
-    normalizeText(pageData.frontmatter.description) || normalizeText(pageData.description)
+    normalizeText(pageData.frontmatter.description) ||
+    normalizeText(pageData.description)
   const author = pageData.frontmatter.authorId
     ? (langConfig.themeConfig as ThemeConfig).authors?.find(
         (item: Author) => item.id === pageData.frontmatter.authorId
       )
     : undefined
-
 
   const authorName = author?.name || author?.id
   const authorsBaseUrl =
@@ -125,8 +139,11 @@ function createPostJsonLd(
   const authorUrl = author?.aboutUrl
     ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
     : authorsBaseUrl
-    ? makeAbsoluteUrl(siteUrl, `${localeIndex}/${authorsBaseUrl}/${pageData.frontmatter.authorId}/1`)
-    : undefined
+      ? makeAbsoluteUrl(
+          siteUrl,
+          `${localeIndex}/${authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+        )
+      : undefined
   const cover = pageData.frontmatter.cover
   const tags = pageData.frontmatter.tags
   const lang = langConfig.lang
@@ -156,7 +173,9 @@ function createPostJsonLd(
     dateModified: toIsoDate(pageData.lastUpdated) as JsonLdValue,
     keywords:
       tags && tags.length > 0
-        ? (tags as Array<string | Tag>).map((tag) => (typeof tag === 'string' ? tag : tag.name)).join(', ')
+        ? (tags as Array<string | Tag>)
+            .map((tag) => (typeof tag === 'string' ? tag : tag.name))
+            .join(', ')
         : undefined,
     image: (cover &&
       omitUndefined({
@@ -164,12 +183,18 @@ function createPostJsonLd(
         url: makeAbsoluteUrl(siteUrl, cover),
         height: pageData.frontmatter.coverHeight,
         width: pageData.frontmatter.coverWidth,
-        caption: pageData.frontmatter.coverDescr || pageData.frontmatter.coverAlt || undefined,
+        caption:
+          pageData.frontmatter.coverDescr ||
+          pageData.frontmatter.coverAlt ||
+          undefined,
       })) as JsonLdValue,
   }
 
   if (pageData.frontmatter.jsonLd) {
-    const customJsonLd = parseCustomJsonLd(pageData.frontmatter.jsonLd, pageData.relativePath)
+    const customJsonLd = parseCustomJsonLd(
+      pageData.frontmatter.jsonLd,
+      pageData.relativePath
+    )
     if (customJsonLd && !Array.isArray(customJsonLd)) {
       Object.assign(article, customJsonLd)
     }
@@ -187,7 +212,8 @@ function createAuthorJsonLd(
 ): JsonLdObject | undefined {
   const authors = (langConfig.themeConfig as ThemeConfig)?.authors
   const author = authors?.find(
-    (item: Author) => item.id === (pageData.params as Record<string, string> | undefined)?.id
+    (item: Author) =>
+      item.id === (pageData.params as Record<string, string> | undefined)?.id
   )
 
   if (!author) return
@@ -210,8 +236,8 @@ function createAuthorJsonLd(
   const authorUrl = aboutUrl
     ? makeAbsoluteUrl(siteUrl, aboutUrl)
     : authorsBaseUrl
-    ? makeAbsoluteUrl(siteUrl, `${localeIndex}/${authorsBaseUrl}/${id}/1`)
-    : undefined
+      ? makeAbsoluteUrl(siteUrl, `${localeIndex}/${authorsBaseUrl}/${id}/1`)
+      : undefined
   let imgUrl = image
 
   imgUrl = makeAbsoluteUrl(siteUrl, imgUrl)
@@ -242,10 +268,15 @@ function createPageJsonLd(
 ): JsonLdObject {
   const page: JsonLdObject = {
     '@type': 'WebPage',
-    name: (normalizeText(pageData.frontmatter.title) || normalizeText(pageData.title)) || '',
+    name:
+      normalizeText(pageData.frontmatter.title) ||
+      normalizeText(pageData.title) ||
+      '',
     url: pageUrl,
-    description: (normalizeText(pageData.frontmatter.description) ||
-      normalizeText(pageData.description)) || '',
+    description:
+      normalizeText(pageData.frontmatter.description) ||
+      normalizeText(pageData.description) ||
+      '',
     isPartOf: {
       '@type': 'WebSite',
       '@id': `${localeIndexUrl}/#website`,
@@ -256,7 +287,10 @@ function createPageJsonLd(
   }
 
   if (pageData.frontmatter.jsonLd) {
-    const customJsonLd = parseCustomJsonLd(pageData.frontmatter.jsonLd, pageData.relativePath)
+    const customJsonLd = parseCustomJsonLd(
+      pageData.frontmatter.jsonLd,
+      pageData.relativePath
+    )
     if (customJsonLd && !Array.isArray(customJsonLd)) {
       Object.assign(page, customJsonLd)
     }
@@ -266,10 +300,17 @@ function createPageJsonLd(
 }
 
 /** Adds JSON-LD structured data to the page head. */
-export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext): void {
+export function addJsonLd({
+  page,
+  head,
+  pageData,
+  siteConfig,
+}: AddJsonLdContext): void {
   if (!page || page.indexOf('/') < 0) {
     return
   }
+
+  if (pageData.frontmatter?.seo?.jsonLd === false) return
 
   let jsonLdData: JsonLdObject | JsonLdArray | undefined
   const localeIndex = page.split('/')[0]!
@@ -279,7 +320,9 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
 
   const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
   if (!siteUrl) {
-    console.warn(`[addJsonLd] siteUrl is not configured. JSON-LD requires absolute URLs.`)
+    console.warn(
+      `[addJsonLd] siteUrl is not configured. JSON-LD requires absolute URLs.`
+    )
     return
   }
 
@@ -288,10 +331,14 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
   if (!localeIndexUrl || !pageUrl) return
   // siteName: fallback resolution matches createPageJsonLd usage.
   const siteName = langConfig.title || ''
-  const publisher: JsonLdObject | undefined = langConfig.themeConfig.publisher && {
+  const publisher: JsonLdObject | undefined = langConfig.themeConfig
+    .publisher && {
     '@type': 'Organization',
     name: langConfig.themeConfig.publisher?.name || siteName,
-    url: makeAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher?.url || siteUrl),
+    url: makeAbsoluteUrl(
+      siteUrl,
+      langConfig.themeConfig.publisher?.url || siteUrl
+    ),
     logo: (langConfig.themeConfig.publisher?.logo && {
       '@type': 'ImageObject',
       url: makeAbsoluteUrl(siteUrl, langConfig.themeConfig.publisher.logo),
@@ -299,7 +346,13 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
   }
 
   if (isAuthorPage(page, siteConfig)) {
-    jsonLdData = createAuthorJsonLd(pageData, siteConfig, siteUrl, localeIndex, langConfig)
+    jsonLdData = createAuthorJsonLd(
+      pageData,
+      siteConfig,
+      siteUrl,
+      localeIndex,
+      langConfig
+    )
   } else if (isPost(pageData.frontmatter)) {
     jsonLdData = createPostJsonLd(
       pageData,
@@ -312,9 +365,18 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
       publisher
     )
   } else if (isPage(pageData.frontmatter)) {
-    jsonLdData = createPageJsonLd(pageData, pageUrl, localeIndexUrl, publisher, siteName)
+    jsonLdData = createPageJsonLd(
+      pageData,
+      pageUrl,
+      localeIndexUrl,
+      publisher,
+      siteName
+    )
   } else if (pageData.frontmatter.jsonLd) {
-    jsonLdData = parseCustomJsonLd(pageData.frontmatter.jsonLd, pageData.relativePath)
+    jsonLdData = parseCustomJsonLd(
+      pageData.frontmatter.jsonLd,
+      pageData.relativePath
+    )
   } else {
     return
   }
@@ -324,7 +386,10 @@ export function addJsonLd({ page, head, pageData, siteConfig }: AddJsonLdContext
   head.push([
     'script',
     { type: 'application/ld+json' },
-    JSON.stringify(withSchemaContext(jsonLdData as JsonLdObject | JsonLdArray), null, 2),
+    JSON.stringify(
+      withSchemaContext(jsonLdData as JsonLdObject | JsonLdArray),
+      null,
+      2
+    ),
   ])
 }
-

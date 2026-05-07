@@ -9,7 +9,11 @@ import {
   pickExistingTranslationRelativePath,
   resolveTranslationRelativePathCandidates,
 } from '../utils/shared/index.ts'
-import type { ExtendedPageData, ExtendedSiteConfig, LocaleDefinition } from '../types.d.ts'
+import type {
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  LocaleDefinition,
+} from '../types.d.ts'
 
 export interface AddHreflangContext {
   head: HeadConfig[]
@@ -17,10 +21,14 @@ export interface AddHreflangContext {
   siteConfig: ExtendedSiteConfig
 }
 
-/**
- * Adds hreflang link tags to the page head for multilingual SEO.
- */
-export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext): void {
+/** Adds hreflang link tags to the page head for multilingual SEO. */
+export function addHreflang({
+  head,
+  pageData,
+  siteConfig,
+}: AddHreflangContext): void {
+  if (pageData?.frontmatter?.seo?.hreflang === false) return
+
   const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
   if (!siteUrl || !pageData) return
 
@@ -33,7 +41,11 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
 
   const alternates = Object.entries(locales).flatMap(([code, locale]) => {
     const localeRelativePath = pickExistingTranslationRelativePath(
-      resolveTranslationRelativePathCandidates(relativePath, code, translations),
+      resolveTranslationRelativePathCandidates(
+        relativePath,
+        code,
+        translations
+      ),
       {
         fileExists: srcDir
           ? (candidate) => fs.existsSync(path.join(srcDir, candidate))
@@ -42,7 +54,10 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
     )
     if (!localeRelativePath) return []
 
-    const url = makeAbsoluteUrl(siteUrl, generatePageUrlPath(localeRelativePath))
+    const url = makeAbsoluteUrl(
+      siteUrl,
+      generatePageUrlPath(localeRelativePath)
+    )
     if (!url) return []
 
     const lang = (locale as LocaleDefinition).lang || code
@@ -52,11 +67,7 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
         code,
         tag: [
           'link',
-          {
-            rel: 'alternate',
-            hreflang: lang,
-            href: url,
-          },
+          { rel: 'alternate', hreflang: lang, href: url },
         ] as HeadConfig,
       },
     ]
@@ -65,17 +76,16 @@ export function addHreflang({ head, pageData, siteConfig }: AddHreflangContext):
   if (alternates.length <= 1) return
 
   const defaultAlternate =
-    alternates.find((alternate) => alternate.code === Object.keys(locales)[0]) || alternates[0]
+    alternates.find(
+      (alternate) => alternate.code === Object.keys(locales)[0]
+    ) || alternates[0]
 
-  head.push(
-    ...alternates.map((alternate) => alternate.tag),
-    [
-      'link',
-      {
-        rel: 'alternate',
-        hreflang: 'x-default',
-        href: defaultAlternate.tag[1].href,
-      },
-    ]
-  )
+  head.push(...alternates.map((alternate) => alternate.tag), [
+    'link',
+    {
+      rel: 'alternate',
+      hreflang: 'x-default',
+      href: defaultAlternate.tag[1].href,
+    },
+  ])
 }

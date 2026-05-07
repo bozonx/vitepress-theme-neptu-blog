@@ -88,6 +88,35 @@ Output:
 - Generated post/page schemas still render without custom overrides
 - Custom-only invalid JSON-LD is skipped
 
+## Disabling JSON-LD
+
+You can disable automatic JSON-LD on specific pages or globally.
+
+### Per-page
+
+```yaml
+---
+title: Draft Post
+description: Work in progress
+seo:
+  jsonLd: false
+---
+```
+
+### Globally
+
+```ts
+export default defineBlogConfig({
+  themeConfig: {
+    seo: {
+      jsonLd: false,
+    },
+  },
+})
+```
+
+Frontmatter `seo` always overrides the global setting.
+
 ## Best practices
 
 - Keep `siteUrl` configured, otherwise generated URLs will be incomplete

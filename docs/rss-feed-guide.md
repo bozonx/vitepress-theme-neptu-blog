@@ -81,6 +81,36 @@ jq . feed-en.json
 - Missing titles or malformed dates are caught during generation.
 - HTML is stripped from descriptions automatically.
 
+## Disabling RSS links in `<head>`
+
+You can disable automatic RSS `<link>` tags in the page `<head>` on specific pages or globally.
+
+### Per-page
+
+```yaml
+---
+layout: home
+seo:
+  rss: false
+---
+```
+
+### Globally
+
+```ts
+export default defineBlogConfig({
+  themeConfig: {
+    seo: {
+      rss: false,
+    },
+  },
+})
+```
+
+Frontmatter `seo` always overrides the global setting.
+
+> **Note:** This only disables the `<link>` tags in `<head>`. The actual feed files (`feed-en.rss`, etc.) are still generated during build. To disable feed generation entirely, set `rssFormats: []`.
+
 ## Compatibility
 
 Tested with Feedly, Inoreader, NewsBlur, NetNewsWire, and major platforms such as WordPress, Medium, Substack, and Ghost.

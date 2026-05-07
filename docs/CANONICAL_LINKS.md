@@ -95,6 +95,35 @@ date: 2024-01-15
 
 No `<link rel="canonical">` tag is emitted.
 
+## Disabling canonical links
+
+You can disable the canonical link transformer on specific pages or globally.
+
+### Per-page
+
+```yaml
+---
+title: Draft Post
+description: Work in progress
+seo:
+  canonical: false
+---
+```
+
+### Globally
+
+```ts
+export default defineBlogConfig({
+  themeConfig: {
+    seo: {
+      canonical: false,
+    },
+  },
+})
+```
+
+Frontmatter `seo` always overrides the global setting.
+
 ## Technical details
 
 - `themeConfig.autoCanonical` defaults to `true`; every page gets a self-referencing canonical link automatically.

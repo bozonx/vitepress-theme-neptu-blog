@@ -89,4 +89,32 @@ Even a single-language site should still use a locale folder such as `src/en/`.
 - If only one locale version of a page exists, hreflang tags are omitted for that page.
 - `x-default` points to the first configured locale version that exists for the current page.
 - Links without a locale prefix are outside the supported routing model.
+## Disabling hreflang
+
+You can disable hreflang generation on specific pages or globally.
+
+### Per-page
+
+```yaml
+---
+title: Hello world
+seo:
+  hreflang: false
+---
+```
+
+### Globally
+
+```ts
+export default defineBlogConfig({
+  themeConfig: {
+    seo: {
+      hreflang: false,
+    },
+  },
+})
+```
+
+Frontmatter `seo` always overrides the global setting.
+
 - Different localized slugs are supported through `frontmatter.translations`.

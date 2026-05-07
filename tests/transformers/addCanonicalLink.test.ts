@@ -1,32 +1,45 @@
 import { describe, it, expect, vi } from 'vitest'
-import { addCanonicalLink, type AddCanonicalLinkContext } from '../../src/transformers/addCanonicalLink.ts'
+import {
+  addCanonicalLink,
+  type AddCanonicalLinkContext,
+} from '../../src/transformers/addCanonicalLink.ts'
 
 vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
+  const actual =
+    await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
-    generatePageUrlPath: vi.fn((path: string) => path.replace(/\.md$/, '').replace(/\/index$/, '')),
+    generatePageUrlPath: vi.fn((path: string) =>
+      path.replace(/\.md$/, '').replace(/\/index$/, '')
+    ),
   }
 })
 
 describe('addCanonicalLink', () => {
-  function createContext(overrides: Partial<AddCanonicalLinkContext> = {}): AddCanonicalLinkContext {
+  function createContext(
+    overrides: Partial<AddCanonicalLinkContext> = {}
+  ): AddCanonicalLinkContext {
     const page = overrides.page ?? 'en/post/hello.md'
-    const pageData = overrides.pageData === null
-      ? null
-      : ({
-          filePath: page,
-          frontmatter: {},
-          ...(overrides.pageData || {}),
-        }) as any
+    const pageData =
+      overrides.pageData === null
+        ? null
+        : ({
+            filePath: page,
+            frontmatter: {},
+            ...(overrides.pageData || {}),
+          } as any)
 
-    const siteConfig = overrides.siteConfig === null
-      ? null
-      : ({
-          userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: true } },
-          site: { locales: {} },
-          ...(overrides.siteConfig || {}),
-        }) as any
+    const siteConfig =
+      overrides.siteConfig === null
+        ? null
+        : ({
+            userConfig: {
+              siteUrl: 'https://example.com',
+              themeConfig: { autoCanonical: true },
+            },
+            site: { locales: {} },
+            ...(overrides.siteConfig || {}),
+          } as any)
 
     return {
       page,
@@ -35,7 +48,6 @@ describe('addCanonicalLink', () => {
       siteConfig,
     } as AddCanonicalLinkContext
   }
-
 
   it('does nothing if page has no slash', () => {
     const ctx = createContext({ page: 'hello' })
@@ -52,13 +64,18 @@ describe('addCanonicalLink', () => {
   it('adds self-canonical automatically when autoCanonical is enabled and no frontmatter canonical', () => {
     const ctx = createContext()
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }],
+    ])
   })
 
   it('does nothing without canonical frontmatter when autoCanonical is disabled', () => {
     const ctx = createContext({
       siteConfig: {
-        userConfig: { siteUrl: 'https://example.com', themeConfig: { autoCanonical: false } },
+        userConfig: {
+          siteUrl: 'https://example.com',
+          themeConfig: { autoCanonical: false },
+        },
         site: { locales: {} },
       } as any,
     })
@@ -72,7 +89,9 @@ describe('addCanonicalLink', () => {
       pageData: { frontmatter: { canonical: 'self' } } as any,
     })
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }],
+    ])
   })
 
   it('supports the short self alias', () => {
@@ -82,18 +101,25 @@ describe('addCanonicalLink', () => {
     })
 
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }],
+    ])
   })
 
   it('warns and skips if siteUrl is missing for self-canonical', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const ctx = createContext({
       pageData: { frontmatter: { canonical: 'self' } } as any,
-      siteConfig: { userConfig: { themeConfig: {} }, site: { locales: {} } } as any,
+      siteConfig: {
+        userConfig: { themeConfig: {} },
+        site: { locales: {} },
+      } as any,
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('siteUrl not configured'))
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('siteUrl not configured')
+    )
     warnSpy.mockRestore()
   })
 
@@ -102,7 +128,9 @@ describe('addCanonicalLink', () => {
       pageData: { frontmatter: { canonical: 'https://other.com/page' } } as any,
     })
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://other.com/page' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://other.com/page' }],
+    ])
   })
 
   it('normalizes self-canonical when siteUrl has a trailing slash', () => {
@@ -111,7 +139,9 @@ describe('addCanonicalLink', () => {
       siteConfig: { userConfig: { siteUrl: 'https://example.com/' } } as any,
     })
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }],
+    ])
   })
 
   it('warns and skips invalid explicit URL', () => {
@@ -122,7 +152,9 @@ describe('addCanonicalLink', () => {
     })
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Invalid canonical URL'))
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid canonical URL')
+    )
     warnSpy.mockRestore()
   })
 
@@ -133,7 +165,6 @@ describe('addCanonicalLink', () => {
     addCanonicalLink(ctx)
     expect(ctx.head).toEqual([])
   })
-
 
   it('handles null pageData gracefully', () => {
     const ctx = createContext({
@@ -165,14 +196,22 @@ describe('addCanonicalLink', () => {
           siteUrl: 'https://example.com',
           themeConfig: { autoCanonical: false },
         },
-        site: {
-          locales: {
-            en: { themeConfig: { autoCanonical: true } },
-          },
-        },
+        site: { locales: { en: { themeConfig: { autoCanonical: true } } } },
       } as any,
     })
     addCanonicalLink(ctx)
-    expect(ctx.head).toEqual([['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }]])
+    expect(ctx.head).toEqual([
+      ['link', { rel: 'canonical', href: 'https://example.com/en/post/hello' }],
+    ])
+  })
+
+  it('does nothing when frontmatter.seo.canonical is false', () => {
+    const ctx = createContext({
+      pageData: {
+        frontmatter: { canonical: 'self', seo: { canonical: false } },
+      } as any,
+    })
+    addCanonicalLink(ctx)
+    expect(ctx.head).toEqual([])
   })
 })

@@ -5,7 +5,13 @@ import {
   makeAbsoluteUrl,
   normalizeSiteUrl,
 } from '../utils/shared/index.ts'
-import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig, Author, Tag } from '../types.d.ts'
+import type {
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  ThemeConfig,
+  Author,
+  Tag,
+} from '../types.d.ts'
 
 export interface AddOgMetaTagsContext {
   head: HeadConfig[]
@@ -25,6 +31,8 @@ export function addOgMetaTags({
   pageData,
   siteConfig,
 }: AddOgMetaTagsContext): void {
+  if (pageData.frontmatter?.seo?.og === false) return
+
   const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
   if (!siteUrl) return
 
@@ -55,21 +63,27 @@ export function addOgMetaTags({
   const imageHeight = pageData.frontmatter.coverHeight
 
   const author = pageData.frontmatter.authorId
-    ? themeConfig.authors?.find((item: Author) => item.id === pageData.frontmatter.authorId)
+    ? themeConfig.authors?.find(
+        (item: Author) => item.id === pageData.frontmatter.authorId
+      )
     : undefined
 
   const authorUrl = author?.aboutUrl
     ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
     : themeConfig.authorsBaseUrl && pageData.frontmatter.authorId
-    ? makeAbsoluteUrl(
-        siteUrl,
-        `${localeIndex}/${themeConfig.authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
-      )
-    : undefined
+      ? makeAbsoluteUrl(
+          siteUrl,
+          `${localeIndex}/${themeConfig.authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+        )
+      : undefined
 
   const tags = [
     ['property', 'og:site_name', langConfig.title || ''],
-    ['property', 'og:type', isPost(pageData.frontmatter) ? 'article' : 'website'],
+    [
+      'property',
+      'og:type',
+      isPost(pageData.frontmatter) ? 'article' : 'website',
+    ],
     ['property', 'og:title', title],
     ['property', 'og:description', description],
     ['property', 'og:url', pageUrl],
@@ -81,8 +95,16 @@ export function addOgMetaTags({
 
   if (imageUrl) {
     tags.push(['property', 'og:image', imageUrl])
-    tags.push(['property', 'og:image:width', imageWidth ? String(imageWidth) : undefined])
-    tags.push(['property', 'og:image:height', imageHeight ? String(imageHeight) : undefined])
+    tags.push([
+      'property',
+      'og:image:width',
+      imageWidth ? String(imageWidth) : undefined,
+    ])
+    tags.push([
+      'property',
+      'og:image:height',
+      imageHeight ? String(imageHeight) : undefined,
+    ])
     tags.push(['property', 'og:image:alt', imageAlt])
     tags.push(['name', 'twitter:image', imageUrl])
     tags.push(['name', 'twitter:image:alt', imageAlt])
@@ -102,7 +124,11 @@ export function addOgMetaTags({
     if (pageData.lastUpdated) {
       const updatedAt = new Date(pageData.lastUpdated)
       if (!Number.isNaN(updatedAt.getTime())) {
-        tags.push(['property', 'article:modified_time', updatedAt.toISOString()])
+        tags.push([
+          'property',
+          'article:modified_time',
+          updatedAt.toISOString(),
+        ])
         tags.push(['property', 'og:updated_time', updatedAt.toISOString()])
       }
     }
@@ -112,21 +138,23 @@ export function addOgMetaTags({
         : [pageData.frontmatter.tags]
 
       tagsList.forEach((tag: string | Tag) => {
-        tags.push(['property', 'article:tag', typeof tag === 'string' ? tag : tag.name])
+        tags.push([
+          'property',
+          'article:tag',
+          typeof tag === 'string' ? tag : tag.name,
+        ])
       })
-
     }
     if (authorUrl) {
       tags.push(['property', 'article:author', authorUrl])
     }
   }
 
-  const filteredTags = tags.filter(
-    (tag): tag is [string, string, string] => Boolean(tag[0] && tag[1] && tag[2])
+  const filteredTags = tags.filter((tag): tag is [string, string, string] =>
+    Boolean(tag[0] && tag[1] && tag[2])
   )
 
   filteredTags.forEach(([type, name, content]) => {
     head.push(['meta', { [type]: name, content }])
   })
 }
-

@@ -1,7 +1,15 @@
 import type { HeadConfig } from 'vitepress'
-import { generatePageUrlPath, makeAbsoluteUrl, normalizeSiteUrl } from '../utils/shared/index.ts'
+import {
+  generatePageUrlPath,
+  makeAbsoluteUrl,
+  normalizeSiteUrl,
+} from '../utils/shared/index.ts'
 
-import type { ExtendedPageData, ExtendedSiteConfig, ThemeConfig } from '../types.d.ts'
+import type {
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  ThemeConfig,
+} from '../types.d.ts'
 
 export interface AddCanonicalLinkContext {
   page: string
@@ -18,7 +26,9 @@ function resolveCanonicalUrl(
   if (canonicalValue === 'self' || canonicalValue === 's') {
     const siteUrl = normalizeSiteUrl(siteConfig.userConfig.siteUrl)
     if (!siteUrl) {
-      console.warn('Canonical link not added: siteUrl not configured in siteConfig')
+      console.warn(
+        'Canonical link not added: siteUrl not configured in siteConfig'
+      )
       return null
     }
     return makeAbsoluteUrl(siteUrl, generatePageUrlPath(page)) || null
@@ -45,6 +55,7 @@ export function addCanonicalLink({
   pageData,
   siteConfig,
 }: AddCanonicalLinkContext): void {
+  if (pageData?.frontmatter?.seo?.canonical === false) return
 
   if (!page || page.indexOf('/') < 0) {
     return
@@ -75,6 +86,9 @@ export function addCanonicalLink({
       head.push(['link', { rel: 'canonical', href: canonicalUrl }])
     }
   } catch (error) {
-    console.error(`Error adding canonical link for ${page}:`, (error as Error).message)
+    console.error(
+      `Error adding canonical link for ${page}:`,
+      (error as Error).message
+    )
   }
 }

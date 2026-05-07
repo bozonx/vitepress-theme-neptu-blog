@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import * as sharedUtils from '../../src/utils/shared/index.ts'
 import yaml from 'yaml'
-import { addJsonLd, type AddJsonLdContext } from '../../src/transformers/addJsonLd.ts'
+import {
+  addJsonLd,
+  type AddJsonLdContext,
+} from '../../src/transformers/addJsonLd.ts'
 
 beforeEach(() => {
   vi.spyOn(yaml, 'parse').mockImplementation((str: string) => {
@@ -19,13 +22,16 @@ afterEach(() => {
 })
 
 vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
+  const actual =
+    await importOriginal<typeof import('../../src/utils/shared/index.ts')>()
   return {
     ...actual,
     isPost: vi.fn(),
     isAuthorPage: vi.fn(),
     isPage: vi.fn(),
-    generatePageUrlPath: vi.fn((path: string) => path.replace(/\.md$/, '').replace(/\/index$/, '')),
+    generatePageUrlPath: vi.fn((path: string) =>
+      path.replace(/\.md$/, '').replace(/\/index$/, '')
+    ),
     omitUndefined: vi.fn((obj: any) => {
       if (!obj || typeof obj !== 'object') return {}
       const result: Record<string, any> = {}
@@ -38,7 +44,9 @@ vi.mock('../../src/utils/shared/index.ts', async (importOriginal) => {
 })
 
 describe('addJsonLd', () => {
-  function createContext(overrides: Partial<AddJsonLdContext> = {}): AddJsonLdContext {
+  function createContext(
+    overrides: Partial<AddJsonLdContext> = {}
+  ): AddJsonLdContext {
     return {
       page: overrides.page ?? 'en/post/hello.md',
       head: [],
@@ -63,8 +71,14 @@ describe('addJsonLd', () => {
           siteUrl: 'https://example.com',
           themeConfig: {
             authorsBaseUrl: 'authors',
-            authors: [{ id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' }],
-            publisher: { name: 'Pub', url: 'https://pub.com', logo: '/img/logo.png' },
+            authors: [
+              { id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' },
+            ],
+            publisher: {
+              name: 'Pub',
+              url: 'https://pub.com',
+              logo: '/img/logo.png',
+            },
           },
         },
         site: {
@@ -73,8 +87,14 @@ describe('addJsonLd', () => {
               lang: 'en-US',
               title: 'Blog',
               themeConfig: {
-                authors: [{ id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' }],
-                publisher: { name: 'Pub', url: 'https://pub.com', logo: '/img/logo.png' },
+                authors: [
+                  { id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' },
+                ],
+                publisher: {
+                  name: 'Pub',
+                  url: 'https://pub.com',
+                  logo: '/img/logo.png',
+                },
               },
             },
           },
@@ -84,7 +104,6 @@ describe('addJsonLd', () => {
       ...overrides,
     }
   }
-
 
   it('does nothing if page has no slash', () => {
     const ctx = createContext({ page: 'hello' })
@@ -123,8 +142,17 @@ describe('addJsonLd', () => {
     expect(json.url).toBe('https://example.com/en/post/hello')
     expect(json.datePublished).toBe('2023-01-01')
     expect(json.inLanguage).toBe('en-US')
-    expect(json.author).toEqual({ '@type': 'Person', name: 'Alice', url: 'https://alice.com' })
-    expect(json.publisher).toEqual({ '@type': 'Organization', name: 'Pub', url: 'https://pub.com', logo: { '@type': 'ImageObject', url: 'https://example.com/img/logo.png' } })
+    expect(json.author).toEqual({
+      '@type': 'Person',
+      name: 'Alice',
+      url: 'https://alice.com',
+    })
+    expect(json.publisher).toEqual({
+      '@type': 'Organization',
+      name: 'Pub',
+      url: 'https://pub.com',
+      logo: { '@type': 'ImageObject', url: 'https://example.com/img/logo.png' },
+    })
     expect(json.isPartOf).toEqual({
       '@type': 'WebSite',
       '@id': 'https://example.com/en/#website',
@@ -200,7 +228,11 @@ describe('addJsonLd', () => {
         },
         site: {
           locales: {
-            en: { lang: 'en', title: 'Blog', themeConfig: { authors: [{ id: 'alice', name: 'Alice' }] } },
+            en: {
+              lang: 'en',
+              title: 'Blog',
+              themeConfig: { authors: [{ id: 'alice', name: 'Alice' }] },
+            },
           },
         },
       } as any,
@@ -219,7 +251,10 @@ describe('addJsonLd', () => {
       pageData: {
         title: 'Custom',
         relativePath: 'en/custom.md',
-        frontmatter: { layout: 'util', jsonLd: '{"@type": "CustomType", "custom": true}' },
+        frontmatter: {
+          layout: 'util',
+          jsonLd: '{"@type": "CustomType", "custom": true}',
+        },
       } as any,
     })
     addJsonLd(ctx)
@@ -313,10 +348,7 @@ describe('addJsonLd', () => {
         title: 'Hello',
         description: 'World',
         relativePath: 'en/post/hello.md',
-        frontmatter: {
-          layout: 'post',
-          date: '2023-01-01',
-        },
+        frontmatter: { layout: 'post', date: '2023-01-01' },
         lastUpdated: 'not-a-date',
       } as any,
     })
@@ -357,7 +389,10 @@ describe('addJsonLd', () => {
     vi.mocked(sharedUtils.isPage).mockReturnValue(false)
 
     const ctx = createContext()
-    ctx.pageData.frontmatter.tags = [{ name: 'JavaScript' } as any, 'TypeScript']
+    ctx.pageData.frontmatter.tags = [
+      { name: 'JavaScript' } as any,
+      'TypeScript',
+    ]
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.keywords).toBe('JavaScript, TypeScript')
@@ -370,7 +405,9 @@ describe('addJsonLd', () => {
 
     const ctx = createContext()
     ctx.siteConfig.userConfig.themeConfig.authors = [{ id: 'alice' } as any]
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [{ id: 'alice' }]
+    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [
+      { id: 'alice' },
+    ]
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.author.name).toBe('alice')
@@ -383,7 +420,9 @@ describe('addJsonLd', () => {
 
     const ctx = createContext()
     ctx.siteConfig.userConfig.themeConfig.authors = [{ id: 'alice' } as any]
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [{ id: 'alice' }]
+    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [
+      { id: 'alice' },
+    ]
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.author.url).toBe('https://example.com/en/authors/alice/1')
@@ -398,7 +437,9 @@ describe('addJsonLd', () => {
     ctx.siteConfig.userConfig.themeConfig.authorsBaseUrl = 'writers'
     ;(ctx.siteConfig.site.locales.en.themeConfig as any).authorsBaseUrl = 'team'
     ctx.siteConfig.userConfig.themeConfig.authors = [{ id: 'alice' } as any]
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [{ id: 'alice' }]
+    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [
+      { id: 'alice' },
+    ]
 
     addJsonLd(ctx)
 
@@ -481,7 +522,8 @@ describe('addJsonLd', () => {
         relativePath: 'en/custom.md',
         frontmatter: {
           layout: 'util',
-          jsonLd: '[{"@type":"Thing","name":"One"},{"@type":"Thing","name":"Two"}]',
+          jsonLd:
+            '[{"@type":"Thing","name":"One"},{"@type":"Thing","name":"Two"}]',
         },
       } as any,
     })
@@ -521,5 +563,16 @@ describe('addJsonLd', () => {
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json['@type']).toBe('BlogPosting')
     expect(json['@graph']).toBeUndefined()
+  })
+
+  it('does nothing when frontmatter.seo.jsonLd is false', () => {
+    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
+    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
+    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
+
+    const ctx = createContext()
+    ctx.pageData.frontmatter.seo = { jsonLd: false }
+    addJsonLd(ctx)
+    expect(ctx.head).toEqual([])
   })
 })
