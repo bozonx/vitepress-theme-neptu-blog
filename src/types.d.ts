@@ -132,6 +132,7 @@ export namespace NeptuBlogTheme {
     youtubeIcon?: string
     tagsIcon?: string
 
+    twitterSite?: string
     authors?: Author[]
     topBar?: TopBarConfig
     sideBar?: SideBarConfig
@@ -245,6 +246,7 @@ export namespace NeptuBlogTheme {
     aboutUrl?: string
     imageHeight?: number
     imageWidth?: number
+    twitterHandle?: string
   }
 
   export interface TopBarConfig {

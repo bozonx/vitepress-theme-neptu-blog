@@ -25,6 +25,12 @@ function normalizeText(value: unknown): string | undefined {
   return normalized || undefined
 }
 
+function normalizeTwitterHandle(value: unknown): string | undefined {
+  if (typeof value !== 'string') return
+  const handle = value.trim().replace(/^@+/, '')
+  return handle ? `@${handle}` : undefined
+}
+
 /** Adds Open Graph and Twitter meta tags to the page head. */
 export function addOgMetaTags({
   head,
@@ -100,6 +106,7 @@ export function addOgMetaTags({
     ['property', 'og:url', pageUrl],
     ['property', 'og:locale', (langConfig.lang || localeIndex).replace(/-/g, '_')],
     ['name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary'],
+    ['name', 'twitter:site', normalizeTwitterHandle(themeConfig.twitterSite)],
     ['name', 'twitter:title', title],
     ['name', 'twitter:description', description],
   ]
@@ -119,6 +126,11 @@ export function addOgMetaTags({
     tags.push(['property', 'og:image:alt', imageAlt])
     tags.push(['name', 'twitter:image', imageUrl])
     tags.push(['name', 'twitter:image:alt', imageAlt])
+  }
+
+  const twitterCreator = normalizeTwitterHandle(author?.twitterHandle)
+  if (twitterCreator) {
+    tags.push(['name', 'twitter:creator', twitterCreator])
   }
 
   if (isPost(pageData.frontmatter)) {
