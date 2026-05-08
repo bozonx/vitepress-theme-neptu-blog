@@ -42,12 +42,22 @@ export function addOgMetaTags({
 
   const themeConfig = langConfig.themeConfig as ThemeConfig
   const explicitCanonical = pageData.frontmatter.canonical
-  const pageUrl =
-    typeof explicitCanonical === 'string' &&
-    explicitCanonical !== 'self' &&
-    explicitCanonical !== 's'
-      ? explicitCanonical.trim()
-      : makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
+  const pageUrl = (() => {
+    if (
+      typeof explicitCanonical === 'string' &&
+      explicitCanonical !== 'self' &&
+      explicitCanonical !== 's'
+    ) {
+      try {
+        const trimmed = explicitCanonical.trim()
+        new URL(trimmed)
+        return trimmed
+      } catch {
+        // invalid URL — fall through to auto-generate
+      }
+    }
+    return makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
+  })()
   const title =
     normalizeText(pageData.frontmatter.title) ||
     normalizeText(pageData.title) ||
@@ -78,6 +88,7 @@ export function addOgMetaTags({
       : undefined
 
   const tags = [
+    ['name', 'description', description],
     ['property', 'og:site_name', langConfig.title || ''],
     [
       'property',
@@ -87,7 +98,7 @@ export function addOgMetaTags({
     ['property', 'og:title', title],
     ['property', 'og:description', description],
     ['property', 'og:url', pageUrl],
-    ['property', 'og:locale', langConfig.lang || localeIndex],
+    ['property', 'og:locale', (langConfig.lang || localeIndex).replace(/-/g, '_')],
     ['name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary'],
     ['name', 'twitter:title', title],
     ['name', 'twitter:description', description],

@@ -115,7 +115,7 @@ describe('addOgMetaTags', () => {
     ])
     expect(ctx.head).toContainEqual([
       'meta',
-      { property: 'og:locale', content: 'en-US' },
+      { property: 'og:locale', content: 'en_US' },
     ])
   })
 
@@ -402,5 +402,37 @@ describe('addOgMetaTags', () => {
     ctx.pageData.frontmatter.seo = { og: false }
     addOgMetaTags(ctx)
     expect(ctx.head).toEqual([])
+  })
+
+  it('adds meta description tag', () => {
+    const ctx = createContext()
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual([
+      'meta',
+      { name: 'description', content: 'World' },
+    ])
+  })
+
+  it('converts og:locale hyphen to underscore', () => {
+    const ctx = createContext()
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual([
+      'meta',
+      { property: 'og:locale', content: 'en_US' },
+    ])
+    expect(ctx.head).not.toContainEqual([
+      'meta',
+      { property: 'og:locale', content: 'en-US' },
+    ])
+  })
+
+  it('falls back to auto-generated og:url when canonical is invalid URL', () => {
+    const ctx = createContext()
+    ctx.pageData.frontmatter.canonical = 'not-a-valid-url'
+    addOgMetaTags(ctx)
+    expect(ctx.head).toContainEqual([
+      'meta',
+      { property: 'og:url', content: 'https://example.com/en/post/hello' },
+    ])
   })
 })
