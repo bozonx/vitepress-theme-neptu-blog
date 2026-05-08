@@ -50,7 +50,10 @@ useSwipeDrawer({
     <!-- right col-->
     <div class="flex-1 flex flex-col min-h-screen">
       <header>
-        <TopBar :is-mobile="isMobile" @open-drawer="() => sidebarRef?.openDrawer()">
+        <TopBar
+          :is-mobile="isMobile"
+          @open-drawer="() => sidebarRef?.openDrawer()"
+        >
           <template #nav-bar-content-before>
             <slot name="nav-bar-content-before" />
           </template>
@@ -69,11 +72,17 @@ useSwipeDrawer({
               <template v-if="$slots['post-header-after']" #post-header-after>
                 <slot name="post-header-after" />
               </template>
-              <template v-if="$slots['post-content-before']" #post-content-before>
+              <template
+                v-if="$slots['post-content-before']"
+                #post-content-before
+              >
                 <slot name="post-content-before" />
               </template>
               <template v-if="$slots['post-content-after']" #post-content-after>
                 <slot name="post-content-after" />
+              </template>
+              <template v-if="$slots['post-footer']" #post-footer>
+                <slot name="post-footer" />
               </template>
             </PageContent>
           </div>

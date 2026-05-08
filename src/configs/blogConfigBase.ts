@@ -77,9 +77,7 @@ function runHooks<T>(
 // ---------------------------------------------------------------------------
 
 function hasTailwindPlugin(plugins: unknown): boolean {
-  const flat = Array.isArray(plugins)
-    ? (plugins as unknown[]).flat(10)
-    : []
+  const flat = Array.isArray(plugins) ? (plugins as unknown[]).flat(10) : []
   return flat.some(
     (p) =>
       p != null &&

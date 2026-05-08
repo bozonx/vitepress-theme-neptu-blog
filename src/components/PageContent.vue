@@ -96,6 +96,8 @@ const customContent = computed(() => {
 
     <slot name="post-content-after" />
 
-    <PostFooter />
+    <slot name="post-footer">
+      <PostFooter />
+    </slot>
   </article>
 </template>

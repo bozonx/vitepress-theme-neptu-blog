@@ -80,6 +80,9 @@ provide(LightboxLocalesKey, lightboxLocales)
     <template v-if="$slots['post-content-after']" #post-content-after>
       <slot name="post-content-after" />
     </template>
+    <template v-if="$slots['post-footer']" #post-footer>
+      <slot name="post-footer" />
+    </template>
     <template v-if="$slots['sidebar-top']" #sidebar-top>
       <slot name="sidebar-top" />
     </template>

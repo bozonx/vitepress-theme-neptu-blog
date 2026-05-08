@@ -13,6 +13,16 @@ export const mockTheme = ref<any>({
     links: { recent: 'Recent', popular: 'Popular' },
   },
   popularPosts: { enabled: false },
+  postFooter: [
+    'author',
+    'donate',
+    'comments',
+    'social-share',
+    'edit-link',
+    'tags',
+    'similar',
+    'popular-link',
+  ],
   externalLinkIcon: true,
   postList: {
     showDate: true,

@@ -140,6 +140,72 @@ Available slots inside the default post layout (`PageContent.vue`):
 | `post-header-after` | After `<header>` |
 | `post-content-before` | Before the markdown `<Content />` |
 | `post-content-after` | After the markdown `<Content />` |
+| `post-footer` | Replaces the entire `<PostFooter />` block |
+
+## Post Footer Customization
+
+The footer below every post is controlled by `themeConfig.postFooter` — an ordered array of block keys. Omit a key to hide the block; reorder to change the layout.
+
+```ts
+// .vitepress/config.ts
+export default defineBlogConfig({
+  themeConfig: {
+    postFooter: [
+      'author',
+      'donate',
+      'comments',
+      'social-share',
+      'edit-link',
+      'tags',
+      'similar',
+      'popular-link',
+    ],
+  },
+})
+```
+
+Supported keys:
+
+| Key | Block |
+|-----|-------|
+| `author` | `PostAuthor` |
+| `donate` | `PostDonateLink` |
+| `comments` | `PostComments` |
+| `social-share` | `PostSocialShare` |
+| `edit-link` | `EditLink` |
+| `tags` | `PostTags` |
+| `similar` | `PostSimilarList` |
+| `popular-link` | Link to the popular-posts page (shown only when `popularPosts.enabled` is `true`) |
+
+### Replacing the entire footer
+
+Use the `post-footer` slot in your custom `Layout.vue`:
+
+```vue
+<template>
+  <Layout>
+    <template #post-footer>
+      <MyCustomFooter />
+    </template>
+  </Layout>
+</template>
+```
+
+### Overriding individual blocks
+
+`PostFooter` exposes a named slot for every block key. Pass custom content to override a single block without touching the rest:
+
+```vue
+<template>
+  <Layout>
+    <template #donate>
+      <MyCustomDonate />
+    </template>
+  </Layout>
+</template>
+```
+
+> Named slots are proxied through `NeptuLayout` → `DefaultLayout` → `PageContent` → `PostFooter`, so you can inject them directly from your `Layout.vue`.
 
 ## Composables
 

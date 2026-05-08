@@ -12,35 +12,88 @@ import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 import type { PostLite } from '../../types.d.ts'
 
+const DEFAULT_ORDER = [
+  'author',
+  'donate',
+  'comments',
+  'social-share',
+  'edit-link',
+  'tags',
+  'similar',
+  'popular-link',
+]
+
 const props = defineProps<{ localePosts?: PostLite[] }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
-const localePosts = computed(() =>
-  props.localePosts || allPosts[localeIndex.value] || []
+const localePosts = computed(
+  () => props.localePosts || allPosts[localeIndex.value] || []
 )
+
+const blocks = computed(() => {
+  const configured = theme.value.postFooter
+  if (configured === undefined) return DEFAULT_ORDER
+  return configured
+})
 </script>
 
 <template>
-  <PostAuthor class="mt-10" />
+  <template v-for="name in blocks" :key="name">
+    <template v-if="name === 'author'">
+      <slot name="author">
+        <PostAuthor class="mt-10" />
+      </slot>
+    </template>
 
-  <PostDonateLink class="mt-10" />
-  <PostComments class="mt-10" />
-  <PostSocialShare class="mt-10" />
+    <template v-else-if="name === 'donate'">
+      <slot name="donate">
+        <PostDonateLink class="mt-10" />
+      </slot>
+    </template>
 
-  <div class="flex mt-10">
-    <EditLink />
-  </div>
+    <template v-else-if="name === 'comments'">
+      <slot name="comments">
+        <PostComments class="mt-10" />
+      </slot>
+    </template>
 
-  <PostTags class="mt-10" />
-  <PostSimilarList class="mt-14" :locale-posts="localePosts" />
+    <template v-else-if="name === 'social-share'">
+      <slot name="social-share">
+        <PostSocialShare class="mt-10" />
+      </slot>
+    </template>
 
-  <div class="mt-10">
-    <NeptuBtnLink
-      v-if="theme.popularPosts?.enabled"
-      :href="`${theme.popularBaseUrl}/1`"
-      :text="theme.t.popularPostsCall"
-      :icon="theme.popularIcon"
-    />
-  </div>
+    <template v-else-if="name === 'edit-link'">
+      <div class="flex mt-10">
+        <slot name="edit-link">
+          <EditLink />
+        </slot>
+      </div>
+    </template>
+
+    <template v-else-if="name === 'tags'">
+      <slot name="tags">
+        <PostTags class="mt-10" />
+      </slot>
+    </template>
+
+    <template v-else-if="name === 'similar'">
+      <slot name="similar">
+        <PostSimilarList class="mt-14" :locale-posts="localePosts" />
+      </slot>
+    </template>
+
+    <template v-else-if="name === 'popular-link'">
+      <div v-if="theme.popularPosts?.enabled" class="mt-10">
+        <slot name="popular-link">
+          <NeptuBtnLink
+            :href="`${theme.popularBaseUrl}/1`"
+            :text="theme.t.popularPostsCall"
+            :icon="theme.popularIcon"
+          />
+        </slot>
+      </div>
+    </template>
+  </template>
 </template>
