@@ -56,13 +56,14 @@ describe('NeptuLayout', () => {
       slots: {
         'post-header-before': '<div class="header-before">Before</div>',
         'post-content-after': '<div class="content-after">After</div>',
+        footer: '<div class="footer-slot">Footer</div>',
       },
       global: {
         stubs: {
           DefaultLayout: {
             name: 'DefaultLayout',
             template:
-              '<main><slot name="post-header-before" /><slot name="post-content-after" /></main>',
+              '<main><slot name="post-header-before" /><slot name="post-content-after" /><slot name="footer" /></main>',
           },
           BlogHome: true,
           NotFound: true,
@@ -74,6 +75,7 @@ describe('NeptuLayout', () => {
 
     expect(wrapper.find('.header-before').exists()).toBe(true)
     expect(wrapper.find('.content-after').exists()).toBe(true)
+    expect(wrapper.find('.footer-slot').exists()).toBe(true)
   })
 
   it('renders BlogHome for layout: home', () => {

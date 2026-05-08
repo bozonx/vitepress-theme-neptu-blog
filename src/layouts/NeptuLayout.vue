@@ -98,8 +98,8 @@ provide(LightboxLocalesKey, lightboxLocales)
     <template v-if="$slots['nav-bar-content-before']" #nav-bar-content-before>
       <slot name="nav-bar-content-before" />
     </template>
-    <template v-if="$slots['footer-before']" #footer-before>
-      <slot name="footer-before" />
+    <template v-if="$slots.footer" #footer>
+      <slot name="footer" />
     </template>
     <template v-if="$slots['aside']" #aside>
       <slot name="aside" />

@@ -142,6 +142,42 @@ Available slots inside the default post layout (`PageContent.vue`):
 | `post-content-after` | After the markdown `<Content />` |
 | `post-footer` | Replaces the entire `<PostFooter />` block |
 
+## Site Footer Customization
+
+Use `themeConfig.footer` for the default site footer:
+
+```ts
+// .vitepress/config.ts
+export default defineBlogConfig({
+  themeConfig: {
+    footer: {
+      message: 'Released under MIT.',
+      copyright: 'Copyright 2026',
+      links: [{ text: 'GitHub', href: 'https://github.com/...' }],
+    },
+  },
+})
+```
+
+To replace the site footer completely while keeping the built-in layout chrome, use the `footer` slot in your custom `Layout.vue`:
+
+```vue
+<script setup>
+import Theme from 'vitepress-theme-neptu-blog'
+const { Layout } = Theme
+</script>
+
+<template>
+  <Layout>
+    <template #footer>
+      <MySiteFooter />
+    </template>
+  </Layout>
+</template>
+```
+
+When the `footer` slot is provided, the theme footer and its spacing wrapper are not rendered. To remove the site footer entirely, omit `themeConfig.footer` and do not provide the `footer` slot.
+
 ## Post Footer Customization
 
 The footer below every post is controlled by `themeConfig.postFooter` — an ordered array of block keys. Omit a key to hide the block; reorder to change the layout.

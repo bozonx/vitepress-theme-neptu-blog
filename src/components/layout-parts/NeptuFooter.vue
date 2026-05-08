@@ -7,8 +7,6 @@ const { theme } = useData();
 
 <template>
   <footer v-if="theme.footer" class="flex max-md:flex-col-reverse gap-x-2 w-full items-start text-sm muted">
-    <slot name="footer-before" />
-
     <div v-if="theme.footer?.message || theme.footer?.copyright" class="flex-1 max-md:mt-5">
       <div>{{ theme.footer.message }}</div>
       <div>{{ theme.footer.copyright }}</div>

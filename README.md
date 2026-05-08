@@ -453,6 +453,28 @@ contentLayout: PodcastEpisode
 ---
 ```
 
+### Layout slots
+
+Use the `footer` slot to replace the theme footer while keeping the built-in sidebar, topbar, content layout, lightbox, and scroll controls. When this slot is provided, the theme does not render `themeConfig.footer` and does not wrap your footer in the theme footer spacing.
+
+```vue
+<!-- .vitepress/theme/Layout.vue -->
+<script setup>
+import Theme from 'vitepress-theme-neptu-blog'
+const { Layout } = Theme
+</script>
+
+<template>
+  <Layout>
+    <template #footer>
+      <MySiteFooter />
+    </template>
+  </Layout>
+</template>
+```
+
+To remove the theme footer entirely, omit `themeConfig.footer` and do not provide the `footer` slot.
+
 ### Utility components
 
 Import from `vitepress-theme-neptu-blog/components`:
@@ -537,6 +559,7 @@ Available slots inside `PageContent.vue` (post layout):
 - `post-header-after` — after the `<header>` element
 - `post-content-before` — before the markdown content
 - `post-content-after` — after the markdown content
+- `post-footer` — replaces the footer below the current post
 
 ### Home page customization
 

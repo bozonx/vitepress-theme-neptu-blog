@@ -87,12 +87,10 @@ useSwipeDrawer({
             </PageContent>
           </div>
 
-          <div class="mt-30 pb-12">
-            <NeptuFooter>
-              <template v-if="$slots['footer-before']" #footer-before>
-                <slot name="footer-before" />
-              </template>
-            </NeptuFooter>
+          <slot v-if="$slots.footer" name="footer" />
+
+          <div v-else-if="theme.footer" class="mt-30 pb-12">
+            <NeptuFooter />
           </div>
         </main>
 
