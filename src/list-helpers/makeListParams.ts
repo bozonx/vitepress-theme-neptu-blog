@@ -1,3 +1,5 @@
+import { safeGetYear, safeGetMonth } from './listHelpers.ts'
+
 interface PostWithDate {
   date: string | number | Date
   tags?: Array<{ name?: string; slug?: string } | string>
@@ -30,7 +32,8 @@ export function makeYearPostsParams(
   const postsByYear: Record<number, Array<string | number | Date>> = {}
 
   for (const date of dates) {
-    const year = new Date(date).getUTCFullYear()
+    const year = safeGetYear(date)
+    if (year === undefined) continue
 
     if (!postsByYear[year]) {
       postsByYear[year] = []
@@ -59,8 +62,9 @@ export function makeMonthsParams(
   const dates = posts.map((item) => item.date)
 
   for (const date of dates) {
-    const year = new Date(date).getUTCFullYear()
-    const month = new Date(date).getUTCMonth() + 1
+    const year = safeGetYear(date)
+    const month = safeGetMonth(date)
+    if (year === undefined || month === undefined) continue
     const yearMonth = `${year}-${month}`
 
     if (typeof monthCount[yearMonth] === 'undefined') {

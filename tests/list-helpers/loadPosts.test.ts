@@ -77,7 +77,7 @@ describe('loadPostsData', () => {
     await loadPostsData('/content/en', { maxPreviewLength: 120 })
     expect(mockMakePreviewItem).toHaveBeenCalledWith(
       expect.stringContaining('/content/en/post/a.md'),
-      120
+      { maxPreviewLength: 120, srcDir: '/content' }
     )
   })
 
@@ -131,6 +131,6 @@ describe('loadPostsDataFromFiles', () => {
 
   it('passes maxPreviewLength to preview item builder', async () => {
     await loadPostsDataFromFiles(['/a.md'], { maxPreviewLength: 80 })
-    expect(mockMakePreviewItem).toHaveBeenCalledWith('/a.md', 80)
+    expect(mockMakePreviewItem).toHaveBeenCalledWith('/a.md', { maxPreviewLength: 80, srcDir: undefined })
   })
 })

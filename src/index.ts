@@ -8,7 +8,6 @@ import './styles/vendor/vp-doc.css'
 import FileDownload from './components/doc-components/FileDownload.vue'
 import AudioFile from './components/doc-components/AudioFile.vue'
 import YoutubeVideo from './components/doc-components/YoutubeVideo.vue'
-import { resolveTranslationsByFilePath } from './utils/shared/index.ts'
 import './styles/vendor/vp-common.css'
 import './styles/vendor/vp-icons.css'
 import './styles/search-modal.css'
@@ -21,9 +20,6 @@ import NeptuLayout from './layouts/NeptuLayout.vue'
 export default {
   Layout: NeptuLayout,
   enhanceApp(ctx: EnhanceAppContext) {
-    ctx.app.config.globalProperties.getLocales = () =>
-      resolveTranslationsByFilePath(ctx.router.route.path)
-
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)
     ctx.app.component('YoutubeVideo', YoutubeVideo)

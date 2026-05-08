@@ -5,6 +5,7 @@ import {
   UserConfig,
   HeadConfig,
   TransformContext,
+  SiteConfig,
 } from 'vitepress'
 
 export namespace NeptuBlogTheme {
@@ -30,19 +31,16 @@ export namespace NeptuBlogTheme {
 
   export interface BlogHooks {
     transformPageData?: {
-      before?: Array<
-        (
-          pageData: ExtendedPageData,
-          ctx: TransformContext
-        ) => void | Promise<void>
-      >
-      after?: Array<
-        (
-          pageData: ExtendedPageData,
-          ctx: TransformContext
-        ) => void | Promise<void>
-      >
+      before?: Array<(pageData: ExtendedPageData, ctx: TransformContext) => void | Promise<void>>
+      after?: Array<(pageData: ExtendedPageData, ctx: TransformContext) => void | Promise<void>>
     }
+    /** Runs before / after the built-in SEO head transformers (OG, JSON-LD, hreflang, canonical, RSS). */
+    transformHead?: {
+      before?: Array<(ctx: TransformContext) => void | Promise<void>>
+      after?: Array<(ctx: TransformContext) => void | Promise<void>>
+    }
+    /** Runs after generateRssFeed / generateRobotsTxt and any top-level config.buildEnd. */
+    buildEnd?: Array<(cfg: SiteConfig) => void | Promise<void>>
   }
 
   export type BlogUserConfig = Omit<
@@ -322,7 +320,7 @@ export namespace NeptuBlogTheme {
     url: string
     title?: string
     date?: string | number | Date
-    tags?: Array<{ slug?: string; name?: string; count?: number }>
+    tags?: Array<{ slug?: string; name?: string; count?: number; [key: string]: unknown }>
     authorId?: string
     preview?: string
     thumbnail?: string

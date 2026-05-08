@@ -56,7 +56,7 @@ title: Hello
 
 This is a very long body content that should be truncated according to the custom maxPreviewLength parameter passed to the function.`)
 
-    const item = makePreviewItem('/tmp/site/src/en/post/hello.md', 20)
+    const item = makePreviewItem('/tmp/site/src/en/post/hello.md', { maxPreviewLength: 20 })
 
     expect(item.preview).toBeDefined()
     expect(item.preview!.length).toBeLessThanOrEqual(20)

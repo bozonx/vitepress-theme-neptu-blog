@@ -25,11 +25,18 @@ export interface PreviewItem {
   [key: string]: unknown
 }
 
+export interface MakePreviewItemOptions {
+  maxPreviewLength?: number
+  /** Absolute path to srcDir. When provided, avoids the hardcoded 3-level depth assumption. */
+  srcDir?: string
+}
+
 export function makePreviewItem(
   filePath: string,
-  maxPreviewLength?: number
+  options: MakePreviewItemOptions = {}
 ): PreviewItem {
-  const baseDir = path.resolve(filePath, '../../../')
+  const { maxPreviewLength, srcDir } = options
+  const baseDir = srcDir ?? path.resolve(filePath, '../../../')
   const relativePath = path.relative(baseDir, filePath)
   const lang = relativePath.split('/')[0]!
 
@@ -39,7 +46,6 @@ export function makePreviewItem(
   const fm = frontmatter as PostFrontmatter
 
   let preview = resolvePreview(fm)
-  // make preview from content as description
   if (!preview)
     preview = extractDescriptionFromMd(
       content,

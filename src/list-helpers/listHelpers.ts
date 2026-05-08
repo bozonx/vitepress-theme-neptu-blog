@@ -1,17 +1,11 @@
+import type { PostLite } from '../types.d.ts'
+
+export type { PostLite }
+
 export interface TagInfo {
   name?: string
   slug?: string
   count?: number
-  [key: string]: unknown
-}
-
-export interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: TagInfo[]
-  authorId?: string
-  analyticsStats?: Record<string, number>
   [key: string]: unknown
 }
 
@@ -21,8 +15,8 @@ interface AuthorLite {
   [key: string]: unknown
 }
 
-/** Safely extract the year from a date. Returns NaN only for truly missing dates. */
-function safeGetYear(date: string | number | Date | undefined): number | undefined {
+/** Safely extract the year from a date. Returns undefined only for truly missing dates. */
+export function safeGetYear(date: string | number | Date | undefined): number | undefined {
   if (!date) return undefined
   const parsed = new Date(date)
   const year = parsed.getUTCFullYear()
@@ -30,7 +24,7 @@ function safeGetYear(date: string | number | Date | undefined): number | undefin
 }
 
 /** Safely extract the month (1-based) from a date. */
-function safeGetMonth(date: string | number | Date | undefined): number | undefined {
+export function safeGetMonth(date: string | number | Date | undefined): number | undefined {
   if (!date) return undefined
   const parsed = new Date(date)
   const month = parsed.getUTCMonth() + 1

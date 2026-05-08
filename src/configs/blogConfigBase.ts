@@ -29,6 +29,66 @@ import type {
   BlogHooks,
 } from '../types.d.ts'
 
+// ---------------------------------------------------------------------------
+// Type adapters — isolate all `as unknown as` casts in one place so the
+// rest of the file can use named, readable casts instead of inline ones.
+// ---------------------------------------------------------------------------
+
+type TransformHeadContext = {
+  head: HeadConfig[]
+  pageData: ExtendedPageData
+  siteConfig: ExtendedSiteConfig
+  page: string
+}
+
+function asExtendedPageData(pageData: unknown): ExtendedPageData {
+  return pageData as ExtendedPageData
+}
+
+function asTransformContext(ctx: unknown): TransformContext {
+  return ctx as unknown as TransformContext
+}
+
+function asExtendedSiteConfig(siteConfig: unknown): ExtendedSiteConfig {
+  return siteConfig as unknown as ExtendedSiteConfig
+}
+
+function asTransformHeadContext(ctx: unknown): TransformHeadContext {
+  return ctx as unknown as TransformHeadContext
+}
+
+// ---------------------------------------------------------------------------
+// Generic hook runner for single-argument hooks.
+// ---------------------------------------------------------------------------
+
+function runHooks<T>(
+  hooks: Array<(arg: T) => void | Promise<void>> | undefined,
+  arg: T
+): Promise<void> {
+  if (!hooks?.length) return Promise.resolve()
+  return hooks.reduce<Promise<void>>(
+    (promise, fn) => promise.then(() => fn(arg)),
+    Promise.resolve()
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tailwind plugin guard — type-safe name check that handles nested arrays.
+// ---------------------------------------------------------------------------
+
+function hasTailwindPlugin(plugins: unknown): boolean {
+  const flat = Array.isArray(plugins)
+    ? (plugins as unknown[]).flat(10)
+    : []
+  return flat.some(
+    (p) =>
+      p != null &&
+      typeof p === 'object' &&
+      'name' in p &&
+      (p as Record<string, unknown>).name === 'tailwindcss'
+  )
+}
+
 type ResolvedBlogConfig = BlogUserConfig & {
   head: NonNullable<UserConfig['head']>
   locales: NonNullable<BlogUserConfig['locales']>
@@ -172,11 +232,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     vite: {
       ...config.vite,
       plugins: [
-        ...(config.vite?.plugins?.some(
-          (p: unknown) => (p as { name: string })?.name === 'tailwindcss'
-        )
-          ? []
-          : [tailwindcss()]),
+        ...(hasTailwindPlugin(config.vite?.plugins) ? [] : [tailwindcss()]),
         ...(config.vite?.plugins || []),
       ],
       ssr: { noExternal: ['vitepress-theme-neptu-blog'], ...config.vite?.ssr },
@@ -224,14 +280,15 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     },
 
     async transformPageData(pageData, ctx) {
-      const extendedPageData = pageData as ExtendedPageData
-      const extendedSiteConfig = ctx.siteConfig as unknown as ExtendedSiteConfig
+      const extendedPageData = asExtendedPageData(pageData)
+      const extendedSiteConfig = asExtendedSiteConfig(ctx.siteConfig)
+      const typedCtx = asTransformContext(ctx)
 
       await runTransformPageDataHooks(
         config.hooks?.transformPageData,
         'before',
         extendedPageData,
-        ctx as unknown as TransformContext
+        typedCtx
       )
 
       collectImageDimensions(extendedPageData, extendedSiteConfig)
@@ -243,17 +300,15 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         config.hooks?.transformPageData,
         'after',
         extendedPageData,
-        ctx as unknown as TransformContext
+        typedCtx
       )
     },
 
     async transformHead(ctx) {
-      const extendedCtx = ctx as unknown as {
-        head: HeadConfig[]
-        pageData: ExtendedPageData
-        siteConfig: ExtendedSiteConfig
-        page: string
-      }
+      const extendedCtx = asTransformHeadContext(ctx)
+      const typedCtx = asTransformContext(ctx)
+
+      await runHooks(config.hooks?.transformHead?.before, typedCtx)
 
       const pageSeo = extendedCtx.pageData.frontmatter?.seo
       const globalSeo = extendedCtx.siteConfig.userConfig?.themeConfig?.seo
@@ -270,17 +325,21 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       if (isSeoEnabled('rss')) addRssLinks(extendedCtx)
 
       if (config.transformHead) {
-        await config.transformHead(ctx as unknown as TransformContext)
+        await config.transformHead(typedCtx)
       }
+
+      await runHooks(config.hooks?.transformHead?.after, typedCtx)
     },
 
     buildEnd: async (cfg: SiteConfig) => {
-      await generateRssFeed(cfg as unknown as ExtendedSiteConfig)
-      generateRobotsTxt(cfg as unknown as ExtendedSiteConfig)
+      await generateRssFeed(asExtendedSiteConfig(cfg))
+      generateRobotsTxt(asExtendedSiteConfig(cfg))
 
       if (config.buildEnd) {
         await config.buildEnd(cfg)
       }
+
+      await runHooks(config.hooks?.buildEnd, cfg)
     },
   } as ResolvedBlogConfig
 }

@@ -8,6 +8,7 @@ import ImageLightbox from '../components/doc-components/ImageLightbox.vue'
 import BlogHome from './BlogHome.vue'
 import DefaultLayout from './DefaultLayout.vue'
 import { LightboxLocalesKey } from '../composables/useLightbox.ts'
+import { TranslationsKey } from '../composables/useTranslations.ts'
 import { resolveTranslationsByFilePath } from '../utils/shared/index.ts'
 
 const { page, frontmatter } = useData()
@@ -46,9 +47,10 @@ const layoutKind = computed(() => {
   return 'default'
 })
 
-const lightboxLocales = computed(
-  () => resolveTranslationsByFilePath(route.path).t.lightbox ?? {}
-)
+const translations = computed(() => resolveTranslationsByFilePath(route.path))
+provide(TranslationsKey, translations)
+
+const lightboxLocales = computed(() => translations.value.t.lightbox ?? {})
 provide(LightboxLocalesKey, lightboxLocales)
 </script>
 
