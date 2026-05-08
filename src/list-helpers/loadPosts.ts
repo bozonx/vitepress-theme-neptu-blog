@@ -9,15 +9,12 @@ import {
 import { makePreviewItem } from './makePreviewItem.ts'
 import type { Post } from '../types.d.ts'
 
-declare global {
-  var neptuBlogCache: Record<string, Post[]> | undefined
-}
+const POSTS_CACHE_KEY = '__neptuBlogCache__'
 
 function getDefaultCache(): Record<string, Post[]> {
-  if (!globalThis.neptuBlogCache) {
-    globalThis.neptuBlogCache = {}
-  }
-  return globalThis.neptuBlogCache
+  const g = globalThis as Record<string, unknown>
+  if (!g[POSTS_CACHE_KEY]) g[POSTS_CACHE_KEY] = {}
+  return g[POSTS_CACHE_KEY] as Record<string, Post[]>
 }
 
 export interface LoadPostsOptions {

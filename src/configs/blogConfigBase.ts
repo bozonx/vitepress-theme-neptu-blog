@@ -6,6 +6,8 @@ import type {
   SiteConfig,
 } from 'vitepress'
 import { omitUndefined } from '../utils/shared/index.ts'
+import { deepMerge } from '../utils/shared/merge.ts'
+import blogBaseLocales from './blogLocalesBase/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
 import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
@@ -27,6 +29,7 @@ import type {
   ThemeConfig,
   SeoConfig,
   BlogHooks,
+  I18n,
 } from '../types.d.ts'
 
 // ---------------------------------------------------------------------------
@@ -100,6 +103,7 @@ type ResolvedBlogConfig = BlogUserConfig & {
   }
   themeConfig: Partial<ThemeConfig> & {
     popularPosts: NonNullable<ThemeConfig['popularPosts']>
+    t: I18n
   }
   vite: NonNullable<UserConfig['vite']> & {
     ssr: NonNullable<NonNullable<UserConfig['vite']>['ssr']>
@@ -214,6 +218,18 @@ function warnMissingRequired(config: BlogUserConfig): void {
   }
 }
 
+/**
+ * Low-level config merge without validation warnings.
+ *
+ * Applies all built-in defaults (head, vite, markdown, sitemap, transformers,
+ * deep-merges postList / popularPosts / t) on top of the provided config.
+ * Does NOT emit warnings for missing required fields.
+ *
+ * Prefer {@link defineBlogConfig} as the standard entry point — it wraps this
+ * function and also calls `warnMissingRequired`. Use `mergeBlogConfig` directly
+ * only when composing configs programmatically and you want to suppress warnings
+ * (e.g. in tests or multi-step merge pipelines).
+ */
 export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
@@ -275,6 +291,11 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         ...commonThemeConfig.postList,
         ...config.themeConfig?.postList,
       },
+
+      t: deepMerge(
+        (blogBaseLocales.en as { t: I18n }).t,
+        (config.themeConfig?.t ?? {}) as Record<string, unknown>
+      ) as I18n,
     },
 
     async transformPageData(pageData, ctx) {
@@ -342,6 +363,15 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   } as ResolvedBlogConfig
 }
 
+/**
+ * Standard entry point for blog configuration.
+ *
+ * Calls {@link mergeBlogConfig} to apply all built-in defaults, and additionally
+ * emits `console.warn` for commonly missed required fields (`siteUrl`, `locales`).
+ *
+ * Use this function in your `.vitepress/config.ts`. Use {@link mergeBlogConfig}
+ * only when you need a silent merge (tests, multi-step composition).
+ */
 export function defineBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   warnMissingRequired(config)
 

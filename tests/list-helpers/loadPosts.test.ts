@@ -4,6 +4,15 @@ import {
   loadPostsDataFromFiles,
 } from '../../src/list-helpers/loadPosts.ts'
 
+const CACHE_KEY = '__neptuBlogCache__'
+function clearGlobalCache() {
+  const g = globalThis as Record<string, unknown>
+  if (g[CACHE_KEY] && typeof g[CACHE_KEY] === 'object') {
+    const cache = g[CACHE_KEY] as Record<string, unknown>
+    for (const k of Object.keys(cache)) delete cache[k]
+  }
+}
+
 const mockReaddir = vi.fn()
 const mockMakePreviewItem = vi.fn((path: string) => ({
   url: path.replace(/\\/g, '/').replace('.md', '.html'),
@@ -22,11 +31,7 @@ vi.mock('../../src/list-helpers/makePreviewItem.ts', () => ({
 describe('loadPostsData', () => {
   beforeEach(() => {
     mockReaddir.mockReset()
-    if (globalThis.neptuBlogCache) {
-      Object.keys(globalThis.neptuBlogCache).forEach(
-        (k) => delete (globalThis.neptuBlogCache as any)[k]
-      )
-    }
+    clearGlobalCache()
   })
 
   afterEach(() => {
@@ -66,7 +71,8 @@ describe('loadPostsData', () => {
     const posts = await loadPostsData('/content/en', { cache: isolatedCache })
     expect(posts).toHaveLength(1)
     // global cache should remain untouched
-    const globalCache = globalThis.neptuBlogCache ?? {}
+    const g = globalThis as Record<string, unknown>
+    const globalCache = (g[CACHE_KEY] as Record<string, unknown>) ?? {}
     expect(Object.keys(globalCache)).not.toContain(
       expect.stringContaining('/content/en')
     )
@@ -91,11 +97,7 @@ describe('loadPostsData', () => {
 
 describe('loadPostsDataFromFiles', () => {
   beforeEach(() => {
-    if (globalThis.neptuBlogCache) {
-      Object.keys(globalThis.neptuBlogCache).forEach(
-        (k) => delete (globalThis.neptuBlogCache as any)[k]
-      )
-    }
+    clearGlobalCache()
   })
 
   afterEach(() => {
@@ -123,7 +125,8 @@ describe('loadPostsDataFromFiles', () => {
     const files = ['/a.md', '/b.md']
     const posts = await loadPostsDataFromFiles(files, { cache: isolatedCache })
     expect(posts).toHaveLength(2)
-    const globalCache = globalThis.neptuBlogCache ?? {}
+    const g = globalThis as Record<string, unknown>
+    const globalCache = (g[CACHE_KEY] as Record<string, unknown>) ?? {}
     const cacheKeys = Object.keys(globalCache)
     // No global key should match our file list
     expect(cacheKeys.some((k) => k.includes('/a.md'))).toBe(false)

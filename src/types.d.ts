@@ -63,7 +63,13 @@ export namespace NeptuBlogTheme {
     UserConfig<Config>,
     'locales' | 'themeConfig'
   > & {
-    themeConfig?: Partial<Config>
+    /**
+     * `t` accepts a partial object — `mergeBlogConfig` deep-merges it over the
+     * built-in English defaults, so you only need to supply the keys you want
+     * to override globally. Per-locale overrides should use `loadBlogLocale`
+     * or `uiLocales[key].t`.
+     */
+    themeConfig?: Partial<Omit<Config, 't'>> & { t?: DeepPartial<I18n> }
     locales?: Record<
       string,
       {

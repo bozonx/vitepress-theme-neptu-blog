@@ -136,6 +136,21 @@ describe('mergeBlogConfig', () => {
     expect(result.themeConfig.popularPosts.sortBy).toBe('pageviews')
   })
 
+  it('provides complete default t from built-in EN locale when t is not specified', () => {
+    const result = mergeBlogConfig({})
+    expect(result.themeConfig.t).toBeDefined()
+    expect(typeof result.themeConfig.t.popularPosts).toBe('string')
+    expect(typeof result.themeConfig.t.tags).toBe('string')
+  })
+
+  it('deep merges partial t over built-in defaults', () => {
+    const result = mergeBlogConfig({
+      themeConfig: { t: { popularPosts: 'Top Posts' } },
+    })
+    expect(result.themeConfig.t.popularPosts).toBe('Top Posts')
+    expect(typeof result.themeConfig.t.tags).toBe('string')
+  })
+
   it('deep merges themeConfig.postList', () => {
     const result = mergeBlogConfig({
       themeConfig: { postList: { showTags: false, maxPreviewLength: 120 } },
