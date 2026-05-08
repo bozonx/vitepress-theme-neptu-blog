@@ -5,7 +5,7 @@ import type {
   TransformContext,
   SiteConfig,
 } from 'vitepress'
-import { omitUndefined } from '../utils/shared/index.ts'
+import { omitUndefined, hasNoIndex } from '../utils/shared/index.ts'
 import { deepMerge } from '../utils/shared/merge.ts'
 import blogBaseLocales from './blogLocalesBase/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
@@ -222,19 +222,25 @@ function warnMissingRequired(config: BlogUserConfig): void {
  * Low-level config merge without validation warnings.
  *
  * Applies all built-in defaults (head, vite, markdown, sitemap, transformers,
- * deep-merges postList / popularPosts / t) on top of the provided config.
- * Does NOT emit warnings for missing required fields.
+ * deep-merges postList / popularPosts / t) on top of the provided config. Does
+ * NOT emit warnings for missing required fields.
  *
  * Prefer {@link defineBlogConfig} as the standard entry point — it wraps this
  * function and also calls `warnMissingRequired`. Use `mergeBlogConfig` directly
- * only when composing configs programmatically and you want to suppress warnings
- * (e.g. in tests or multi-step merge pipelines).
+ * only when composing configs programmatically and you want to suppress
+ * warnings (e.g. in tests or multi-step merge pipelines).
  */
 export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   const externalLinkIcon =
     typeof config.themeConfig?.externalLinkIcon === 'boolean'
       ? config.themeConfig.externalLinkIcon
       : commonThemeConfig.externalLinkIcon
+
+  const noIndexUrls = new Set<string>()
+
+  function normalizeSitemapUrl(relativePath: string): string {
+    return relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '')
+  }
 
   return {
     ...common,
@@ -254,7 +260,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     sitemap: {
       hostname: config.siteUrl,
       transformItems: (items) => {
-        return filterSitemap(items as unknown as SitemapItem[])
+        return filterSitemap(items as unknown as SitemapItem[], noIndexUrls)
       },
       ...config.sitemap,
     } as UserConfig['sitemap'],
@@ -315,6 +321,10 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       transformPageMeta(extendedPageData)
       resolveDescription(extendedPageData, { siteConfig: extendedSiteConfig })
 
+      if (hasNoIndex(extendedPageData.frontmatter.head)) {
+        noIndexUrls.add(normalizeSitemapUrl(extendedPageData.relativePath))
+      }
+
       await runTransformPageDataHooks(
         config.hooks?.transformPageData,
         'after',
@@ -337,9 +347,11 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         return true
       }
 
+      const isNoIndex = hasNoIndex(extendedCtx.pageData.frontmatter?.head)
+
       if (isSeoEnabled('og')) addOgMetaTags(extendedCtx)
-      if (isSeoEnabled('jsonLd')) addJsonLd(extendedCtx)
-      if (isSeoEnabled('hreflang')) addHreflang(extendedCtx)
+      if (!isNoIndex && isSeoEnabled('jsonLd')) addJsonLd(extendedCtx)
+      if (!isNoIndex && isSeoEnabled('hreflang')) addHreflang(extendedCtx)
       if (isSeoEnabled('canonical')) addCanonicalLink(extendedCtx)
       if (isSeoEnabled('rss')) addRssLinks(extendedCtx)
 
@@ -367,7 +379,8 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
  * Standard entry point for blog configuration.
  *
  * Calls {@link mergeBlogConfig} to apply all built-in defaults, and additionally
- * emits `console.warn` for commonly missed required fields (`siteUrl`, `locales`).
+ * emits `console.warn` for commonly missed required fields (`siteUrl`,
+ * `locales`).
  *
  * Use this function in your `.vitepress/config.ts`. Use {@link mergeBlogConfig}
  * only when you need a silent merge (tests, multi-step composition).

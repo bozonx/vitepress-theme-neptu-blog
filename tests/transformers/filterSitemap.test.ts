@@ -137,4 +137,24 @@ describe('filterSitemap', () => {
     ]
     expect(filterSitemap(items)).toEqual(items)
   })
+
+  it('filters out user-defined noindex pages', () => {
+    const items: SitemapItem[] = [
+      { url: 'en/private-page', links: [] },
+      { url: 'en/public-page', links: [] },
+      { url: 'en/another-private/', links: [] },
+    ]
+    const noIndexUrls = new Set(['en/private-page', 'en/another-private/'])
+    expect(filterSitemap(items, noIndexUrls)).toEqual([
+      { url: 'en/public-page', links: [] },
+    ])
+  })
+
+  it('does not filter when noIndexUrls is not provided', () => {
+    const items: SitemapItem[] = [
+      { url: 'en/private-page', links: [] },
+      { url: 'en/public-page', links: [] },
+    ]
+    expect(filterSitemap(items)).toEqual(items)
+  })
 })
