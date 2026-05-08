@@ -6,15 +6,14 @@ import {
   HomeHero,
   HomeTags,
   HomePopularPosts,
-  UtilPageContent,
 } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 
 const { theme, localeIndex } = useData()
 
 const hero = {
-  firstLine: "Example blog",
-  secondLine: "Articles, new&nbsp;of&nbsp;the&nbsp;movement",
+  firstLine: "Example Blog",
+  secondLine: "A demo of the&nbsp;vitepress&#8209;theme&#8209;neptu&#8209;blog",
   img: {
     src: theme.value.mainHeroImg,
     alt: "Example blog logo",
@@ -26,13 +25,8 @@ const hero = {
       primary: true,
     },
     {
-      text: `Our Telegram channel`,
-      href: "https://t.me/...",
-      icon: theme.value.telegramIcon,
-    },
-    {
       text: theme.value.t.links.donate,
-      href: `${theme.value.donate.url}`,
+      href: theme.value.donate?.url,
       icon: theme.value.donateIcon,
     },
   ],
@@ -43,10 +37,11 @@ const hero = {
 <HomeTags :header="theme.t.tags" />
 <HomePopularPosts />
 
-<!-- <UtilPageContent> -->
-<!---->
-<!-- ## header -->
-<!---->
-<!-- other text -->
-<!---->
-<!-- </UtilPageContent> -->
+<!-- Optional: add a static text block below the hero. -->
+<!-- <UtilPageContent>                                  -->
+<!--                                                    -->
+<!-- ## Welcome                                         -->
+<!--                                                    -->
+<!-- Some introductory text here.                       -->
+<!--                                                    -->
+<!-- </UtilPageContent>                                 -->

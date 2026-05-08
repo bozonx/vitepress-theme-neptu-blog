@@ -2,105 +2,128 @@ body: |
   lang: "en-US"
   title: "Example Blog"
   description: "Example Blog Description"
-  siteTitle: "Example Blog title"
+  siteTitle: "Example Blog"
 
+  # ---------------------------------------------------------------------------
+  # Donate button — shown in the top bar and/or sidebar based on the topBar /
+  # sideBar config below.
+  # ---------------------------------------------------------------------------
   donate:
     url: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
-    postDonateCall: "If you like this project, please support it financially."
-    # optional. By default it is used theme.donateIcon
-    # icon: "${theme.donateIcon}"
+    postDonateCall: "If you find this blog useful, consider supporting it."
+    # icon: "${theme.donateIcon}"  # override the default heart icon
 
-  # Configuration of the publisher for JSON-LD
+  # ---------------------------------------------------------------------------
+  # Publisher info — used in the auto-generated JSON-LD for every page.
+  # ---------------------------------------------------------------------------
   publisher:
     name: "Your Blog Name"
-    url: "https://yourblog.com"
-    logo: "https://yourblog.com/logo.png"
+    url: "https://myblog.org"
+    logo: "https://myblog.org/img/logo.png"
 
+  # ---------------------------------------------------------------------------
+  # Authors — referenced by posts via authorId.
+  # ---------------------------------------------------------------------------
   authors:
     - id: "ivan-k"
       name: "Ivan K"
-      description: "some descr"
+      description: "Author and editor of this blog."
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
-      # optional. If set then it will be used instead of author page link
-      # aboutUrl: "https://....com"
+      # imageWidth: 200     # optional — avoids layout shift
+      # imageHeight: 200
+      # twitterHandle: "your_handle"
+      # aboutUrl: "https://your-personal-site.com"  # overrides the auto-generated author page link
       links:
-        - type: "youtube"
-          url: "https://www.youtube.com/..."
-          title: "YouTube channel ..."
-      # put here any other params of the @type: Person, 
+        - type: "github"
+          url: "https://github.com/"
+          title: "GitHub profile"
+        # - type: "youtube"
+        #   url: "https://www.youtube.com/..."
+        #   title: "YouTube channel"
+
+  # ---------------------------------------------------------------------------
+  # Footer
+  # ---------------------------------------------------------------------------
   footer:
     message: "Copying allowed only with a link to the source."
-    copyright: "Copyright © 2024-present ... ."
+    copyright: "Copyright © 2024-present Your Name."
     links:
-     - text: "${t.links.aboutBlog}"
-       href: "page/about-blog"
+      - text: "${t.links.aboutBlog}"
+        href: "page/about-blog"
+
+  # ---------------------------------------------------------------------------
+  # Top bar
+  # ---------------------------------------------------------------------------
   topBar:
-    # Show donate button in top bar. Default is false.
+    # Show the donate button in the top bar.
     donate: true
     links:
+      - text: "Some link"
+        href: "https://example.org/"
+        icon: "solar:document-linear"
       # - text: "${t.links.donate}"
       #   href: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
       #   icon: "${theme.donateIcon}"
-      #   iconClass: donate-icon
-      #   mobileToo: true
-      - text: "Some link"
-        href: "https://example.org/${localeIndex}/"
-        icon: "solar:document-linear"
+      #   mobileOnly: true   # show only on mobile (where sidebar is hidden)
     socialLinks:
       - icon: 'fa6-brands:github-alt'
-        href: "${config.repo}"
-        title: 'This blog on Github'
+        link: "${config.repo}"
         desktopOnly: true
+
+  # ---------------------------------------------------------------------------
+  # Sidebar
+  # ---------------------------------------------------------------------------
   sideBar:
-    # Show popular posts in side bar. Default is false.
-    popular: true
-    # Show recent posts in side bar. Default is false.
-    recent: true
-    # Show archive in side bar. Default is false.
-    archive: true
-    # Show authors in side bar. Default is false.
-    authors: true
-    # Show donate button in the bottom of the side bar. Default is false.
-    donate: true
-    # Show rss feed in the bottom of the side bar. Default is false.
-    rssFeed: true
-    # Show atom feed in the bottom of the side bar. Default is false.
-    atomFeed: true
-    # Show tags in the side bar. Default is false
-    tags: true
+    popular: true   # Show popular posts section. Requires popularPosts.enabled.
+    recent: true    # Show recent posts section.
+    archive: true   # Show archive (by year) section.
+    authors: true   # Show authors section.
+    tags: true      # Show tags cloud.
+    donate: true    # Show donate button at the bottom.
+    rssFeed: true   # Show RSS feed link.
+    atomFeed: true  # Show Atom feed link.
     socialLinks:
       - icon: 'fa6-brands:github-alt'
-        href: "${config.repo}"
-        title: 'This blog on Github'
-    #links:
-    #  - text: "${t.links.recent}"
-    #    href: "${theme.recentBaseUrl}/1"
-    #    icon: "${theme.recentIcon}"
+        link: "${config.repo}"
+    # links:
+    #   - text: "${t.links.recent}"
+    #     href: "${theme.recentBaseUrl}/1"
+    #     icon: "${theme.recentIcon}"
     bottomLinks:
       - text: "${t.links.donate}"
         href: "${theme.mainSiteUrl}/${localeIndex}/page/donate"
         icon: "${theme.donateIcon}"
-        mobile: true
-      - text: "Guide"
-        href: "${theme.mainSiteUrl}/${localeIndex}/doc"
-        icon: "solar:document-linear"
-        mobile: true
+        mobileOnly: true
       - { header: "${t.links.links}" }
-      - text: "Our Youtube channel"
-        href: "https://www.youtube.com/@p"
+      - text: "Our YouTube channel"
+        href: "https://www.youtube.com/"
         icon: "${theme.youtubeIcon}"
-      - text: "Our Telegram channel"
-        href: "https://t.me/"
-        icon: "${theme.telegramIcon}"
-      - text: "Our Telegram chat"
-        href: "https://t.me/"
-        icon: "${theme.chatIcon}"
       - text: "We in social media"
         href: "${theme.mainSiteUrl}/${localeIndex}/page/links"
         icon: "${theme.socialLinksIcon}"
-      - text: "RSS feed"
-        href: "${hostname}/${localeIndex}/feed.rss"
-        icon: "${theme.rssIcon}"
-      - text: "Atom feed"
-        href: "${theme.hostname}/${localeIndex}/feed.atom"
-        icon: "${theme.atomIcon}"
+
+  # ---------------------------------------------------------------------------
+  # Social sharing buttons in the post footer.
+  # Uncomment and customise — each entry needs name, icon, title, urlTemplate.
+  # {url} and {title} are replaced with the current page URL and title.
+  # ---------------------------------------------------------------------------
+  # socialMediaShares:
+  #   - name: twitter
+  #     icon: "fa6-brands:x-twitter"
+  #     title: "Share on X"
+  #     urlTemplate: "https://twitter.com/intent/tweet?url={url}&text={title}"
+  #   - name: telegram
+  #     icon: "fa6-brands:telegram"
+  #     title: "Share on Telegram"
+  #     urlTemplate: "https://t.me/share/url?url={url}&text={title}"
+
+  # ---------------------------------------------------------------------------
+  # Global SEO overrides — each defaults to true.
+  # Per-page overrides are available via the `seo` frontmatter field.
+  # ---------------------------------------------------------------------------
+  # seo:
+  #   og: true
+  #   jsonLd: true
+  #   hreflang: true
+  #   canonical: true
+  #   rss: true

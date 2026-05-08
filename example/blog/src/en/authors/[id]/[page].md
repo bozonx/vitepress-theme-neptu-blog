@@ -1,6 +1,5 @@
 ---
-title: "{{theme.authors.find((item) => item.id === params?.id)?.
-name}}"
+title: "{{theme.authors.find((item) => item.id === params?.id)?.name}}"
 layout: util
 ---
 

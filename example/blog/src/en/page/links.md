@@ -1,3 +1,10 @@
-# Social media links
+---
+title: Links
+description: Our social media profiles and communities.
+---
 
-Our social media links:
+# Links
+
+- [GitHub](https://github.com/)
+- [YouTube](https://youtube.com/)
+- [Telegram](https://t.me/)

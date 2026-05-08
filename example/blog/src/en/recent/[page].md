@@ -1,5 +1,5 @@
 ---
-title: "{{theme.t.recentPosts}}"
+title: "{{theme.t.links.recent}}"
 layout: util
 head:
   - - meta
