@@ -127,8 +127,8 @@ collections:
         widget: "string"
         required: false
         i18n: true
-      - label: "commentUrl"
-        name: "commentUrl"
+      - label: "commentLink"
+        name: "commentLink"
         widget: "string"
         required: false
         preview: false

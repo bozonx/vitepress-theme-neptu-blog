@@ -368,8 +368,8 @@ authorId: 'john-smith'
 cover: /media/cover.jpg
 coverDescr: 'Cover description'
 coverAlt: 'Alt text'
-# Social comments URL
-commentUrl: 'https://...'
+# External comment link
+commentLink: 'https://...'
 # Tags (spaces allowed)
 tags:
   - 'some tag'

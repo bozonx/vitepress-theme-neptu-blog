@@ -70,7 +70,7 @@ export default {
     year: 'Год',
     showMorePosts: 'Ещё',
     listenPodcast: 'Слушать подкаст',
-    commentCall: 'Комментировать в Telegram канале',
+    commentLink: 'Обсудить пост',
     allTagsCall: 'Смотреть все тэги',
     popularPostsCall: 'Смотреть все популярные посты',
     viewInAnotherLanguage: 'Смотреть на другом языке',

@@ -99,7 +99,6 @@ const downloadFile = async () => {
     if (!isValidUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidUrlProvided
-      console.error('Invalid URL provided')
       return
     }
 
@@ -113,10 +112,9 @@ const downloadFile = async () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-  } catch (error) {
+  } catch {
     hasError.value = true
     errorMessage.value = theme.value.t.audioFile.errorDownloadingFile
-    console.error('Error downloading file:', error)
     // On error, open the file in a new tab
     window.open(encodeAudioUrl(props.url), '_blank')
   }
@@ -156,7 +154,6 @@ const togglePlayPause = async () => {
     if (!isValidUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidAudioUrlProvided
-      console.error('Invalid audio URL provided')
       return
     }
 
@@ -179,8 +176,7 @@ const togglePlayPause = async () => {
     } else {
       await audioRef.value.play()
     }
-  } catch (error) {
-    console.error('Error playing audio:', error)
+  } catch {
     hasError.value = true
     errorMessage.value = theme.value.t.audioFile.errorPlayingAudioFile
   }
@@ -319,23 +315,18 @@ const handleError = (event: Event) => {
     switch (error.code) {
       case error.MEDIA_ERR_ABORTED:
         errorMessage.value = theme.value.t.audioFile.audioPlaybackAborted
-        console.error('Audio playback was aborted')
         break
       case error.MEDIA_ERR_NETWORK:
         errorMessage.value = theme.value.t.audioFile.networkErrorLoadingAudio
-        console.error('Network error occurred while loading audio')
         break
       case error.MEDIA_ERR_DECODE:
         errorMessage.value = theme.value.t.audioFile.audioDecodingError
-        console.error('Audio decoding error')
         break
       case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
         errorMessage.value = theme.value.t.audioFile.audioFormatNotSupported
-        console.error('Audio format not supported')
         break
       default:
         errorMessage.value = theme.value.t.audioFile.unknownAudioError
-        console.error('Unknown audio error occurred')
     }
   } else {
     errorMessage.value = theme.value.t.audioFile.errorLoadingAudioFile

@@ -53,8 +53,7 @@ const downloadFile = async () => {
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
-  } catch (error) {
-    console.error('Error downloading file:', error)
+  } catch {
     // On error, open the file in a new tab
     window.open(props.url, '_blank')
   }

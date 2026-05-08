@@ -9,10 +9,10 @@ const { theme } = useUiTheme()
 </script>
 
 <template>
-  <div v-if="frontmatter.commentUrl">
+  <div v-if="frontmatter.commentLink">
     <NeptuBtnLink
-      :href="frontmatter.commentUrl"
-      :text="theme.t.commentCall"
+      :href="frontmatter.commentLink"
+      :text="theme.t.commentLink"
       target="_blank"
       icon="fa6-solid:comment-dots"
       class="underline"

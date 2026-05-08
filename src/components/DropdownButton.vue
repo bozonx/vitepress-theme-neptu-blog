@@ -12,7 +12,7 @@ const props = defineProps<{
 }>()
 const animationTimeMs = 400
 const mouseLeaveDelayMs = 400
-const menuId = `dropdown-menu-${Math.random().toString(36).slice(2, 10)}`
+const menuId = `dropdown-menu-${crypto.randomUUID()}`
 const listOpen = ref(false)
 const opacity = ref(0)
 const mouseOverWholeEl = ref(false)

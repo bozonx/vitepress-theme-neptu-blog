@@ -1,7 +1,12 @@
 import slug from 'slug'
 import { isPathValid, deepGet } from './object.ts'
 
-/** Safe eval for template expressions */
+/**
+ * Safe eval for template expressions. Uses `new Function()` with data injected
+ * as named parameters — expressions cannot access outer scope or globals beyond
+ * what is explicitly passed in `data`. Only called when `eval: true` is set by
+ * the caller, so opt-in only.
+ */
 function safeEval(expression: string, data: Record<string, unknown>): unknown {
   try {
     const trimmedExpr = expression.trim()

@@ -179,7 +179,7 @@ export namespace NeptuBlogTheme {
     year: string
     showMorePosts: string
     listenPodcast: string
-    commentCall: string
+    commentLink: string
     allTagsCall: string
     popularPostsCall: string
     viewInAnotherLanguage: string

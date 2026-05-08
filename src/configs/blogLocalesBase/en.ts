@@ -70,7 +70,7 @@ export default {
     year: 'Year',
     showMorePosts: 'Load More',
     listenPodcast: 'Listen to podcast',
-    commentCall: 'Comment on Telegram Channel',
+    commentLink: 'Discuss this post',
     allTagsCall: 'View All Tags',
     popularPostsCall: 'View All Popular Posts',
     viewInAnotherLanguage: 'View in another language',
