@@ -27,11 +27,11 @@ describe('loadConfigYamlFile', () => {
     expect(result).toEqual({ title: 'Hello' })
   })
 
-  it('unwraps body wrapper', () => {
+  it('returns body field as-is without unwrapping', () => {
     vi.mocked(fs.existsSync).mockReturnValue(true)
     vi.mocked(fs.readFileSync).mockReturnValue('body: |\n  title: Wrapped\n')
     const result = loadConfigYamlFile('/src', 'site.en.yaml')
-    expect(result).toEqual({ title: 'Wrapped' })
+    expect(result).toEqual({ body: 'title: Wrapped\n' })
   })
 
   it('returns empty object on parse error', () => {

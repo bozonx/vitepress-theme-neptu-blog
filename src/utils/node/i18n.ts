@@ -12,33 +12,21 @@ export interface ParseLocaleSiteProps {
 }
 
 export function parseLocaleSite(srcDir: string, props: ParseLocaleSiteProps): unknown {
-  const translations = loadConfigYamlFile(
-    srcDir,
-    `site.${props.localeIndex}.yaml`
-  )
+  const fileName = `site.${props.localeIndex}.yaml`
+  const absPath = path.join(srcDir, SITE_DIR_REL_PATH, fileName)
 
-  function transRecursive(items: unknown): unknown {
-    if (Array.isArray(items)) {
-      for (const index in items) {
-        items[index] = transRecursive(items[index])
-      }
-
-      return items
-    } else if (items && typeof items === 'object') {
-      const obj = items as Record<string, unknown>
-      for (const index of Object.keys(obj)) {
-        obj[index] = transRecursive(obj[index])
-      }
-
-      return obj
-    } else if (typeof items === 'string') {
-      return standardTemplate(items, props as Record<string, unknown>)
-    }
-
-    return items
+  if (!fs.existsSync(absPath)) {
+    return {}
   }
 
-  return transRecursive(translations)
+  try {
+    const raw = fs.readFileSync(absPath, DEFAULT_ENCODE)
+    const substituted = standardTemplate(raw, props as Record<string, unknown>)
+    return yaml.parse(substituted) || {}
+  } catch (error) {
+    console.warn(`Failed to parse config file ${fileName}:`, (error as Error)?.message)
+    return {}
+  }
 }
 
 export function loadConfigYamlFile(srcDir: string, fileName: string): unknown {
@@ -50,13 +38,7 @@ export function loadConfigYamlFile(srcDir: string, fileName: string): unknown {
 
   try {
     const content = fs.readFileSync(absPath, DEFAULT_ENCODE)
-    const obj = yaml.parse(content)
-
-    if (obj && typeof obj === 'object' && 'body' in obj && typeof obj.body === 'string') {
-      return yaml.parse(obj.body)
-    }
-
-    return obj || {}
+    return yaml.parse(content) || {}
   } catch (error) {
     console.warn(`Failed to parse config file ${absPath}:`, (error as Error)?.message)
     return {}
