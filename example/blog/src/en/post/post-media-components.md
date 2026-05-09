@@ -33,9 +33,8 @@ Displays an inline audio player with a download link. Provide a publicly
 accessible URL to the audio file.
 
 <AudioFile
-  src="https://www.w3schools.com/html/horse.mp3"
-  name="Sample audio (horse.mp3)"
-  duration="0:04"
+  url="https://www.w3schools.com/html/horse.mp3"
+  filename="Sample audio (horse.mp3)"
 />
 
 ## FileDownload
@@ -43,9 +42,8 @@ accessible URL to the audio file.
 Renders a styled download button for any file.
 
 <FileDownload
-  src="https://www.w3.org/WAI/WCAG21/wcag21.pdf"
-  name="WCAG 2.1 PDF"
-  size="2.5 MB"
+  url="https://www.w3.org/WAI/WCAG21/wcag21.pdf"
+  filename="WCAG 2.1 PDF"
 />
 
 ## Using components together

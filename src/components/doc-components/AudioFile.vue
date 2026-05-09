@@ -429,22 +429,16 @@ onUnmounted(() => {
       </div>
 
       <!-- Download button -->
-      <a
-        :href="url"
-        :download="downloadFilename"
-        class="audio-file-download flex items-center justify-center w-8 h-8 rounded-md"
-      >
-        <NeptuBtn
-          icon="mdi:download"
-          :disabled="isDisabled"
-          :text="theme.t.audioFile.downloadFile"
-          class="download-btn-header shrink-0"
-          :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
-          role="button"
-          tabindex="0"
-          @click="downloadFile"
-        />
-      </a>
+      <NeptuBtn
+        icon="mdi:download"
+        :disabled="isDisabled"
+        :text="theme.t.audioFile.downloadFile"
+        class="download-btn-header shrink-0"
+        :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
+        role="button"
+        tabindex="0"
+        @click="downloadFile"
+      />
     </div>
 
     <!-- Audio player (shown when play is clicked) -->
