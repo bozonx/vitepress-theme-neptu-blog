@@ -8,6 +8,7 @@ import './styles/vendor/vp-doc.css'
 import FileDownload from './components/doc-components/FileDownload.vue'
 import AudioFile from './components/doc-components/AudioFile.vue'
 import YoutubeVideo from './components/doc-components/YoutubeVideo.vue'
+import VideoFile from './components/doc-components/VideoFile.vue'
 import './styles/vendor/vp-common.css'
 import './styles/vendor/vp-icons.css'
 import './styles/search-modal.css'
@@ -23,5 +24,6 @@ export default {
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)
     ctx.app.component('YoutubeVideo', YoutubeVideo)
+    ctx.app.component('VideoFile', VideoFile)
   },
 }

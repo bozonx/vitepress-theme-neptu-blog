@@ -352,8 +352,6 @@ const progressPercent = computed(() => {
 
 // Initialize on component mount
 onMounted(() => {
-  // Event handlers are now only in template, removing duplication
-  // Set default volume
   if (audioRef.value) {
     audioRef.value.volume = volume.value
   }
@@ -361,7 +359,6 @@ onMounted(() => {
 
 // Cleanup on component unmount
 onUnmounted(() => {
-  // Cleanup is not needed because handlers are only in template
   if (audioRef.value) {
     audioRef.value.pause()
     audioRef.value.currentTime = 0
@@ -371,7 +368,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="audio-file flex flex-col rounded-xl gap-4 mb-[0.325rem] transition-all duration-200"
+    class="audio-file rounded-xl mb-[0.325rem] transition-all duration-200"
     :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
@@ -391,97 +388,86 @@ onUnmounted(() => {
       @error="handleError"
     />
 
-    <!-- First row: play button, filename, download button -->
+    <!-- Header row: icon + filename + buttons -->
     <div class="file-header flex items-center gap-3 px-4 py-3">
-      <!-- Play button -->
-      <NeptuBtn
-        v-if="!isPlayerVisible"
-        :primary="true"
-        class="play-btn-header"
-        :disabled="isDisabled || hasError"
-        :title="
-          isPlaying ? theme.t.audioFile.pauseAudio : theme.t.audioFile.playAudio
-        "
-        :aria-label="
-          isPlaying
-            ? theme.t.audioFile.pauseAudioPlayback
-            : theme.t.audioFile.startAudioPlayback
-        "
-        :aria-pressed="isPlaying"
-        role="button"
-        tabindex="0"
-        :icon="isLoading ? 'mdi:loading' : 'mdi:play'"
-        :icon-class="{ spinning: isLoading }"
-        @click="togglePlayPause"
-      />
+      <!-- Music icon badge -->
+      <div class="file-icon flex items-center justify-center w-9 h-9 rounded-lg shrink-0">
+        <Icon icon="mdi:music-note" class="text-xl" aria-hidden="true" />
+      </div>
 
       <!-- File info -->
-      <div class="file-info flex gap-3 min-w-0 flex-1" :class="{ 'has-hint': $slots.default }">
-        <div class="audio-file-icon flex items-center justify-center w-10 h-10 rounded-lg"></div>
-        <div class="audio-file-info flex-1 min-w-0">
-          <div class="text-xs mt-1 font-medium text-sm break-all" :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`">
-            {{ downloadFilename }}
-          </div>
-          <div v-if="$slots.default" class="file-hint text-xs mt-1">
-            <slot />
-          </div>
+      <div class="flex-1 min-w-0">
+        <div
+          class="filename text-sm font-medium truncate"
+          :aria-label="`${theme.t.audioFile.audioFile}: ${downloadFilename}`"
+        >
+          {{ downloadFilename }}
+        </div>
+        <div v-if="$slots.default" class="file-hint text-xs mt-0.5">
+          <slot />
         </div>
       </div>
 
-      <!-- Download button -->
-      <NeptuBtn
-        icon="mdi:download"
-        :disabled="isDisabled"
-        :text="theme.t.audioFile.downloadFile"
-        class="download-btn-header shrink-0"
-        :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
-        role="button"
-        tabindex="0"
-        @click="downloadFile"
-      />
+      <!-- Action buttons -->
+      <div class="flex items-center gap-2 shrink-0">
+        <NeptuBtn
+          v-if="!isPlayerVisible"
+          :primary="true"
+          :disabled="isDisabled || hasError"
+          :title="theme.t.audioFile.playAudio"
+          :aria-label="theme.t.audioFile.startAudioPlayback"
+          :aria-pressed="isPlaying"
+          role="button"
+          tabindex="0"
+          :icon="isLoading ? 'mdi:loading' : 'mdi:play'"
+          :icon-class="{ spinning: isLoading }"
+          @click="togglePlayPause"
+        />
+
+        <NeptuBtn
+          icon="mdi:download"
+          :disabled="isDisabled"
+          :text="theme.t.audioFile.downloadFile"
+          :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
+          role="button"
+          tabindex="0"
+          @click="downloadFile"
+        />
+      </div>
     </div>
 
     <!-- Audio player (shown when play is clicked) -->
     <div
       v-if="isPlayerVisible"
-      class="audio-player flex flex-col gap-3 p-4 rounded-lg border"
+      class="player-section"
       role="group"
       :aria-label="`${theme.t.audioFile.audioFile} controls for ${downloadFilename}`"
     >
-      <!-- Main controls -->
+      <!-- Divider -->
+      <div class="player-divider mx-4" />
+
+      <!-- Controls + progress row -->
       <div
-        class="player-controls flex items-center gap-3"
+        class="player-controls flex items-center gap-2 px-4 pt-3 pb-1"
         role="toolbar"
         :aria-label="theme.t.audioFile.audioFile + ' playback controls'"
       >
-        <!-- Play/pause button -->
+        <!-- Play/pause -->
         <NeptuBtn
-          class="play-btn"
           :primary="true"
           :disabled="isDisabled || hasError"
-          :title="
-            isPlaying
-              ? theme.t.audioFile.pauseAudio
-              : theme.t.audioFile.playAudio
-          "
-          :aria-label="
-            isPlaying
-              ? theme.t.audioFile.pauseAudioPlayback
-              : theme.t.audioFile.resumeAudioPlayback
-          "
+          :title="isPlaying ? theme.t.audioFile.pauseAudio : theme.t.audioFile.playAudio"
+          :aria-label="isPlaying ? theme.t.audioFile.pauseAudioPlayback : theme.t.audioFile.resumeAudioPlayback"
           :aria-pressed="isPlaying"
           role="button"
           tabindex="0"
-          :icon="
-            isLoading ? 'mdi:loading' : isPlaying ? 'mdi:pause' : 'mdi:play'
-          "
+          :icon="isLoading ? 'mdi:loading' : isPlaying ? 'mdi:pause' : 'mdi:play'"
           :icon-class="{ spinning: isLoading }"
           @click="togglePlayPause"
         />
 
-        <!-- Stop button -->
+        <!-- Stop -->
         <NeptuBtn
-          class="stop-btn"
           :disabled="isDisabled || hasError || !isPlaying"
           :title="theme.t.audioFile.stopAudio"
           :aria-label="theme.t.audioFile.stopAudioPlayback"
@@ -491,37 +477,9 @@ onUnmounted(() => {
           @click="stopAudio"
         />
 
-        <!-- Hide player button -->
-        <NeptuBtn
-          class="hide-btn"
-          :title="theme.t.audioFile.hidePlayerTitle"
-          :aria-label="theme.t.audioFile.hidePlayer"
-          role="button"
-          tabindex="0"
-          icon="mdi:chevron-up"
-          @click="hidePlayer"
-        />
-
-        <!-- Время -->
+        <!-- Progress bar -->
         <div
-          class="time-display text-sm ml-auto flex items-center gap-1 h-7 min-w-0 font-medium px-2.5 rounded"
-          role="timer"
-          :aria-label="`${theme.t.audioFile.currentTime}: ${formatTime(currentTime)} of ${formatTime(duration)}`"
-        >
-          <span class="current-time" aria-hidden="true">{{
-            formatTime(currentTime)
-          }}</span>
-          <span class="time-separator" aria-hidden="true">/</span>
-          <span class="total-time" aria-hidden="true">{{
-            formatTime(duration)
-          }}</span>
-        </div>
-      </div>
-
-      <!-- Прогресс-бар -->
-      <div class="progress-container px-4 flex-1 min-w-0">
-        <div
-          class="progress-bar flex items-center gap-3 cursor-pointer py-3 outline-none rounded transition-all duration-200"
+          class="progress-bar flex-1 flex items-center cursor-pointer py-2 outline-none rounded"
           role="slider"
           :aria-label="`${theme.t.audioFile.audioProgress}: ${Math.round(progressPercent)}%`"
           :aria-valuemin="0"
@@ -532,21 +490,42 @@ onUnmounted(() => {
           @click="handleProgressClick"
           @keydown="handleProgressKeydown"
         >
-          <div class="progress-track flex h-1 rounded-sm overflow-hidden w-full relative">
+          <div class="progress-track w-full h-1.5 rounded-full overflow-hidden">
             <div
-              class="progress-fill h-full rounded-sm min-w-0 relative"
+              class="progress-fill h-full rounded-full"
               :style="{ width: `${progressPercent}%` }"
             />
           </div>
         </div>
+
+        <!-- Time display -->
+        <div
+          class="time-display text-xs font-mono px-2 py-1 rounded"
+          role="timer"
+          :aria-label="`${theme.t.audioFile.currentTime}: ${formatTime(currentTime)} of ${formatTime(duration)}`"
+        >
+          <span aria-hidden="true">{{ formatTime(currentTime) }}</span>
+          <span class="time-sep" aria-hidden="true"> / </span>
+          <span aria-hidden="true">{{ formatTime(duration) }}</span>
+        </div>
+
+        <!-- Hide player -->
+        <NeptuBtn
+          :title="theme.t.audioFile.hidePlayerTitle"
+          :aria-label="theme.t.audioFile.hidePlayer"
+          role="button"
+          tabindex="0"
+          icon="mdi:chevron-up"
+          @click="hidePlayer"
+        />
       </div>
 
-      <!-- Контрол громкости -->
-      <div class="volume-control flex items-center gap-2">
-        <Icon icon="mdi:volume-high" class="volume-icon text-xl" aria-hidden="true" />
+      <!-- Volume row -->
+      <div class="volume-row flex items-center gap-2 px-4 pb-3">
+        <Icon icon="mdi:volume-high" class="volume-icon text-base shrink-0" aria-hidden="true" />
         <input
           v-model="volume"
-          class="volume-slider w-full"
+          class="volume-slider flex-1"
           type="range"
           min="0"
           max="1"
@@ -562,22 +541,21 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Сообщение об ошибке -->
-    <div v-if="hasError" class="error-message flex items-center gap-2 px-4 py-3 rounded-md text-sm" role="alert" aria-live="polite">
-      <Icon icon="mdi:alert-circle" aria-hidden="true" />
-      <span>{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
+    <!-- Error message -->
+    <div
+      v-if="hasError"
+      class="error-message flex items-center gap-2 mx-4 mb-3 px-3 py-2 rounded-lg text-sm"
+      role="alert"
+      aria-live="polite"
+    >
+      <Icon icon="mdi:alert-circle" class="shrink-0" aria-hidden="true" />
+      <span class="flex-1">{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
       <NeptuBtn
         v-if="!isValidUrl(props.url)"
-        class="retry-btn"
         :aria-label="theme.t.audioFile.retryWithValidUrl"
         icon="mdi:refresh"
         :text="theme.t.audioFile.retry"
-        @click="
-          () => {
-            hasError = false
-            errorMessage = ''
-          }
-        "
+        @click="() => { hasError = false; errorMessage = '' }"
       />
     </div>
   </div>
@@ -585,54 +563,72 @@ onUnmounted(() => {
 
 <style scoped>
 .audio-file {
-  padding: 1rem;
-  padding-left: 2rem;
   border: 1px solid var(--gray-150);
+  border-left: 3px solid var(--primary-btn-bg);
   background: #ffffff;
-  border-left: 4px solid var(--primary-btn-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .dark .audio-file {
   background: var(--gray-850);
   border-color: var(--gray-800);
   border-left-color: var(--primary-btn-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 
-/* Заголовок файла - первая строка */
-.file-header {
-  border-bottom: 1px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-alt);
+/* Music icon badge */
+.file-icon {
+  background: color-mix(in srgb, var(--primary-btn-bg) 12%, transparent);
+  color: var(--primary-btn-bg);
+}
+
+.dark .file-icon {
+  background: color-mix(in srgb, var(--primary-btn-bg) 18%, transparent);
+}
+
+/* Filename */
+.filename {
+  color: var(--vp-c-text-1);
 }
 
 .file-hint {
   color: var(--vp-c-text-2);
 }
 
-.dark .file-hint {
-  color: var(--gray-400);
+/* Player section divider */
+.player-divider {
+  height: 1px;
+  background: var(--vp-c-divider);
 }
 
-/* Аудио плеер */
-.audio-player {
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  animation: slideDown 0.3s ease-out;
+/* Progress bar */
+.progress-track {
+  background: var(--gray-200);
 }
 
-.dark .audio-player {
-  background: var(--vp-c-bg-alt);
-  border-top: 1px solid var(--vp-c-divider);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+.dark .progress-track {
+  background: var(--gray-700);
 }
 
+.progress-fill {
+  background: var(--primary-btn-bg);
+  transition: width 0.1s linear;
+}
+
+.progress-bar:hover .progress-track {
+  background: var(--gray-300);
+}
+
+.dark .progress-bar:hover .progress-track {
+  background: var(--gray-600);
+}
+
+/* Time display */
 .time-display {
-  color: var(--gray-600);
-  font-family: var(--vp-font-family-mono, ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace);
+  color: var(--gray-500);
   background: var(--gray-100);
   border: 1px solid var(--gray-200);
+  white-space: nowrap;
 }
 
 .dark .time-display {
@@ -641,69 +637,57 @@ onUnmounted(() => {
   border-color: var(--gray-700);
 }
 
-.time-separator {
+.time-sep {
   color: var(--gray-400);
-  font-weight: 400;
 }
 
-.dark .time-separator {
+/* Volume */
+.volume-icon {
+  color: var(--gray-400);
+}
+
+.dark .volume-icon {
   color: var(--gray-500);
 }
 
-/* Прогресс-бар */
-.progress-bar:hover {
-  background: rgba(59, 130, 246, 0.05);
-}
-
-.dark .progress-track {
-  background: var(--gray-700);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.progress-fill {
-  transition: width 0.1s linear;
-  background: var(--vp-c-brand-1);
-  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
-}
-
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translate(50%, -50%);
-  background: var(--vp-c-brand-1);
-}
-
-/* Контрол громкости */
 .volume-slider {
   appearance: none;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--gray-200);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dark .volume-slider {
+  background: var(--gray-700);
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--primary-btn-bg);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary-btn-bg);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .volume-slider:focus {
   outline: none;
 }
 
-.dark .volume-slider {
-  background: var(--gray-700);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.volume-slider:hover {
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.15),
-    0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.dark .volume-slider:hover {
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.4),
-    0 0 0 3px rgba(59, 130, 246, 0.2);
-}
-
-/* Сообщение об ошибке */
+/* Error message */
 .error-message {
   color: var(--vp-c-danger-1);
   background: #fef2f2;
@@ -712,11 +696,10 @@ onUnmounted(() => {
 
 .error-message .iconify {
   color: #dc2626;
-  flex-shrink: 0;
 }
 
 .dark .error-message {
-  background: #7f1d1d;
+  background: rgba(127, 29, 29, 0.4);
   border-color: #dc2626;
   color: #fca5a5;
 }
@@ -725,10 +708,15 @@ onUnmounted(() => {
   color: #fca5a5;
 }
 
+/* Animation */
+.player-section {
+  animation: slideDown 0.2s ease-out;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -736,42 +724,34 @@ onUnmounted(() => {
   }
 }
 
-/* Анимация загрузки */
 .spinning {
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-/* Адаптивность для мобильных устройств */
+/* Mobile */
 @media (max-width: 640px) {
-  .audio-file {
-    padding: 0.75rem;
-    padding-left: 1.5rem;
-  }
-
   .file-header {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  .file-info {
-    order: 2;
+  .file-header > div:last-child {
     width: 100%;
-    margin-top: 0.5rem;
+    justify-content: flex-end;
   }
 
-  .download-btn-header {
-    order: 3;
+  .player-controls {
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    order: 10;
     width: 100%;
-    justify-content: center;
   }
 }
 </style>

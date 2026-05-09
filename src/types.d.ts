@@ -210,6 +210,7 @@ export namespace NeptuBlogTheme {
     podcasts: Record<string, string>
     audioFile: Record<string, string>
     fileDownload: Record<string, string>
+    videoFile: Record<string, string>
     lightbox: Record<string, string>
   }
 

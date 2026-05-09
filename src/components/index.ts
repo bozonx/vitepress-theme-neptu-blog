@@ -25,6 +25,7 @@ export { default as NeptuYears } from './utility/NeptuYears.vue'
 export { default as AudioFile } from './doc-components/AudioFile.vue'
 export { default as FileDownload } from './doc-components/FileDownload.vue'
 export { default as YoutubeVideo } from './doc-components/YoutubeVideo.vue'
+export { default as VideoFile } from './doc-components/VideoFile.vue'
 
 // Post building blocks — use them to assemble custom post layouts.
 export { default as PostAuthor } from './post/PostAuthor.vue'

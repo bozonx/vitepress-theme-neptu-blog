@@ -1,8 +1,8 @@
 ---
-title: Media Components — YouTube, Audio, File Download
+title: Media Components — YouTube, Video, Audio, File Download
 description: >
-  The theme ships three auto-registered components you can use directly in
-  markdown: YoutubeVideo, AudioFile, and FileDownload.
+  The theme ships four auto-registered components you can use directly in
+  markdown: YoutubeVideo, VideoFile, AudioFile, and FileDownload.
 date: 2025-02-10T10:00:00Z
 authorId: ivan-k
 cover: https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1200&auto=format&fit=crop
@@ -17,7 +17,7 @@ tags:
 descrAsPreview: true
 ---
 
-Three components are registered globally by the theme and can be used in any
+Four components are registered globally by the theme and can be used in any
 markdown file without any imports.
 
 ## YoutubeVideo
@@ -26,6 +26,17 @@ Embeds a YouTube video with a responsive 16:9 container. Pass the video ID
 (the part after `?v=` in the URL).
 
 <YoutubeVideo id="dQw4w9WgXcQ" />
+
+## VideoFile
+
+Displays an inline player for local video files (MP4, WebM, OGG). Clicking play
+reveals the native browser video player with full controls — seek, volume,
+fullscreen, picture-in-picture.
+
+<VideoFile
+  url="/media/sample-video.mp4"
+  filename="Big Buck Bunny — sample video (MP4)"
+/>
 
 ## AudioFile
 
@@ -48,6 +59,7 @@ Renders a styled download button for any file.
 
 ## Using components together
 
-You can mix and match all three in a single post. For example, a podcast post
-might have an `<AudioFile>` for the full episode, a `<YoutubeVideo>` for the
-video version, and a `<FileDownload>` for the show notes PDF.
+You can mix and match all four in a single post. For example, a tutorial post
+might have a `<VideoFile>` for a local screencast, a `<YoutubeVideo>` for a
+related talk, an `<AudioFile>` for the podcast version, and a `<FileDownload>`
+for the source code archive.
