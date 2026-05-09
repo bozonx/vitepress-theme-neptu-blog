@@ -8,6 +8,7 @@ trailingComma: es5
 bracketSpacing: true
 bracketSameLine: false
 arrowParens: always
+endOfLine: lf
 objectWrap: collapse
 
 plugins:

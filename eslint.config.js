@@ -3,8 +3,10 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import vueParser from 'vue-eslint-parser'
+import globals from 'globals'
 
 export default tseslint.config(
+  { linterOptions: { reportUnusedDisableDirectives: true } },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...pluginVue.configs['flat/recommended'],
@@ -22,9 +24,8 @@ export default tseslint.config(
   },
   {
     files: ['tests/**'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
+    languageOptions: { globals: globals.vitest },
+    rules: { '@typescript-eslint/no-explicit-any': 'off' },
   },
 
   {
@@ -41,91 +42,12 @@ export default tseslint.config(
   {
     languageOptions: {
       globals: {
-        // Browser
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        location: 'readonly',
-        history: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-        requestAnimationFrame: 'readonly',
-        cancelAnimationFrame: 'readonly',
-        fetch: 'readonly',
-        localStorage: 'readonly',
-        sessionStorage: 'readonly',
-        console: 'readonly',
-        URL: 'readonly',
-        URLSearchParams: 'readonly',
-        HTMLElement: 'readonly',
-        HTMLDivElement: 'readonly',
-        HTMLInputElement: 'readonly',
-        HTMLAudioElement: 'readonly',
-        HTMLImageElement: 'readonly',
-        HTMLCanvasElement: 'readonly',
-        Element: 'readonly',
-        Node: 'readonly',
-        Event: 'readonly',
-        CustomEvent: 'readonly',
-        MouseEvent: 'readonly',
-        KeyboardEvent: 'readonly',
-        TouchEvent: 'readonly',
-        WheelEvent: 'readonly',
-        PopStateEvent: 'readonly',
-        MutationObserver: 'readonly',
-        IntersectionObserver: 'readonly',
-        DeviceMotionEvent: 'readonly',
-        SpeechSynthesisUtterance: 'readonly',
-        Notification: 'readonly',
-        WebSocket: 'readonly',
-        Worker: 'readonly',
-        WorkerGlobalScope: 'readonly',
-        PerformanceObserver: 'readonly',
-        performance: 'readonly',
-        Blob: 'readonly',
-        FileReader: 'readonly',
-        FormData: 'readonly',
-        FileList: 'readonly',
-        DataTransfer: 'readonly',
-        Headers: 'readonly',
-        AbortController: 'readonly',
-        Image: 'readonly',
-        Audio: 'readonly',
-        ShadowRoot: 'readonly',
-        Document: 'readonly',
-        Window: 'readonly',
-        SVGElement: 'readonly',
-        MathMLElement: 'readonly',
-        BroadcastChannel: 'readonly',
-        KeyframeEffect: 'readonly',
-        matchMedia: 'readonly',
-        getComputedStyle: 'readonly',
-        // Node
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'readonly',
-        require: 'readonly',
-        // Vite/VitePress
-        import: 'readonly',
+        ...globals.browser,
+        ...globals.node,
         __VUE_OPTIONS_API__: 'readonly',
         __VUE_PROD_DEVTOOLS__: 'readonly',
-        // Vitest
-        describe: 'readonly',
-        it: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        beforeAll: 'readonly',
-        afterAll: 'readonly',
-        vi: 'readonly',
-        test: 'readonly',
-        suite: 'readonly',
-      }
-    }
+      },
+    },
   },
   eslintConfigPrettier,
   {
@@ -137,7 +59,7 @@ export default tseslint.config(
       '**/.vitepress/dist/**',
       '**/docs/**',
       '**/coverage/**',
-      '**/.temp/**'
+      '**/.temp/**',
     ],
   }
 )

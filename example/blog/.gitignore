@@ -3,6 +3,7 @@
 */.vitepress/cache
 */.vitepress/dist
 /dist
+.neptu-vault.yaml
 
 credentials.json
 

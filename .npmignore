@@ -16,6 +16,6 @@ pnpm-lock.yaml
 pnpm-workspace.yaml
 tsconfig.json
 .commitlintrc*
-CHANGELOG.md
 .env*
 *.log
+.gitignore
