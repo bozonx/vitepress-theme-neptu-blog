@@ -1,4 +1,5 @@
 export { addCanonicalLink } from './addCanonicalLink.ts'
+export { addDescriptionMetaTag } from './addDescriptionMetaTag.ts'
 export { addHreflang } from './addHreflang.ts'
 export { addJsonLd } from './addJsonLd.ts'
 export { addOgMetaTags } from './addOgMetaTags.ts'

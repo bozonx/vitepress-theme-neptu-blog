@@ -65,7 +65,6 @@ export function addOgMetaTags({
     return makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
   })()
   const title =
-    normalizeText(pageData.frontmatter.title) ||
     normalizeText(pageData.title) ||
     normalizeText(langConfig.title)
   const description =
@@ -73,7 +72,8 @@ export function addOgMetaTags({
     normalizeText(pageData.description) ||
     normalizeText(langConfig.description)
   const cover = pageData.frontmatter.cover
-  const imageUrl = makeAbsoluteUrl(siteUrl, cover || themeConfig.mainHeroImg)
+  const coverUrl = cover ? makeAbsoluteUrl(siteUrl, cover) : undefined
+  const imageUrl = coverUrl ?? makeAbsoluteUrl(siteUrl, themeConfig.mainHeroImg)
   const imageAlt = normalizeText(pageData.frontmatter.coverAlt)
   const imageWidth = pageData.frontmatter.coverWidth
   const imageHeight = pageData.frontmatter.coverHeight
@@ -94,7 +94,6 @@ export function addOgMetaTags({
       : undefined
 
   const tags = [
-    ['name', 'description', description],
     ['property', 'og:site_name', langConfig.title || ''],
     [
       'property',
@@ -105,7 +104,7 @@ export function addOgMetaTags({
     ['property', 'og:description', description],
     ['property', 'og:url', pageUrl],
     ['property', 'og:locale', (langConfig.lang || localeIndex).replace(/-/g, '_')],
-    ['name', 'twitter:card', imageUrl ? 'summary_large_image' : 'summary'],
+    ['name', 'twitter:card', coverUrl ? 'summary_large_image' : 'summary'],
     ['name', 'twitter:site', normalizeTwitterHandle(themeConfig.twitterSite)],
     ['name', 'twitter:title', title],
     ['name', 'twitter:description', description],

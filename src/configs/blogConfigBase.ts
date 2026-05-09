@@ -11,6 +11,7 @@ import blogBaseLocales from './blogLocalesBase/index.ts'
 import { addJsonLd } from '../transformers/addJsonLd.ts'
 import { addHreflang } from '../transformers/addHreflang.ts'
 import { addOgMetaTags } from '../transformers/addOgMetaTags.ts'
+import { addDescriptionMetaTag } from '../transformers/addDescriptionMetaTag.ts'
 import { addRssLinks } from '../transformers/addRssLinks.ts'
 import { filterSitemap } from '../transformers/filterSitemap.ts'
 import type { SitemapItem } from '../transformers/filterSitemap.ts'
@@ -349,6 +350,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
 
       const isNoIndex = hasNoIndex(extendedCtx.pageData.frontmatter?.head)
 
+      addDescriptionMetaTag(extendedCtx)
       if (isSeoEnabled('og')) addOgMetaTags(extendedCtx)
       if (!isNoIndex && isSeoEnabled('jsonLd')) addJsonLd(extendedCtx)
       if (!isNoIndex && isSeoEnabled('hreflang')) addHreflang(extendedCtx)
