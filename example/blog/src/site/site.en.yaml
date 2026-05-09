@@ -1,7 +1,11 @@
 body: |
   lang: "en-US"
+  # VitePress locale title. Used for document titles and SEO metadata.
   title: "Example Blog"
   description: "Example Blog Description"
+  # VitePress DefaultTheme `themeConfig.siteTitle`.
+  # In this theme it is rendered as the visible title in the sidebar.
+  # Set to a different value if the sidebar label should differ from `title`.
   siteTitle: "Example Blog"
 
   # ---------------------------------------------------------------------------
