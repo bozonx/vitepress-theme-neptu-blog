@@ -277,9 +277,12 @@ onUnmounted(() => {
             aria-hidden="true"
           />
         </a>
-        <h4 v-if="theme.siteTitle" class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]">
+        <h4
+          v-if="theme.sideBar?.blogTitle !== false && (theme.sideBar?.blogTitle || theme.blogTitle)"
+          class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]"
+        >
           <a :href="`/${localeIndex}/`" :title="theme.t.toHome">
-            {{ theme.siteTitle }}
+            {{ theme.sideBar?.blogTitle || theme.blogTitle }}
           </a>
         </h4>
 

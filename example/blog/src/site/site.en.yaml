@@ -1,12 +1,8 @@
 body: |
   lang: "en-US"
-  # VitePress locale title. Used for document titles and SEO metadata.
-  title: "Example Blog"
+  # Blog name. Used for browser tab titles, SEO metadata, and the sidebar heading.
+  blogTitle: "Example Blog"
   description: "Example Blog Description"
-  # VitePress DefaultTheme `themeConfig.siteTitle`.
-  # In this theme it is rendered as the visible title in the sidebar.
-  # Set to a different value if the sidebar label should differ from `title`.
-  siteTitle: "Example Blog"
 
   # ---------------------------------------------------------------------------
   # Donate button — rendered only when topBar.donate and/or sideBar.donate is true.
@@ -75,6 +71,7 @@ body: |
       - text: "Some link"
         href: "https://example.org/"
         icon: "solar:document-linear"
+        desktopOnly: false
       # - text: "${t.links.donate}"
       #   href: "page/donate"
       #   icon: "${theme.donateIcon}"
@@ -93,6 +90,7 @@ body: |
   sideBar:
     popular: true   # Show popular posts section. Requires popularPosts.enabled.
     recent: true    # Show recent posts section.
+    # blogTitle: false  # Set false to hide the blog title below the logo, or a string to override it.
     archive: true   # Show archive (by year) section.
     authors: true   # Show authors section.
     tags: true      # Show tags cloud.
@@ -151,7 +149,7 @@ body: |
   # Advanced theme options — defaults are usually enough for a basic blog.
   # Uncomment only the options you need to override for this locale.
   # ---------------------------------------------------------------------------
-  # titleTemplate: ":title | :siteTitle"
+  # titleTemplate: ":title | ${theme.blogTitle}"
   # mainHeroImg: "/img/hero.jpg"
   # perPage: 10
   # sidebarTagsCount: 15

@@ -104,7 +104,8 @@ export async function loadBlogLocale(
     string,
     unknown
   >
-  const { lang, title, titleTemplate, description, t, editLink, ...themeConfig } = site
+  const { lang, title: rawTitle, titleTemplate, description, t, editLink, ...themeConfig } = site
+  const title = rawTitle ?? (themeConfig.blogTitle as string | undefined)
 
   const authors = (themeConfig.authors as Author[] | undefined)?.map((item) => {
     const imageDimensions = item.image

@@ -141,7 +141,7 @@ export namespace NeptuBlogTheme {
 
     sidebarLogoSrc?: string
     sidebarLogoHeight?: number
-    siteTitle?: string
+    blogTitle?: string
     sidebarMenuLabel?: string
 
     autoCanonical?: boolean
@@ -269,6 +269,8 @@ export namespace NeptuBlogTheme {
     socialLinks?: SocialLink[]
     rssFeed?: boolean
     atomFeed?: boolean
+    /** Override the sidebar title. Defaults to `blogTitle`. Set `false` to hide. */
+    blogTitle?: string | false
   }
 
   export interface NavLink {
