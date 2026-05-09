@@ -19,14 +19,15 @@ export function addDescriptionMetaTag({
   pageData,
   siteConfig,
 }: AddDescriptionMetaTagContext): void {
-  const localeIndex = pageData.filePath.split('/')[0]
+  const filePath = pageData.filePath || ''
+  const localeIndex = filePath.split('/')[0]
   const langConfig =
-    localeIndex && pageData.filePath.includes('/')
+    localeIndex && filePath.includes('/')
       ? siteConfig.site.locales[localeIndex]
       : undefined
 
   const description =
-    normalizeText(pageData.frontmatter.description) ||
+    normalizeText(pageData.frontmatter?.description) ||
     normalizeText(pageData.description) ||
     (langConfig ? normalizeText(langConfig.description) : undefined)
 

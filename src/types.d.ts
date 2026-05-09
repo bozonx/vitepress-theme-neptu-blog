@@ -93,7 +93,6 @@ export namespace NeptuBlogTheme {
 
   export interface Config extends DefaultTheme.Config {
     externalLinkIcon?: boolean
-    mainHeroImg?: string
     perPage?: number
     sidebarTagsCount?: number
     similarPostsCount?: number

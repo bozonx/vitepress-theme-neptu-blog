@@ -1,5 +1,6 @@
 ---
 layout: home
+heroImg: /img/home-logo.webp
 ---
 <script setup>
 import {
@@ -9,13 +10,13 @@ import {
 } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 
-const { theme, localeIndex } = useData()
+const { theme, frontmatter } = useData()
 
 const hero = {
   firstLine: "Example Blog",
   secondLine: "A demo of the&nbsp;vitepress&#8209;theme&#8209;neptu&#8209;blog",
   img: {
-    src: theme.value.mainHeroImg,
+    src: frontmatter.value.heroImg,
     alt: "Example blog logo",
   },
   buttons: [

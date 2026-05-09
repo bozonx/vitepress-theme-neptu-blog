@@ -65,6 +65,7 @@ export function addOgMetaTags({
     return makeAbsoluteUrl(siteUrl, generatePageUrlPath(pageData.relativePath))
   })()
   const title =
+    normalizeText(pageData.frontmatter.title) ||
     normalizeText(pageData.title) ||
     normalizeText(langConfig.title)
   const description =
@@ -73,7 +74,7 @@ export function addOgMetaTags({
     normalizeText(langConfig.description)
   const cover = pageData.frontmatter.cover
   const coverUrl = cover ? makeAbsoluteUrl(siteUrl, cover) : undefined
-  const imageUrl = coverUrl ?? makeAbsoluteUrl(siteUrl, themeConfig.mainHeroImg)
+  const imageUrl = coverUrl
   const imageAlt = normalizeText(pageData.frontmatter.coverAlt)
   const imageWidth = pageData.frontmatter.coverWidth
   const imageHeight = pageData.frontmatter.coverHeight
@@ -108,6 +109,7 @@ export function addOgMetaTags({
     ['name', 'twitter:site', normalizeTwitterHandle(themeConfig.twitterSite)],
     ['name', 'twitter:title', title],
     ['name', 'twitter:description', description],
+    ['name', 'description', description],
   ]
 
   if (imageUrl) {

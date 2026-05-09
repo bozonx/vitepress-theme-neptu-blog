@@ -123,7 +123,6 @@ describe('generateRssFeed', () => {
         rssFormats: ['rss', 'json'],
         themeConfig: {
           authorsBaseUrl: 'authors',
-          mainHeroImg: '/img/home-logo.webp',
         },
       },
     } as any)
@@ -183,9 +182,7 @@ describe('generateRssFeed', () => {
         maxPostsInRssFeed: 10,
         maxDescriptionLength: 120,
         rssFormats: ['rss', 'atom'],
-        themeConfig: {
-          mainHeroImg: '/img/home-logo.webp',
-        },
+        themeConfig: {},
       },
     } as any)
 
@@ -218,9 +215,7 @@ describe('generateRssFeed', () => {
           maxPostsInRssFeed: 10,
           maxDescriptionLength: 120,
           rssFormats: ['rss'],
-          themeConfig: {
-            mainHeroImg: '/img/home-logo.webp',
-          },
+          themeConfig: {},
         },
       } as any)
     ).rejects.toThrow('RSS feed generation completed with errors')

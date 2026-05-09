@@ -39,7 +39,6 @@ describe('addOgMetaTags', () => {
         userConfig: {
           siteUrl: 'https://example.com',
           themeConfig: {
-            mainHeroImg: '/img/hero.png',
             authorsBaseUrl: 'authors',
             authors: [{ id: 'alice', name: 'Alice Author' }],
           },
@@ -51,7 +50,6 @@ describe('addOgMetaTags', () => {
               description: 'Blog description',
               lang: 'en-US',
               themeConfig: {
-                mainHeroImg: '/img/hero.png',
                 authorsBaseUrl: 'authors',
                 authors: [
                   {
@@ -179,21 +177,9 @@ describe('addOgMetaTags', () => {
     ])
   })
 
-  it('falls back to mainHeroImg when cover is absent', () => {
-    const ctx = createContext()
-    ctx.pageData.frontmatter.cover = undefined
-    addOgMetaTags(ctx)
-    expect(ctx.head).toContainEqual([
-      'meta',
-      { property: 'og:image', content: 'https://example.com/img/hero.png' },
-    ])
-  })
-
   it('skips image tags when no image is available', () => {
     const ctx = createContext()
     ctx.pageData.frontmatter.cover = undefined
-    ctx.siteConfig.userConfig.themeConfig.mainHeroImg = undefined
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).mainHeroImg = undefined
     addOgMetaTags(ctx)
     const imageTags = ctx.head.filter(
       (h) => h[1]?.property === 'og:image' || h[1]?.name === 'twitter:image'

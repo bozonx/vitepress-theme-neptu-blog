@@ -154,6 +154,7 @@ const togglePlayPause = async () => {
     if (!isValidUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidAudioUrlProvided
+      console.error('Invalid audio URL provided')
       return
     }
 
@@ -412,6 +413,7 @@ onUnmounted(() => {
       <div class="flex items-center gap-2 shrink-0">
         <NeptuBtn
           v-if="!isPlayerVisible"
+          class="play-btn-header"
           :primary="true"
           :disabled="isDisabled || hasError"
           :title="theme.t.audioFile.playAudio"

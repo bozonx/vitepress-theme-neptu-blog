@@ -135,99 +135,95 @@ body: |
   #     class: "custom-share-button"
 
   # ---------------------------------------------------------------------------
-  # Global SEO overrides — each defaults to true.
-  # Per-page overrides are available via the `seo` frontmatter field.
+  # Global theme config overrides for this locale.
+  # This block has the same structure as the global VitePress `themeConfig`.
+  # Prefer global config for site-wide behavior; override here only when this
+  # locale intentionally differs.
   # ---------------------------------------------------------------------------
-  # seo:
-  #   og: true
-  #   jsonLd: true
-  #   hreflang: true
-  #   canonical: true
-  #   rss: true
-
-  # ---------------------------------------------------------------------------
-  # Advanced theme options — defaults are usually enough for a basic blog.
-  # Uncomment only the options you need to override for this locale.
-  # ---------------------------------------------------------------------------
-  # titleTemplate: ":title | ${theme.blogTitle}"
-  # mainHeroImg: "/img/hero.jpg"
-  # perPage: 10
-  # sidebarTagsCount: 15
-  # similarPostsCount: 5
-  # homeBgParallaxOffset: 300
-  # paginationMaxItems: 5
-  # rssFormats: ["rss", "atom", "json"]
-  # externalLinkIcon: true
-  # twitterSite: "@your_site"
-  # autoCanonical: true
-
-  # postList:
-  #   showDate: true
-  #   showTags: true
-  #   showThumbnail: true
-  #   showPreview: true
-  #   showAuthor: true
-  #   maxPreviewLength: 300
-
-  # popularPosts:
-  #   enabled: false
-  #   sortBy: "pageviews"  # pageviews | uniquePageviews | avgTimeOnPage
-  #   dataSource:
-  #     provider: "ga4"
-  #     propertyId: null
-  #     credentialsJson: null
-  #     dataPeriodDays: 30
-  #     dataLimit: 1000
-
-  # postFooter:
-  #   - "author"
-  #   - "donate"
-  #   - "comments"
-  #   - "social-share"
-  #   - "edit-link"
-  #   - "tags"
-  #   - "similar"
-  #   - "popular-link"
-
-  # tagsBaseUrl: "tags"
-  # archiveBaseUrl: "archive"
-  # popularBaseUrl: "popular"
-  # recentBaseUrl: "recent"
-  # authorsBaseUrl: "authors"
-
-  # donateIcon: "fa6-solid:hand-holding-heart"
-  # recentIcon: "fa6-solid:bolt"
-  # popularIcon: "fa6-solid:star"
-  # byDateIcon: "fa6-solid:calendar-days"
-  # authorsIcon: "mdi:users"
-  # rssIcon: "bi:rss-fill"
-  # atomIcon: "vscode-icons:file-type-atom"
-  # youtubeIcon: "fa6-brands:youtube"
-  # tagsIcon: "fa6-solid:tag"
-
-  # sidebarLogoSrc: "/img/logo.png"
-  # sidebarLogoHeight: 32
-  # sidebarMenuLabel: "Menu"
-
-  # search:
-  #   provider: "local"
-  #   bodyMarker: "<!-- more -->"
-
-  # uiLocale:
-  #   default: "en"
-  #   storageKey: "neptu-ui-locale"
-  # uiLocales:
-  #   en:
-  #     extends: "en"
-  #     label: "English"
-  #     themeConfig:
-  #       sidebarMenuLabel: "Menu"
-  #     t:
-  #       search: "Search"
-
-  # editLink:
-  #   pattern: "https://github.com/user/repo/edit/main/example/blog/src/:path"
-  #   text: "Suggest an edit"
+  # themeConfig:
+  #   titleTemplate: ":title | ${theme.blogTitle}"
+  #   perPage: 10
+  #   sidebarTagsCount: 15
+  #   similarPostsCount: 5
+  #   paginationMaxItems: 5
+  #   externalLinkIcon: true
+  #   twitterSite: "@your_site"
+  #   autoCanonical: true
+  #
+  #   seo:
+  #     og: true
+  #     jsonLd: true
+  #     hreflang: true
+  #     canonical: true
+  #     rss: true
+  #
+  #   postList:
+  #     showDate: true
+  #     showTags: true
+  #     showThumbnail: true
+  #     showPreview: true
+  #     showAuthor: true
+  #     maxPreviewLength: 300
+  #
+  #   popularPosts:
+  #     enabled: false
+  #     sortBy: "pageviews"  # pageviews | uniquePageviews | avgTimeOnPage
+  #     dataSource:
+  #       provider: "ga4"
+  #       propertyId: null
+  #       credentialsJson: null
+  #       dataPeriodDays: 30
+  #       dataLimit: 1000
+  #
+  #   postFooter:
+  #     - "author"
+  #     - "donate"
+  #     - "comments"
+  #     - "social-share"
+  #     - "edit-link"
+  #     - "tags"
+  #     - "similar"
+  #     - "popular-link"
+  #
+  #   tagsBaseUrl: "tags"
+  #   archiveBaseUrl: "archive"
+  #   popularBaseUrl: "popular"
+  #   recentBaseUrl: "recent"
+  #   authorsBaseUrl: "authors"
+  #
+  #   donateIcon: "fa6-solid:hand-holding-heart"
+  #   recentIcon: "fa6-solid:bolt"
+  #   popularIcon: "fa6-solid:star"
+  #   byDateIcon: "fa6-solid:calendar-days"
+  #   authorsIcon: "mdi:users"
+  #   rssIcon: "bi:rss-fill"
+  #   atomIcon: "vscode-icons:file-type-atom"
+  #   youtubeIcon: "fa6-brands:youtube"
+  #   tagsIcon: "fa6-solid:tag"
+  #
+  #   sidebarLogoSrc: "/img/logo.png"
+  #   sidebarLogoHeight: 32
+  #   sidebarMenuLabel: "Menu"
+  #
+  #   search:
+  #     provider: "local"
+  #     bodyMarker: "<!-- more -->"
+  #
+  #   uiLocale:
+  #     default: "en"
+  #     storageKey: "neptu-ui-locale"
+  #   uiLocales:
+  #     en:
+  #       extends: "en"
+  #       label: "English"
+  #       themeConfig:
+  #         sidebarMenuLabel: "Menu"
+  #       t:
+  #         search: "Search"
+  #
+  #   editLink:
+  #     pattern: "https://github.com/user/repo/edit/main/example/blog/src/:path"
+  #     text: "Suggest an edit"
 
   # t:
   #   popularPosts: "Popular Posts"

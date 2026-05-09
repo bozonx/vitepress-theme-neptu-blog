@@ -61,9 +61,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
           makeAbsoluteUrl(
             siteUrl,
             locale.themeConfig?.sidebarLogoSrc ||
-              config.userConfig?.themeConfig?.sidebarLogoSrc ||
-              locale.themeConfig?.mainHeroImg ||
-              config.userConfig?.themeConfig?.mainHeroImg
+              config.userConfig?.themeConfig?.sidebarLogoSrc
           ) || `${siteUrl}/img/favicon-32x32.png`,
         generator: 'VitePress Neptu Blog Theme',
         updated: new Date(),

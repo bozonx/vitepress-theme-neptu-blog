@@ -6,9 +6,14 @@ vi.mock('../../../src/utils/node/i18n.ts', () => ({
     lang: 'en-US',
     title: 'Example',
     description: 'Example description',
-    resolvedUiLabel: props.theme?.langMenuLabel,
-    resolvedViewInAnotherLanguage: props.theme?.t?.viewInAnotherLanguage,
-    t: { customKey: 'Custom value' },
+    donate: { url: 'page/donate' },
+    perPage: 99,
+    t: { rootCustomKey: 'Root custom value' },
+    themeConfig: {
+      resolvedUiLabel: props.theme?.langMenuLabel,
+      resolvedViewInAnotherLanguage: props.theme?.t?.viewInAnotherLanguage,
+      t: { customKey: 'Custom value' },
+    },
   })),
 }))
 
@@ -32,7 +37,12 @@ describe('loadBlogLocale', () => {
 
     expect(result.lang).toBe('en-US')
     expect(result.label).toBe('English')
+    expect((result.themeConfig!.donate as any).url).toBe('page/donate')
+    expect((result.themeConfig!.t as any).rootCustomKey).toBe(
+      'Root custom value'
+    )
     expect((result.themeConfig!.t as any).customKey).toBe('Custom value')
+    expect(result.themeConfig!.perPage).not.toBe(99)
     expect(result.themeConfig!.t!.toBlog).toBeDefined()
   })
 

@@ -17,6 +17,28 @@ import type {
 
 type EditLinkConfig = NonNullable<ThemeConfig['editLink']>
 
+const LOCALIZED_THEME_CONFIG_KEYS = [
+  'blogTitle',
+  'donate',
+  'publisher',
+  'authors',
+  'footer',
+  'topBar',
+  'sideBar',
+  'socialMediaShares',
+  't',
+] as const
+
+function pickLocalizedThemeConfig(
+  site: Record<string, unknown>
+): Record<string, unknown> {
+  return Object.fromEntries(
+    LOCALIZED_THEME_CONFIG_KEYS
+      .filter((key) => site[key] !== undefined)
+      .map((key) => [key, site[key]])
+  )
+}
+
 function resolveInitialUiLocaleKey(
   localeIndex: string,
   uiLocales: Record<string, UiLocaleDefinition> = {},
@@ -104,10 +126,20 @@ export async function loadBlogLocale(
     string,
     unknown
   >
-  const { lang, title: rawTitle, titleTemplate, description, t, editLink, ...themeConfig } = site
-  const title = rawTitle ?? (themeConfig.blogTitle as string | undefined)
+  const {
+    lang,
+    title: rawTitle,
+    titleTemplate,
+    description,
+    themeConfig: siteThemeConfig = {},
+  } = site
+  const localeThemeConfig = deepMerge(
+    pickLocalizedThemeConfig(site),
+    siteThemeConfig as Record<string, unknown>
+  )
+  const title = rawTitle ?? (localeThemeConfig.blogTitle as string | undefined)
 
-  const authors = (themeConfig.authors as Author[] | undefined)?.map((item) => {
+  const authors = (localeThemeConfig.authors as Author[] | undefined)?.map((item) => {
     const imageDimensions = item.image
       ? getImageDimensions(item.image as string, config.srcDir || '')
       : null
@@ -129,7 +161,7 @@ export async function loadBlogLocale(
     themeConfig: {
       ...baseLocale.themeConfig,
       ...(uiLocale.themeConfig || {}),
-      ...themeConfig,
+      ...localeThemeConfig,
       editLink: {
         ...(config.repo
           ? { pattern: resolveEditLinkPattern(config.repo) }
@@ -137,12 +169,12 @@ export async function loadBlogLocale(
         ...baseLocale.themeConfig?.editLink,
         ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)
           .editLink as Record<string, unknown> | undefined),
-        ...(editLink as Record<string, unknown> | undefined),
+        ...(localeThemeConfig.editLink as Record<string, unknown> | undefined),
       } as EditLinkConfig,
       t: {
         ...baseLocale.t,
         ...(uiLocale.t || {}),
-        ...(t as Record<string, unknown> | undefined),
+        ...((localeThemeConfig.t || {}) as Record<string, unknown>),
       } as I18n,
       authors,
     },

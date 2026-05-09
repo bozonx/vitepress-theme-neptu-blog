@@ -26,6 +26,7 @@ function isValidYouTubeId(id: string): boolean {
 const url = computed(() => {
   const id = props.id || props.videoId || ''
   if (!isValidYouTubeId(id)) {
+    if (id) console.warn(`Invalid YouTube ID: ${id}`)
     return ''
   }
   return `https://www.youtube.com/embed/${id}`
