@@ -50,6 +50,10 @@ body: |
     links:
       - text: "${t.links.aboutBlog}"
         href: "page/about-blog"
+      - text: "Test JSON-LD"
+        href: "page/test-json-ld"
+      - text: "Advanced JSON-LD"
+        href: "page/test-json-ld-advanced"
 
   # ---------------------------------------------------------------------------
   # Top bar
