@@ -7,9 +7,13 @@ const props = defineProps<{
 }>()
 const iconifyIcon: Record<string, string> = {
   site: 'mdi:globe',
+  rss: 'mdi:rss',
   castbox: 'simple-icons:castbox',
   spotify: 'mdi:spotify',
   youtube: 'mdi:youtube',
+  amazonmusic: 'simple-icons:amazonmusic',
+  iheartradio: 'simple-icons:iheartradio',
+  tunein: 'simple-icons:tunein',
   vk: 'ri:vk-fill',
   deezer: 'cbi:deezer-logo',
   pocketcasts: 'simple-icons:pocketcasts',
