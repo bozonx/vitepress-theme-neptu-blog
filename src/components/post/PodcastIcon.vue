@@ -9,6 +9,7 @@ const iconifyIcon: Record<string, string> = {
   site: 'mdi:globe',
   castbox: 'simple-icons:castbox',
   spotify: 'mdi:spotify',
+  youtube: 'mdi:youtube',
   vk: 'ri:vk-fill',
   deezer: 'cbi:deezer-logo',
   pocketcasts: 'simple-icons:pocketcasts',

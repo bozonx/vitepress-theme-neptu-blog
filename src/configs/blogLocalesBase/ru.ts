@@ -114,6 +114,7 @@ export default {
       castbox: 'Castbox',
       soundstream: 'Sound stream',
       spotify: 'Spotify',
+      youtube: 'YouTube',
       vk: 'VK',
       yandexmusic: 'Яндекс Музыка',
       deezer: 'Deezer',

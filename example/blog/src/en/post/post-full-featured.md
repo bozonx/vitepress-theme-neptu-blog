@@ -36,8 +36,8 @@ videoLinkLang: EN
 podcastLang: EN
 podcasts:
   spotify: https://open.spotify.com/
-  apple: https://podcasts.apple.com/
-  # youtube: https://www.youtube.com/
+  applepodcasts: https://podcasts.apple.com/
+  youtube: https://www.youtube.com/
 
 # searchIncluded: false   # Exclude this post from search index.
 
