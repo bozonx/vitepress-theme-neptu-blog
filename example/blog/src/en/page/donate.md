@@ -1,6 +1,7 @@
 ---
 title: Support This Blog
 description: Help keep this blog going by making a donation.
+layout: page
 ---
 
 # Support This Blog

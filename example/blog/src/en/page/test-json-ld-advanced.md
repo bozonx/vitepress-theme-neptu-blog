@@ -1,6 +1,7 @@
 ---
 title: Advanced JSON-LD Test
 description: Testing advanced JSON-LD features with arrays
+layout: page
 jsonLd: |
   "@type": Article
   name: Advanced JSON-LD Test Article

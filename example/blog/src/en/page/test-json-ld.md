@@ -1,6 +1,7 @@
 ---
 title: Test JSON-LD Page
 description: This page demonstrates JSON-LD generation from YAML
+layout: page
 jsonLd: |
   "@type": WebPage
   name: Test JSON-LD Page

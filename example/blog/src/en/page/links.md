@@ -1,6 +1,7 @@
 ---
 title: Links
 description: Our social media profiles and communities.
+layout: page
 ---
 
 # Links

@@ -1,6 +1,7 @@
 ---
 title: About This Blog
 description: This is the example blog for vitepress-theme-neptu-blog.
+layout: page
 ---
 
 # About This Blog
