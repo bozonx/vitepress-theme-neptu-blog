@@ -681,6 +681,9 @@ See [docs/ADVANCED_CUSTOMIZATION.md](docs/ADVANCED_CUSTOMIZATION.md) for:
 - Reusing theme composables (`useLightbox`, `useBreakpoint`, etc.)
 - Layout helpers (`isPage`, `isUtilPage`, `resolveArticlePreview`)
 
+See [docs/EXTERNAL_CONTENT.md](docs/EXTERNAL_CONTENT.md) for generated posts
+from CMS/API/remote Markdown or HTML sources, plus iframe/embed recipes.
+
 ## Development
 
 This repo is a pnpm workspace. Clone and run:
