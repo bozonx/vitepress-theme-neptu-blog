@@ -249,7 +249,15 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     title: config.title || config.en?.title,
     description: config.description || config.en?.description,
     head: [...(common.head || []), ...(config.head || [])],
-    locales: { ...(common.locales || {}), ...(config.locales || {}) },
+    locales: Object.fromEntries(
+      Object.entries({ ...(common.locales || {}), ...(config.locales || {}) }).map(
+        ([key, locale]) => {
+          const titleTemplate =
+            locale.titleTemplate ?? (locale.title ? `:title | ${locale.title}` : undefined)
+          return [key, titleTemplate ? { ...locale, titleTemplate } : locale]
+        }
+      )
+    ),
     vite: {
       ...config.vite,
       plugins: [

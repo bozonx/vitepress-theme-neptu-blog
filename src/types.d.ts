@@ -77,6 +77,7 @@ export namespace NeptuBlogTheme {
         link?: string
         lang?: string
         title?: string
+        titleTemplate?: string
         description?: string
         themeConfig?: Partial<Config>
       }
@@ -376,6 +377,7 @@ export namespace NeptuBlogTheme {
   export interface LocaleDefinition {
     lang?: string
     title?: string
+    titleTemplate?: string
     description?: string
     head?: DefaultTheme.Config['head']
     themeConfig?: DeepPartial<Config>

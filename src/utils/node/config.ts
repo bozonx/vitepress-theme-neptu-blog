@@ -104,7 +104,7 @@ export async function loadBlogLocale(
     string,
     unknown
   >
-  const { lang, title, description, t, editLink, ...themeConfig } = site
+  const { lang, title, titleTemplate, description, t, editLink, ...themeConfig } = site
 
   const authors = (themeConfig.authors as Author[] | undefined)?.map((item) => {
     const imageDimensions = item.image
@@ -123,6 +123,7 @@ export async function loadBlogLocale(
     lang: typeof lang === 'string' ? lang : undefined,
     label: baseLocale.label,
     title: typeof title === 'string' ? title : undefined,
+    titleTemplate: typeof titleTemplate === 'string' ? titleTemplate : undefined,
     description: typeof description === 'string' ? description : undefined,
     themeConfig: {
       ...baseLocale.themeConfig,
