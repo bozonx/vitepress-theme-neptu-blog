@@ -168,10 +168,6 @@ export default {
     },
     videoFile: {
       downloadFile: 'Скачать',
-      playVideo: 'Воспроизвести видео',
-      startVideoPlayback: 'Начать воспроизведение видео',
-      hidePlayer: 'Скрыть видео плеер',
-      hidePlayerTitle: 'Скрыть плеер',
       videoFile: 'Видео файл',
       downloadVideoFile: 'Скачать',
       retry: 'Повторить',

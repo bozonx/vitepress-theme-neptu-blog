@@ -167,10 +167,6 @@ export default {
     },
     videoFile: {
       downloadFile: 'Download',
-      playVideo: 'Play video',
-      startVideoPlayback: 'Start video playback',
-      hidePlayer: 'Hide video player',
-      hidePlayerTitle: 'Hide player',
       videoFile: 'Video file',
       downloadVideoFile: 'Download',
       retry: 'Retry',
