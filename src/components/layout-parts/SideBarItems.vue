@@ -7,20 +7,21 @@ interface SideBarItem {
   href?: string
   icon?: string
   class?: string
+  iconClass?: string
   mobile?: boolean
   text?: string
   title?: string
 }
 
-const props = defineProps<{
-  items: SideBarItem[]
-  isMobile?: boolean
-}>()
+const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
 </script>
 
 <template>
   <ul v-if="props.items?.length" class="space-y-1">
-    <template v-for="(item, index) in props.items" :key="item.href || item.header || index">
+    <template
+      v-for="(item, index) in props.items"
+      :key="item.href || item.header || index"
+    >
       <li :class="{ hidden: item.mobile ? !props.isMobile : false }">
         <SideBarHeader
           v-if="item.header"

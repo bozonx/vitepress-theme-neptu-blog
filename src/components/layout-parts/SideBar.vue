@@ -24,15 +24,13 @@ interface SideBarItem {
   href?: string
   icon?: string
   class?: string
+  iconClass?: string
   mobile?: boolean
   text?: string
   title?: string
 }
 
-const props = defineProps<{
-  isMobile: boolean
-  localePosts?: PostLite[]
-}>()
+const props = defineProps<{ isMobile: boolean; localePosts?: PostLite[] }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
@@ -148,7 +146,7 @@ const bottomLinks = computed<SideBarItem[]>(() => {
       text: theme.value.t.links.donate,
       href: `${theme.value.donate.url}`,
       icon: theme.value.donate.icon || theme.value.donateIcon,
-      class: 'donate-icon',
+      iconClass: 'donate-icon',
     })
   }
 
@@ -159,7 +157,10 @@ const openDrawer = () => {
 
   clearAnimationTimeout()
   if (!drawerOpen.value) {
-    previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    previousActiveElement =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null
   }
   drawerOpen.value = true
   setBodyScrollLocked(true)
@@ -254,7 +255,9 @@ onUnmounted(() => {
       :aria-label="props.isMobile ? theme.sidebarMenuLabel : undefined"
       :tabindex="props.isMobile ? -1 : undefined"
       :style="{
-        transform: props.isMobile ? `translate3d(${drawerTranslateXPx}px, 0, 0)` : 'none',
+        transform: props.isMobile
+          ? `translate3d(${drawerTranslateXPx}px, 0, 0)`
+          : 'none',
         width: `${SIDEBAR_WIDTH}px`,
       }"
       class="max-lg:overflow-y-auto max-lg:overflow-x-clip max-lg:fixed lg:h-fit app-drawer z-10 top-0 bottom-0 left-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform"
@@ -278,7 +281,10 @@ onUnmounted(() => {
           />
         </a>
         <h4
-          v-if="theme.sideBar?.blogTitle !== false && (theme.sideBar?.blogTitle || theme.blogTitle)"
+          v-if="
+            theme.sideBar?.blogTitle !== false &&
+            (theme.sideBar?.blogTitle || theme.blogTitle)
+          "
           class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]"
         >
           <a :href="`/${localeIndex}/`" :title="theme.t.toHome">
@@ -298,7 +304,10 @@ onUnmounted(() => {
           </SideBarGroup>
 
           <SideBarGroup v-if="sideBarConfig.tags">
-            <SideBarTags :locale-posts="localePosts" @item-click="closeDrawer" />
+            <SideBarTags
+              :locale-posts="localePosts"
+              @item-click="closeDrawer"
+            />
           </SideBarGroup>
 
           <slot name="sidebar-middle" />
@@ -317,7 +326,10 @@ onUnmounted(() => {
 
       <SideBarFooter @click="closeDrawer" />
 
-      <div class="sidebar-gradient max-lg:hidden w-full relative h-[200px]" aria-hidden="true">
+      <div
+        class="sidebar-gradient max-lg:hidden w-full relative h-[200px]"
+        aria-hidden="true"
+      >
         <div class="w-[calc(100%+1px)] h-[200px] absolute"></div>
       </div>
     </div>
@@ -339,7 +351,10 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <div v-if="$slots['sub-sidebar']" class="max-lg:hidden sub-sidebar mt-80 flex w-full flex-col justify-center gap-y-4">
+    <div
+      v-if="$slots['sub-sidebar']"
+      class="max-lg:hidden sub-sidebar mt-80 flex w-full flex-col justify-center gap-y-4"
+    >
       <slot name="sub-sidebar" />
     </div>
   </div>
@@ -373,5 +388,4 @@ onUnmounted(() => {
     var(--gray-900-trans) 100%
   );
 }
-
 </style>

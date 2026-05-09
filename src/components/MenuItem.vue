@@ -11,9 +11,12 @@ const props = defineProps<Props>()
 <template>
   <NeptuBtn
     v-bind="$attrs"
-    :custom-class="['menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]', props.customClass]"
+    :custom-class="[
+      'menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]',
+      props.customClass,
+    ]"
     inner-class="menu-item-inner"
-    icon-class="muted"
+    :icon-class="$attrs.iconClass || 'muted'"
     :no-bg="true"
   >
     <slot />
