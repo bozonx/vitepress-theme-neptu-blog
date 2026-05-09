@@ -10,9 +10,7 @@ const { lang, theme } = useData()
 const props = defineProps<{ item: PostLite }>()
 function formatPreview(preview: string | undefined): string | undefined {
   const normalized = typeof preview === 'string' ? preview.trim() : ''
-  if (!normalized) return undefined
-
-  return normalized.replace(/\.$/, '') + ' ...'
+  return normalized || undefined
 }
 
 const params = computed(() => ({

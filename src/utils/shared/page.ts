@@ -52,8 +52,8 @@ export function isAuthorPage(filePath: string | null | undefined, siteConfig: Ex
   )
 }
 
-/** Resolve article preview text inside article. Or return undefined */
-export function resolveArticlePreview(frontmatter: Frontmatter): string | undefined {
+/** Resolve explicit preview text from frontmatter. Or return undefined. */
+export function resolvePreviewText(frontmatter: Frontmatter): string | undefined {
   const { previewText, descrAsPreview, description } = frontmatter
   const normalizedPreviewText =
     typeof previewText === 'string' ? previewText.trim() : undefined
@@ -66,6 +66,11 @@ export function resolveArticlePreview(frontmatter: Frontmatter): string | undefi
     return normalizedDescription
   }
   return undefined
+}
+
+/** Resolve article preview text inside article. Or return undefined */
+export function resolveArticlePreview(frontmatter: Frontmatter): string | undefined {
+  return resolvePreviewText(frontmatter)
 }
 
 export function resolveBodyMarker(theme: ThemeConfig, frontmatter: Frontmatter): string | undefined {

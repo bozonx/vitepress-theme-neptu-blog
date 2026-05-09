@@ -36,22 +36,22 @@ describe('PreviewListItem', () => {
     expect(wrapper.find('h2').text()).toBe('Hello')
   })
 
-  it('formats preview text with ellipsis', () => {
+  it('trims preview text without changing punctuation', () => {
     const wrapper = mount(PreviewListItem, {
       props: { item: { url: '/p', preview: '  Some preview text.  ' } },
       global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
     })
     const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
-    expect(stub.props('preview')).toBe('Some preview text ...')
+    expect(stub.props('preview')).toBe('Some preview text.')
   })
 
-  it('removes trailing dot before ellipsis', () => {
+  it('preserves existing trailing punctuation', () => {
     const wrapper = mount(PreviewListItem, {
-      props: { item: { url: '/p', preview: 'Ends with dot.' } },
+      props: { item: { url: '/p', preview: 'Question?' } },
       global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
     })
     const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
-    expect(stub.props('preview')).toBe('Ends with dot ...')
+    expect(stub.props('preview')).toBe('Question?')
   })
 
   it('passes undefined preview for empty string', () => {

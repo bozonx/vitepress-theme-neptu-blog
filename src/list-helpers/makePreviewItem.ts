@@ -4,9 +4,9 @@ import path from 'node:path'
 import { DEFAULT_ENCODE, PREVIEW_LENGTH } from '../constants.ts'
 import {
   parseMdFile,
-  extractDescriptionFromMd,
+  extractDescriptionFromContent,
 } from '../utils/node/markdown.ts'
-import { normalizeTags } from '../utils/shared/index.ts'
+import { normalizeTags, resolvePreviewText } from '../utils/shared/index.ts'
 import { getImageDimensions } from '../utils/node/image.ts'
 import type { PostFrontmatter, Tag } from '../types.d.ts'
 
@@ -45,13 +45,11 @@ export function makePreviewItem(
   const { frontmatter, content } = parseMdFile(rawContent, filePath)
   const fm = frontmatter as PostFrontmatter
 
-  let preview = resolvePreview(fm)
+  let preview = resolvePreviewText(fm)
   if (!preview)
-    preview = extractDescriptionFromMd(
+    preview = extractDescriptionFromContent(
       content,
-      maxPreviewLength ?? PREVIEW_LENGTH,
-      false,
-      filePath
+      maxPreviewLength ?? PREVIEW_LENGTH
     )
 
   // Get image dimensions if cover is provided
@@ -75,20 +73,6 @@ export function makePreviewItem(
   }
 }
 
-export function resolvePreview({
-  previewText,
-  descrAsPreview,
-  description,
-}: PostFrontmatter): string | undefined {
-  const normalizedPreviewText =
-    typeof previewText === 'string' ? previewText.trim() : undefined
-  const normalizedDescription =
-    typeof description === 'string' ? description.trim() : undefined
-
-  if (normalizedPreviewText !== undefined) {
-    return normalizedPreviewText || undefined
-  } else if (descrAsPreview && normalizedDescription) {
-    return normalizedDescription
-  }
-  return undefined
+export function resolvePreview(frontmatter: PostFrontmatter): string | undefined {
+  return resolvePreviewText(frontmatter)
 }

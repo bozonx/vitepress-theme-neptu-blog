@@ -4,6 +4,7 @@ import {
   mdToHtml,
   parseMdFile,
   extractDescriptionFromMd,
+  extractDescriptionFromContent,
 } from '../../../src/utils/node/markdown.ts'
 
 describe('stripMd', () => {
@@ -122,5 +123,19 @@ describe('extractDescriptionFromMd', () => {
 
   it('returns empty string for empty content', () => {
     expect(extractDescriptionFromMd('', 10)).toBe('')
+  })
+})
+
+describe('extractDescriptionFromContent', () => {
+  it('extracts from already parsed markdown content', () => {
+    const result = extractDescriptionFromContent('# Title\n\nHello **world**', 100)
+
+    expect(result).toBe('Hello world')
+  })
+
+  it('does not parse leading delimiters as frontmatter', () => {
+    const result = extractDescriptionFromContent('---\n\nVisible content', 100)
+
+    expect(result).toContain('Visible content')
   })
 })

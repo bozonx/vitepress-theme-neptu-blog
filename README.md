@@ -146,7 +146,7 @@ export default defineConfig(
 )
 ```
 
-`postList.maxPreviewLength` only affects preview text generated from post content. A `preview` value specified in post frontmatter is used as-is.
+`postList.maxPreviewLength` only affects preview text generated from post content. A `previewText` value specified in post frontmatter is used as-is.
 
 ### Edit link
 

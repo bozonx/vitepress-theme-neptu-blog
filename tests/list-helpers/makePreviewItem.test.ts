@@ -60,5 +60,19 @@ This is a very long body content that should be truncated according to the custo
 
     expect(item.preview).toBeDefined()
     expect(item.preview!.length).toBeLessThanOrEqual(20)
+    expect(item.preview).toMatch(/\u2026$/)
+  })
+
+  it('uses previewText as-is without adding ellipsis', () => {
+    readFileSyncMock.mockReturnValue(`---
+title: Hello
+previewText: Custom preview.
+---
+
+Body content`)
+
+    const item = makePreviewItem('/tmp/site/src/en/post/hello.md', { maxPreviewLength: 10 })
+
+    expect(item.preview).toBe('Custom preview.')
   })
 })

@@ -126,6 +126,15 @@ export function extractDescriptionFromMd(
   sourceName?: string
 ): string {
   const { content } = parseMdFile(rawContent, sourceName)
+
+  return extractDescriptionFromContent(content, maxLength, markAtTheEnd)
+}
+
+export function extractDescriptionFromContent(
+  content: string,
+  maxLength: number,
+  markAtTheEnd?: boolean
+): string {
   const mdContentNoHeader = removeTitleFromMd(content)
   const striped = stripMd(mdContentNoHeader)
 
