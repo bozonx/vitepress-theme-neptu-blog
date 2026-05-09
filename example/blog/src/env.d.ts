@@ -2,18 +2,24 @@
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
-  const component: DefineComponent<{}, {}, any>
+  const component: DefineComponent<object, object, unknown>
   export default component
 }
 
 declare module '*/loadPosts.data' {
-  export const data: any
+  import type { PostLite } from 'vitepress-theme-neptu-blog'
+
+  export const data: { posts: PostLite[] }
 }
 
 declare module '*/loadPosts.data.js' {
-  export const data: any
+  import type { PostLite } from 'vitepress-theme-neptu-blog'
+
+  export const data: { posts: PostLite[] }
 }
 
 declare module '*/loadPosts.data.ts' {
-  export const data: any
+  import type { PostLite } from 'vitepress-theme-neptu-blog'
+
+  export const data: { posts: PostLite[] }
 }

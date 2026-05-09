@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useData, useRoute } from 'vitepress'
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import PreviewList from '../PreviewList.vue'
 import ListPageHeader from '../ListPageHeader.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
@@ -21,8 +21,8 @@ const props = defineProps<{
   curPage?: string | number
   perPage?: number
   paginationMaxItems?: number
-  tagSlug: string
-  tagName: string
+  tagSlug?: string
+  tagName?: string
   showPopularPostsSwitch?: boolean
 }>()
 const { localeIndex, frontmatter } = useData()
@@ -31,9 +31,20 @@ const route = useRoute()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const curPage = Number(props.curPage)
+const tagName = computed(() =>
+  typeof props.tagName === 'string' ? props.tagName.trim() : ''
+)
+const tagSlug = computed(() =>
+  typeof props.tagSlug === 'string' ? props.tagSlug.trim() : ''
+)
+const tagBaseUrl = computed(() =>
+  tagSlug.value
+    ? `/${localeIndex.value}/${theme.value.tagsBaseUrl}/${tagSlug.value}`
+    : `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
+)
 // Filter posts by tag
 const filtered = localePosts.filter((item) =>
-  item.tags?.map((tag) => tag.name).includes(props.tagName)
+  tagName.value ? item.tags?.map((tag) => tag.name).includes(tagName.value) : false
 )
 const sorted = sortPosts(
   filtered,
@@ -44,7 +55,7 @@ const sorted = sortPosts(
 
 <template>
   <ListPageHeader
-    :base-url="`/${localeIndex}/${theme.tagsBaseUrl}/${props.tagSlug}`"
+    :base-url="tagBaseUrl"
     :show-popular-posts-switch="showPopularPostsSwitch"
   >
     {{ frontmatter.title }}

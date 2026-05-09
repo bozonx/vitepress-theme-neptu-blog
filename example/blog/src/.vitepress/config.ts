@@ -1,11 +1,11 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { defineConfig } from 'vitepress'
 import {
   defineBlogConfig,
   loadBlogLocale,
 } from 'vitepress-theme-neptu-blog/configs'
+import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -15,7 +15,9 @@ export const PER_PAGE = 10
 // GA_CREDENTIALS_JSON environment variables. Set enabled: true only when
 // both variables are present.
 export const popularPosts = {
-  enabled: Boolean(process.env.GA_PROPERTY_ID),
+  enabled: Boolean(
+    process.env.GA_PROPERTY_ID && process.env.GA_CREDENTIALS_JSON
+  ),
   // enabled: true, // use this to force-enable for demo without GA env vars
   sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
   dataSource: {
@@ -25,7 +27,7 @@ export const popularPosts = {
     // dataPeriodDays: 30,   // how many days of data to fetch (default: 30)
     // dataLimit: 1000,      // max posts to fetch from GA4 (default: 1000)
   },
-}
+} satisfies NonNullable<ThemeConfig['popularPosts']>
 
 export const postList = {
   showDate: true,
@@ -37,7 +39,7 @@ export const postList = {
 }
 
 export default async () => {
-  const config = defineConfig({
+  const config: BlogUserConfig = {
     srcDir: path.resolve(__dirname, '../'),
 
     // Required for SEO: canonical links, sitemap, RSS feeds.
@@ -107,13 +109,11 @@ export default async () => {
       // -----------------------------------------------------------------------
       sidebarLogoSrc:
         'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=100&auto=format&fit=crop',
-      mainHeroImg:
-        'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
 
       // -----------------------------------------------------------------------
       // Search (Pagefind)
       // -----------------------------------------------------------------------
-      search: { bodyMarker: 'data-pagefind-body' } as { bodyMarker: string },
+      search: { bodyMarker: 'data-pagefind-body' },
 
       // -----------------------------------------------------------------------
       // Popular posts
@@ -207,8 +207,7 @@ export default async () => {
       //   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path',
       //   text: 'Edit this page on GitHub',
       // },
-
-    } as Record<string, unknown>,
+    },
 
     vite: {
       // tailwindcss() is injected automatically — add other plugins here.
@@ -226,7 +225,7 @@ export default async () => {
       ['link', { rel: 'stylesheet', href: '/pagefind/pagefind-ui.css' }],
       ['script', { src: '/pagefind/pagefind-ui.js' }],
     ],
-  })
+  }
 
   return defineBlogConfig({
     ...config,

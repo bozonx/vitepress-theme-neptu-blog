@@ -18,6 +18,25 @@ import './styles/blog-styles.css'
 import type { EnhanceAppContext } from 'vitepress'
 import NeptuLayout from './layouts/NeptuLayout.vue'
 
+export type {
+  Author,
+  BlogHooks,
+  BlogUserConfig,
+  DeepPartial,
+  ExtendedPageData,
+  ExtendedSiteConfig,
+  I18n,
+  LocaleDefinition,
+  Post,
+  PostFrontmatter,
+  PostLite,
+  SeoConfig,
+  Tag,
+  ThemeConfig,
+  UiLocaleConfig,
+  UiLocaleDefinition,
+} from './types.d.ts'
+
 export default {
   Layout: NeptuLayout,
   enhanceApp(ctx: EnhanceAppContext) {

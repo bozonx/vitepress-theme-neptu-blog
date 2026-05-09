@@ -153,7 +153,7 @@ export namespace NeptuBlogTheme {
 
     search?:
       | (DefaultTheme.Config['search'] & { bodyMarker?: string })
-      | { provider: string; options?: unknown; bodyMarker?: string }
+      | { provider?: string; options?: unknown; bodyMarker?: string }
 
     publisher?: { name?: string; url?: string; logo?: string }
 

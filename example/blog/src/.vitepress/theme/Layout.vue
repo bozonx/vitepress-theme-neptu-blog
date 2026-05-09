@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { NavSearchButton } from 'vitepress-theme-neptu-blog/components'
-import { PageFindSearch } from 'vitepress-theme-neptu-blog/components'
-import Theme from 'vitepress-theme-neptu-blog'
 import { provide } from 'vue'
-// @ts-expect-error data loader has no generated types
+import Theme from 'vitepress-theme-neptu-blog'
+import {
+  NavSearchButton,
+  PageFindSearch,
+} from 'vitepress-theme-neptu-blog/components'
+// @ts-expect-error VitePress exposes generated data as a named export.
 import { data as enData } from '../../en/loadPosts.data'
 
 const posts = { en: enData.posts }
 
-provide("posts", posts);
+provide('posts', posts)
 
-const { Layout } = Theme;
+const { Layout } = Theme
 </script>
 
 <template>
