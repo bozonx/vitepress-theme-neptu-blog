@@ -47,7 +47,10 @@ export default async () => {
     srcDir: path.resolve(__dirname, '../'),
 
     // -------------------------------------------------------------------------
-    // Site identity — required for canonical links, sitemap, and RSS feeds.
+    // Site identity — absolute public URL with protocol, no trailing slash.
+    // Include VitePress `base` here too when the site is deployed under one.
+    // Used for canonical links, sitemap, RSS feeds, Open Graph, JSON-LD,
+    // hreflang, and robots.txt.
     // -------------------------------------------------------------------------
     siteUrl: 'https://myblog.org',
 

@@ -50,6 +50,16 @@ export namespace NeptuBlogTheme {
         themeConfig?: Partial<Config>
       }
     >
+    /**
+     * Absolute public base URL of the site, including the `http://` or
+     * `https://` protocol and without a trailing slash.
+     *
+     * If the VitePress `base` option is used, include that path here too,
+     * for example `https://example.com/blog`.
+     *
+     * Used as the canonical site origin for generated sitemap URLs, RSS feeds,
+     * canonical links, Open Graph metadata, JSON-LD, hreflang, and robots.txt.
+     */
     siteUrl?: string
     en?: { title?: string; description?: string }
   }
