@@ -9,26 +9,28 @@ import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export const PER_PAGE = 10
-
-// Popular posts via Google Analytics 4. Requires GA_PROPERTY_ID and
-// GA_CREDENTIALS_JSON environment variables. Set enabled: true only when
-// both variables are present.
+// ---------------------------------------------------------------------------
+// Popular posts via Google Analytics 4.
+// Requires GA_PROPERTY_ID and GA_CREDENTIALS_JSON environment variables.
+// ---------------------------------------------------------------------------
 export const popularPosts = {
   enabled: Boolean(
     process.env.GA_PROPERTY_ID && process.env.GA_CREDENTIALS_JSON
   ),
-  // enabled: true, // use this to force-enable for demo without GA env vars
+  // enabled: true, // force-enable for local demo without GA env vars
   sortBy: 'pageviews', // 'pageviews' | 'uniquePageviews' | 'avgTimeOnPage'
   dataSource: {
     provider: 'ga4' as const,
     propertyId: process.env.GA_PROPERTY_ID,
     credentialsJson: process.env.GA_CREDENTIALS_JSON,
-    // dataPeriodDays: 30,   // how many days of data to fetch (default: 30)
-    // dataLimit: 1000,      // max posts to fetch from GA4 (default: 1000)
+    // dataPeriodDays: 30,  // days of data to fetch (default: 30)
+    // dataLimit: 1000,     // max posts fetched from GA4 (default: 1000)
   },
 } satisfies NonNullable<ThemeConfig['popularPosts']>
 
+// ---------------------------------------------------------------------------
+// Post list card display options.
+// ---------------------------------------------------------------------------
 export const postList = {
   showDate: true,
   showTags: true,
@@ -42,22 +44,26 @@ export default async () => {
   const config: BlogUserConfig = {
     srcDir: path.resolve(__dirname, '../'),
 
-    // Required for SEO: canonical links, sitemap, RSS feeds.
+    // -------------------------------------------------------------------------
+    // Site identity — required for canonical links, sitemap, and RSS feeds.
+    // -------------------------------------------------------------------------
     siteUrl: 'https://myblog.org',
 
-    // Used in sidebar social links and footer.
+    // Shown in sidebar social links and edit-link footer block.
     repo: 'https://github.com/your-org/your-blog',
 
-    // Maximum number of posts included in the RSS/Atom/JSON feeds.
+    // Maximum posts included in RSS/Atom/JSON feeds (default: 50).
     // maxPostsInRssFeed: 50,
 
-    // Which feed formats to generate ('rss', 'atom', 'json').
+    // Feed formats to generate (default: all three).
     // rssFormats: ['rss', 'atom', 'json'],
 
-    // Maximum length of auto-generated post descriptions (chars).
+    // Maximum length of auto-generated post descriptions, chars (default: 300).
     // maxDescriptionLength: 300,
 
+    // -------------------------------------------------------------------------
     // Custom hooks — run your own code before/after built-in transformers.
+    // -------------------------------------------------------------------------
     // hooks: {
     //   transformPageData: {
     //     before: [(pageData, ctx) => { /* ... */ }],
@@ -72,12 +78,14 @@ export default async () => {
 
     themeConfig: {
       // -----------------------------------------------------------------------
-      // UI locale selector — lets the reader switch the interface language
+      // UI locale selector — lets readers switch the interface language
       // independently of the content language.
+      // The `storageKey` persists the choice across sessions.
       // -----------------------------------------------------------------------
       uiLocale: { default: 'en', storageKey: 'example-blog-ui-locale' },
       uiLocales: {
         en: { themeConfig: { langMenuLabel: 'Interface language' } },
+        // Each locale can extend another and override individual strings.
         'en-GB': {
           extends: 'en',
           label: 'English (UK)',
@@ -90,62 +98,169 @@ export default async () => {
       // -----------------------------------------------------------------------
       // Layout
       // -----------------------------------------------------------------------
-      perPage: PER_PAGE,
+      perPage: 10,
 
-      // Number of tags shown in the sidebar.
+      // Number of tags shown in the sidebar tag cloud (default: 15).
       // sidebarTagsCount: 15,
 
-      // Number of "similar posts" shown at the bottom of each post.
+      // Number of "similar posts" shown at the bottom of each post (default: 5).
       // similarPostsCount: 5,
 
-      // Parallax scroll distance on the home page (px).
+      // Parallax scroll distance on the home page, px (default: 300).
       // homeBgParallaxOffset: 300,
 
-      // Maximum page buttons shown in the pagination bar.
+      // Maximum page buttons in the pagination bar (default: 5).
       // paginationMaxItems: 5,
 
+      // Show arrow icon next to external links (default: true).
+      // externalLinkIcon: true,
+
       // -----------------------------------------------------------------------
-      // Images
+      // Sidebar branding
       // -----------------------------------------------------------------------
       sidebarLogoSrc:
         'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=100&auto=format&fit=crop',
 
+      // Logo height in px (default: 40).
+      // sidebarLogoHeight: 40,
+
+      // Blog title shown in the sidebar below the logo.
+      // blogTitle: 'My Blog',
+
+      // Label for the mobile nav toggle button (default: 'Menu').
+      // sidebarMenuLabel: 'Menu',
+
       // -----------------------------------------------------------------------
-      // Search (Pagefind)
+      // Sidebar sections — control which navigation blocks are shown and in
+      // what order. All blocks are enabled by default.
+      // -----------------------------------------------------------------------
+      // sideBar: {
+      //   recent: true,       // "Recent posts" link
+      //   popular: true,      // "Popular posts" link
+      //   archive: true,      // "By date" archive link
+      //   authors: true,      // "Authors" link
+      //   tags: true,         // tag cloud
+      //   rssFeed: true,      // RSS feed link
+      //   atomFeed: true,     // Atom feed link
+      //   donate: true,       // donate button
+      //   links: [            // custom links above the tag cloud
+      //     { text: 'About', href: '/about' },
+      //   ],
+      //   bottomLinks: [      // custom links below the tag cloud
+      //     { text: 'Privacy policy', href: '/privacy' },
+      //   ],
+      //   socialLinks: [      // icon links (Iconify icon strings)
+      //     { icon: 'fa6-brands:github', link: 'https://github.com/your-org' },
+      //   ],
+      // },
+
+      // -----------------------------------------------------------------------
+      // Top navigation bar (desktop header)
+      // -----------------------------------------------------------------------
+      // topBar: {
+      //   links: [
+      //     { text: 'About', href: '/about' },
+      //     { text: 'Projects', href: '/projects' },
+      //   ],
+      //   donate: true,
+      //   socialLinks: [
+      //     { icon: 'fa6-brands:github', link: 'https://github.com/your-org' },
+      //     { icon: 'fa6-brands:x-twitter', link: 'https://twitter.com/your_handle' },
+      //   ],
+      // },
+
+      // -----------------------------------------------------------------------
+      // Footer
+      // -----------------------------------------------------------------------
+      // footer: {
+      //   message: 'Released under the MIT License.',
+      //   copyright: '© 2024 Your Name',
+      //   links: [
+      //     { text: 'Privacy policy', href: '/privacy' },
+      //     { text: 'RSS', href: '/feed.xml' },
+      //   ],
+      // },
+
+      // -----------------------------------------------------------------------
+      // Authors — define author profiles for the /authors pages and post cards.
+      // Reference an author in post frontmatter with `authorId`.
+      // -----------------------------------------------------------------------
+      // authors: [
+      //   {
+      //     id: 'jane',
+      //     name: 'Jane Smith',
+      //     avatar: 'https://example.com/avatars/jane.jpg',
+      //     description: 'Frontend engineer and occasional blogger.',
+      //     twitterHandle: '@jane',
+      //     aboutUrl: '/authors/jane',
+      //     links: [
+      //       { icon: 'fa6-brands:github', link: 'https://github.com/jane' },
+      //     ],
+      //   },
+      // ],
+
+      // -----------------------------------------------------------------------
+      // Donate button
+      // -----------------------------------------------------------------------
+      // donate: {
+      //   url: 'https://buymeacoffee.com/your_handle',
+      //   // icon: 'fa6-solid:hand-holding-heart',
+      //   // postDonateCall: 'Thank you! ❤️',
+      // },
+
+      // -----------------------------------------------------------------------
+      // Search (Pagefind — generated during `vitepress build`)
       // -----------------------------------------------------------------------
       search: { bodyMarker: 'data-pagefind-body' },
 
       // -----------------------------------------------------------------------
-      // Popular posts
+      // Popular posts (Google Analytics 4)
       // -----------------------------------------------------------------------
       popularPosts,
 
       // -----------------------------------------------------------------------
-      // Post list display
+      // Post list card display
       // -----------------------------------------------------------------------
       postList,
 
       // -----------------------------------------------------------------------
       // Post footer blocks — reorder or omit entries to customize the layout.
-      // Default order: author, donate, comments, social-share, edit-link,
-      //                tags, similar, popular-link.
+      // Available blocks: 'author' | 'donate' | 'comments' | 'social-share' |
+      //                   'edit-link' | 'tags' | 'similar' | 'popular-link'
       // -----------------------------------------------------------------------
       // postFooter: ['author', 'donate', 'comments', 'social-share', 'edit-link', 'tags', 'similar', 'popular-link'],
 
       // -----------------------------------------------------------------------
-      // SEO — disable individual features globally (all default to true).
-      // Per-page overrides are available via the `seo` frontmatter field.
+      // Edit link (shown in post footer when `repo` is set)
       // -----------------------------------------------------------------------
-      // seo: {
-      //   og: true,
-      //   jsonLd: true,
-      //   hreflang: true,
-      //   canonical: true,
-      //   rss: true,
+      // editLink: {
+      //   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path',
+      //   text: 'Edit this page on GitHub',
       // },
 
-      // When true, every post gets a <link rel="canonical"> pointing to itself.
+      // -----------------------------------------------------------------------
+      // SEO — all features are enabled by default.
+      // Disable globally here; override per-page via the `seo` frontmatter key.
+      // -----------------------------------------------------------------------
+      // seo: {
+      //   og: true,        // Open Graph meta tags
+      //   jsonLd: true,    // JSON-LD structured data
+      //   hreflang: true,  // hreflang links for multilingual blogs
+      //   canonical: true, // <link rel="canonical">
+      //   rss: true,       // <link rel="alternate" type="application/rss+xml">
+      // },
+
+      // Add a <link rel="canonical"> pointing to each post itself (default: true).
       // autoCanonical: true,
+
+      // -----------------------------------------------------------------------
+      // Publisher info — used in JSON-LD structured data.
+      // -----------------------------------------------------------------------
+      // publisher: {
+      //   name: 'Your Blog',
+      //   url: 'https://myblog.org',
+      //   logo: 'https://myblog.org/logo.png',
+      // },
 
       // -----------------------------------------------------------------------
       // Twitter / X card
@@ -154,8 +269,7 @@ export default async () => {
 
       // -----------------------------------------------------------------------
       // Social sharing buttons shown in the post footer.
-      // Each entry needs: name, icon (Iconify), title, urlTemplate ({url}
-      // and {title} are replaced at render time).
+      // `urlTemplate` supports {url} and {title} placeholders.
       // -----------------------------------------------------------------------
       // socialMediaShares: [
       //   {
@@ -173,7 +287,7 @@ export default async () => {
       // ],
 
       // -----------------------------------------------------------------------
-      // Base URL segments — change if you rename the generated route folders.
+      // Route base URL segments — change if you rename generated route folders.
       // -----------------------------------------------------------------------
       // tagsBaseUrl:    'tags',
       // archiveBaseUrl: 'archive',
@@ -182,7 +296,7 @@ export default async () => {
       // authorsBaseUrl: 'authors',
 
       // -----------------------------------------------------------------------
-      // Icon overrides (Iconify icon strings).
+      // Icon overrides (Iconify icon strings — browse at icon.icones.es).
       // -----------------------------------------------------------------------
       // donateIcon:  'fa6-solid:hand-holding-heart',
       // recentIcon:  'fa6-solid:bolt',
@@ -193,25 +307,10 @@ export default async () => {
       // atomIcon:    'vscode-icons:file-type-atom',
       // youtubeIcon: 'fa6-brands:youtube',
       // tagsIcon:    'fa6-solid:tag',
-
-      // -----------------------------------------------------------------------
-      // Sidebar branding
-      // -----------------------------------------------------------------------
-      // sidebarLogoHeight: 40,  // px
-      // sidebarMenuLabel: 'Menu',
-
-      // -----------------------------------------------------------------------
-      // Edit link (shown in post footer when repo is set).
-      // -----------------------------------------------------------------------
-      // editLink: {
-      //   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path',
-      //   text: 'Edit this page on GitHub',
-      // },
     },
 
-    vite: {
-      // tailwindcss() is injected automatically — add other plugins here.
-    },
+    // tailwindcss() is injected automatically — add other Vite plugins here.
+    // vite: { plugins: [] },
 
     head: [
       // Prevent auto-detection of phone numbers as links on iOS.
