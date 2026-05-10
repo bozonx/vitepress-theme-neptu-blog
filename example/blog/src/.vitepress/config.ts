@@ -144,9 +144,6 @@ export default async () => {
       // Logo height in px (default: 40).
       // sidebarLogoHeight: 40,
 
-      // Blog title shown in the sidebar below the logo.
-      // blogTitle: 'My Blog',
-
       // Label for the mobile nav toggle button (default: 'Menu').
       // sidebarMenuLabel: 'Menu',
 
@@ -155,6 +152,7 @@ export default async () => {
       // what order. All blocks are enabled by default.
       // -----------------------------------------------------------------------
       // sidebar: {
+      //   blogTitle: 'My Blog', // Override sidebar title. Set false to hide.
       //   recent: true,       // "Recent posts" link
       //   popular: true,      // "Popular posts" link
       //   archive: true,      // "By date" archive link

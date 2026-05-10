@@ -115,6 +115,7 @@ export namespace NeptuBlogTheme {
 
     sidebarLogoSrc?: string
     sidebarLogoHeight?: number
+    /** Blog/site name. Used as the site title fallback and sidebar title fallback. */
     blogTitle?: string
     sidebarMenuLabel?: string
 

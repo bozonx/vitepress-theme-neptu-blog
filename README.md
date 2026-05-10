@@ -113,7 +113,7 @@ See the `example/blog` directory in this repo for a complete working project.
 | `homeBgParallaxOffset` | `number` | `300` | Parallax offset for home background |
 | `paginationMaxItems` | `number` | `5` | Max pagination links |
 | `sidebarLogoSrc` | `string` | - | Logo image in sidebar |
-| `siteTitle` | `string` | - | Override site title in sidebar |
+| `blogTitle` | `string` | - | Blog/site name used as the site title and sidebar title fallback |
 | `sidebarMenuLabel` | `string` | - | Custom sidebar menu label |
 
 ### Post list preview
@@ -254,6 +254,7 @@ themeConfig: {
     socialLinks?: SocialLink[],
   },
   sidebar: {
+    blogTitle?: string | false,
     links?: NavLink[],
     recent?: boolean,
     popular?: boolean,
