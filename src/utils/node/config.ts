@@ -1,5 +1,5 @@
 import { deepMerge } from '../shared/merge.ts'
-import { parseLocaleSite } from './i18n.ts'
+import { parseLocaleSite, parseSharedSite } from './i18n.ts'
 import { mdToHtml } from './markdown.ts'
 import { getImageDimensions } from './image.ts'
 import { resolveBaseLocaleKey } from '../shared/i18n.ts'
@@ -17,26 +17,18 @@ import type {
 
 type EditLinkConfig = NonNullable<ThemeConfig['editLink']>
 
-const LOCALIZED_THEME_CONFIG_KEYS = [
-  'blogTitle',
-  'donate',
-  'publisher',
-  'authors',
-  'footer',
-  'nav',
-  'sidebar',
-  'socialMediaShares',
-  't',
-] as const
-
-function pickLocalizedThemeConfig(
-  site: Record<string, unknown>
+/**
+ * Extracts the `themeConfig` block from a site YAML payload.
+ *
+ * Both `<srcDir>/site.yaml` (shared) and `<srcDir>/<locale>/_site.yaml`
+ * (per-locale) follow the canonical `Partial<BlogUserConfig>` shape:
+ * top-level keys for VitePress identity (`lang`, `title`, `titleTemplate`,
+ * `description`) and a nested `themeConfig:` block for everything else.
+ */
+function extractThemeConfig(
+  site: Record<string, unknown> | undefined
 ): Record<string, unknown> {
-  return Object.fromEntries(
-    LOCALIZED_THEME_CONFIG_KEYS
-      .filter((key) => site[key] !== undefined)
-      .map((key) => [key, site[key]])
-  )
+  return ((site?.themeConfig as Record<string, unknown> | undefined) ?? {})
 }
 
 function resolveInitialUiLocaleKey(
@@ -105,11 +97,26 @@ export async function loadBlogLocale(
     config.themeConfig?.uiLocales || {}
   )
 
+  // ------------------------------------------------------------------
+  // Shared <srcDir>/site.yaml — admin-editable layer applied to every
+  // locale. Sits between config.ts and per-locale YAML in priority.
+  // Template substitution context uses common+config defaults so that
+  // ${theme.*} can reference values declared in config.ts.
+  // ------------------------------------------------------------------
+  const sharedThemeBaseForTemplate = {
+    ...(blogCommon.themeConfig || {}),
+    ...(config.themeConfig || {}),
+  } as Record<string, unknown>
+  const sharedSite = parseSharedSite(config.srcDir || '', {
+    localeIndex,
+    config,
+    theme: sharedThemeBaseForTemplate,
+    t: (sharedThemeBaseForTemplate.t as Record<string, unknown> | undefined) ?? {},
+  }) as Record<string, unknown>
+  const sharedThemeConfig = extractThemeConfig(sharedSite)
+
   const resolvedTheme = deepMerge(
-    {
-      ...(blogCommon.themeConfig || {}),
-      ...(config.themeConfig || {}),
-    } as Record<string, unknown>,
+    deepMerge(sharedThemeBaseForTemplate, sharedThemeConfig),
     {
       ...(baseLocale.themeConfig || {}),
       ...(uiLocale.themeConfig || {}),
@@ -131,15 +138,17 @@ export async function loadBlogLocale(
     title: rawTitle,
     titleTemplate,
     description,
-    themeConfig: siteThemeConfig = {},
   } = site
-  const localeThemeConfig = deepMerge(
-    pickLocalizedThemeConfig(site),
-    siteThemeConfig as Record<string, unknown>
-  )
-  const title = rawTitle ?? (localeThemeConfig.blogTitle as string | undefined)
+  const localeThemeConfig = extractThemeConfig(site)
+  const title =
+    rawTitle ??
+    (localeThemeConfig.blogTitle as string | undefined) ??
+    (sharedThemeConfig.blogTitle as string | undefined)
 
-  const authors = (localeThemeConfig.authors as Author[] | undefined)?.map((item) => {
+  const mergedAuthors =
+    (localeThemeConfig.authors as Author[] | undefined) ??
+    (sharedThemeConfig.authors as Author[] | undefined)
+  const authors = mergedAuthors?.map((item) => {
     const imageDimensions = item.image
       ? getImageDimensions(item.image as string, config.srcDir || '')
       : null
@@ -161,6 +170,7 @@ export async function loadBlogLocale(
     themeConfig: {
       ...baseLocale.themeConfig,
       ...(uiLocale.themeConfig || {}),
+      ...sharedThemeConfig,
       ...localeThemeConfig,
       editLink: {
         ...(config.themeConfig?.repo
@@ -169,11 +179,13 @@ export async function loadBlogLocale(
         ...baseLocale.themeConfig?.editLink,
         ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)
           .editLink as Record<string, unknown> | undefined),
+        ...(sharedThemeConfig.editLink as Record<string, unknown> | undefined),
         ...(localeThemeConfig.editLink as Record<string, unknown> | undefined),
       } as EditLinkConfig,
       t: {
         ...baseLocale.t,
         ...(uiLocale.t || {}),
+        ...((sharedThemeConfig.t || {}) as Record<string, unknown>),
         ...((localeThemeConfig.t || {}) as Record<string, unknown>),
       } as I18n,
       authors,

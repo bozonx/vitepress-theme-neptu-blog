@@ -1,0 +1,167 @@
+# ---------------------------------------------------------------------------
+# Per-locale site config — admin-editable layer that overrides settings from
+# `.vitepress/config.ts` and the cross-locale `src/site.yaml`.
+#
+# Shape mirrors `Partial<BlogUserConfig>` (VitePress LocaleSpecificConfig):
+# - top-level: `lang`, `title`, `titleTemplate`, `description`
+# - everything else nests under `themeConfig:`.
+#
+# Available template substitutions (resolved before YAML parsing):
+#   ${theme.<key>}      — any value from the merged themeConfig
+#   ${t.<key>}          — translation strings
+#   ${localeIndex}      — current locale folder name (e.g. "en")
+# ---------------------------------------------------------------------------
+lang: "en-US"
+description: "Example Blog Description"
+
+themeConfig:
+  # Blog name. Used for browser tab titles, SEO metadata, and the sidebar heading.
+  blogTitle: "Example Blog"
+
+  # -------------------------------------------------------------------------
+  # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
+  # Relative URLs are automatically prefixed with the current locale.
+  # -------------------------------------------------------------------------
+  donate:
+    url: "page/donate"
+    postDonateCall: "If you find this blog useful, consider supporting it."
+    # icon: "${theme.donateIcon}"  # override the default heart icon
+
+  # -------------------------------------------------------------------------
+  # Publisher info — used in the auto-generated JSON-LD for every page.
+  # -------------------------------------------------------------------------
+  publisher:
+    name: "Your Blog Name"
+    url: "https://myblog.org"
+    logo: "https://myblog.org/img/logo.png"
+
+  # -------------------------------------------------------------------------
+  # Authors — referenced by posts via `authorId` frontmatter.
+  # -------------------------------------------------------------------------
+  authors:
+    - id: "ivan-k"
+      name: "Ivan K"
+      description: "Author and editor of this blog."
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+      # avatar: "/img/avatar.png"  # optional compact avatar for list previews
+      # imageWidth: 200            # optional for external images; local image sizes are detected automatically
+      # imageHeight: 200
+      # twitterHandle: "your_handle"
+      # aboutUrl: "https://your-personal-site.com"  # overrides the auto-generated author page link
+      links:
+        - type: "github"
+          url: "https://github.com/"
+          title: "GitHub profile"
+        # - type: "youtube"
+        #   url: "https://www.youtube.com/..."
+        #   title: "YouTube channel"
+
+  # -------------------------------------------------------------------------
+  # Footer
+  # -------------------------------------------------------------------------
+  footer:
+    message: "Copying allowed only with a link to the source."
+    copyright: "Copyright © 2024-present Your Name."
+    links:
+      - text: "${t.links.aboutBlog}"
+        href: "page/about-blog"
+        # icon: "mdi:information-outline"
+        # iconClass: "muted"
+        # class: "custom-footer-link"
+        # mobileOnly: false
+        # desktopOnly: false
+      - text: "Test JSON-LD"
+        href: "page/test-json-ld"
+      - text: "Advanced JSON-LD"
+        href: "page/test-json-ld-advanced"
+
+  # -------------------------------------------------------------------------
+  # Top bar
+  # -------------------------------------------------------------------------
+  nav:
+    # Show the donate button in the top bar.
+    donate: true
+    links:
+      - text: "Some link"
+        href: "https://example.org/"
+        icon: "solar:document-linear"
+        desktopOnly: false
+      # - text: "${t.links.donate}"
+      #   href: "page/donate"
+      #   icon: "${theme.donateIcon}"
+      #   mobileOnly: true   # show only on mobile (where sidebar is hidden)
+    socialLinks:
+      - icon: "fa6-brands:github-alt"
+        link: "${theme.repo}"
+        # url: "https://github.com/"  # alternative to link
+        # class: "custom-social-link"
+        desktopOnly: true
+        # mobileOnly: false
+
+  # -------------------------------------------------------------------------
+  # Sidebar
+  # -------------------------------------------------------------------------
+  sidebar:
+    popular: true   # Show popular posts section. Requires popularPosts.enabled.
+    recent: true    # Show recent posts section.
+    # blogTitle: false  # Set false to hide the blog title below the logo, or a string to override it.
+    archive: true   # Show archive (by year) section.
+    authors: true   # Show authors section.
+    tags: true      # Show tags cloud.
+    donate: true    # Show donate button at the bottom.
+    rssFeed: true   # Show RSS feed link.
+    atomFeed: true  # Show Atom feed link.
+    socialLinks:
+      - icon: "fa6-brands:github-alt"
+        link: "${theme.repo}"
+    # links:
+    #   - text: "${t.links.recent}"
+    #     href: "${theme.recentBaseUrl}/1"
+    #     icon: "${theme.recentIcon}"
+    bottomLinks:
+      - { header: "${t.links.links}" }
+      - text: "Our YouTube channel"
+        href: "https://www.youtube.com/"
+        icon: "${theme.youtubeIcon}"
+      - text: "We in social media"
+        href: "page/links"
+        icon: "fa6-solid:share-nodes"
+
+  # -------------------------------------------------------------------------
+  # Social sharing buttons in the post footer.
+  # The English locale includes default share buttons. Uncomment to replace,
+  # or set `socialMediaShares: []` to hide the share block.
+  # {url} and {title} are replaced with the current page URL and title.
+  # -------------------------------------------------------------------------
+  # socialMediaShares:
+  #   - name: twitter
+  #     icon: "fa6-brands:x-twitter"
+  #     title: "Share on X"
+  #     urlTemplate: "https://twitter.com/intent/tweet?url={url}&text={title}"
+  #   - name: telegram
+  #     icon: "fa6-brands:telegram"
+  #     title: "Share on Telegram"
+  #     urlTemplate: "https://t.me/share/url?url={url}&text={title}"
+  #     class: "custom-share-button"
+
+  # -------------------------------------------------------------------------
+  # Translations — overrides theme `t` strings for this locale only.
+  # -------------------------------------------------------------------------
+  # t:
+  #   popularPosts: "Popular Posts"
+  #   similarPosts: "Similar Posts"
+  #   shareSocialMedia: "Share on Social Media"
+  #   links:
+  #     aboutBlog: "About This Blog"
+  #     donate: "Donate"
+
+  # -------------------------------------------------------------------------
+  # Locale-specific theme overrides. Same keys as global `themeConfig` in
+  # `.vitepress/config.ts`. Prefer global config for site-wide behavior;
+  # override here only when this locale intentionally differs.
+  # -------------------------------------------------------------------------
+  # titleTemplate: ":title | ${theme.blogTitle}"
+  # perPage: 10
+  # editLink:
+  #   pattern: "https://github.com/user/repo/edit/main/example/blog/src/:path"
+  #   text: "Suggest an edit"

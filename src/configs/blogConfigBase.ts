@@ -183,7 +183,6 @@ export const common: BlogUserConfig = {
     ],
     ['link', { rel: 'manifest', href: '/site.webmanifest' }],
   ],
-  srcExclude: ['site/**', '**/site/**'],
   lastUpdated: true,
   cleanUrls: true,
   lang: 'en-US',

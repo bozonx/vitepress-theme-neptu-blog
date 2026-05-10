@@ -1,0 +1,28 @@
+# ---------------------------------------------------------------------------
+# Cross-locale shared site config — admin-editable layer applied to every
+# locale. Sits between `.vitepress/config.ts` and per-locale `_site.yaml`
+# files in priority order:
+#
+#   built-in defaults  →  config.ts  →  src/site.yaml  →  built-in UI locale
+#                       →  uiLocales[*]  →  src/<locale>/_site.yaml
+#
+# Use this file for theme settings that are the SAME for every locale but
+# the content team wants to edit without touching `config.ts` (and without
+# duplicating the value in each locale yaml).
+#
+# Shape mirrors `Partial<BlogUserConfig>` — everything theme-related goes
+# under `themeConfig:`. Per-locale identity (`lang`, `title`, `description`)
+# does not belong here; put it in `src/<locale>/_site.yaml` instead.
+# ---------------------------------------------------------------------------
+
+# themeConfig:
+#   publisher:
+#     name: "Your Blog Name"
+#     url: "https://myblog.org"
+#     logo: "https://myblog.org/img/logo.png"
+#
+#   donate:
+#     url: "page/donate"
+#
+#   sidebarLogoSrc: "/img/logo.png"
+#   sidebarLogoHeight: 32

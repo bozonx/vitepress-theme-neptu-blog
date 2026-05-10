@@ -6,15 +6,14 @@ vi.mock('../../../src/utils/node/i18n.ts', () => ({
     lang: 'en-US',
     title: 'Example',
     description: 'Example description',
-    donate: { url: 'page/donate' },
-    perPage: 99,
-    t: { rootCustomKey: 'Root custom value' },
     themeConfig: {
+      donate: { url: 'page/donate' },
       resolvedUiLabel: props.theme?.langMenuLabel,
       resolvedViewInAnotherLanguage: props.theme?.t?.viewInAnotherLanguage,
-      t: { customKey: 'Custom value' },
+      t: { rootCustomKey: 'Root custom value', customKey: 'Custom value' },
     },
   })),
+  parseSharedSite: vi.fn(() => ({})),
 }))
 
 vi.mock('../../../src/utils/node/image.ts', () => ({

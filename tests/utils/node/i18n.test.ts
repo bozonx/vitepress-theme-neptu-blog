@@ -1,5 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { parseLocaleSite, loadConfigYamlFile, SITE_DIR_REL_PATH } from '../../../src/utils/node/i18n.ts'
+import {
+  parseLocaleSite,
+  parseSharedSite,
+  LOCALE_SITE_FILE,
+  SHARED_SITE_FILE,
+} from '../../../src/utils/node/i18n.ts'
 
 vi.mock('node:fs', () => ({
   default: {
@@ -10,48 +15,28 @@ vi.mock('node:fs', () => ({
 
 import fs from 'node:fs'
 
-describe('loadConfigYamlFile', () => {
+describe('parseLocaleSite', () => {
   beforeEach(() => {
     vi.resetAllMocks()
   })
 
   it('returns empty object when file does not exist', () => {
     vi.mocked(fs.existsSync).mockReturnValue(false)
-    expect(loadConfigYamlFile('/src', 'site.en.yaml')).toEqual({})
-  })
-
-  it('parses simple yaml', () => {
-    vi.mocked(fs.existsSync).mockReturnValue(true)
-    vi.mocked(fs.readFileSync).mockReturnValue('title: Hello\n')
-    const result = loadConfigYamlFile('/src', 'site.en.yaml')
-    expect(result).toEqual({ title: 'Hello' })
-  })
-
-  it('returns body field as-is without unwrapping', () => {
-    vi.mocked(fs.existsSync).mockReturnValue(true)
-    vi.mocked(fs.readFileSync).mockReturnValue('body: |\n  title: Wrapped\n')
-    const result = loadConfigYamlFile('/src', 'site.en.yaml')
-    expect(result).toEqual({ body: 'title: Wrapped\n' })
+    expect(parseLocaleSite('/src', { localeIndex: 'en' })).toEqual({})
   })
 
   it('returns empty object on parse error', () => {
     vi.mocked(fs.existsSync).mockReturnValue(true)
     vi.mocked(fs.readFileSync).mockReturnValue('bad: [')
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    expect(loadConfigYamlFile('/src', 'site.en.yaml')).toEqual({})
+    expect(parseLocaleSite('/src', { localeIndex: 'en' })).toEqual({})
     warnSpy.mockRestore()
   })
 
-  it('returns empty object when yaml returns null', () => {
+  it('returns empty object when yaml is empty', () => {
     vi.mocked(fs.existsSync).mockReturnValue(true)
     vi.mocked(fs.readFileSync).mockReturnValue('')
-    expect(loadConfigYamlFile('/src', 'site.en.yaml')).toEqual({})
-  })
-})
-
-describe('parseLocaleSite', () => {
-  beforeEach(() => {
-    vi.resetAllMocks()
+    expect(parseLocaleSite('/src', { localeIndex: 'en' })).toEqual({})
   })
 
   it('applies template substitution to string values', () => {
@@ -86,11 +71,40 @@ describe('parseLocaleSite', () => {
     expect(result.count).toBe(42)
   })
 
-  it('uses correct file path with locale index', () => {
+  it('reads <srcDir>/<localeIndex>/_site.yaml', () => {
     vi.mocked(fs.existsSync).mockReturnValue(false)
     parseLocaleSite('/my-src', { localeIndex: 'ru' })
     expect(fs.existsSync).toHaveBeenCalledWith(
-      expect.stringContaining(`${SITE_DIR_REL_PATH}/site.ru.yaml`)
+      expect.stringContaining(`/my-src/ru/${LOCALE_SITE_FILE}`)
+    )
+  })
+})
+
+describe('parseSharedSite', () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
+  it('returns empty object when file does not exist', () => {
+    vi.mocked(fs.existsSync).mockReturnValue(false)
+    expect(parseSharedSite('/src', {})).toEqual({})
+  })
+
+  it('parses yaml with template substitution', () => {
+    vi.mocked(fs.existsSync).mockReturnValue(true)
+    vi.mocked(fs.readFileSync).mockReturnValue(
+      'themeConfig:\n  publisher:\n    name: ${name}\n'
+    )
+
+    const result = parseSharedSite('/src', { name: 'Acme' }) as any
+    expect(result.themeConfig.publisher.name).toBe('Acme')
+  })
+
+  it('reads <srcDir>/site.yaml', () => {
+    vi.mocked(fs.existsSync).mockReturnValue(false)
+    parseSharedSite('/my-src', {})
+    expect(fs.existsSync).toHaveBeenCalledWith(
+      expect.stringContaining(`/my-src/${SHARED_SITE_FILE}`)
     )
   })
 })
