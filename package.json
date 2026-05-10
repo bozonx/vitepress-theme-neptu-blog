@@ -20,6 +20,7 @@
   "files": [
     "src",
     "!src/.vitepress",
+    "schema",
     "README.md",
     "LICENSE"
   ],
@@ -115,13 +116,15 @@
     "googleapis": "^171.4.0",
     "gray-matter": "^4.0.3",
     "image-size": "^2.0.2",
+    "jiti": "^2.7.0",
     "rehype-external-links": "^3.0.0",
     "rehype-stringify": "^10.0.1",
     "remark": "^15.0.1",
     "remark-rehype": "^11.1.2",
     "slug": "^11.0.1",
     "strip-markdown": "^6.0.0",
-    "yaml": "^2.8.3"
+    "yaml": "^2.8.3",
+    "zod": "^4.4.3"
   },
   "scripts": {
     "typecheck": "vue-tsc --noEmit",

@@ -1,4 +1,5 @@
 export * from './merge.ts'
+export * from './mergeStrategy.ts'
 export * from './object.ts'
 export * from './string.ts'
 export * from './array.ts'

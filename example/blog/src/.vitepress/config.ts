@@ -3,7 +3,8 @@ import { fileURLToPath } from 'node:url'
 
 import {
   defineBlogConfig,
-  loadBlogLocale,
+  autoLoadLocales,
+  createSiteYamlHotReloadPlugin,
 } from 'vitepress-theme-neptu-blog/configs'
 import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
@@ -55,7 +56,15 @@ export default async () => {
     siteUrl: 'https://myblog.org',
 
     // tailwindcss() is injected automatically — add other Vite plugins here.
-    // vite: { plugins: [] },
+    vite: {
+      plugins: [
+        // Watch _site.yaml / _authors.yaml / site.yaml and restart the dev
+        // server when they change so that edits are reflected immediately.
+        createSiteYamlHotReloadPlugin(
+          path.resolve(__dirname, '../')
+        ),
+      ],
+    },
 
     head: [
       // Prevent auto-detection of phone numbers as links on iOS.
@@ -335,6 +344,9 @@ export default async () => {
 
   return defineBlogConfig({
     ...config,
-    locales: { en: await loadBlogLocale('en', config) },
+    // Auto-discovers every <srcDir>/<locale>/_site.yaml folder.
+    // To add a new locale, create the folder and `_site.yaml` — no config
+    // change required.
+    locales: await autoLoadLocales(config),
   })
 }

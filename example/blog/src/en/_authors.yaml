@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../../schema/authors.schema.json
+# ---------------------------------------------------------------------------
+# Per-locale authors list. Entries are merged by `id` with any authors
+# declared in `_site.yaml > themeConfig.authors`; same `id` overrides
+# parent/sibling entries. Posts reference authors via the `authorId`
+# frontmatter field.
+# ---------------------------------------------------------------------------
+- id: "ivan-k"
+  name: "Ivan K"
+  description: "Author and editor of this blog."
+  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+  # avatar: "/img/avatar.png"
+  # twitterHandle: "your_handle"
+  # aboutUrl: "https://your-personal-site.com"
+  links:
+    - type: "github"
+      url: "https://github.com/"
+      title: "GitHub profile"

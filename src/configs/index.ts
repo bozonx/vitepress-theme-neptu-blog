@@ -10,6 +10,13 @@ export {
   defineBlogConfig,
   mergeBlogConfig,
 } from './blogConfigBase.ts'
-export { loadBlogLocale } from '../utils/node/index.ts'
+export {
+  defineSiteConfig,
+  defineLocaleConfig,
+  defineAuthorsList,
+  type SiteYamlConfig,
+} from './defineSite.ts'
+export { autoLoadLocales } from '../utils/node/index.ts'
+export { createSiteYamlHotReloadPlugin } from '../utils/node/hotReloadPlugin.ts'
 export { resolveTranslationsByFilePath } from '../utils/shared/index.ts'
 export { getImageDimensions } from '../utils/node/index.ts'

@@ -1,3 +1,6 @@
+# yaml-language-server: $schema=../../../../schema/site.schema.json
+# When consumed from an installed package, replace the path above with:
+#   # yaml-language-server: $schema=../../node_modules/vitepress-theme-neptu-blog/schema/site.schema.json
 # ---------------------------------------------------------------------------
 # Per-locale site config — admin-editable layer that overrides settings from
 # `.vitepress/config.ts` and the cross-locale `src/site.yaml`.
@@ -35,26 +38,9 @@ themeConfig:
     url: "https://myblog.org"
     logo: "https://myblog.org/img/logo.png"
 
-  # -------------------------------------------------------------------------
-  # Authors — referenced by posts via `authorId` frontmatter.
-  # -------------------------------------------------------------------------
-  authors:
-    - id: "ivan-k"
-      name: "Ivan K"
-      description: "Author and editor of this blog."
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
-      # avatar: "/img/avatar.png"  # optional compact avatar for list previews
-      # imageWidth: 200            # optional for external images; local image sizes are detected automatically
-      # imageHeight: 200
-      # twitterHandle: "your_handle"
-      # aboutUrl: "https://your-personal-site.com"  # overrides the auto-generated author page link
-      links:
-        - type: "github"
-          url: "https://github.com/"
-          title: "GitHub profile"
-        # - type: "youtube"
-        #   url: "https://www.youtube.com/..."
-        #   title: "YouTube channel"
+  # Authors live in the sibling `_authors.yaml` file (merged by `id`).
+  # You can also declare them inline here under `authors:` — both sources are
+  # merged by id, with `_authors.yaml` winning on conflicts.
 
   # -------------------------------------------------------------------------
   # Footer

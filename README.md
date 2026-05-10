@@ -8,6 +8,7 @@ VitePress blog theme with i18n, RSS/Atom/JSON feeds, JSON-LD structured data, hr
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Configuration](#configuration)
+- [Config Layers](#config-layers)
 - [Social Sharing](#social-sharing)
 - [Post Frontmatter](#post-frontmatter)
 - [Layouts & Components](#layouts--components)
@@ -350,6 +351,18 @@ export default defineConfig({
   metaChunk: true, // smaller initial HTML payloads for large sites
 })
 ```
+
+## Config Layers
+
+The theme supports a layered config system that separates developer-owned code from admin-edited YAML files. Admin files live inside `src/` and are merged on top of the VitePress config.
+
+- `src/site.yaml` — shared settings across all locales
+- `src/<locale>/_site.yaml` — per-locale overrides
+- `src/<locale>/_authors.yaml` — per-locale author list
+
+Both YAML and TypeScript variants are supported (`.ts` takes precedence). Use `autoLoadLocales` to discover locales automatically instead of listing them manually.
+
+See [docs/CONFIG_LAYERS.md](docs/CONFIG_LAYERS.md) for the full merge order, `extends` inheritance, editor support, hot reload, and TypeScript helpers.
 
 ## Post Frontmatter
 

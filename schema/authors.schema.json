@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://unpkg.com/vitepress-theme-neptu-blog/schema/authors.schema.json",
+  "title": "Neptu blog authors list (_authors.yaml)",
+  "description": "Array of Author objects. Posts reference an author via the `authorId` frontmatter field.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["id"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable identifier referenced from post frontmatter (`authorId`) and used to merge entries across layers."
+      },
+      "name": { "type": "string" },
+      "description": { "type": "string" },
+      "avatar": {
+        "type": "string",
+        "description": "Optional compact avatar image for list previews."
+      },
+      "image": {
+        "type": "string",
+        "description": "Author headshot used on the author page."
+      },
+      "imageWidth": { "type": "integer", "minimum": 1 },
+      "imageHeight": { "type": "integer", "minimum": 1 },
+      "aboutUrl": {
+        "type": "string",
+        "description": "Overrides the auto-generated author page link."
+      },
+      "twitterHandle": {
+        "type": "string",
+        "description": "Twitter username without the leading '@'."
+      },
+      "links": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": { "type": "string" },
+            "url": { "type": "string" },
+            "title": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
