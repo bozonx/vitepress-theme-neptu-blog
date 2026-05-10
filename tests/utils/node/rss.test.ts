@@ -179,18 +179,18 @@ describe('getRssFormats', () => {
   })
 
   it('returns configured formats', () => {
-    expect(getRssFormats({ userConfig: { rssFormats: ['rss', 'json'] } })).toEqual(['rss', 'json'])
-  })
-
-  it('falls back to themeConfig formats', () => {
-    expect(getRssFormats({ userConfig: { themeConfig: { rssFormats: ['atom'] } } })).toEqual([
-      'atom',
-    ])
+    expect(
+      getRssFormats({ userConfig: { themeConfig: { feeds: { formats: ['rss', 'json'] } } } })
+    ).toEqual(['rss', 'json'])
   })
 
   it('normalizes, deduplicates and filters invalid formats', () => {
     expect(
-      getRssFormats({ userConfig: { rssFormats: [' RSS ', 'atom', 'atom', 'invalid'] } })
+      getRssFormats({
+        userConfig: {
+          themeConfig: { feeds: { formats: [' RSS ', 'atom', 'atom', 'invalid'] } },
+        },
+      })
     ).toEqual(['rss', 'atom'])
   })
 })

@@ -23,8 +23,8 @@ const LOCALIZED_THEME_CONFIG_KEYS = [
   'publisher',
   'authors',
   'footer',
-  'topBar',
-  'sideBar',
+  'nav',
+  'sidebar',
   'socialMediaShares',
   't',
 ] as const
@@ -163,8 +163,8 @@ export async function loadBlogLocale(
       ...(uiLocale.themeConfig || {}),
       ...localeThemeConfig,
       editLink: {
-        ...(config.repo
-          ? { pattern: resolveEditLinkPattern(config.repo) }
+        ...(config.themeConfig?.repo
+          ? { pattern: resolveEditLinkPattern(config.themeConfig.repo) }
           : {}),
         ...baseLocale.themeConfig?.editLink,
         ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)

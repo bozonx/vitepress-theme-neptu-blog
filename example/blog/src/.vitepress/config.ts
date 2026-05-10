@@ -9,6 +9,8 @@ import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+export const PER_PAGE = 10
+
 // ---------------------------------------------------------------------------
 // Popular posts via Google Analytics 4.
 // Requires GA_PROPERTY_ID and GA_CREDENTIALS_JSON environment variables.
@@ -49,33 +51,6 @@ export default async () => {
     // -------------------------------------------------------------------------
     siteUrl: 'https://myblog.org',
 
-    // Shown in sidebar social links and edit-link footer block.
-    repo: 'https://github.com/your-org/your-blog',
-
-    // Maximum posts included in RSS/Atom/JSON feeds (default: 50).
-    // maxPostsInRssFeed: 50,
-
-    // Feed formats to generate (default: all three).
-    // rssFormats: ['rss', 'atom', 'json'],
-
-    // Maximum length of auto-generated post descriptions, chars (default: 300).
-    // maxDescriptionLength: 300,
-
-    // -------------------------------------------------------------------------
-    // Custom hooks — run your own code before/after built-in transformers.
-    // -------------------------------------------------------------------------
-    // hooks: {
-    //   transformPageData: {
-    //     before: [(pageData, ctx) => { /* ... */ }],
-    //     after:  [(pageData, ctx) => { /* ... */ }],
-    //   },
-    //   transformHead: {
-    //     before: [(ctx) => { /* ... */ }],
-    //     after:  [(ctx) => { /* ... */ }],
-    //   },
-    //   buildEnd: [(cfg) => { /* ... */ }],
-    // },
-
     // tailwindcss() is injected automatically — add other Vite plugins here.
     // vite: { plugins: [] },
 
@@ -92,7 +67,33 @@ export default async () => {
       ['script', { src: '/pagefind/pagefind-ui.js' }],
     ],
 
+    // -------------------------------------------------------------------------
+    // Custom transform hooks — composed with the theme's built-in transformers.
+    // The theme's transformers run first, then yours; this is standard VitePress.
+    // For "before" semantics, use VitePress' `extends` mechanism.
+    // -------------------------------------------------------------------------
+    // async transformPageData(pageData, ctx) {
+    //   pageData.frontmatter.customField = 'value'
+    // },
+    // async transformHead(ctx) {
+    //   return [['meta', { name: 'custom', content: 'value' }]]
+    // },
+    // async buildEnd(siteConfig) { /* ... */ },
+
     themeConfig: {
+      // -----------------------------------------------------------------------
+      // Repository — drives the edit-link footer block.
+      // -----------------------------------------------------------------------
+      repo: 'https://github.com/your-org/your-blog',
+
+      // -----------------------------------------------------------------------
+      // RSS / Atom / JSON feed generation
+      // -----------------------------------------------------------------------
+      // feeds: {
+      //   maxPosts: 50,                       // posts included in each feed
+      //   formats: ['rss', 'atom', 'json'],   // formats to generate
+      // },
+
       // -----------------------------------------------------------------------
       // UI locale selector — lets readers switch the interface language
       // independently of the content language.
@@ -114,7 +115,7 @@ export default async () => {
       // -----------------------------------------------------------------------
       // Layout
       // -----------------------------------------------------------------------
-      perPage: 10,
+      perPage: PER_PAGE,
 
       // Number of tags shown in the sidebar tag cloud (default: 15).
       // sidebarTagsCount: 15,
@@ -150,7 +151,7 @@ export default async () => {
       // Sidebar sections — control which navigation blocks are shown and in
       // what order. All blocks are enabled by default.
       // -----------------------------------------------------------------------
-      // sideBar: {
+      // sidebar: {
       //   recent: true,       // "Recent posts" link
       //   popular: true,      // "Popular posts" link
       //   archive: true,      // "By date" archive link
@@ -173,7 +174,7 @@ export default async () => {
       // -----------------------------------------------------------------------
       // Top navigation bar (desktop header)
       // -----------------------------------------------------------------------
-      // topBar: {
+      // nav: {
       //   links: [
       //     { text: 'About', href: '/about' },
       //     { text: 'Projects', href: '/projects' },
@@ -227,7 +228,10 @@ export default async () => {
       // -----------------------------------------------------------------------
       // Search (Pagefind — generated during `vitepress build`)
       // -----------------------------------------------------------------------
-      search: { bodyMarker: 'data-pagefind-body' },
+      search: {
+        provider: 'pagefind',
+        options: { bodyMarker: 'data-pagefind-body' },
+      },
 
       // -----------------------------------------------------------------------
       // Popular posts (Google Analytics 4)
@@ -259,11 +263,12 @@ export default async () => {
       // Disable globally here; override per-page via the `seo` frontmatter key.
       // -----------------------------------------------------------------------
       // seo: {
-      //   og: true,        // Open Graph meta tags
-      //   jsonLd: true,    // JSON-LD structured data
-      //   hreflang: true,  // hreflang links for multilingual blogs
-      //   canonical: true, // <link rel="canonical">
-      //   rss: true,       // <link rel="alternate" type="application/rss+xml">
+      //   og: true,                  // Open Graph meta tags
+      //   jsonLd: true,              // JSON-LD structured data
+      //   hreflang: true,            // hreflang links for multilingual blogs
+      //   canonical: true,           // <link rel="canonical">
+      //   rss: true,                 // <link rel="alternate" type="application/rss+xml">
+      //   maxDescriptionLength: 300, // auto-generated description length, chars
       // },
 
       // Add a <link rel="canonical"> pointing to each post itself (default: true).

@@ -74,7 +74,7 @@ export function resolveArticlePreview(frontmatter: Frontmatter): string | undefi
 }
 
 export function resolveBodyMarker(theme: ThemeConfig, frontmatter: Frontmatter): string | undefined {
-  const bodyMarker = (theme.search as { bodyMarker?: string })?.bodyMarker
+  const bodyMarker = theme.search?.options?.bodyMarker
 
   if (!bodyMarker) return undefined
 

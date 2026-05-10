@@ -51,7 +51,7 @@ describe('mergeBlogConfig', () => {
     const result = mergeBlogConfig({})
     expect(result.themeConfig).toBeDefined()
     expect(result.themeConfig.perPage).toBe(10)
-    expect(result.maxPostsInRssFeed).toBe(50)
+    expect(result.themeConfig.feeds.maxPosts).toBe(50)
   })
 
   it('does not throw when themeConfig is missing', () => {
@@ -60,11 +60,10 @@ describe('mergeBlogConfig', () => {
 
   it('overrides defaults with provided values', () => {
     const result = mergeBlogConfig({
-      themeConfig: { perPage: 20 },
-      maxPostsInRssFeed: 100,
+      themeConfig: { perPage: 20, feeds: { maxPosts: 100 } },
     })
     expect(result.themeConfig.perPage).toBe(20)
-    expect(result.maxPostsInRssFeed).toBe(100)
+    expect(result.themeConfig.feeds.maxPosts).toBe(100)
   })
 
   it('merges head arrays', () => {
@@ -85,9 +84,11 @@ describe('mergeBlogConfig', () => {
     expect(result.locales.de).toEqual({ label: 'Deutsch' })
   })
 
-  it('preserves rssFormats array', () => {
-    const result = mergeBlogConfig({ rssFormats: ['rss', 'atom'] })
-    expect(result.rssFormats).toEqual(['rss', 'atom'])
+  it('preserves themeConfig.feeds.formats array', () => {
+    const result = mergeBlogConfig({
+      themeConfig: { feeds: { formats: ['rss', 'atom'] } },
+    })
+    expect(result.themeConfig.feeds.formats).toEqual(['rss', 'atom'])
   })
 
   it('wraps transformPageData to call internal transformers', () => {
@@ -188,11 +189,32 @@ describe('mergeBlogConfig', () => {
   })
 
   it('calls custom transformHead if provided', async () => {
-    const customFn = vi.fn()
+    const customFn = vi.fn().mockReturnValue([
+      ['meta', { name: 'custom-head', content: 'value' }],
+    ])
     const result = mergeBlogConfig({ transformHead: customFn })
     const ctx = { head: [], pageData: {}, siteConfig: {} }
-    await (result.transformHead as any)(ctx)
+    const extraHead = await (result.transformHead as any)(ctx)
     expect(customFn).toHaveBeenCalledWith(ctx)
+    expect(extraHead).toEqual([
+      ['meta', { name: 'custom-head', content: 'value' }],
+    ])
+  })
+
+  it('calls custom transformPageData and merges returned page data', async () => {
+    const customFn = vi.fn().mockReturnValue({
+      frontmatter: { title: 'Returned Title' },
+      customData: 'value',
+    })
+    const result = mergeBlogConfig({ transformPageData: customFn })
+    const pageData = { frontmatter: {}, relativePath: 'en/post/test.md' }
+    const ctx = { siteConfig: {} }
+    await (result.transformPageData as any)(pageData, ctx)
+    expect(customFn).toHaveBeenCalledWith(pageData, ctx)
+    expect(pageData).toMatchObject({
+      frontmatter: { title: 'Returned Title' },
+      customData: 'value',
+    })
   })
 
   it('calls custom buildEnd if provided', async () => {
@@ -288,19 +310,4 @@ describe('defineBlogConfig', () => {
     warnSpy.mockRestore()
   })
 
-  it('calls hooks.transformPageData.before before built-in transformers', async () => {
-    const beforeFn = vi.fn()
-    const afterFn = vi.fn()
-    const result = mergeBlogConfig({
-      hooks: { transformPageData: { before: [beforeFn], after: [afterFn] } },
-    })
-    const pageData = { frontmatter: {}, filePath: 'en/post/test.md' }
-    const ctx = { siteConfig: {} }
-    await (result.transformPageData as any)(pageData, ctx)
-    expect(beforeFn).toHaveBeenCalledWith(pageData, ctx)
-    expect(afterFn).toHaveBeenCalledWith(pageData, ctx)
-    expect(beforeFn.mock.invocationCallOrder[0]).toBeLessThan(
-      afterFn.mock.invocationCallOrder[0]
-    )
-  })
 })

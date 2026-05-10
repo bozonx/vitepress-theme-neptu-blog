@@ -167,7 +167,9 @@ describe('resolveArticlePreview', () => {
 })
 
 describe('resolveBodyMarker', () => {
-  const theme: ThemeConfig = { search: { bodyMarker: 'marker' } } as any
+  const theme: ThemeConfig = {
+    search: { provider: 'pagefind', options: { bodyMarker: 'marker' } },
+  } as any
 
   it('returns bodyMarker for regular post', () => {
     expect(resolveBodyMarker(theme, { layout: 'post' })).toBe('marker')

@@ -100,9 +100,9 @@ const runOpenAnimation = async () => {
   })
 }
 
-const sideBarConfig = theme.value.sideBar || {}
+const sidebarConfig = theme.value.sidebar || {}
 const links = computed<SideBarItem[]>(() => {
-  const cfg = theme.value.sideBar || {}
+  const cfg = theme.value.sidebar || {}
   const items: SideBarItem[] = [...(cfg.links || [])]
 
   if (cfg.recent) {
@@ -138,7 +138,7 @@ const links = computed<SideBarItem[]>(() => {
 })
 
 const bottomLinks = computed<SideBarItem[]>(() => {
-  const cfg = theme.value.sideBar || {}
+  const cfg = theme.value.sidebar || {}
   const items: SideBarItem[] = [...(cfg.bottomLinks || [])]
 
   if (cfg.donate && theme.value.donate) {
@@ -282,13 +282,13 @@ onUnmounted(() => {
         </a>
         <h4
           v-if="
-            theme.sideBar?.blogTitle !== false &&
-            (theme.sideBar?.blogTitle || theme.blogTitle)
+            theme.sidebar?.blogTitle !== false &&
+            (theme.sidebar?.blogTitle || theme.blogTitle)
           "
           class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]"
         >
           <a :href="`/${localeIndex}/`" :title="theme.t.toHome">
-            {{ theme.sideBar?.blogTitle || theme.blogTitle }}
+            {{ theme.sidebar?.blogTitle || theme.blogTitle }}
           </a>
         </h4>
 
@@ -303,7 +303,7 @@ onUnmounted(() => {
             />
           </SideBarGroup>
 
-          <SideBarGroup v-if="sideBarConfig.tags">
+          <SideBarGroup v-if="sidebarConfig.tags">
             <SideBarTags
               :locale-posts="localePosts"
               @item-click="closeDrawer"

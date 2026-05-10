@@ -41,7 +41,7 @@ describe('resolveDescription', () => {
       description: undefined,
       filePath: 'en/post/hello.md',
     }
-    resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: { maxDescriptionLength: 200 } } as any }, readFile)
+    resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: { themeConfig: { seo: { maxDescriptionLength: 200 } } } } as any }, readFile)
     expect(readFile).toHaveBeenCalledWith('/src/en/post/hello.md')
     expect(pageData.description).toBe('# Title\n\nSome content here.')
   })
@@ -54,7 +54,7 @@ describe('resolveDescription', () => {
       description: undefined,
       filePath: 'en/about.md',
     }
-    resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: { maxDescriptionLength: 50 } } as any }, readFile)
+    resolveDescription(pageData as any, { siteConfig: { srcDir: '/src', userConfig: { themeConfig: { seo: { maxDescriptionLength: 50 } } } } as any }, readFile)
     expect(pageData.description).toBe('content')
   })
 

@@ -16,25 +16,24 @@ interface SocialLinkItem {
 const props = defineProps<{
   class?: string
 }>()
-const { localeIndex, site } = useData()
+const { localeIndex } = useData()
 const { theme } = useUiTheme()
-const siteConfig = site.value as unknown as Record<string, unknown>
-const configuredFormats = Array.isArray(siteConfig.rssFormats)
-  ? (siteConfig.rssFormats as string[])
+const configuredFormats = Array.isArray(theme.value.feeds?.formats)
+  ? (theme.value.feeds!.formats as string[])
       .filter((format) => typeof format === 'string')
       .map((format) => format.trim().toLowerCase())
   : ['rss', 'atom', 'json']
 
 const hasFormat = (format: string) => configuredFormats.includes(format)
 const socialLinks: SocialLinkItem[] = [
-  ...(theme.value.sideBar?.socialLinks || []).map((item) => ({
+  ...(theme.value.sidebar?.socialLinks || []).map((item) => ({
     href: item.url || item.link,
     icon: item.icon,
     class: item.class,
   })),
 ].filter((item) => Boolean(item.href)) as SocialLinkItem[]
 
-if (theme.value.sideBar?.rssFeed && hasFormat('rss')) {
+if (theme.value.sidebar?.rssFeed && hasFormat('rss')) {
   socialLinks.push({
     href: `/${localeIndex.value}/feed.rss`,
     icon: theme.value.rssIcon,
@@ -43,7 +42,7 @@ if (theme.value.sideBar?.rssFeed && hasFormat('rss')) {
   })
 }
 
-if (theme.value.sideBar?.atomFeed && hasFormat('atom')) {
+if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
   socialLinks.push({
     href: `/${localeIndex.value}/feed.atom`,
     icon: theme.value.atomIcon,

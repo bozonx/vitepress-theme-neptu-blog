@@ -20,7 +20,6 @@ import NeptuLayout from './layouts/NeptuLayout.vue'
 
 export type {
   Author,
-  BlogHooks,
   BlogUserConfig,
   DeepPartial,
   ExtendedPageData,

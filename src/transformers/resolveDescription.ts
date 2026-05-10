@@ -32,7 +32,7 @@ export function resolveDescription(
 
     pageData.description = extractDescriptionFromMd(
       rawContent,
-      siteConfig.userConfig.maxDescriptionLength || 300,
+      siteConfig.userConfig.themeConfig?.seo?.maxDescriptionLength || 300,
       undefined,
       pageData.filePath
     )

@@ -19,7 +19,7 @@ import {
   validatePostForRss,
   validateRssConfig,
 } from '../utils/node/index.ts'
-import type { ExtendedSiteConfig, PostFrontmatter, BlogUserConfig, Author } from '../types.d.ts'
+import type { ExtendedSiteConfig, PostFrontmatter, Author } from '../types.d.ts'
 
 /**
  * Generates RSS and Atom feeds for all locales.
@@ -77,7 +77,9 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
         const sortedPosts = posts.sort(
           (a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
         )
-        const configuredMaxPosts = Number((config.userConfig as BlogUserConfig).maxPostsInRssFeed)
+        const configuredMaxPosts = Number(
+          config.userConfig?.themeConfig?.feeds?.maxPosts
+        )
         const maxPosts =
           Number.isFinite(configuredMaxPosts) && configuredMaxPosts >= 0
             ? configuredMaxPosts
@@ -98,7 +100,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
               ? fm.description
               : extractDescriptionFromMd(
                   src!,
-                  (config.userConfig as BlogUserConfig).maxDescriptionLength || 300
+                  config.userConfig?.themeConfig?.seo?.maxDescriptionLength || 300
                 )
             const guid = createPostGuid(siteUrl, url, fm.date)
             const categories = formatTagsForRss(fm.tags, siteUrl, localeIndex, tagsBaseUrl)

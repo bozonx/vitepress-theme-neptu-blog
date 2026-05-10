@@ -31,8 +31,7 @@ describe('loadBlogLocale', () => {
   it('falls back from locale variant to base built-in interface locale', async () => {
     const result = await loadBlogLocale('en-US', {
       srcDir: '/src',
-      repo: 'https://github.com/example/repo',
-      themeConfig: {},
+      themeConfig: { repo: 'https://github.com/example/repo' },
     })
 
     expect(result.lang).toBe('en-US')
@@ -49,8 +48,8 @@ describe('loadBlogLocale', () => {
   it('applies exact ui locale override for matching content locale on first render', async () => {
     const result = await loadBlogLocale('en-GB', {
       srcDir: '/src',
-      repo: 'https://github.com/example/repo',
       themeConfig: {
+        repo: 'https://github.com/example/repo',
         uiLocales: {
           'en-GB': {
             extends: 'en',
@@ -74,8 +73,8 @@ describe('loadBlogLocale', () => {
   it('passes build-resolved interface translations into site parsing', async () => {
     await loadBlogLocale('en-GB', {
       srcDir: '/src',
-      repo: 'https://github.com/example/repo',
       themeConfig: {
+        repo: 'https://github.com/example/repo',
         uiLocales: {
           'en-GB': {
             extends: 'en',

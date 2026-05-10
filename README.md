@@ -150,12 +150,14 @@ export default defineConfig(
 
 ### Edit link
 
-Set `repo` at the top level of `defineBlogConfig` to enable an "Edit this page" button. The theme auto-detects the hosting platform from the URL and generates the correct edit-link pattern.
+Set `themeConfig.repo` to enable an "Edit this page" button. The theme auto-detects the hosting platform from the URL and generates the correct edit-link pattern.
 
 ```ts
 export default defineConfig(
   defineBlogConfig({
-    repo: 'https://github.com/username/repo',
+    themeConfig: {
+      repo: 'https://github.com/username/repo',
+    },
   })
 )
 ```
@@ -244,14 +246,14 @@ themeConfig: {
 
 ```ts
 themeConfig: {
-  topBar: {
+  nav: {
     links: [
       { text: '${PROPS.t.links.donate}', href: '${PROPS.siteUrl}/${PROPS.localeIndex}/page/donate', icon: '${PROPS.donateIcon}', mobileOnly?: boolean, desktopOnly?: boolean },
     ],
     donate?: boolean,
     socialLinks?: SocialLink[],
   },
-  sideBar: {
+  sidebar: {
     links?: NavLink[],
     recent?: boolean,
     popular?: boolean,
@@ -293,8 +295,12 @@ For SPA pageview tracking in client-side analytics, see the note in [docs/BUILD_
 ```ts
 export default defineConfig(
   defineBlogConfig({
-    maxPostsInRssFeed: 50,
-    rssFormats: ['rss', 'atom', 'json'],
+    themeConfig: {
+      feeds: {
+        maxPosts: 50,
+        formats: ['rss', 'atom', 'json'],
+      },
+    },
   })
 )
 ```

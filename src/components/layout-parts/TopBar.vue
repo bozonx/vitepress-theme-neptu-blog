@@ -28,8 +28,8 @@ const resolveItemShowClass = (item: LinkItem) => {
   // both
   return ''
 }
-const links: LinkItem[] = [...(theme.value.topBar?.links || [])]
-if (theme.value.topBar?.donate && theme.value.donate) {
+const links: LinkItem[] = [...(theme.value.nav?.links || [])]
+if (theme.value.nav?.donate && theme.value.donate) {
   links.push({
     text: theme.value.t.links.donate,
     href: `${theme.value.donate.url}`,
@@ -37,7 +37,7 @@ if (theme.value.topBar?.donate && theme.value.donate) {
     iconClass: 'donate-icon',
   })
 }
-const socialLinks: LinkItem[] = (theme.value.topBar?.socialLinks || []).map((item) => ({
+const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) => ({
   href: item.url || item.link,
   icon: item.icon,
   class: item.class,

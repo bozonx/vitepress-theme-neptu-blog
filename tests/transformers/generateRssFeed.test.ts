@@ -118,11 +118,10 @@ describe('generateRssFeed', () => {
       },
       userConfig: {
         siteUrl: 'https://example.com/',
-        maxPostsInRssFeed: 2,
-        maxDescriptionLength: 120,
-        rssFormats: ['rss', 'json'],
         themeConfig: {
           authorsBaseUrl: 'authors',
+          feeds: { maxPosts: 2, formats: ['rss', 'json'] },
+          seo: { maxDescriptionLength: 120 },
         },
       },
     } as any)
@@ -179,10 +178,10 @@ describe('generateRssFeed', () => {
       },
       userConfig: {
         siteUrl: 'https://example.com',
-        maxPostsInRssFeed: 10,
-        maxDescriptionLength: 120,
-        rssFormats: ['rss', 'atom'],
-        themeConfig: {},
+        themeConfig: {
+          feeds: { maxPosts: 10, formats: ['rss', 'atom'] },
+          seo: { maxDescriptionLength: 120 },
+        },
       },
     } as any)
 
@@ -212,10 +211,10 @@ describe('generateRssFeed', () => {
         },
         userConfig: {
           siteUrl: 'https://example.com',
-          maxPostsInRssFeed: 10,
-          maxDescriptionLength: 120,
-          rssFormats: ['rss'],
-          themeConfig: {},
+          themeConfig: {
+            feeds: { maxPosts: 10, formats: ['rss'] },
+            seo: { maxDescriptionLength: 120 },
+          },
         },
       } as any)
     ).rejects.toThrow('RSS feed generation completed with errors')

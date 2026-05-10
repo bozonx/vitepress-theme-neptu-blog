@@ -4,8 +4,6 @@ import {
   PageData,
   UserConfig,
   HeadConfig,
-  TransformContext,
-  SiteConfig,
 } from 'vitepress'
 
 export namespace NeptuBlogTheme {
@@ -27,36 +25,6 @@ export namespace NeptuBlogTheme {
     label?: string
     themeConfig?: DeepPartial<Config>
     t?: DeepPartial<I18n>
-  }
-
-  export interface BlogHooks {
-    transformPageData?: {
-      before?: Array<
-        (
-          pageData: ExtendedPageData,
-          ctx: TransformContext
-        ) => void | Promise<void>
-      >
-      after?: Array<
-        (
-          pageData: ExtendedPageData,
-          ctx: TransformContext
-        ) => void | Promise<void>
-      >
-    }
-    /**
-     * Runs before / after the built-in SEO head transformers (OG, JSON-LD,
-     * hreflang, canonical, RSS).
-     */
-    transformHead?: {
-      before?: Array<(ctx: TransformContext) => void | Promise<void>>
-      after?: Array<(ctx: TransformContext) => void | Promise<void>>
-    }
-    /**
-     * Runs after generateRssFeed / generateRobotsTxt and any top-level
-     * config.buildEnd.
-     */
-    buildEnd?: Array<(cfg: SiteConfig) => void | Promise<void>>
   }
 
   export type BlogUserConfig = Omit<
@@ -82,13 +50,8 @@ export namespace NeptuBlogTheme {
         themeConfig?: Partial<Config>
       }
     >
-    repo?: string
     siteUrl?: string
-    maxPostsInRssFeed?: number
-    rssFormats?: string[]
-    maxDescriptionLength?: number
     en?: { title?: string; description?: string }
-    hooks?: BlogHooks
   }
 
   export interface Config extends DefaultTheme.Config {
@@ -134,9 +97,11 @@ export namespace NeptuBlogTheme {
 
     twitterSite?: string
     authors?: Author[]
-    topBar?: TopBarConfig
-    sideBar?: SideBarConfig
+    nav?: NavConfig
+    sidebar?: SidebarConfig
     donate?: DonateConfig
+    repo?: string
+    feeds?: { maxPosts?: number; formats?: string[] }
 
     sidebarLogoSrc?: string
     sidebarLogoHeight?: number
@@ -151,15 +116,14 @@ export namespace NeptuBlogTheme {
 
     t: I18n
 
-    search?:
-      | (DefaultTheme.Config['search'] & { bodyMarker?: string })
-      | { provider?: string; options?: unknown; bodyMarker?: string }
+    search?: {
+      provider?: string
+      options?: { bodyMarker?: string; [key: string]: unknown }
+    }
 
     publisher?: { name?: string; url?: string; logo?: string }
 
     footer?: { message?: string; copyright?: string; links?: NavLink[] }
-
-    rssFormats?: string[]
   }
 
   export interface I18n {
@@ -228,7 +192,8 @@ export namespace NeptuBlogTheme {
     hreflang?: boolean
     canonical?: boolean
     rss?: boolean
-    [key: string]: boolean | undefined
+    maxDescriptionLength?: number
+    [key: string]: boolean | number | undefined
   }
 
   export interface PopularPostsConfig {
@@ -250,13 +215,13 @@ export namespace NeptuBlogTheme {
     twitterHandle?: string
   }
 
-  export interface TopBarConfig {
+  export interface NavConfig {
     links?: NavLink[]
     donate?: boolean
     socialLinks?: SocialLink[]
   }
 
-  export interface SideBarConfig {
+  export interface SidebarConfig {
     links?: NavLink[]
     recent?: boolean
     popular?: boolean
@@ -423,4 +388,5 @@ export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig
 export type BlogUserConfig = NeptuBlogTheme.BlogUserConfig
 export type SeoConfig = NeptuBlogTheme.SeoConfig
-export type BlogHooks = NeptuBlogTheme.BlogHooks
+export type NavConfig = NeptuBlogTheme.NavConfig
+export type SidebarConfig = NeptuBlogTheme.SidebarConfig

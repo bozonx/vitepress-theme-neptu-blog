@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, useAttrs } from 'vue'
 import NeptuBtn from './NeptuBtn.vue'
 
 interface Props {
@@ -6,6 +7,17 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const attrs = useAttrs()
+const iconClass = computed(() => {
+  const value = attrs.iconClass
+  return (
+    typeof value === 'string' ||
+    Array.isArray(value) ||
+    (value && typeof value === 'object')
+      ? value
+      : 'muted'
+  ) as string | Record<string, boolean> | Array<string | Record<string, boolean>>
+})
 </script>
 
 <template>
@@ -16,7 +28,7 @@ const props = defineProps<Props>()
       props.customClass,
     ]"
     inner-class="menu-item-inner"
-    :icon-class="$attrs.iconClass || 'muted'"
+    :icon-class="iconClass"
     :no-bg="true"
   >
     <slot />

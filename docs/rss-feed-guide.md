@@ -14,13 +14,17 @@ RSS, Atom, and JSON feeds are generated automatically per locale during the buil
 
 ## Configuration
 
-Control output with root-level config (inside `defineBlogConfig`):
+Control feed output via `themeConfig.feeds`:
 
 ```ts
 export default defineConfig(
   defineBlogConfig({
-    maxPostsInRssFeed: 50,
-    rssFormats: ['rss', 'atom', 'json'],
+    themeConfig: {
+      feeds: {
+        maxPosts: 50,
+        formats: ['rss', 'atom', 'json'],
+      },
+    },
   })
 )
 ```
@@ -109,7 +113,7 @@ export default defineBlogConfig({
 
 Frontmatter `seo` always overrides the global setting.
 
-> **Note:** This only disables the `<link>` tags in `<head>`. The actual feed files (`feed-en.rss`, etc.) are still generated during build. To disable feed generation entirely, set `rssFormats: []`.
+> **Note:** This only disables the `<link>` tags in `<head>`. The actual feed files (`feed-en.rss`, etc.) are still generated during build. To disable feed generation entirely, set `themeConfig.feeds.formats: []`.
 
 ## Compatibility
 

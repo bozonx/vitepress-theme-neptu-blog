@@ -14,7 +14,7 @@ const SwitchAppearanceStub = { name: 'SwitchAppearance', template: '<div class="
 describe('TopBar', () => {
   beforeEach(() => {
     mockTheme.value = {
-      topBar: {
+      nav: {
         links: [
           { text: 'Home', href: '/', desktopOnly: true },
           { text: 'Mobile', href: '/m', mobileOnly: true },
@@ -26,7 +26,7 @@ describe('TopBar', () => {
     }
   })
 
-  it('renders topBar links', () => {
+  it('renders nav links', () => {
     const wrapper = mount(TopBar, {
       global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })

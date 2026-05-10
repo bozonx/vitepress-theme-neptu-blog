@@ -30,7 +30,7 @@ describe('SideBar drawer', () => {
     vi.useFakeTimers()
     mockTheme.value = {
       sidebarMenuLabel: 'Menu',
-      sideBar: {
+      sidebar: {
         links: [{ text: 'Home', href: '/' }],
         tags: true,
       },

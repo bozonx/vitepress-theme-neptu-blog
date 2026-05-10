@@ -29,7 +29,6 @@ import type {
   BlogUserConfig,
   ThemeConfig,
   SeoConfig,
-  BlogHooks,
   I18n,
 } from '../types.d.ts'
 
@@ -61,19 +60,17 @@ function asTransformHeadContext(ctx: unknown): TransformHeadContext {
   return ctx as unknown as TransformHeadContext
 }
 
-// ---------------------------------------------------------------------------
-// Generic hook runner for single-argument hooks.
-// ---------------------------------------------------------------------------
-
-function runHooks<T>(
-  hooks: Array<(arg: T) => void | Promise<void>> | undefined,
-  arg: T
-): Promise<void> {
-  if (!hooks?.length) return Promise.resolve()
-  return hooks.reduce<Promise<void>>(
-    (promise, fn) => promise.then(() => fn(arg)),
-    Promise.resolve()
-  )
+function mergeReturnedPageData(
+  pageData: ExtendedPageData,
+  returnedPageData: unknown
+): void {
+  if (
+    returnedPageData &&
+    typeof returnedPageData === 'object' &&
+    !Array.isArray(returnedPageData)
+  ) {
+    Object.assign(pageData, returnedPageData)
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -104,6 +101,8 @@ type ResolvedBlogConfig = BlogUserConfig & {
   }
   themeConfig: Partial<ThemeConfig> & {
     popularPosts: NonNullable<ThemeConfig['popularPosts']>
+    feeds: NonNullable<ThemeConfig['feeds']>
+    seo: NonNullable<ThemeConfig['seo']>
     t: I18n
   }
   vite: NonNullable<UserConfig['vite']> & {
@@ -140,6 +139,15 @@ const commonThemeConfig = {
       dataPeriodDays: 30,
       dataLimit: 1000,
     },
+  },
+
+  feeds: {
+    maxPosts: 50,
+    formats: ['rss', 'atom', 'json'],
+  },
+
+  seo: {
+    maxDescriptionLength: 300,
   },
 
   tagsBaseUrl: 'tags',
@@ -180,26 +188,7 @@ export const common: BlogUserConfig = {
   cleanUrls: true,
   lang: 'en-US',
 
-  maxPostsInRssFeed: 50,
-  rssFormats: ['rss', 'atom', 'json'],
-  maxDescriptionLength: 300,
-
   themeConfig: commonThemeConfig,
-}
-
-function runTransformPageDataHooks(
-  hooks: BlogHooks['transformPageData'] | undefined,
-  phase: 'before' | 'after',
-  pageData: ExtendedPageData,
-  ctx: TransformContext
-): Promise<void> {
-  const fns = hooks?.[phase]
-  if (!fns) return Promise.resolve()
-
-  return fns.reduce<Promise<void>>(
-    (promise, fn) => promise.then(() => fn(pageData, ctx)),
-    Promise.resolve()
-  )
 }
 
 function warnMissingRequired(config: BlogUserConfig): void {
@@ -222,8 +211,8 @@ function warnMissingRequired(config: BlogUserConfig): void {
  * Low-level config merge without validation warnings.
  *
  * Applies all built-in defaults (head, vite, markdown, sitemap, transformers,
- * deep-merges postList / popularPosts / t) on top of the provided config. Does
- * NOT emit warnings for missing required fields.
+ * deep-merges postList / popularPosts / feeds / seo / t) on top of the
+ * provided config. Does NOT emit warnings for missing required fields.
  *
  * Prefer {@link defineBlogConfig} as the standard entry point — it wraps this
  * function and also calls `warnMissingRequired`. Use `mergeBlogConfig` directly
@@ -306,6 +295,16 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         ...config.themeConfig?.postList,
       },
 
+      feeds: {
+        ...commonThemeConfig.feeds,
+        ...config.themeConfig?.feeds,
+      },
+
+      seo: {
+        ...commonThemeConfig.seo,
+        ...config.themeConfig?.seo,
+      },
+
       t: deepMerge(
         (blogBaseLocales.en as { t: I18n }).t,
         (config.themeConfig?.t ?? {}) as Record<string, unknown>
@@ -315,14 +314,6 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
     async transformPageData(pageData, ctx) {
       const extendedPageData = asExtendedPageData(pageData)
       const extendedSiteConfig = asExtendedSiteConfig(ctx.siteConfig)
-      const typedCtx = asTransformContext(ctx)
-
-      await runTransformPageDataHooks(
-        config.hooks?.transformPageData,
-        'before',
-        extendedPageData,
-        typedCtx
-      )
 
       collectImageDimensions(extendedPageData, extendedSiteConfig)
       transformTitle(extendedPageData, { siteConfig: extendedSiteConfig })
@@ -333,19 +324,17 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
         noIndexUrls.add(normalizeSitemapUrl(extendedPageData.relativePath))
       }
 
-      await runTransformPageDataHooks(
-        config.hooks?.transformPageData,
-        'after',
-        extendedPageData,
-        typedCtx
-      )
+      if (config.transformPageData) {
+        mergeReturnedPageData(
+          extendedPageData,
+          await config.transformPageData(pageData, ctx)
+        )
+      }
     },
 
     async transformHead(ctx) {
       const extendedCtx = asTransformHeadContext(ctx)
       const typedCtx = asTransformContext(ctx)
-
-      await runHooks(config.hooks?.transformHead?.before, typedCtx)
 
       const pageSeo = extendedCtx.pageData.frontmatter?.seo
       const globalSeo = extendedCtx.siteConfig.userConfig?.themeConfig?.seo
@@ -364,11 +353,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       if (isSeoEnabled('canonical')) addCanonicalLink(extendedCtx)
       if (isSeoEnabled('rss')) addRssLinks(extendedCtx)
 
-      if (config.transformHead) {
-        await config.transformHead(typedCtx)
-      }
-
-      await runHooks(config.hooks?.transformHead?.after, typedCtx)
+      return config.transformHead ? await config.transformHead(typedCtx) : undefined
     },
 
     buildEnd: async (cfg: SiteConfig) => {
@@ -378,8 +363,6 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       if (config.buildEnd) {
         await config.buildEnd(cfg)
       }
-
-      await runHooks(config.hooks?.buildEnd, cfg)
     },
   } as ResolvedBlogConfig
 }

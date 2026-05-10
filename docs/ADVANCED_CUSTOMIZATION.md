@@ -2,9 +2,11 @@
 
 This guide covers extending the theme without forking it.
 
-## Hooks
+## Custom Transform Hooks
 
-The theme exposes a small hook system inside `defineBlogConfig`. You can run custom code **before** or **after** the built-in `transformPageData` pipeline.
+The theme exposes the standard VitePress lifecycle hooks (`transformPageData`,
+`transformHead`, `buildEnd`) on the config you pass to `defineBlogConfig`. Your
+hooks run **after** the built-in transformers.
 
 ```ts
 // .vitepress/config.ts
@@ -13,30 +15,31 @@ import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 export default defineBlogConfig({
   siteUrl: 'https://example.com',
   locales: { en: { lang: 'en-US' } },
-  hooks: {
-    transformPageData: {
-      before: [
-        (pageData, ctx) => {
-          // Runs before collectImageDimensions, transformTitle, etc.
-          console.log('Processing:', pageData.filePath)
-        },
-      ],
-      after: [
-        async (pageData, ctx) => {
-          // Runs after all built-in transformers
-          pageData.frontmatter.customField = 'value'
-        },
-      ],
-    },
+
+  async transformPageData(pageData, ctx) {
+    // Built-in transformers (collectImageDimensions, transformTitle,
+    // transformPageMeta, resolveDescription) have already run.
+    pageData.frontmatter.customField = 'value'
+  },
+
+  async transformHead(ctx) {
+    return [['meta', { name: 'custom', content: 'value' }]]
+  },
+
+  async buildEnd(siteConfig) {
+    // Runs after the theme's RSS / robots.txt generation.
   },
 })
 ```
 
-Hook order:
+Hook order for `transformPageData`:
 
-1. `hooks.transformPageData.before[]`
-2. Built-in: `collectImageDimensions` → `transformTitle` → `transformPageMeta` → `resolveDescription`
-3. `hooks.transformPageData.after[]`
+1. Built-in: `collectImageDimensions` → `transformTitle` → `transformPageMeta` → `resolveDescription`
+2. Your `transformPageData`
+
+If you need to run code **before** the built-in transformers, use VitePress'
+[`extends`](https://vitepress.dev/reference/site-config#extends) mechanism —
+the config you pass to `extends` runs before the wrapping config's hooks.
 
 ## Post Components
 
