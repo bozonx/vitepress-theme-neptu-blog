@@ -32,14 +32,13 @@ export const popularPosts = {
 } satisfies NonNullable<ThemeConfig['popularPosts']>
 
 // ---------------------------------------------------------------------------
-// Post list card display options.
+// Build-time post list options.
+// `maxPreviewLength` is read by `loadPosts.data.ts` and `getAllPosts.ts` at
+// data-loader time and must therefore live in code. Visual `postList` flags
+// (showDate / showTags / ...) belong in `src/site.yaml` and override the
+// rendered cards independently of this constant.
 // ---------------------------------------------------------------------------
 export const postList = {
-  showDate: true,
-  showTags: true,
-  showThumbnail: true,
-  showPreview: true,
-  showAuthor: true,
   maxPreviewLength: 300,
 }
 
@@ -92,25 +91,27 @@ export default async () => {
     // },
     // async buildEnd(siteConfig) { /* ... */ },
 
+    // -------------------------------------------------------------------------
+    // Developer-owned theme settings.
+    //
+    // Keep this block focused on:
+    //   - technical wiring that needs code (env vars, derived values)
+    //   - integrations the admin should not edit (search provider, analytics)
+    //   - identifiers consumed by other settings (`repo`, `uiLocale`)
+    //
+    // Admin-editable presentation (nav, sidebar, footer, donate, publisher,
+    // authors, socialMediaShares, icons, postList, postFooter, SEO toggles,
+    // *BaseUrl, etc.) belongs in `src/site.yaml` (cross-locale) or
+    // `src/<locale>/_site.yaml` (per-locale). See docs/CONFIG_LAYERS.md.
+    // -------------------------------------------------------------------------
     themeConfig: {
-      // -----------------------------------------------------------------------
-      // Repository — drives the edit-link footer block.
-      // -----------------------------------------------------------------------
+      // Repository — drives the edit-link footer block and is referenced
+      // from YAML via `${theme.repo}`.
       repo: 'https://github.com/your-org/your-blog',
 
-      // -----------------------------------------------------------------------
-      // RSS / Atom / JSON feed generation
-      // -----------------------------------------------------------------------
-      // feeds: {
-      //   maxPosts: 50,                       // posts included in each feed
-      //   formats: ['rss', 'atom', 'json'],   // formats to generate
-      // },
-
-      // -----------------------------------------------------------------------
       // UI locale selector — lets readers switch the interface language
-      // independently of the content language.
-      // The `storageKey` persists the choice across sessions.
-      // -----------------------------------------------------------------------
+      // independently of the content language. Technical wiring lives here;
+      // user-facing labels can be moved to YAML if desired.
       uiLocale: { default: 'en', storageKey: 'example-blog-ui-locale' },
       uiLocales: {
         en: { themeConfig: { langMenuLabel: 'Interface language' } },
@@ -124,220 +125,17 @@ export default async () => {
         ru: { themeConfig: { langMenuLabel: 'Язык интерфейса' } },
       },
 
-      // -----------------------------------------------------------------------
-      // Layout
-      // -----------------------------------------------------------------------
+      // Posts per page — referenced from code via the exported `PER_PAGE`.
       perPage: PER_PAGE,
 
-      // Number of tags shown in the sidebar tag cloud (default: 15).
-      // sidebarTagsCount: 15,
-
-      // Number of "similar posts" shown at the bottom of each post (default: 5).
-      // similarPostsCount: 5,
-
-      // Parallax scroll distance on the home page, px (default: 300).
-      // homeBgParallaxOffset: 300,
-
-      // Maximum page buttons in the pagination bar (default: 5).
-      // paginationMaxItems: 5,
-
-      // Show arrow icon next to external links (default: true).
-      // externalLinkIcon: true,
-
-      // -----------------------------------------------------------------------
-      // Sidebar branding
-      // -----------------------------------------------------------------------
-      sidebarLogoSrc:
-        'https://images.unsplash.com/photo-1618477388954-7852f32655ec?q=80&w=100&auto=format&fit=crop',
-
-      // Logo height in px (default: 40).
-      // sidebarLogoHeight: 40,
-
-      // Label for the mobile nav toggle button (default: 'Menu').
-      // sidebarMenuLabel: 'Menu',
-
-      // -----------------------------------------------------------------------
-      // Sidebar sections — control which navigation blocks are shown and in
-      // what order. All blocks are enabled by default.
-      // -----------------------------------------------------------------------
-      // sidebar: {
-      //   blogTitle: 'My Blog', // Override sidebar title. Set false to hide.
-      //   recent: true,       // "Recent posts" link
-      //   popular: true,      // "Popular posts" link
-      //   archive: true,      // "By date" archive link
-      //   authors: true,      // "Authors" link
-      //   tags: true,         // tag cloud
-      //   rssFeed: true,      // RSS feed link
-      //   atomFeed: true,     // Atom feed link
-      //   donate: true,       // donate button
-      //   links: [            // custom links above the tag cloud
-      //     { text: 'About', href: '/about' },
-      //   ],
-      //   bottomLinks: [      // custom links below the tag cloud
-      //     { text: 'Privacy policy', href: '/privacy' },
-      //   ],
-      //   socialLinks: [      // icon links (Iconify icon strings)
-      //     { icon: 'fa6-brands:github', link: 'https://github.com/your-org' },
-      //   ],
-      // },
-
-      // -----------------------------------------------------------------------
-      // Top navigation bar (desktop header)
-      // -----------------------------------------------------------------------
-      // nav: {
-      //   links: [
-      //     { text: 'About', href: '/about' },
-      //     { text: 'Projects', href: '/projects' },
-      //   ],
-      //   donate: true,
-      //   socialLinks: [
-      //     { icon: 'fa6-brands:github', link: 'https://github.com/your-org' },
-      //     { icon: 'fa6-brands:x-twitter', link: 'https://twitter.com/your_handle' },
-      //   ],
-      // },
-
-      // -----------------------------------------------------------------------
-      // Footer
-      // -----------------------------------------------------------------------
-      // footer: {
-      //   message: 'Released under the MIT License.',
-      //   copyright: '© 2024 Your Name',
-      //   links: [
-      //     { text: 'Privacy policy', href: '/privacy' },
-      //     { text: 'RSS', href: '/feed.xml' },
-      //   ],
-      // },
-
-      // -----------------------------------------------------------------------
-      // Authors — define author profiles for the /authors pages and post cards.
-      // Reference an author in post frontmatter with `authorId`.
-      // -----------------------------------------------------------------------
-      // authors: [
-      //   {
-      //     id: 'jane',
-      //     name: 'Jane Smith',
-      //     avatar: 'https://example.com/avatars/jane.jpg',
-      //     description: 'Frontend engineer and occasional blogger.',
-      //     twitterHandle: '@jane',
-      //     aboutUrl: '/authors/jane',
-      //     links: [
-      //       { icon: 'fa6-brands:github', link: 'https://github.com/jane' },
-      //     ],
-      //   },
-      // ],
-
-      // -----------------------------------------------------------------------
-      // Donate button
-      // -----------------------------------------------------------------------
-      // donate: {
-      //   url: 'https://buymeacoffee.com/your_handle',
-      //   // icon: 'fa6-solid:hand-holding-heart',
-      //   // postDonateCall: 'Thank you! ❤️',
-      // },
-
-      // -----------------------------------------------------------------------
-      // Search (Pagefind — generated during `vitepress build`)
-      // -----------------------------------------------------------------------
+      // Search provider config (Pagefind assets are wired in `head` above).
       search: {
         provider: 'pagefind',
         options: { bodyMarker: 'data-pagefind-body' },
       },
 
-      // -----------------------------------------------------------------------
-      // Popular posts (Google Analytics 4)
-      // -----------------------------------------------------------------------
+      // Popular posts — env-driven, must stay in code.
       popularPosts,
-
-      // -----------------------------------------------------------------------
-      // Post list card display
-      // -----------------------------------------------------------------------
-      postList,
-
-      // -----------------------------------------------------------------------
-      // Post footer blocks — reorder or omit entries to customize the layout.
-      // Available blocks: 'author' | 'donate' | 'comments' | 'social-share' |
-      //                   'edit-link' | 'tags' | 'similar' | 'popular-link'
-      // -----------------------------------------------------------------------
-      // postFooter: ['author', 'donate', 'comments', 'social-share', 'edit-link', 'tags', 'similar', 'popular-link'],
-
-      // -----------------------------------------------------------------------
-      // Edit link (shown in post footer when `repo` is set)
-      // -----------------------------------------------------------------------
-      // editLink: {
-      //   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path',
-      //   text: 'Edit this page on GitHub',
-      // },
-
-      // -----------------------------------------------------------------------
-      // SEO — all features are enabled by default.
-      // Disable globally here; override per-page via the `seo` frontmatter key.
-      // -----------------------------------------------------------------------
-      // seo: {
-      //   og: true,                  // Open Graph meta tags
-      //   jsonLd: true,              // JSON-LD structured data
-      //   hreflang: true,            // hreflang links for multilingual blogs
-      //   canonical: true,           // <link rel="canonical">
-      //   rss: true,                 // <link rel="alternate" type="application/rss+xml">
-      //   maxDescriptionLength: 300, // auto-generated description length, chars
-      // },
-
-      // Add a <link rel="canonical"> pointing to each post itself (default: true).
-      // autoCanonical: true,
-
-      // -----------------------------------------------------------------------
-      // Publisher info — used in JSON-LD structured data.
-      // -----------------------------------------------------------------------
-      // publisher: {
-      //   name: 'Your Blog',
-      //   url: 'https://myblog.org',
-      //   logo: 'https://myblog.org/logo.png',
-      // },
-
-      // -----------------------------------------------------------------------
-      // Twitter / X card
-      // -----------------------------------------------------------------------
-      // twitterSite: '@your_handle',
-
-      // -----------------------------------------------------------------------
-      // Social sharing buttons shown in the post footer.
-      // `urlTemplate` supports {url} and {title} placeholders.
-      // -----------------------------------------------------------------------
-      // socialMediaShares: [
-      //   {
-      //     name: 'twitter',
-      //     icon: 'fa6-brands:x-twitter',
-      //     title: 'Share on X',
-      //     urlTemplate: 'https://twitter.com/intent/tweet?url={url}&text={title}',
-      //   },
-      //   {
-      //     name: 'telegram',
-      //     icon: 'fa6-brands:telegram',
-      //     title: 'Share on Telegram',
-      //     urlTemplate: 'https://t.me/share/url?url={url}&text={title}',
-      //   },
-      // ],
-
-      // -----------------------------------------------------------------------
-      // Route base URL segments — change if you rename generated route folders.
-      // -----------------------------------------------------------------------
-      // tagsBaseUrl:    'tags',
-      // archiveBaseUrl: 'archive',
-      // popularBaseUrl: 'popular',
-      // recentBaseUrl:  'recent',
-      // authorsBaseUrl: 'authors',
-
-      // -----------------------------------------------------------------------
-      // Icon overrides (Iconify icon strings — browse at icon.icones.es).
-      // -----------------------------------------------------------------------
-      // donateIcon:  'fa6-solid:hand-holding-heart',
-      // recentIcon:  'fa6-solid:bolt',
-      // popularIcon: 'fa6-solid:star',
-      // byDateIcon:  'fa6-solid:calendar-days',
-      // authorsIcon: 'mdi:users',
-      // rssIcon:     'bi:rss-fill',
-      // atomIcon:    'vscode-icons:file-type-atom',
-      // youtubeIcon: 'fa6-brands:youtube',
-      // tagsIcon:    'fa6-solid:tag',
     },
 
   }

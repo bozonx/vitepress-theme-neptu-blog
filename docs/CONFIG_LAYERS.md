@@ -24,6 +24,44 @@ When the theme builds a locale it merges layers in this exact order. A higher la
 
 Arrays are **replaced by default**. The only exception is `authors`: entries are merged by `id`, where a child locale can override a parent author and new authors are appended.
 
+## What goes where
+
+The merge engine accepts any field in any layer, but the **example project enforces a convention** to keep responsibilities clear. Mixing roles still works, but you lose the benefit of a clean developer/admin split.
+
+### `.vitepress/config.ts` — developer-only
+
+Code-bound or environment-driven settings that an admin should not edit:
+
+- VitePress core: `srcDir`, `siteUrl`, `vite`, `head`, `transformPageData`, `transformHead`, `buildEnd`
+- Integrations with secrets or env vars: `themeConfig.popularPosts` (GA4 credentials), analytics scripts in `head`
+- Search provider wiring: `themeConfig.search`
+- Identifiers consumed by other layers: `themeConfig.repo` (referenced from YAML via `${theme.repo}`)
+- Technical extension points: `themeConfig.uiLocale`, `themeConfig.uiLocales`
+- Derived values that need code: anything computed from `process.env`, paths, or runtime conditions
+
+### `src/site.yaml` — admin, all locales
+
+Cross-locale presentation that the content team owns:
+
+- Branding: `sidebarLogoSrc`, `sidebarLogoHeight`, `sidebarMenuLabel`
+- Layout knobs: `sidebarTagsCount`, `similarPostsCount`, `paginationMaxItems`, `homeBgParallaxOffset`, `externalLinkIcon`, `perPage`
+- Feature blocks: `sidebar`, `nav`, `footer`, `donate`, `publisher`, `authors`, `socialMediaShares`, `postList`, `postFooter`, `editLink`, `feeds`
+- SEO toggles: `seo`, `autoCanonical`, `twitterSite`
+- Routing: `tagsBaseUrl`, `archiveBaseUrl`, `popularBaseUrl`, `recentBaseUrl`, `authorsBaseUrl`
+- Icon overrides: `donateIcon`, `recentIcon`, `popularIcon`, `byDateIcon`, `authorsIcon`, `rssIcon`, `atomIcon`, `youtubeIcon`, `tagsIcon`
+
+### `src/<locale>/_site.yaml` — admin, per locale
+
+Locale identity and locale-specific overrides of any of the fields above:
+
+- Top-level: `lang`, `title`, `titleTemplate`, `description`
+- Translations: `themeConfig.t`
+- Locale-specific `nav`, `footer`, `sidebar.bottomLinks`, `socialMediaShares`, etc.
+
+### Rule of thumb
+
+If a value depends on **code, env vars, or secrets** → `config.ts`. Otherwise → YAML. When in doubt, prefer YAML: the layered model lets `config.ts` still override at any time without touching this rule.
+
 ## File reference
 
 | File | Owner | Purpose |
