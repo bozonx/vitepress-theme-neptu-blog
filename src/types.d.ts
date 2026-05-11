@@ -213,13 +213,19 @@ export namespace NeptuBlogTheme {
     dataSource?: AnalyticsDataSource
   }
 
+  export interface AuthorLink {
+    type?: string
+    url?: string
+    title?: string
+  }
+
   export interface Author {
     id: string
     name: string
     avatar?: string
     image?: string
     description?: string
-    links?: SocialLink[]
+    links?: AuthorLink[]
     aboutUrl?: string
     imageHeight?: number
     imageWidth?: number

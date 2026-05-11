@@ -1,10 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import {
-  defineBlogConfigWithAutoLocales,
-  createSiteYamlHotReloadPlugin,
-} from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfigWithAutoLocales } from 'vitepress-theme-neptu-blog/configs'
 import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -53,16 +50,9 @@ export default async () => {
     // -------------------------------------------------------------------------
     siteUrl: 'https://myblog.org',
 
-    // tailwindcss() is injected automatically — add other Vite plugins here.
-    vite: {
-      plugins: [
-        // Watch _site.yaml / _authors.yaml / site.yaml and restart the dev
-        // server when they change so that edits are reflected immediately.
-        createSiteYamlHotReloadPlugin(
-          path.resolve(__dirname, '../')
-        ),
-      ],
-    },
+    // tailwindcss() and site-yaml hot-reload are injected automatically.
+    // Add other Vite plugins here:
+    // vite: { plugins: [myPlugin()] },
 
     head: [
       // Prevent auto-detection of phone numbers as links on iOS.

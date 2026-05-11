@@ -114,23 +114,10 @@
 #     logo: "https://myblog.org/logo.png"
 #
 #   # ---------------------------------------------------------------------------
-#   # Authors — usually in `<locale>/_authors.yaml`. Inline list shown for
-#   # reference; both sources are merged by `id`.
+#   # Authors — defined per locale in `src/<locale>/_authors.yaml`. That file
+#   # is the single source of truth; entries are merged into
+#   # `themeConfig.authors` by `id`. Do not declare authors here.
 #   # ---------------------------------------------------------------------------
-#   authors:
-#     - id: "jane"
-#       name: "Jane Smith"
-#       avatar: "https://example.com/avatars/jane.jpg"  # square thumbnail
-#       image: "https://example.com/authors/jane.jpg"   # large hero image (author page)
-#       imageWidth: 800                                  # avoids CLS
-#       imageHeight: 600
-#       description: "Frontend engineer and occasional blogger."
-#       twitterHandle: "@jane"
-#       aboutUrl: "/authors/jane"
-#       links:
-#         - type: "github"                               # iconified by SocialMediaLinks
-#           url: "https://github.com/jane"
-#           title: "GitHub profile"
 #
 #   # ---------------------------------------------------------------------------
 #   # Post list card display

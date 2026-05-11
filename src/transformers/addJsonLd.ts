@@ -254,7 +254,7 @@ function createAuthorJsonLd(
       width: imageWidth,
       caption: authorName,
     }) as JsonLdValue,
-    sameAs: links?.map((link) => link.url || link.link) as JsonLdValue,
+    sameAs: links?.map((link) => link.url) as JsonLdValue,
     ...(rest as unknown as JsonLdObject),
   }
 }

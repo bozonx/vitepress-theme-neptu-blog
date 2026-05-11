@@ -1,4 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
+import { createSiteYamlHotReloadPlugin } from '../utils/node/hotReloadPlugin.ts'
 import type {
   UserConfig,
   HeadConfig,
@@ -250,6 +251,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       ...config.vite,
       plugins: [
         ...(hasTailwindPlugin(config.vite?.plugins) ? [] : [tailwindcss()]),
+        ...(config.srcDir ? [createSiteYamlHotReloadPlugin(config.srcDir)] : []),
         ...(config.vite?.plugins || []),
       ],
       ssr: { noExternal: ['vitepress-theme-neptu-blog'], ...config.vite?.ssr },
