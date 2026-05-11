@@ -17,67 +17,8 @@
 # ---------------------------------------------------------------------------
 
 themeConfig:
-  # Site identity (cross-locale fallback). Per-locale `_site.yaml` usually
-  # overrides this with the localized name.
-  # blogTitle: 'My Blog'
-
   # -------------------------------------------------------------------------
-  # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
-  # Relative URLs are automatically prefixed with the current locale.
-  # -------------------------------------------------------------------------
-  donate:
-    url: 'page/donate'
-    # postDonateCall: 'Thank you! ❤️'
-    # icon: 'fa6-solid:hand-holding-heart'
-
-  # -------------------------------------------------------------------------
-  # Publisher info — used in the auto-generated JSON-LD for every page.
-  # -------------------------------------------------------------------------
-  # publisher:
-  #   name: 'Your Blog'
-  #   url: 'https://myblog.org'
-  #   logo: 'https://myblog.org/logo.png'
-
-  # Authors live in per-locale `src/<locale>/_authors.yaml` files (merged by `id`).
-  # You can also declare them inline here under `authors:` — both sources are
-  # merged by id, with `_authors.yaml` winning on conflicts.
-
-  # -------------------------------------------------------------------------
-  # Top bar
-  # -------------------------------------------------------------------------
-  # nav:
-  #   donate: true
-  #   links:
-  #     - text: 'About'
-  #       href: '/about'
-  #   socialLinks:
-  #     - icon: 'fa6-brands:github'
-  #       link: 'https://github.com/your-org'
-
-  # -------------------------------------------------------------------------
-  # Sidebar
-  # -------------------------------------------------------------------------
-  # sidebar:
-  #   popular: true
-  #   recent: true
-  #   archive: true
-  #   authors: true
-  #   tags: true
-  #   donate: true
-  #   rssFeed: true
-  #   atomFeed: true
-  #   links:
-  #     - text: 'About'
-  #       href: '/about'
-  #   bottomLinks:
-  #     - text: 'Privacy policy'
-  #       href: '/privacy'
-  #   socialLinks:
-  #     - icon: 'fa6-brands:github'
-  #       link: 'https://github.com/your-org'
-
-  # -------------------------------------------------------------------------
-  # Sidebar branding & layout
+  # Branding & layout
   # -------------------------------------------------------------------------
   # sidebarLogoSrc: '/img/logo.png'
   # sidebarLogoHeight: 40
@@ -88,34 +29,9 @@ themeConfig:
   # paginationMaxItems: 5
   # externalLinkIcon: true
 
-  # -------------------------------------------------------------------------
-  # Footer
-  # -------------------------------------------------------------------------
-  # footer:
-  #   message: 'Released under the MIT License.'
-  #   copyright: '© 2024 Your Name'
-  #   links:
-  #     - text: 'Privacy policy'
-  #       href: '/privacy'
-  #     - text: 'RSS'
-  #       href: '/feed.xml'
-
-  # -------------------------------------------------------------------------
-  # Social sharing buttons in the post footer.
-  # The default share buttons are used when this section is absent.
-  # Uncomment to replace, or set `socialMediaShares: []` to hide the block.
-  # {url} and {title} are replaced with the current page URL and title.
-  # -------------------------------------------------------------------------
-  # socialMediaShares:
-  #   - name: twitter
-  #     icon: 'fa6-brands:x-twitter'
-  #     title: 'Share on X'
-  #     urlTemplate: 'https://twitter.com/intent/tweet?url={url}&text={title}'
-  #   - name: telegram
-  #     icon: 'fa6-brands:telegram'
-  #     title: 'Share on Telegram'
-  #     urlTemplate: 'https://t.me/share/url?url={url}&text={title}'
-  #     # class: 'custom-share-button'
+  # Site identity (cross-locale fallback). Per-locale `_site.yaml` usually
+  # overrides this with the localized name.
+  # blogTitle: 'My Blog'
 
   # -------------------------------------------------------------------------
   # Post list card display
@@ -146,8 +62,8 @@ themeConfig:
   # -------------------------------------------------------------------------
   # Edit link (shown in post footer when `repo` is set in config.ts).
   # -------------------------------------------------------------------------
-  # editLink:
-  #   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path'
+  editLink:
+    pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path'
   #   text: 'Edit this page on GitHub'
 
   # -------------------------------------------------------------------------
@@ -196,3 +112,95 @@ themeConfig:
   # atomIcon: 'vscode-icons:file-type-atom'
   # youtubeIcon: 'fa6-brands:youtube'
   # tagsIcon: 'fa6-solid:tag'
+
+  # -------------------------------------------------------------------------
+  # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
+  # Relative URLs are automatically prefixed with the current locale.
+  # -------------------------------------------------------------------------
+  donate:
+    url: 'page/donate'
+    # postDonateCall: 'Thank you! ❤️'
+    # icon: 'fa6-solid:hand-holding-heart'
+
+  # -------------------------------------------------------------------------
+  # Publisher info — used in the auto-generated JSON-LD for every page.
+  # -------------------------------------------------------------------------
+  publisher:
+    #   name: 'Your Blog'
+    #   url: 'https://myblog.org'
+    logo: 'https://myblog.org/logo.png'
+
+  # -------------------------------------------------------------------------
+  # Social sharing buttons in the post footer.
+  # The default share buttons are used when this section is absent.
+  # Uncomment to replace, or set `socialMediaShares: []` to hide the block.
+  # {url} and {title} are replaced with the current page URL and title.
+  # -------------------------------------------------------------------------
+  # socialMediaShares:
+  #   - name: twitter
+  #     icon: 'fa6-brands:x-twitter'
+  #     title: 'Share on X'
+  #     urlTemplate: 'https://twitter.com/intent/tweet?url={url}&text={title}'
+  #   - name: telegram
+  #     icon: 'fa6-brands:telegram'
+  #     title: 'Share on Telegram'
+  #     urlTemplate: 'https://t.me/share/url?url={url}&text={title}'
+  #     # class: 'custom-share-button'
+
+  # Authors live in per-locale `src/<locale>/_authors.yaml` files (merged by `id`).
+  # You can also declare them inline here under `authors:` — both sources are
+  # merged by id, with `_authors.yaml` winning on conflicts.
+
+  # -------------------------------------------------------------------------
+  # Top bar
+  # -------------------------------------------------------------------------
+  nav:
+    donate: true
+    #   links:
+    #     - text: 'About'
+    #       href: '/about'
+    socialLinks:
+      - icon: 'fa6-brands:github-alt'
+        link: '${theme.repo}'
+        # url: "https://github.com/"  # alternative to link
+        # class: "custom-social-link"
+        desktopOnly: true
+        # mobileOnly: false
+
+  # -------------------------------------------------------------------------
+  # Sidebar
+  # -------------------------------------------------------------------------
+  sidebar:
+    popular: true # Show popular posts section. Requires popularPosts.enabled.
+    recent: true # Show recent posts section.
+    archive: true # Show archive (by year) section.
+    authors: true # Show authors section.
+    tags: true # Show tags cloud.
+    donate: true # Show donate button at the bottom.
+    rssFeed: true # Show RSS feed link.
+    atomFeed: true # Show Atom feed link.
+    #   links:
+    #     - text: 'About'
+    #       href: '/about'
+    #   bottomLinks:
+    #     - text: 'Privacy policy'
+    #       href: '/privacy'
+    socialLinks:
+      - icon: 'fa6-brands:github'
+        link: '${theme.repo}'
+
+  # -------------------------------------------------------------------------
+  # Footer
+  # -------------------------------------------------------------------------
+  footer:
+    #   message: 'Released under the MIT License.'
+    #   copyright: '© 2026 Your Name'
+    links:
+      #     - text: 'Privacy policy'
+      #       href: '/privacy'
+      #     - text: 'RSS'
+      #       href: '/feed.xml'
+      - text: 'Test JSON-LD'
+        href: 'page/test-json-ld'
+      - text: 'Advanced JSON-LD'
+        href: 'page/test-json-ld-advanced'
