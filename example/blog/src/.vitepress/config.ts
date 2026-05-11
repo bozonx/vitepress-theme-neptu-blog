@@ -142,9 +142,8 @@ export default async () => {
 
   return defineBlogConfig({
     ...config,
-    // Auto-discovers every <srcDir>/<locale>/_site.yaml folder.
-    // To add a new locale, create the folder and `_site.yaml` — no config
-    // change required.
+    // Developer wiring: discover admin-managed locale folders automatically.
+    // To add a locale, create `<srcDir>/<locale>/_site.yaml` or `_site.ts`.
     locales: await autoLoadLocales(config),
   })
 }

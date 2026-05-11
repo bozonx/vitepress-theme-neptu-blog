@@ -117,18 +117,36 @@ export default defineAuthorsList([
 
 ## Auto-discovery of locales
 
-Instead of manually listing every locale in `.vitepress/config.ts`, use `autoLoadLocales`:
+Locale discovery is developer-owned wiring in `.vitepress/config.ts`. Keep it
+there instead of exposing it through admin YAML:
 
 ```ts
 import { defineBlogConfig, autoLoadLocales } from 'vitepress-theme-neptu-blog/configs'
 
-export default defineBlogConfig({
-  // ... other settings
-  ...autoLoadLocales('src'),
-})
+export default async () => {
+  const config = {
+    srcDir: 'src',
+    // ... other developer-owned settings
+  }
+
+  return defineBlogConfig({
+    ...config,
+    locales: await autoLoadLocales(config),
+  })
+}
 ```
 
-The function scans `srcDir` for folders that contain `_site.yaml` or `_site.ts` and registers each one as a VitePress locale automatically.
+`autoLoadLocales` scans `srcDir` for direct child folders that contain
+`_site.yaml` or `_site.ts` and registers each folder as a VitePress locale.
+Folders starting with `.` or `_` are ignored.
+
+For admins, adding a locale is file-system driven:
+
+1. Create `src/<locale>/`.
+2. Add `src/<locale>/_site.yaml` or `_site.ts`.
+3. Add locale content and optional `src/<locale>/_authors.yaml`.
+
+No `.vitepress/config.ts` change is required for each new locale.
 
 ## Recursive `extends` in `_site.yaml`
 

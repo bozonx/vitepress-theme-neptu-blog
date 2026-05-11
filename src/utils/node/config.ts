@@ -308,11 +308,11 @@ export async function loadBlogLocale(
  * Auto-discovers every content locale under `config.srcDir` and builds the
  * `locales` map for VitePress.
  *
- * A folder `<srcDir>/<name>/` qualifies as a locale when it contains a
- * `_site.yaml` file. Folder names starting with `.` or `_` are skipped so
- * that VitePress-internal and theme-internal folders are never mis-detected
- * as locales. Results are returned sorted alphabetically by locale key for
- * stable build output.
+ * A folder `<srcDir>/<name>/` qualifies as a locale when it contains
+ * `_site.yaml` or `_site.ts`. Folder names starting with `.` or `_` are
+ * skipped so that VitePress-internal and theme-internal folders are never
+ * mis-detected as locales. Results are returned sorted alphabetically by
+ * locale key for stable build output.
  *
  * Use this helper in `.vitepress/config.ts` instead of manually listing
  * locales:
