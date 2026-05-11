@@ -14,52 +14,33 @@
 #   ${t.<key>}          — translation strings
 #   ${localeIndex}      — current locale folder name (e.g. "en")
 # ---------------------------------------------------------------------------
-lang: "en-US"
-description: "Example Blog Description"
+lang: 'en-US'
+description: 'Example Blog Description'
 
 themeConfig:
   # Blog name. Used for browser tab titles, SEO metadata, and the sidebar heading.
-  blogTitle: "Example Blog"
+  blogTitle: 'Example Blog'
 
   # -------------------------------------------------------------------------
   # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
   # Relative URLs are automatically prefixed with the current locale.
   # -------------------------------------------------------------------------
   donate:
-    url: "page/donate"
-    postDonateCall: "If you find this blog useful, consider supporting it."
+    #url: "page/donate"
+    postDonateCall: 'If you find this blog useful, consider supporting it.'
     # icon: "${theme.donateIcon}"  # override the default heart icon
 
   # -------------------------------------------------------------------------
   # Publisher info — used in the auto-generated JSON-LD for every page.
   # -------------------------------------------------------------------------
   publisher:
-    name: "Your Blog Name"
-    url: "https://myblog.org"
-    logo: "https://myblog.org/img/logo.png"
+    name: 'Your Blog Name'
+    url: 'https://myblog.org'
+    logo: 'https://myblog.org/img/logo.png'
 
   # Authors live in the sibling `_authors.yaml` file (merged by `id`).
   # You can also declare them inline here under `authors:` — both sources are
   # merged by id, with `_authors.yaml` winning on conflicts.
-
-  # -------------------------------------------------------------------------
-  # Footer
-  # -------------------------------------------------------------------------
-  footer:
-    message: "Copying allowed only with a link to the source."
-    copyright: "Copyright © 2024-present Your Name."
-    links:
-      - text: "${t.links.aboutBlog}"
-        href: "page/about-blog"
-        # icon: "mdi:information-outline"
-        # iconClass: "muted"
-        # class: "custom-footer-link"
-        # mobileOnly: false
-        # desktopOnly: false
-      - text: "Test JSON-LD"
-        href: "page/test-json-ld"
-      - text: "Advanced JSON-LD"
-        href: "page/test-json-ld-advanced"
 
   # -------------------------------------------------------------------------
   # Top bar
@@ -68,17 +49,17 @@ themeConfig:
     # Show the donate button in the top bar.
     donate: true
     links:
-      - text: "Some link"
-        href: "https://example.org/"
-        icon: "solar:document-linear"
+      - text: 'Some link'
+        href: 'https://example.org/'
+        icon: 'solar:document-linear'
         desktopOnly: false
       # - text: "${t.links.donate}"
       #   href: "page/donate"
       #   icon: "${theme.donateIcon}"
       #   mobileOnly: true   # show only on mobile (where sidebar is hidden)
     socialLinks:
-      - icon: "fa6-brands:github-alt"
-        link: "${theme.repo}"
+      - icon: 'fa6-brands:github-alt'
+        link: '${theme.repo}'
         # url: "https://github.com/"  # alternative to link
         # class: "custom-social-link"
         desktopOnly: true
@@ -88,30 +69,49 @@ themeConfig:
   # Sidebar
   # -------------------------------------------------------------------------
   sidebar:
-    popular: true   # Show popular posts section. Requires popularPosts.enabled.
-    recent: true    # Show recent posts section.
+    popular: true # Show popular posts section. Requires popularPosts.enabled.
+    recent: true # Show recent posts section.
     # blogTitle: false  # Set false to hide the blog title below the logo, or a string to override it.
-    archive: true   # Show archive (by year) section.
-    authors: true   # Show authors section.
-    tags: true      # Show tags cloud.
-    donate: true    # Show donate button at the bottom.
-    rssFeed: true   # Show RSS feed link.
-    atomFeed: true  # Show Atom feed link.
+    archive: true # Show archive (by year) section.
+    authors: true # Show authors section.
+    tags: true # Show tags cloud.
+    donate: true # Show donate button at the bottom.
+    rssFeed: true # Show RSS feed link.
+    atomFeed: true # Show Atom feed link.
     socialLinks:
-      - icon: "fa6-brands:github-alt"
-        link: "${theme.repo}"
+      - icon: 'fa6-brands:github-alt'
+        link: '${theme.repo}'
     # links:
     #   - text: "${t.links.recent}"
     #     href: "${theme.recentBaseUrl}/1"
     #     icon: "${theme.recentIcon}"
     bottomLinks:
-      - { header: "${t.links.links}" }
-      - text: "Our YouTube channel"
-        href: "https://www.youtube.com/"
-        icon: "${theme.youtubeIcon}"
-      - text: "We in social media"
-        href: "page/links"
-        icon: "fa6-solid:share-nodes"
+      - { header: '${t.links.links}' }
+      - text: 'Our YouTube channel'
+        href: 'https://www.youtube.com/'
+        icon: '${theme.youtubeIcon}'
+      - text: 'We in social media'
+        href: 'page/links'
+        icon: 'fa6-solid:share-nodes'
+
+  # -------------------------------------------------------------------------
+  # Footer
+  # -------------------------------------------------------------------------
+  footer:
+    message: 'Copying allowed only with a link to the source.'
+    copyright: 'Copyright © 2024-present Your Name.'
+    links:
+      - text: '${t.links.aboutBlog}'
+        href: 'page/about-blog'
+        # icon: "mdi:information-outline"
+        # iconClass: "muted"
+        # class: "custom-footer-link"
+        # mobileOnly: false
+        # desktopOnly: false
+      - text: 'Test JSON-LD'
+        href: 'page/test-json-ld'
+      - text: 'Advanced JSON-LD'
+        href: 'page/test-json-ld-advanced'
 
   # -------------------------------------------------------------------------
   # Social sharing buttons in the post footer.

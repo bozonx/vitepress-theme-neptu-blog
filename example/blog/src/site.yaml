@@ -16,12 +16,28 @@
 # does not belong here; put it in `src/<locale>/_site.yaml` instead.
 # ---------------------------------------------------------------------------
 
-# themeConfig:
+themeConfig:
+  #   # ---------------------------------------------------------------------------
+  #   # Site identity (cross-locale fallbacks). Per-locale `_site.yaml` usually
+  #   # overrides these with the localized name.
+  #   # ---------------------------------------------------------------------------
+  #   blogTitle: "My Blog"               # site/sidebar title fallback
+  #
+  #   # ---------------------------------------------------------------------------
+  #   # Donate button
+  #   # ---------------------------------------------------------------------------
+  donate:
+    url: 'page/donate'
+#     # icon: "fa6-solid:hand-holding-heart"
+#     # postDonateCall: "Thank you! ❤️"
+#
 #   # ---------------------------------------------------------------------------
-#   # Site identity (cross-locale fallbacks). Per-locale `_site.yaml` usually
-#   # overrides these with the localized name.
+#   # Publisher info — used in JSON-LD structured data.
 #   # ---------------------------------------------------------------------------
-#   blogTitle: "My Blog"               # site/sidebar title fallback
+#   publisher:
+#     name: "Your Blog"
+#     url: "https://myblog.org"
+#     logo: "https://myblog.org/logo.png"
 #
 #   # ---------------------------------------------------------------------------
 #   # Sidebar branding
@@ -96,22 +112,6 @@
 #         href: "/privacy"
 #       - text: "RSS"
 #         href: "/feed.xml"
-#
-#   # ---------------------------------------------------------------------------
-#   # Donate button
-#   # ---------------------------------------------------------------------------
-#   donate:
-#     url: "https://buymeacoffee.com/your_handle"
-#     # icon: "fa6-solid:hand-holding-heart"
-#     # postDonateCall: "Thank you! ❤️"
-#
-#   # ---------------------------------------------------------------------------
-#   # Publisher info — used in JSON-LD structured data.
-#   # ---------------------------------------------------------------------------
-#   publisher:
-#     name: "Your Blog"
-#     url: "https://myblog.org"
-#     logo: "https://myblog.org/logo.png"
 #
 #   # ---------------------------------------------------------------------------
 #   # Authors — defined per locale in `src/<locale>/_authors.yaml`. That file
