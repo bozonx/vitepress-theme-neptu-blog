@@ -18,6 +18,12 @@
 
 # themeConfig:
 #   # ---------------------------------------------------------------------------
+#   # Site identity (cross-locale fallbacks). Per-locale `_site.yaml` usually
+#   # overrides these with the localized name.
+#   # ---------------------------------------------------------------------------
+#   blogTitle: "My Blog"               # site/sidebar title fallback
+#
+#   # ---------------------------------------------------------------------------
 #   # Sidebar branding
 #   # ---------------------------------------------------------------------------
 #   sidebarLogoSrc: "/img/logo.png"
@@ -114,13 +120,17 @@
 #   authors:
 #     - id: "jane"
 #       name: "Jane Smith"
-#       avatar: "https://example.com/avatars/jane.jpg"
+#       avatar: "https://example.com/avatars/jane.jpg"  # square thumbnail
+#       image: "https://example.com/authors/jane.jpg"   # large hero image (author page)
+#       imageWidth: 800                                  # avoids CLS
+#       imageHeight: 600
 #       description: "Frontend engineer and occasional blogger."
 #       twitterHandle: "@jane"
 #       aboutUrl: "/authors/jane"
 #       links:
-#         - icon: "fa6-brands:github"
-#           link: "https://github.com/jane"
+#         - type: "github"                               # iconified by SocialMediaLinks
+#           url: "https://github.com/jane"
+#           title: "GitHub profile"
 #
 #   # ---------------------------------------------------------------------------
 #   # Post list card display
@@ -175,6 +185,7 @@
 #       icon: "fa6-brands:x-twitter"
 #       title: "Share on X"
 #       urlTemplate: "https://twitter.com/intent/tweet?url={url}&text={title}"
+#       # class: "custom-share-button"   # optional extra CSS class
 #     - name: "telegram"
 #       icon: "fa6-brands:telegram"
 #       title: "Share on Telegram"

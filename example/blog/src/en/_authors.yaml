@@ -9,7 +9,9 @@
   name: "Ivan K"
   description: "Author and editor of this blog."
   image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
-  # avatar: "/img/avatar.png"
+  # avatar: "/img/avatar.png"          # square thumbnail (post cards)
+  # imageWidth: 800                    # set both to suppress layout shift
+  # imageHeight: 600
   # twitterHandle: "your_handle"
   # aboutUrl: "https://your-personal-site.com"
   links:
