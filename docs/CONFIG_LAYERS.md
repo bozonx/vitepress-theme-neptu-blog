@@ -66,7 +66,7 @@ If a value depends on **code, env vars, or secrets** → `config.ts`. Otherwise 
 
 | File | Owner | Purpose |
 |------|-------|---------|
-| `.vitepress/config.ts` | Developer | VitePress entry config. Uses `defineBlogConfig` and `autoLoadLocales`. |
+| `.vitepress/config.ts` | Developer | VitePress entry config. Uses `defineBlogConfigWithAutoLocales` for folder-based locale discovery. |
 | `src/site.yaml` | Admin | Shared settings for all locales (nav, footer, social shares, etc.). |
 | `src/<locale>/_site.yaml` | Admin | Per-locale overrides and locale-specific metadata. |
 | `src/<locale>/_authors.yaml` | Admin | Per-locale author list. Merged into `themeConfig.authors` by `id`. |
@@ -121,7 +121,7 @@ Locale discovery is developer-owned wiring in `.vitepress/config.ts`. Keep it
 there instead of exposing it through admin YAML:
 
 ```ts
-import { defineBlogConfig, autoLoadLocales } from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfigWithAutoLocales } from 'vitepress-theme-neptu-blog/configs'
 
 export default async () => {
   const config = {
@@ -129,16 +129,13 @@ export default async () => {
     // ... other developer-owned settings
   }
 
-  return defineBlogConfig({
-    ...config,
-    locales: await autoLoadLocales(config),
-  })
+  return defineBlogConfigWithAutoLocales(config)
 }
 ```
 
-`autoLoadLocales` scans `srcDir` for direct child folders that contain
-`_site.yaml` or `_site.ts` and registers each folder as a VitePress locale.
-Folders starting with `.` or `_` are ignored.
+`defineBlogConfigWithAutoLocales` scans `srcDir` for direct child folders that
+contain `_site.yaml` or `_site.ts` and registers each folder as a VitePress
+locale. Folders starting with `.` or `_` are ignored.
 
 For admins, adding a locale is file-system driven:
 

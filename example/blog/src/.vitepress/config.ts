@@ -2,8 +2,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import {
-  defineBlogConfig,
-  autoLoadLocales,
+  defineBlogConfigWithAutoLocales,
   createSiteYamlHotReloadPlugin,
 } from 'vitepress-theme-neptu-blog/configs'
 import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
@@ -140,10 +139,5 @@ export default async () => {
 
   }
 
-  return defineBlogConfig({
-    ...config,
-    // Developer wiring: discover admin-managed locale folders automatically.
-    // To add a locale, create `<srcDir>/<locale>/_site.yaml` or `_site.ts`.
-    locales: await autoLoadLocales(config),
-  })
+  return defineBlogConfigWithAutoLocales(config)
 }

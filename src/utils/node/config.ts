@@ -179,8 +179,8 @@ async function loadLocaleYamlChain(
  *             → `<srcDir>/<localeIndex>/_site.yaml` extends chain
  *               + `<srcDir>/<localeIndex>/_authors.yaml`
  *
- * Prefer {@link autoLoadLocales} in application code; this function is the
- * lower-level primitive and is re-exported for advanced usage.
+ * Prefer `defineBlogConfigWithAutoLocales` in application code; this function
+ * is the lower-level primitive and is re-exported for advanced usage.
  */
 export async function loadBlogLocale(
   localeIndex: string,
@@ -314,8 +314,8 @@ export async function loadBlogLocale(
  * mis-detected as locales. Results are returned sorted alphabetically by
  * locale key for stable build output.
  *
- * Use this helper in `.vitepress/config.ts` instead of manually listing
- * locales:
+ * Low-level helper for manually composing locale discovery. Most applications
+ * should use `defineBlogConfigWithAutoLocales` instead:
  *
  * ```ts
  * return defineBlogConfig({

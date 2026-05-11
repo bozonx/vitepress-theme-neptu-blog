@@ -2,7 +2,13 @@ import { describe, it, expect, vi } from 'vitest'
 import {
   mergeBlogConfig,
   defineBlogConfig,
+  defineBlogConfigWithAutoLocales,
 } from '../../src/configs/blogConfigBase.ts'
+import { autoLoadLocales } from '../../src/utils/node/config.ts'
+
+vi.mock('../../src/utils/node/config.ts', () => ({
+  autoLoadLocales: vi.fn(async () => ({ en: { lang: 'en-US' } })),
+}))
 
 vi.mock('../../src/transformers/filterSitemap.ts', () => ({
   filterSitemap: vi.fn((items: any[]) => items),
@@ -310,4 +316,31 @@ describe('defineBlogConfig', () => {
     warnSpy.mockRestore()
   })
 
+})
+
+describe('defineBlogConfigWithAutoLocales', () => {
+  it('discovers locales when they are omitted', async () => {
+    const result = await defineBlogConfigWithAutoLocales({
+      siteUrl: 'https://example.com',
+      srcDir: '/src',
+    })
+
+    expect(autoLoadLocales).toHaveBeenCalledWith({
+      siteUrl: 'https://example.com',
+      srcDir: '/src',
+    })
+    expect(result.locales.en.lang).toBe('en-US')
+  })
+
+  it('preserves explicit locales', async () => {
+    vi.mocked(autoLoadLocales).mockClear()
+
+    const result = await defineBlogConfigWithAutoLocales({
+      siteUrl: 'https://example.com',
+      locales: { ru: { lang: 'ru-RU' } },
+    })
+
+    expect(autoLoadLocales).not.toHaveBeenCalled()
+    expect(result.locales.ru.lang).toBe('ru-RU')
+  })
 })

@@ -23,6 +23,7 @@ import { resolveDescription } from '../transformers/resolveDescription.ts'
 import { addCanonicalLink } from '../transformers/addCanonicalLink.ts'
 import { collectImageDimensions } from '../transformers/collectImageDimensions.ts'
 import { mdImage } from '../transformers/mdImage.ts'
+import { autoLoadLocales } from '../utils/node/config.ts'
 import type {
   ExtendedPageData,
   ExtendedSiteConfig,
@@ -380,4 +381,24 @@ export function defineBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
   warnMissingRequired(config)
 
   return mergeBlogConfig(config)
+}
+
+/**
+ * Async entry point for the conventional folder-based blog setup.
+ *
+ * If `locales` is omitted or empty, discovers locale folders from `srcDir`
+ * using `<srcDir>/<locale>/_site.yaml` or `_site.ts`. Explicit `locales`
+ * still win for advanced/manual setups.
+ */
+export async function defineBlogConfigWithAutoLocales(
+  config: BlogUserConfig
+): Promise<ResolvedBlogConfig> {
+  const hasLocales = Boolean(
+    config.locales && Object.keys(config.locales).length > 0
+  )
+
+  return defineBlogConfig({
+    ...config,
+    locales: hasLocales ? config.locales : await autoLoadLocales(config),
+  })
 }

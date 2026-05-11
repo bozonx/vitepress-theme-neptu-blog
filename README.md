@@ -360,7 +360,7 @@ The theme supports a layered config system that separates developer-owned code f
 - `src/<locale>/_site.yaml` — per-locale overrides
 - `src/<locale>/_authors.yaml` — per-locale author list
 
-Both YAML and TypeScript variants are supported (`.ts` takes precedence). Use `autoLoadLocales` to discover locales automatically instead of listing them manually.
+Both YAML and TypeScript variants are supported (`.ts` takes precedence). Use `defineBlogConfigWithAutoLocales` to discover locales automatically instead of listing them manually.
 
 See [docs/CONFIG_LAYERS.md](docs/CONFIG_LAYERS.md) for the full merge order, `extends` inheritance, editor support, hot reload, and TypeScript helpers.
 
