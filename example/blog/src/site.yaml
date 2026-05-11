@@ -17,185 +17,182 @@
 # ---------------------------------------------------------------------------
 
 themeConfig:
-  #   # ---------------------------------------------------------------------------
-  #   # Site identity (cross-locale fallbacks). Per-locale `_site.yaml` usually
-  #   # overrides these with the localized name.
-  #   # ---------------------------------------------------------------------------
-  #   blogTitle: "My Blog"               # site/sidebar title fallback
-  #
-  #   # ---------------------------------------------------------------------------
-  #   # Donate button
-  #   # ---------------------------------------------------------------------------
+  # Site identity (cross-locale fallback). Per-locale `_site.yaml` usually
+  # overrides this with the localized name.
+  # blogTitle: 'My Blog'
+
+  # -------------------------------------------------------------------------
+  # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
+  # Relative URLs are automatically prefixed with the current locale.
+  # -------------------------------------------------------------------------
   donate:
     url: 'page/donate'
-#     # icon: "fa6-solid:hand-holding-heart"
-#     # postDonateCall: "Thank you! ❤️"
-#
-#   # ---------------------------------------------------------------------------
-#   # Publisher info — used in JSON-LD structured data.
-#   # ---------------------------------------------------------------------------
-#   publisher:
-#     name: "Your Blog"
-#     url: "https://myblog.org"
-#     logo: "https://myblog.org/logo.png"
-#
-#   # ---------------------------------------------------------------------------
-#   # Sidebar branding
-#   # ---------------------------------------------------------------------------
-#   sidebarLogoSrc: "/img/logo.png"
-#   sidebarLogoHeight: 40              # default: 40
-#   sidebarMenuLabel: "Menu"           # mobile nav toggle label
-#
-#   # ---------------------------------------------------------------------------
-#   # Layout
-#   # ---------------------------------------------------------------------------
-#   sidebarTagsCount: 15               # tag cloud size
-#   similarPostsCount: 5               # similar posts shown under each post
-#   homeBgParallaxOffset: 300          # home parallax distance, px
-#   paginationMaxItems: 5              # max pagination buttons
-#   externalLinkIcon: true             # show arrow on external links
-#
-#   # ---------------------------------------------------------------------------
-#   # RSS / Atom / JSON feed generation
-#   # ---------------------------------------------------------------------------
-#   feeds:
-#     maxPosts: 50
-#     formats: ["rss", "atom", "json"]
-#
-#   # ---------------------------------------------------------------------------
-#   # Sidebar sections (per-locale overrides go in `<locale>/_site.yaml`).
-#   # ---------------------------------------------------------------------------
-#   sidebar:
-#     blogTitle: "My Blog"             # false to hide
-#     recent: true
-#     popular: true
-#     archive: true
-#     authors: true
-#     tags: true
-#     rssFeed: true
-#     atomFeed: true
-#     donate: true
-#     links:
-#       - text: "About"
-#         href: "/about"
-#     bottomLinks:
-#       - text: "Privacy policy"
-#         href: "/privacy"
-#     socialLinks:
-#       - icon: "fa6-brands:github"
-#         link: "https://github.com/your-org"
-#
-#   # ---------------------------------------------------------------------------
-#   # Top navigation bar (desktop header)
-#   # ---------------------------------------------------------------------------
-#   nav:
-#     donate: true
-#     links:
-#       - text: "About"
-#         href: "/about"
-#       - text: "Projects"
-#         href: "/projects"
-#     socialLinks:
-#       - icon: "fa6-brands:github"
-#         link: "https://github.com/your-org"
-#       - icon: "fa6-brands:x-twitter"
-#         link: "https://twitter.com/your_handle"
-#
-#   # ---------------------------------------------------------------------------
-#   # Footer (locale-neutral defaults; localized text usually in _site.yaml).
-#   # ---------------------------------------------------------------------------
-#   footer:
-#     message: "Released under the MIT License."
-#     copyright: "© 2024 Your Name"
-#     links:
-#       - text: "Privacy policy"
-#         href: "/privacy"
-#       - text: "RSS"
-#         href: "/feed.xml"
-#
-#   # ---------------------------------------------------------------------------
-#   # Authors — defined per locale in `src/<locale>/_authors.yaml`. That file
-#   # is the single source of truth; entries are merged into
-#   # `themeConfig.authors` by `id`. Do not declare authors here.
-#   # ---------------------------------------------------------------------------
-#
-#   # ---------------------------------------------------------------------------
-#   # Post list card display
-#   # ---------------------------------------------------------------------------
-#   postList:
-#     showDate: true
-#     showTags: true
-#     showThumbnail: true
-#     showPreview: true
-#     showAuthor: true
-#     maxPreviewLength: 300
-#
-#   # ---------------------------------------------------------------------------
-#   # Post footer blocks — reorder or omit to customize.
-#   # Available: 'author' | 'donate' | 'comments' | 'social-share' |
-#   #            'edit-link' | 'tags' | 'similar' | 'popular-link'
-#   # ---------------------------------------------------------------------------
-#   postFooter:
-#     ["author", "donate", "comments", "social-share", "edit-link", "tags", "similar", "popular-link"]
-#
-#   # ---------------------------------------------------------------------------
-#   # Edit link (shown in post footer when `repo` is set in config.ts).
-#   # ---------------------------------------------------------------------------
-#   editLink:
-#     pattern: "https://github.com/your-org/your-blog/edit/main/src/:path"
-#     text: "Edit this page on GitHub"
-#
-#   # ---------------------------------------------------------------------------
-#   # SEO — all features are enabled by default. Override per-page via the
-#   # `seo` frontmatter key.
-#   # ---------------------------------------------------------------------------
-#   seo:
-#     og: true
-#     jsonLd: true
-#     hreflang: true
-#     canonical: true
-#     rss: true
-#     maxDescriptionLength: 300
-#   autoCanonical: true
-#
-#   # ---------------------------------------------------------------------------
-#   # Twitter / X card
-#   # ---------------------------------------------------------------------------
-#   twitterSite: "@your_handle"
-#
-#   # ---------------------------------------------------------------------------
-#   # Social sharing buttons in the post footer.
-#   # `urlTemplate` supports {url} and {title} placeholders.
-#   # ---------------------------------------------------------------------------
-#   socialMediaShares:
-#     - name: "twitter"
-#       icon: "fa6-brands:x-twitter"
-#       title: "Share on X"
-#       urlTemplate: "https://twitter.com/intent/tweet?url={url}&text={title}"
-#       # class: "custom-share-button"   # optional extra CSS class
-#     - name: "telegram"
-#       icon: "fa6-brands:telegram"
-#       title: "Share on Telegram"
-#       urlTemplate: "https://t.me/share/url?url={url}&text={title}"
-#
-#   # ---------------------------------------------------------------------------
-#   # Route base URL segments — change if you rename generated route folders.
-#   # ---------------------------------------------------------------------------
-#   tagsBaseUrl: "tags"
-#   archiveBaseUrl: "archive"
-#   popularBaseUrl: "popular"
-#   recentBaseUrl: "recent"
-#   authorsBaseUrl: "authors"
-#
-#   # ---------------------------------------------------------------------------
-#   # Icon overrides (Iconify icon strings — browse at icon.icones.es).
-#   # ---------------------------------------------------------------------------
-#   donateIcon: "fa6-solid:hand-holding-heart"
-#   recentIcon: "fa6-solid:bolt"
-#   popularIcon: "fa6-solid:star"
-#   byDateIcon: "fa6-solid:calendar-days"
-#   authorsIcon: "mdi:users"
-#   rssIcon: "bi:rss-fill"
-#   atomIcon: "vscode-icons:file-type-atom"
-#   youtubeIcon: "fa6-brands:youtube"
-#   tagsIcon: "fa6-solid:tag"
+    # postDonateCall: 'Thank you! ❤️'
+    # icon: 'fa6-solid:hand-holding-heart'
+
+  # -------------------------------------------------------------------------
+  # Publisher info — used in the auto-generated JSON-LD for every page.
+  # -------------------------------------------------------------------------
+  # publisher:
+  #   name: 'Your Blog'
+  #   url: 'https://myblog.org'
+  #   logo: 'https://myblog.org/logo.png'
+
+  # Authors live in per-locale `src/<locale>/_authors.yaml` files (merged by `id`).
+  # You can also declare them inline here under `authors:` — both sources are
+  # merged by id, with `_authors.yaml` winning on conflicts.
+
+  # -------------------------------------------------------------------------
+  # Top bar
+  # -------------------------------------------------------------------------
+  # nav:
+  #   donate: true
+  #   links:
+  #     - text: 'About'
+  #       href: '/about'
+  #   socialLinks:
+  #     - icon: 'fa6-brands:github'
+  #       link: 'https://github.com/your-org'
+
+  # -------------------------------------------------------------------------
+  # Sidebar
+  # -------------------------------------------------------------------------
+  # sidebar:
+  #   popular: true
+  #   recent: true
+  #   archive: true
+  #   authors: true
+  #   tags: true
+  #   donate: true
+  #   rssFeed: true
+  #   atomFeed: true
+  #   links:
+  #     - text: 'About'
+  #       href: '/about'
+  #   bottomLinks:
+  #     - text: 'Privacy policy'
+  #       href: '/privacy'
+  #   socialLinks:
+  #     - icon: 'fa6-brands:github'
+  #       link: 'https://github.com/your-org'
+
+  # -------------------------------------------------------------------------
+  # Sidebar branding & layout
+  # -------------------------------------------------------------------------
+  # sidebarLogoSrc: '/img/logo.png'
+  # sidebarLogoHeight: 40
+  # sidebarMenuLabel: 'Menu'
+  # sidebarTagsCount: 15
+  # similarPostsCount: 5
+  # homeBgParallaxOffset: 300
+  # paginationMaxItems: 5
+  # externalLinkIcon: true
+
+  # -------------------------------------------------------------------------
+  # Footer
+  # -------------------------------------------------------------------------
+  # footer:
+  #   message: 'Released under the MIT License.'
+  #   copyright: '© 2024 Your Name'
+  #   links:
+  #     - text: 'Privacy policy'
+  #       href: '/privacy'
+  #     - text: 'RSS'
+  #       href: '/feed.xml'
+
+  # -------------------------------------------------------------------------
+  # Social sharing buttons in the post footer.
+  # The default share buttons are used when this section is absent.
+  # Uncomment to replace, or set `socialMediaShares: []` to hide the block.
+  # {url} and {title} are replaced with the current page URL and title.
+  # -------------------------------------------------------------------------
+  # socialMediaShares:
+  #   - name: twitter
+  #     icon: 'fa6-brands:x-twitter'
+  #     title: 'Share on X'
+  #     urlTemplate: 'https://twitter.com/intent/tweet?url={url}&text={title}'
+  #   - name: telegram
+  #     icon: 'fa6-brands:telegram'
+  #     title: 'Share on Telegram'
+  #     urlTemplate: 'https://t.me/share/url?url={url}&text={title}'
+  #     # class: 'custom-share-button'
+
+  # -------------------------------------------------------------------------
+  # Post list card display
+  # -------------------------------------------------------------------------
+  # postList:
+  #   showDate: true
+  #   showTags: true
+  #   showThumbnail: true
+  #   showPreview: true
+  #   showAuthor: true
+  #   maxPreviewLength: 300
+
+  # -------------------------------------------------------------------------
+  # Post footer blocks — reorder or omit to customize.
+  # Available: 'author' | 'donate' | 'comments' | 'social-share' |
+  #            'edit-link' | 'tags' | 'similar' | 'popular-link'
+  # -------------------------------------------------------------------------
+  # postFooter:
+  #   - author
+  #   - donate
+  #   - comments
+  #   - social-share
+  #   - edit-link
+  #   - tags
+  #   - similar
+  #   - popular-link
+
+  # -------------------------------------------------------------------------
+  # Edit link (shown in post footer when `repo` is set in config.ts).
+  # -------------------------------------------------------------------------
+  # editLink:
+  #   pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path'
+  #   text: 'Edit this page on GitHub'
+
+  # -------------------------------------------------------------------------
+  # RSS / Atom / JSON feed generation
+  # -------------------------------------------------------------------------
+  # feeds:
+  #   maxPosts: 50
+  #   formats: ['rss', 'atom', 'json']
+
+  # -------------------------------------------------------------------------
+  # SEO — all features are enabled by default. Override per-page via the
+  # `seo` frontmatter key.
+  # -------------------------------------------------------------------------
+  # seo:
+  #   og: true
+  #   jsonLd: true
+  #   hreflang: true
+  #   canonical: true
+  #   rss: true
+  #   maxDescriptionLength: 300
+  # autoCanonical: true
+
+  # -------------------------------------------------------------------------
+  # Twitter / X card
+  # -------------------------------------------------------------------------
+  # twitterSite: '@your_handle'
+
+  # -------------------------------------------------------------------------
+  # Route base URL segments — change if you rename generated route folders.
+  # -------------------------------------------------------------------------
+  # tagsBaseUrl: 'tags'
+  # archiveBaseUrl: 'archive'
+  # popularBaseUrl: 'popular'
+  # recentBaseUrl: 'recent'
+  # authorsBaseUrl: 'authors'
+
+  # -------------------------------------------------------------------------
+  # Icon overrides (Iconify icon strings — browse at icon.icones.es).
+  # -------------------------------------------------------------------------
+  # donateIcon: 'fa6-solid:hand-holding-heart'
+  # recentIcon: 'fa6-solid:bolt'
+  # popularIcon: 'fa6-solid:star'
+  # byDateIcon: 'fa6-solid:calendar-days'
+  # authorsIcon: 'mdi:users'
+  # rssIcon: 'bi:rss-fill'
+  # atomIcon: 'vscode-icons:file-type-atom'
+  # youtubeIcon: 'fa6-brands:youtube'
+  # tagsIcon: 'fa6-solid:tag'

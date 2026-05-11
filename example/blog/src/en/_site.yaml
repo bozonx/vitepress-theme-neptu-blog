@@ -26,7 +26,7 @@ themeConfig:
   # Relative URLs are automatically prefixed with the current locale.
   # -------------------------------------------------------------------------
   donate:
-    #url: "page/donate"
+    # url: "page/donate"
     postDonateCall: 'If you find this blog useful, consider supporting it.'
     # icon: "${theme.donateIcon}"  # override the default heart icon
 
