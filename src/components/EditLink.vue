@@ -5,7 +5,7 @@
     rel="nofollow"
     icon="bx:edit"
   >
-    {{ theme.t?.editLink }}
+    {{ theme.editLink?.text || theme.t?.editLink }}
   </NeptuBtnLink>
 </template>
 

@@ -7,7 +7,10 @@ describe('EditLink', () => {
   let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
-    mockTheme.value = { t: { editLink: 'Edit' }, editLink: { pattern: 'https://example.com/edit/:path' } }
+    mockTheme.value = {
+      t: { editLink: 'Edit' },
+      editLink: { pattern: 'https://example.com/edit/:path' },
+    }
     mockPage.value = { relativePath: 'posts/hello.md' }
     mockFrontmatter.value = {}
   })
@@ -21,6 +24,30 @@ describe('EditLink', () => {
     wrapper = mount(EditLink, { attachTo: document.body })
     expect(wrapper.find('a').exists()).toBe(true)
     expect(wrapper.text()).toContain('Edit')
+  })
+
+  it('uses editLink.text when provided', () => {
+    mockTheme.value = {
+      t: { editLink: 'Default Edit' },
+      editLink: {
+        pattern: 'https://example.com/edit/:path',
+        text: 'Custom Edit Text',
+      },
+    }
+    mockFrontmatter.value = { layout: 'page' }
+    wrapper = mount(EditLink, { attachTo: document.body })
+    expect(wrapper.text()).toContain('Custom Edit Text')
+    expect(wrapper.text()).not.toContain('Default Edit')
+  })
+
+  it('falls back to t.editLink when editLink.text is not provided', () => {
+    mockTheme.value = {
+      t: { editLink: 'Fallback Edit' },
+      editLink: { pattern: 'https://example.com/edit/:path' },
+    }
+    mockFrontmatter.value = { layout: 'page' }
+    wrapper = mount(EditLink, { attachTo: document.body })
+    expect(wrapper.text()).toContain('Fallback Edit')
   })
 
   it('hides when frontmatter.editLink is false', () => {
@@ -38,7 +65,9 @@ describe('EditLink', () => {
   it('uses string pattern for href', () => {
     mockFrontmatter.value = { layout: 'page' }
     wrapper = mount(EditLink, { attachTo: document.body })
-    expect(wrapper.find('a').attributes('href')).toBe('https://example.com/edit/posts/hello.md')
+    expect(wrapper.find('a').attributes('href')).toBe(
+      'https://example.com/edit/posts/hello.md'
+    )
   })
 
   it('uses function pattern for href', () => {
@@ -48,7 +77,9 @@ describe('EditLink', () => {
     }
     mockFrontmatter.value = { layout: 'page' }
     wrapper = mount(EditLink, { attachTo: document.body })
-    expect(wrapper.find('a').attributes('href')).toBe('https://git.example.com/posts/hello.md')
+    expect(wrapper.find('a').attributes('href')).toBe(
+      'https://git.example.com/posts/hello.md'
+    )
   })
 
   it('hides when editLink config is missing', () => {
