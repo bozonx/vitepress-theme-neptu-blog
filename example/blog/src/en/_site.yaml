@@ -118,7 +118,7 @@ themeConfig:
       - text: 'Some link'
         href: 'https://example.org/'
         icon: 'solar:document-linear'
-        desktopOnly: false
+        desktopOnly: true
         # iconClass: 'muted'
         # class: 'custom-nav-link'
       # - text: "${t.links.donate}"

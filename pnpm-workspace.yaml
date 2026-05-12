@@ -1,4 +1,3 @@
 packages:
   - '.'
   - 'example/*'
-  - 'vitepress-theme-neptu-landing'
