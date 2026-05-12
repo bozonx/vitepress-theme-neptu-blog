@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { parseLocaleSite } from '../../../src/utils/node/i18n.ts'
+import { parseLocaleSite, parseSharedSite } from '../../../src/utils/node/i18n.ts'
 
 // Shared mock state so individual tests can program per-locale YAML payloads
 // for the `extends` and `autoLoadLocales` scenarios.
@@ -70,6 +70,7 @@ beforeEach(() => {
   for (const k of Object.keys(authorsMocks)) delete authorsMocks[k]
   fsExistsMock = () => false
   fsReaddirMock = () => []
+  vi.mocked(parseSharedSite).mockResolvedValue({})
 })
 
 describe('loadBlogLocale', () => {
@@ -213,6 +214,53 @@ describe('loadBlogLocale', () => {
       name: 'Shared parent',
       description: 'ru-override',
     })
+  })
+
+  it('deep-merges shared site.yaml nav/sidebar with per-locale _site.yaml', async () => {
+    vi.mocked(parseSharedSite).mockResolvedValue({
+      themeConfig: {
+        nav: {
+          donate: true,
+          socialLinks: [{ icon: 'github', link: 'https://github.com' }],
+        },
+        sidebar: {
+          popular: true,
+          recent: true,
+          donate: true,
+          rssFeed: true,
+        },
+      },
+    })
+    siteMocks['en'] = {
+      themeConfig: {
+        nav: {
+          links: [{ text: 'About', href: '/about' }],
+        },
+        sidebar: {
+          bottomLinks: [{ text: 'Privacy', href: '/privacy' }],
+        },
+      },
+    }
+
+    const result = await loadBlogLocale('en', { srcDir: '/src' })
+    const nav = result.themeConfig!.nav as Record<string, unknown>
+    const sidebar = result.themeConfig!.sidebar as Record<string, unknown>
+
+    // Shared booleans preserved
+    expect(nav.donate).toBe(true)
+    expect((nav.socialLinks as any[]).length).toBe(1)
+    // Locale arrays present
+    expect((nav.links as any[]).length).toBe(1)
+    expect((nav.links as any[])[0].text).toBe('About')
+
+    // Shared sidebar booleans preserved
+    expect(sidebar.popular).toBe(true)
+    expect(sidebar.recent).toBe(true)
+    expect(sidebar.donate).toBe(true)
+    expect(sidebar.rssFeed).toBe(true)
+    // Locale sidebar arrays present
+    expect((sidebar.bottomLinks as any[]).length).toBe(1)
+    expect((sidebar.bottomLinks as any[])[0].text).toBe('Privacy')
   })
 })
 

@@ -214,6 +214,14 @@ export async function loadBlogLocale(
       })
     : undefined
 
+  const mergedThemeConfig = deepMerge(
+    deepMerge(
+      (baseLocale.themeConfig || {}) as Record<string, unknown>,
+      sharedThemeConfig
+    ),
+    localeThemeConfig
+  )
+
   return {
     lang: typeof lang === 'string' ? lang : undefined,
     label: baseLocale.label,
@@ -221,9 +229,7 @@ export async function loadBlogLocale(
     titleTemplate: typeof titleTemplate === 'string' ? titleTemplate : undefined,
     description: typeof description === 'string' ? description : undefined,
     themeConfig: {
-      ...baseLocale.themeConfig,
-      ...sharedThemeConfig,
-      ...localeThemeConfig,
+      ...mergedThemeConfig,
       editLink: {
         ...(config.themeConfig?.repo
           ? { pattern: resolveEditLinkPattern(config.themeConfig.repo) }
