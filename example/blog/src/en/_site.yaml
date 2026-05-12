@@ -18,6 +18,20 @@ lang: 'en-US'
 description: 'Example Blog Description'
 
 themeConfig:
+  # -------------------------------------------------------------------------
+  # Translations — overrides built-in `t` strings for this locale only.
+  # The theme ships English/Russian defaults in `blogLocalesBase/<lang>.ts`;
+  # only the keys you list here are overridden.
+  # -------------------------------------------------------------------------
+  # t:
+  #   popularPosts: "Popular Posts"
+  #   similarPosts: "Similar Posts"
+  #   shareSocialMedia: "Share on Social Media"
+  #   viewInAnotherLanguage: "Read this page in another language"
+  #   links:
+  #     aboutBlog: "About This Blog"
+  #     donate: "Donate"
+
   # Blog name. Used for browser tab titles, SEO metadata, and the sidebar heading.
   blogTitle: 'Example Blog'
   # Also you can override other fields from category "Branding & layout"
@@ -31,20 +45,10 @@ themeConfig:
   # -------------------------------------------------------------------------
   # titleTemplate: ":title | ${theme.blogTitle}"
   # perPage: 10
+  # langMenuLabel: 'Interface language'  # tooltip on the language switcher
   editLink:
     # pattern: "https://github.com/user/repo/edit/main/example/blog/src/:path"
     text: 'Edit this page on GitHub'
-
-  # -------------------------------------------------------------------------
-  # Translations — overrides theme `t` strings for this locale only.
-  # -------------------------------------------------------------------------
-  # t:
-  #   popularPosts: "Popular Posts"
-  #   similarPosts: "Similar Posts"
-  #   shareSocialMedia: "Share on Social Media"
-  #   links:
-  #     aboutBlog: "About This Blog"
-  #     donate: "Donate"
 
   # -------------------------------------------------------------------------
   # Donate button — rendered only when nav.donate and/or sidebar.donate is true.

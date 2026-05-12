@@ -4,8 +4,8 @@
 # locale. Sits between `.vitepress/config.ts` and per-locale `_site.yaml`
 # files in priority order:
 #
-#   built-in defaults  →  config.ts  →  src/site.yaml  →  built-in UI locale
-#                       →  uiLocales[*]  →  src/<locale>/_site.yaml
+#   built-in theme defaults  →  built-in content-locale defaults
+#     →  config.ts  →  src/site.yaml  →  src/<locale>/_site.yaml
 #
 # Use this file for theme settings that are the SAME for every locale but
 # the content team wants to edit without touching `config.ts` (and without
@@ -60,13 +60,6 @@ themeConfig:
   #   - popular-link
 
   # -------------------------------------------------------------------------
-  # Edit link (shown in post footer when `repo` is set in config.ts).
-  # -------------------------------------------------------------------------
-  editLink:
-    pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path'
-  #   text: 'Edit this page on GitHub'
-
-  # -------------------------------------------------------------------------
   # RSS / Atom / JSON feed generation
   # -------------------------------------------------------------------------
   # feeds:
@@ -112,6 +105,13 @@ themeConfig:
   # atomIcon: 'vscode-icons:file-type-atom'
   # youtubeIcon: 'fa6-brands:youtube'
   # tagsIcon: 'fa6-solid:tag'
+
+  # -------------------------------------------------------------------------
+  # Edit link (shown in post footer when `repo` is set in config.ts).
+  # -------------------------------------------------------------------------
+  editLink:
+    pattern: 'https://github.com/your-org/your-blog/edit/main/src/:path'
+  #   text: 'Edit this page on GitHub'
 
   # -------------------------------------------------------------------------
   # Donate button — rendered only when nav.donate and/or sidebar.donate is true.
