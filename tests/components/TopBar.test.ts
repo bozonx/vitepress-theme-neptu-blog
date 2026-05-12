@@ -5,7 +5,7 @@ import { mockTheme } from '../mocks/vitepress'
 
 const NeptuBtnStub = {
   name: 'NeptuBtn',
-  template: '<button class="btn-stub"><slot /></button>',
+  template: '<button class="btn-stub" :class="$props.class"><span v-if="$props.text">{{ $props.text }}</span><slot /></button>',
   props: ['icon', 'noBg', 'class', 'iconClass', 'text'],
 }
 const SwitchLangStub = { name: 'SwitchLang', template: '<div class="lang-stub" />', props: ['noBg'] }
@@ -26,12 +26,47 @@ describe('TopBar', () => {
     }
   })
 
-  it('renders nav links', () => {
+  it('renders nav links with correct text and props', () => {
     const wrapper = mount(TopBar, {
       global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })
     const btns = wrapper.findAllComponents({ name: 'NeptuBtn' })
-    expect(btns.length).toBeGreaterThanOrEqual(1)
+    const texts = btns.map((b) => b.props('text'))
+    expect(texts).toContain('Home')
+    expect(texts).toContain('Mobile')
+    expect(texts).toContain('Menu')
+  })
+
+  it('applies responsive visibility classes to nav links', () => {
+    const wrapper = mount(TopBar, {
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+    })
+    const listItems = wrapper.findAll('li')
+    const homeLi = listItems.find((li) => li.classes().includes('max-lg:hidden'))
+    const mobileLi = listItems.find((li) => li.classes().includes('lg:hidden'))
+    expect(homeLi).toBeDefined()
+    expect(mobileLi).toBeDefined()
+  })
+
+  it('renders donate link when nav.donate and theme.donate are set', () => {
+    mockTheme.value = {
+      nav: {
+        links: [],
+        socialLinks: [],
+        donate: true,
+      },
+      donate: { url: 'https://donate.example.com', icon: 'mdi:heart' },
+      t: { links: { donate: 'Donate' } },
+      sidebarMenuLabel: 'Menu',
+    }
+    const wrapper = mount(TopBar, {
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+    })
+    const btns = wrapper.findAllComponents({ name: 'NeptuBtn' })
+    const donateBtn = btns.find((b) => b.props('text') === 'Donate')
+    expect(donateBtn).toBeDefined()
+    expect(donateBtn!.props('icon')).toBe('mdi:heart')
+    expect(donateBtn!.props('href')).toBe('https://donate.example.com')
   })
 
   it('emits openDrawer when menu button clicked', () => {
@@ -39,10 +74,9 @@ describe('TopBar', () => {
       global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
     })
     const menuBtn = wrapper.findAllComponents({ name: 'NeptuBtn' }).find((b) => b.props('icon') === 'fa6-solid:bars')
-    if (menuBtn) {
-      menuBtn.vm.$emit('click')
-      expect(wrapper.emitted('openDrawer')).toHaveLength(1)
-    }
+    expect(menuBtn).toBeDefined()
+    menuBtn!.vm.$emit('click')
+    expect(wrapper.emitted('openDrawer')).toHaveLength(1)
   })
 
   it('renders switch appearance only on desktop', () => {

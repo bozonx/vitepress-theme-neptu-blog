@@ -136,4 +136,14 @@ describe('loadPostsDataFromFiles', () => {
     await loadPostsDataFromFiles(['/a.md'], { maxPreviewLength: 80 })
     expect(mockMakePreviewItem).toHaveBeenCalledWith('/a.md', { maxPreviewLength: 80, srcDir: undefined })
   })
+
+  it('throws when makePreviewItem fails', async () => {
+    mockMakePreviewItem.mockImplementation(() => {
+      throw new Error('parse error')
+    })
+    await expect(loadPostsDataFromFiles(['/a.md'])).rejects.toThrow(
+      'Error loading posts from watched files'
+    )
+    mockMakePreviewItem.mockRestore()
+  })
 })

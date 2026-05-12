@@ -119,4 +119,25 @@ describe('PreviewListItem', () => {
     expect(stub.props('showThumbnail')).toBe(false)
     expect(stub.props('showPreview')).toBe(false)
   })
+
+  it('passes coverHeight and coverWidth to PreviewWithImage', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', title: 'T', coverHeight: 300, coverWidth: 600 } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('coverHeight')).toBe(300)
+    expect(stub.props('coverWidth')).toBe(600)
+  })
+
+  it('computes localeDate from item date and lang', () => {
+    const wrapper = mount(PreviewListItem, {
+      props: { item: { url: '/p', title: 'T', date: '2024-06-15' } },
+      global: { stubs: { PreviewWithImage: PreviewWithImageStub } },
+    })
+    const stub = wrapper.findComponent({ name: 'PreviewWithImage' })
+    expect(stub.props('date')).toBe('2024-06-15')
+    expect(stub.props('localeDate')).toBeDefined()
+    expect(typeof stub.props('localeDate')).toBe('string')
+  })
 })

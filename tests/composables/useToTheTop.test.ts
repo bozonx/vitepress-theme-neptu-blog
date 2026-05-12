@@ -82,13 +82,15 @@ describe('useToTheTop', () => {
   })
 
   it('hide clears previous timeout', () => {
-    const { show, hide } = mountComposable(500)
+    const { showed, show, hide } = mountComposable(500)
     show()
     hide()
     hide()
     vi.advanceTimersByTime(500)
-    // Should not throw and state should be stable
-    expect(true).toBe(true)
+    // After clearing timeout, showed should stay true because hide() already ran synchronously
+    // Actually hide sets opacity=0 and starts timeout. Double hide should clear first timeout
+    // and start second. After 500ms showed should become false.
+    expect(showed.value).toBe(false)
   })
 
   it('handleClick scrolls to top', () => {
@@ -99,9 +101,13 @@ describe('useToTheTop', () => {
   })
 
   it('clears timeout on unmount', () => {
+    const clearSpy = vi.spyOn(globalThis, 'clearTimeout')
     const TestComp = defineComponent({
       setup() {
-        return useToTheTop()
+        const { show, hide } = useToTheTop()
+        show()
+        hide()
+        return {}
       },
       render() {
         return h('div')
@@ -109,7 +115,7 @@ describe('useToTheTop', () => {
     })
     const wrapper = mount(TestComp)
     wrapper.unmount()
-    // Should not throw
-    expect(true).toBe(true)
+    expect(clearSpy).toHaveBeenCalled()
+    clearSpy.mockRestore()
   })
 })
