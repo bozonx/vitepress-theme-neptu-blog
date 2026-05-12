@@ -77,12 +77,6 @@ export namespace NeptuBlogTheme {
      */
     postFooter?: string[]
 
-    tagsBaseUrl?: string
-    archiveBaseUrl?: string
-    popularBaseUrl?: string
-    recentBaseUrl?: string
-    authorsBaseUrl?: string
-
     donateIcon?: string
     recentIcon?: string
     popularIcon?: string

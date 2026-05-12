@@ -111,11 +111,6 @@ describe('formatTagsForRss', () => {
     expect(formatTagsForRss('tag', 'https://site.com', 'en')).toEqual([])
   })
 
-  it('uses configured tags base url', () => {
-    expect(formatTagsForRss(['Vue'], 'https://site.com', 'ru', 'topics')).toEqual([
-      { name: 'Vue', domain: 'https://site.com/ru/topics/vue/1' },
-    ])
-  })
 })
 
 describe('validateRssConfig', () => {
@@ -216,7 +211,6 @@ describe('makeAuthorForRss', () => {
             },
           },
         },
-        themeConfig: { authorsBaseUrl: 'authors' },
       },
     }
     expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com', 'en')).toEqual({
@@ -233,7 +227,6 @@ describe('makeAuthorForRss', () => {
     const config = {
       userConfig: {
         locales: { en: { themeConfig: {} } },
-        themeConfig: { authorsBaseUrl: 'authors' },
       },
     }
     expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com', 'en')).toBeUndefined()
@@ -251,7 +244,7 @@ describe('makeAuthorForRss', () => {
         },
       },
       userConfig: {
-        themeConfig: { authorsBaseUrl: 'authors' },
+        themeConfig: {},
       },
     }
     expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com/en', 'en')).toEqual({
@@ -270,7 +263,6 @@ describe('makeAuthorForRss', () => {
             },
           },
         },
-        themeConfig: { authorsBaseUrl: 'authors' },
       },
     }
     expect(makeAuthorForRss(config, { authorId: 'john' }, 'https://site.com', 'en')).toBeUndefined()

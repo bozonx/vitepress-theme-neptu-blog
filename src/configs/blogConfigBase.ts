@@ -152,12 +152,6 @@ const commonThemeConfig = {
     autoCanonical: true,
   },
 
-  tagsBaseUrl: 'tags',
-  archiveBaseUrl: 'archive',
-  popularBaseUrl: 'popular',
-  recentBaseUrl: 'recent',
-  authorsBaseUrl: 'authors',
-
   donateIcon: 'fa6-solid:hand-holding-heart',
   recentIcon: 'fa6-solid:bolt',
   popularIcon: 'fa6-solid:star',

@@ -70,7 +70,6 @@ describe('addJsonLd', () => {
         userConfig: {
           siteUrl: 'https://example.com',
           themeConfig: {
-            authorsBaseUrl: 'authors',
             authors: [
               { id: 'alice', name: 'Alice', aboutUrl: 'https://alice.com' },
             ],
@@ -222,7 +221,6 @@ describe('addJsonLd', () => {
         userConfig: {
           siteUrl: 'https://example.com',
           themeConfig: {
-            authorsBaseUrl: 'authors',
             authors: [{ id: 'alice', name: 'Alice' }],
           },
         },
@@ -426,25 +424,6 @@ describe('addJsonLd', () => {
     addJsonLd(ctx)
     const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
     expect(json.author.url).toBe('https://example.com/en/authors/alice/1')
-  })
-
-  it('uses locale-level authorsBaseUrl when it differs from the global config', () => {
-    vi.mocked(sharedUtils.isPost).mockReturnValue(true)
-    vi.mocked(sharedUtils.isAuthorPage).mockReturnValue(false)
-    vi.mocked(sharedUtils.isPage).mockReturnValue(false)
-
-    const ctx = createContext()
-    ctx.siteConfig.userConfig.themeConfig.authorsBaseUrl = 'writers'
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authorsBaseUrl = 'team'
-    ctx.siteConfig.userConfig.themeConfig.authors = [{ id: 'alice' } as any]
-    ;(ctx.siteConfig.site.locales.en.themeConfig as any).authors = [
-      { id: 'alice' },
-    ]
-
-    addJsonLd(ctx)
-
-    const json = JSON.parse((ctx.head[0] as [string, any, string])[2])
-    expect(json.author.url).toBe('https://example.com/en/team/alice/1')
   })
 
   it('normalizes URLs when siteUrl has a trailing slash', () => {

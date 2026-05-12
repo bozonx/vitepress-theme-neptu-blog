@@ -90,7 +90,6 @@ describe('PostFooter', () => {
   it('renders popular posts link when enabled', () => {
     mockTheme.value = {
       popularPosts: { enabled: true },
-      popularBaseUrl: '/popular',
       popularIcon: 'mdi:fire',
       t: { popularPostsCall: 'Popular posts' },
       postFooter: ['author', 'popular-link'],

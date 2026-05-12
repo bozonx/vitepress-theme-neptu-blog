@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`/${localeIndex}/${theme.authorsBaseUrl}/${props.item.id}/1`"
+    :href="`/${localeIndex}/authors/${props.item.id}/1`"
     class="card-item author-preview"
   >
     <h2 class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight">{{ props.item.name }}</h2>

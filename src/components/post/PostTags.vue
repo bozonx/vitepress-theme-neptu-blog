@@ -19,7 +19,7 @@ const tags = [...(frontmatter.value.tags || [])].sort((a, b) =>
       <TagsList :tags="tags">
         <template #after>
           <li class="flex items-center ml-2 max-md:mt-2">
-            <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
+            <NeptuBtnLink href="tags" :icon="theme.tagsIcon">{{
               theme.t.allTagsCall
             }}</NeptuBtnLink>
           </li>

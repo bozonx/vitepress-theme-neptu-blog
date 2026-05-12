@@ -16,8 +16,6 @@ const PreviewListStub = {
 describe('PostSimilarList', () => {
   afterEach(() => {
     mockTheme.value = {
-      tagsBaseUrl: 'tags',
-      authorsBaseUrl: 'authors',
       perPage: 10,
       paginationMaxItems: 7,
       t: {

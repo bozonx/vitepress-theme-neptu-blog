@@ -19,7 +19,6 @@ describe('PostTags', () => {
   beforeEach(() => {
     mockFrontmatter.value = {}
     mockTheme.value = {
-      tagsBaseUrl: '/tags',
       tagsIcon: 'mdi:tag',
       t: { tags: 'Tags', allTagsCall: 'All tags' },
     }

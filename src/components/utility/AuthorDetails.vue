@@ -37,7 +37,7 @@ const filtered = localePosts.filter((post) => post.authorId === props.authorId)
 const sorted = sortPosts(
   filtered,
   theme.value.popularPosts?.sortBy,
-  isPopularRoute(route.path, theme)
+  isPopularRoute(route.path)
 )
 const author = theme.value.authors?.find(
   (item: ThemeAuthor) => item.id === props.authorId
@@ -49,7 +49,7 @@ const author = theme.value.authors?.find(
   <NeptuAuthor :author="author" class="mb-15" />
 
   <ListPageHeader
-    :base-url="`/${localeIndex}/${theme.authorsBaseUrl}/${props.authorId}`"
+    :base-url="`/${localeIndex}/authors/${props.authorId}`"
     :show-popular-posts-switch="showPopularPostsSwitch"
   >
     {{ sorted.length }} {{ pluralize(sorted.length, theme.t.postsCountForms) }}

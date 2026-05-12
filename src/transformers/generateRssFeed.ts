@@ -14,7 +14,6 @@ import {
   getRssFormats,
   makeAbsoluteUrl,
   makeAuthorForRss,
-  normalizePathSegment,
   normalizeSiteUrl,
   validatePostForRss,
   validateRssConfig,
@@ -39,10 +38,6 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
     for (const localeIndex of Object.keys(config.site!.locales!)) {
       const locale = config.site!.locales![localeIndex]!
       const localeSiteUrl = `${siteUrl}/${localeIndex}`
-      const tagsBaseUrl =
-        normalizePathSegment(locale.themeConfig?.tagsBaseUrl) ||
-        normalizePathSegment(config.userConfig?.themeConfig?.tagsBaseUrl) ||
-        'tags'
       const feedLinks = Object.fromEntries(
         rssFormats
           .filter((format) => format === 'rss' || format === 'atom')
@@ -103,7 +98,7 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
                   config.userConfig?.themeConfig?.seo?.maxDescriptionLength || 300
                 )
             const guid = createPostGuid(siteUrl, url, fm.date)
-            const categories = formatTagsForRss(fm.tags, siteUrl, localeIndex, tagsBaseUrl)
+            const categories = formatTagsForRss(fm.tags, siteUrl, localeIndex)
 
             feeds[localeIndex]!.addItem({
               title: fm.title || '',

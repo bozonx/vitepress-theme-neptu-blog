@@ -87,10 +87,10 @@ export function addOgMetaTags({
 
   const authorUrl = author?.aboutUrl
     ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
-    : themeConfig.authorsBaseUrl && pageData.frontmatter.authorId
+    : pageData.frontmatter.authorId
       ? makeAbsoluteUrl(
           siteUrl,
-          `${localeIndex}/${themeConfig.authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+          `${localeIndex}/authors/${pageData.frontmatter.authorId}/1`
         )
       : undefined
 

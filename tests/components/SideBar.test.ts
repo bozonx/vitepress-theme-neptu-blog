@@ -39,10 +39,6 @@ describe('SideBar drawer', () => {
         toHome: 'Home',
         links: { recent: 'Recent', popular: 'Popular', byDate: 'Archive', authors: 'Authors', donate: 'Donate' },
       },
-      recentBaseUrl: '/recent',
-      popularBaseUrl: '/popular',
-      archiveBaseUrl: '/archive',
-      authorsBaseUrl: '/authors',
     }
     document.body.style.overflow = ''
   })

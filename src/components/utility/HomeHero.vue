@@ -15,7 +15,7 @@
         v-if="props.img"
         :aria-label="theme.t.toHome"
         class="home-logo flex justify-center"
-        :href="`/${localeIndex}/${theme.recentBaseUrl}/1`"
+        :href="`/${localeIndex}/recent/1`"
       >
         <img
           :src="props.img.src"

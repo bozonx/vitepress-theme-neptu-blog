@@ -12,7 +12,7 @@ const BaseLinkStub = {
 describe('PostDate', () => {
   beforeEach(() => {
     mockPage.value = { frontmatter: { date: '2024-06-15' } }
-    mockTheme.value = { archiveBaseUrl: '/archive' }
+    mockTheme.value = {}
   })
 
   it('renders nothing when no date', () => {

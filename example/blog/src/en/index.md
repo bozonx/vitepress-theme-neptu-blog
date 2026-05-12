@@ -22,7 +22,7 @@ const hero = {
   buttons: [
     {
       text: theme.value.t.toBlog,
-      href: `${theme.value.recentBaseUrl}/1`,
+      href: 'recent/1',
       primary: true,
     },
     {

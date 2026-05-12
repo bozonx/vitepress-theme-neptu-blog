@@ -17,7 +17,7 @@ const NeptuBadgeStub = {
 
 describe('TagItem', () => {
   beforeEach(() => {
-    mockTheme.value = { tagsBaseUrl: 'tags', t: { tagBadgeCount: 'Posts' } }
+    mockTheme.value = { t: { tagBadgeCount: 'Posts' } }
   })
 
   it('renders with computed href', () => {

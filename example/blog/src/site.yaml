@@ -85,15 +85,6 @@ themeConfig:
   # twitterSite: '@your_handle'
 
   # -------------------------------------------------------------------------
-  # Route base URL segments — change if you rename generated route folders.
-  # -------------------------------------------------------------------------
-  # tagsBaseUrl: 'tags'
-  # archiveBaseUrl: 'archive'
-  # popularBaseUrl: 'popular'
-  # recentBaseUrl: 'recent'
-  # authorsBaseUrl: 'authors'
-
-  # -------------------------------------------------------------------------
   # Icon overrides (Iconify icon strings — browse at icon.icones.es).
   # -------------------------------------------------------------------------
   # donateIcon: 'fa6-solid:hand-holding-heart'
@@ -159,11 +150,17 @@ themeConfig:
     #   links:
     #     - text: 'About'
     #       href: '/about'
+    #       # icon: 'mdi:information-outline'
+    #       # iconClass: 'muted'
+    #       # class: 'custom-nav-link'
+    #       # desktopOnly: true
+    #       # mobileOnly: false
     socialLinks:
       - icon: 'fa6-brands:github-alt'
         link: '${theme.repo}'
         # url: "https://github.com/"  # alternative to link
         # class: "custom-social-link"
+        # iconClass: "text-xl"
         desktopOnly: true
         # mobileOnly: false
 
@@ -182,12 +179,26 @@ themeConfig:
     #   links:
     #     - text: 'About'
     #       href: '/about'
+    #       # icon: 'mdi:information-outline'
+    #       # iconClass: 'muted'
+    #       # class: 'custom-sidebar-link'
+    #       # desktopOnly: false
+    #       # mobileOnly: false
     #   bottomLinks:
     #     - text: 'Privacy policy'
     #       href: '/privacy'
+    #       # icon: 'mdi:shield-outline'
+    #       # iconClass: 'muted'
+    #       # class: 'custom-bottom-link'
+    #       # desktopOnly: false
+    #       # mobileOnly: false
     socialLinks:
       - icon: 'fa6-brands:github'
         link: '${theme.repo}'
+        # class: 'custom-social-link'
+        # iconClass: 'text-xl'
+        # desktopOnly: false
+        # mobileOnly: false
 
   # -------------------------------------------------------------------------
   # Footer
@@ -198,8 +209,18 @@ themeConfig:
     links:
       #     - text: 'Privacy policy'
       #       href: '/privacy'
+      #       # icon: 'mdi:shield-outline'
+      #       # iconClass: 'muted'
+      #       # class: 'custom-footer-link'
+      #       # desktopOnly: false
+      #       # mobileOnly: false
       #     - text: 'RSS'
       #       href: '/feed.xml'
+      #       # icon: 'bi:rss-fill'
+      #       # iconClass: 'muted'
+      #       # class: 'custom-footer-link'
+      #       # desktopOnly: false
+      #       # mobileOnly: false
       - text: 'Test JSON-LD'
         href: 'page/test-json-ld'
       - text: 'Advanced JSON-LD'

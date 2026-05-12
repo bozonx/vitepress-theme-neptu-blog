@@ -88,7 +88,7 @@ const blocks = computed(() => {
       <div v-if="theme.popularPosts?.enabled" class="mt-10">
         <slot name="popular-link">
           <NeptuBtnLink
-            :href="`${theme.popularBaseUrl}/1`"
+            :href="`/popular/1`"
             :text="theme.t.popularPostsCall"
             :icon="theme.popularIcon"
           />

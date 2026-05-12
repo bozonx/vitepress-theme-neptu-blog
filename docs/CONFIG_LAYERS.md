@@ -51,7 +51,6 @@ Cross-locale presentation that the content team owns:
 - Layout knobs: `sidebarTagsCount`, `similarPostsCount`, `paginationMaxItems`, `homeBgParallaxOffset`, `externalLinkIcon`, `perPage`
 - Feature blocks: `sidebar`, `nav`, `footer`, `donate`, `publisher`, `authors`, `socialMediaShares`, `postList`, `postFooter`, `editLink`, `feeds`
 - SEO toggles: `seo`, `twitterSite`
-- Routing: `tagsBaseUrl`, `archiveBaseUrl`, `popularBaseUrl`, `recentBaseUrl`, `authorsBaseUrl`
 - Icon overrides: `donateIcon`, `recentIcon`, `popularIcon`, `byDateIcon`, `authorsIcon`, `rssIcon`, `atomIcon`, `youtubeIcon`, `tagsIcon`
 
 ### `src/<locale>/_site.yaml` — admin, per locale

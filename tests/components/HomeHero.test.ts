@@ -9,7 +9,6 @@ describe('HomeHero', () => {
   beforeEach(() => {
     mockTheme.value = {
       t: { toHome: 'Go to home page' },
-      recentBaseUrl: 'recent',
     }
     mockLocaleIndex.value = 'en'
   })
@@ -77,7 +76,6 @@ describe('HomeHero', () => {
 
   it('links to locale recent base url', () => {
     mockLocaleIndex.value = 'ru'
-    mockTheme.value.recentBaseUrl = 'recent'
 
     const wrapper = mount(HomeHero, {
       props: {

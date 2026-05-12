@@ -111,7 +111,6 @@ describe('generateRssFeed', () => {
             description: 'Desc',
             themeConfig: {
               authors: [{ id: 'alice', name: 'Alice' }],
-              tagsBaseUrl: 'topics',
             },
           },
         },
@@ -119,7 +118,6 @@ describe('generateRssFeed', () => {
       userConfig: {
         siteUrl: 'https://example.com/',
         themeConfig: {
-          authorsBaseUrl: 'authors',
           feeds: { maxPosts: 2, formats: ['rss', 'json'] },
           seo: { maxDescriptionLength: 120 },
         },
@@ -152,12 +150,12 @@ describe('generateRssFeed', () => {
       link: 'https://example.com/en/post/first',
       image: 'https://example.com/img/post.webp',
       author: { name: 'Alice', link: 'https://example.com/en/authors/alice/1' },
-      category: [{ name: 'Web Dev', domain: 'https://example.com/en/topics/web-dev/1' }],
+      category: [{ name: 'Web Dev', domain: 'https://example.com/en/tags/web-dev/1' }],
     })
     expect(rssPayload.items[1]).toMatchObject({
       title: 'Second post',
       link: 'https://example.com/en/post/second',
-      category: [{ name: 'Vue', domain: 'https://example.com/en/topics/vue/1' }],
+      category: [{ name: 'Vue', domain: 'https://example.com/en/tags/vue/1' }],
     })
   })
 

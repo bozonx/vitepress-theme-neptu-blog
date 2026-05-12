@@ -90,7 +90,7 @@ export default async () => {
     //
     // Admin-editable presentation (nav, sidebar, footer, donate, publisher,
     // authors, socialMediaShares, icons, postList, postFooter, SEO toggles,
-    // *BaseUrl, etc.) belongs in `src/site.yaml` (cross-locale) or
+    // etc.) belongs in `src/site.yaml` (cross-locale) or
     // `src/<locale>/_site.yaml` (per-locale). See docs/CONFIG_LAYERS.md.
     // -------------------------------------------------------------------------
     themeConfig: {

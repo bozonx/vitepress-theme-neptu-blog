@@ -108,28 +108,28 @@ const links = computed<SideBarItem[]>(() => {
   if (cfg.recent) {
     items.push({
       text: theme.value.t.links.recent,
-      href: `${theme.value.recentBaseUrl}/1`,
+      href: `recent/1`,
       icon: theme.value.recentIcon,
     })
   }
   if (cfg.popular) {
     items.push({
       text: theme.value.t.links.popular,
-      href: `${theme.value.popularBaseUrl}/1`,
+      href: `popular/1`,
       icon: theme.value.popularIcon,
     })
   }
   if (cfg.archive) {
     items.push({
       text: theme.value.t.links.byDate,
-      href: `${theme.value.archiveBaseUrl}`,
+      href: `archive`,
       icon: theme.value.byDateIcon,
     })
   }
   if (cfg.authors) {
     items.push({
       text: theme.value.t.links.authors,
-      href: `${theme.value.authorsBaseUrl}`,
+      href: `authors`,
       icon: theme.value.authorsIcon,
     })
   }

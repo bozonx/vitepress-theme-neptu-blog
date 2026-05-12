@@ -20,7 +20,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const href = `${theme.value.tagsBaseUrl}/${props.slug}/1`
+const href = `tags/${props.slug}/1`
 const className =
   'text-center rounded-full text-lg py-1 px-4 ' +
   'justify-center inline-flex space-x-2 items-center text-white ' +

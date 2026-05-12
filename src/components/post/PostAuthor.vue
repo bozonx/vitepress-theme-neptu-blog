@@ -17,7 +17,7 @@ const themeAuthor = frontmatter.value.authorId
   : undefined
 const authorUrl = themeAuthor?.aboutUrl
   ? themeAuthor.aboutUrl
-  : `${theme.value.authorsBaseUrl}/${frontmatter.value.authorId}/1`
+  : `/authors/${frontmatter.value.authorId}/1`
 </script>
 
 <template>

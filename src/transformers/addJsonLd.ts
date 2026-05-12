@@ -133,15 +133,12 @@ function createPostJsonLd(
     : undefined
 
   const authorName = author?.name || author?.id
-  const authorsBaseUrl =
-    (langConfig.themeConfig as ThemeConfig).authorsBaseUrl ||
-    siteConfig.userConfig.themeConfig.authorsBaseUrl
   const authorUrl = author?.aboutUrl
     ? makeAbsoluteUrl(siteUrl, author.aboutUrl)
-    : authorsBaseUrl
+    : pageData.frontmatter.authorId
       ? makeAbsoluteUrl(
           siteUrl,
-          `${localeIndex}/${authorsBaseUrl}/${pageData.frontmatter.authorId}/1`
+          `${localeIndex}/authors/${pageData.frontmatter.authorId}/1`
         )
       : undefined
   const cover = pageData.frontmatter.cover
@@ -230,14 +227,9 @@ function createAuthorJsonLd(
     ...rest
   } = author
   const authorName = name || id
-  const authorsBaseUrl =
-    (langConfig.themeConfig as ThemeConfig).authorsBaseUrl ||
-    siteConfig.userConfig.themeConfig.authorsBaseUrl
   const authorUrl = aboutUrl
     ? makeAbsoluteUrl(siteUrl, aboutUrl)
-    : authorsBaseUrl
-      ? makeAbsoluteUrl(siteUrl, `${localeIndex}/${authorsBaseUrl}/${id}/1`)
-      : undefined
+    : makeAbsoluteUrl(siteUrl, `${localeIndex}/authors/${id}/1`)
   let imgUrl = image
 
   imgUrl = makeAbsoluteUrl(siteUrl, imgUrl)
@@ -345,7 +337,7 @@ export function addJsonLd({
     }) as JsonLdValue,
   }
 
-  if (isAuthorPage(page, siteConfig)) {
+  if (isAuthorPage(page)) {
     jsonLdData = createAuthorJsonLd(
       pageData,
       siteConfig,

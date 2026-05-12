@@ -32,7 +32,6 @@ describe('TagPostsList', () => {
     mockFrontmatter.value = { title: 'Tag page' }
     mockTheme.value = {
       ...mockTheme.value,
-      tagsBaseUrl: 'tags',
       tagsIcon: 'tag',
       t: { ...mockTheme.value.t, allTagsCall: 'All tags' },
       popularPosts: { enabled: false },

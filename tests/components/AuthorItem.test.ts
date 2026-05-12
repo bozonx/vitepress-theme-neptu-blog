@@ -6,7 +6,6 @@ import { mockTheme, mockLocaleIndex } from '../mocks/vitepress'
 describe('AuthorItem', () => {
   beforeEach(() => {
     mockTheme.value = {
-      authorsBaseUrl: 'authors',
       t: { postsCountForms: ['post', 'posts', 'posts'] },
     }
     mockLocaleIndex.value = 'en'
@@ -57,9 +56,8 @@ describe('AuthorItem', () => {
     expect(wrapper.find('img').exists()).toBe(false)
   })
 
-  it('builds correct href with locale and authorsBaseUrl', () => {
+  it('builds correct href with locale and authors', () => {
     mockLocaleIndex.value = 'ru'
-    mockTheme.value.authorsBaseUrl = 'authors'
     const wrapper = mount(AuthorItem, {
       props: {
         item: { id: 'jane', name: 'Jane', count: 3 },

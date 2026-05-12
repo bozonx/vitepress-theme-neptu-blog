@@ -39,8 +39,8 @@ const tagSlug = computed(() =>
 )
 const tagBaseUrl = computed(() =>
   tagSlug.value
-    ? `/${localeIndex.value}/${theme.value.tagsBaseUrl}/${tagSlug.value}`
-    : `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
+    ? `/${localeIndex.value}/tags/${tagSlug.value}`
+    : `/${localeIndex.value}/tags`
 )
 // Filter posts by tag
 const filtered = localePosts.filter((item) =>
@@ -49,7 +49,7 @@ const filtered = localePosts.filter((item) =>
 const sorted = sortPosts(
   filtered,
   theme.value.popularPosts?.sortBy,
-  isPopularRoute(route.path, theme)
+  isPopularRoute(route.path)
 )
 </script>
 
@@ -69,7 +69,7 @@ const sorted = sortPosts(
   />
 
   <div class="mt-8">
-    <NeptuBtnLink :href="theme.tagsBaseUrl" :icon="theme.tagsIcon">{{
+    <NeptuBtnLink :href="`/tags`" :icon="theme.tagsIcon">{{
       theme.t.allTagsCall
     }}</NeptuBtnLink>
   </div>

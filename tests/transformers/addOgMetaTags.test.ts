@@ -39,7 +39,6 @@ describe('addOgMetaTags', () => {
         userConfig: {
           siteUrl: 'https://example.com',
           themeConfig: {
-            authorsBaseUrl: 'authors',
             authors: [{ id: 'alice', name: 'Alice Author' }],
           },
         },
@@ -50,7 +49,6 @@ describe('addOgMetaTags', () => {
               description: 'Blog description',
               lang: 'en-US',
               themeConfig: {
-                authorsBaseUrl: 'authors',
                 authors: [
                   {
                     id: 'alice',

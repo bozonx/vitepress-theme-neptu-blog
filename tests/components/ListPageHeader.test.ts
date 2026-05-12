@@ -7,7 +7,7 @@ describe('ListPageHeader', () => {
   beforeEach(() => {
     mockTheme.value = {
       t: { links: { recent: 'Recent', popular: 'Popular' } },
-      popularPosts: { enabled: true, popularBaseUrl: 'popular' },
+      popularPosts: { enabled: true },
       recentIcon: 'mdi:clock',
       popularIcon: 'mdi:fire',
     }

@@ -1,8 +1,6 @@
 import { ref } from 'vue'
 
 export const mockTheme = ref<any>({
-  tagsBaseUrl: 'tags',
-  authorsBaseUrl: 'authors',
   perPage: 10,
   paginationMaxItems: 7,
   t: {

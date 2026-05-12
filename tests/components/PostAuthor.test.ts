@@ -12,7 +12,7 @@ const SimpleLinkStub = {
 describe('PostAuthor', () => {
   beforeEach(() => {
     mockFrontmatter.value = {}
-    mockTheme.value = { authors: [], authorsBaseUrl: '/authors', t: { author: 'Author' } }
+    mockTheme.value = { authors: [], t: { author: 'Author' } }
   })
 
   it('renders nothing when no authorId in frontmatter', () => {
@@ -25,7 +25,7 @@ describe('PostAuthor', () => {
 
   it('renders nothing when author not found in theme', () => {
     mockFrontmatter.value = { authorId: 'unknown' }
-    mockTheme.value = { authors: [{ id: 'john', name: 'John' }], authorsBaseUrl: '/authors', t: { author: 'Author' } }
+    mockTheme.value = { authors: [{ id: 'john', name: 'John' }], t: { author: 'Author' } }
     const wrapper = mount(PostAuthor, {
       global: { stubs: { SimpleLink: SimpleLinkStub } },
     })
@@ -36,7 +36,6 @@ describe('PostAuthor', () => {
     mockFrontmatter.value = { authorId: 'john' }
     mockTheme.value = {
       authors: [{ id: 'john', name: 'John Doe' }],
-      authorsBaseUrl: '/authors',
       t: { author: 'Author' },
     }
     const wrapper = mount(PostAuthor, {
@@ -52,7 +51,6 @@ describe('PostAuthor', () => {
     mockFrontmatter.value = { authorId: 'john' }
     mockTheme.value = {
       authors: [{ id: 'john', name: 'John Doe', aboutUrl: '/about/john' }],
-      authorsBaseUrl: '/authors',
       t: { author: 'Author' },
     }
     const wrapper = mount(PostAuthor, {

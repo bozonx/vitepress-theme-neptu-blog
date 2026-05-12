@@ -9,7 +9,7 @@
     <div v-if="showMorePosts" class="mt-8 flex">
       <span class="mr-2">... </span>
       <NeptuBtnLink
-        :href="`${theme.popularBaseUrl}/2`"
+        :href="`popular/2`"
         :text="theme.t.showMorePosts"
         class="more-posts-btn underline"
       />

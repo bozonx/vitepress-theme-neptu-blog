@@ -48,11 +48,6 @@
         "sidebarLogoHeight": { "type": "integer" },
         "repo": { "type": "string" },
         "twitterSite": { "type": "string" },
-        "tagsBaseUrl": { "type": "string" },
-        "archiveBaseUrl": { "type": "string" },
-        "popularBaseUrl": { "type": "string" },
-        "recentBaseUrl": { "type": "string" },
-        "authorsBaseUrl": { "type": "string" },
         "externalLinkIcon": { "type": "boolean" },
         "seo": {
           "type": "object",

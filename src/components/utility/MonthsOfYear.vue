@@ -43,7 +43,7 @@ const filtered = localePosts.filter((item) => {
 const sorted = sortPosts(
   filtered,
   theme.value.popularPosts?.sortBy,
-  isPopularRoute(route.path, theme)
+  isPopularRoute(route.path)
 )
 </script>
 
@@ -55,7 +55,7 @@ const sorted = sortPosts(
       <template v-for="item in monthsList" :key="item.month">
         <li v-if="item.count">
           <ListItemWithBadge
-            :href="`${theme.archiveBaseUrl}/${props.year}/month/${item.month}`"
+            :href="`archive/${props.year}/month/${item.month}`"
             :text="theme.t.months[item.month - 1]"
             :count="item.count"
           />
@@ -65,7 +65,7 @@ const sorted = sortPosts(
 
     <ListPageHeader
       :show-popular-posts-switch="showPopularPostsSwitch"
-      :base-url="`/${localeIndex}/${theme.archiveBaseUrl}/${props.year}`"
+      :base-url="`/${localeIndex}/archive/${props.year}`"
       class="mt-10"
     >
       {{ theme.t.allPostsOfYear }}

@@ -91,12 +91,10 @@ export function getFeedUrl(siteUrl: string, localeIndex: string, format: string)
 export function formatTagsForRss(
   tags: unknown,
   siteUrl: string,
-  localeIndex: string,
-  tagsBaseUrl = 'tags'
+  localeIndex: string
 ): RssCategory[] {
   if (!tags || !Array.isArray(tags)) return []
 
-  const cleanTagsBaseUrl = normalizePathSegment(tagsBaseUrl) || 'tags'
   const baseUrl = normalizeSiteUrl(siteUrl)
 
   return (tags as unknown[])
@@ -104,8 +102,7 @@ export function formatTagsForRss(
     .filter((tag): tag is NonNullable<ReturnType<typeof normalizeTag>> => !!tag)
     .map((tag) => ({
       name: tag.name,
-      domain: `${baseUrl}/${localeIndex}/${cleanTagsBaseUrl}/${tag
-        .slug}/1`,
+      domain: `${baseUrl}/${localeIndex}/tags/${tag.slug}/1`,
     }))
 }
 
@@ -199,13 +196,10 @@ export function makeAuthorForRss(
 
   if (!author) return
 
-  const authorsBaseUrl = normalizePathSegment(config.userConfig?.themeConfig?.authorsBaseUrl)
-  if (!authorsBaseUrl) return
-
   return {
     name: author.name,
-    link: `${normalizeSiteUrl(siteUrl)}/${authorsBaseUrl}/${author.id}/1`,
+    link: `${normalizeSiteUrl(siteUrl)}/authors/${author.id}/1`,
   }
 }
 
-export { makeAbsoluteUrl, normalizePathSegment, normalizeSiteUrl }
+export { makeAbsoluteUrl, normalizeSiteUrl }

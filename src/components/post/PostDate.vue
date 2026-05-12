@@ -76,7 +76,7 @@ const isMonth = (item: string) => {
         <!-- Year link -->
         <BaseLink
           v-if="isYear(item)"
-          :href="`${theme.archiveBaseUrl}/${year}/1`"
+          :href="`archive/${year}/1`"
           class="underline hover:brightness-[1.4]"
         >
           {{ item }}
@@ -84,7 +84,7 @@ const isMonth = (item: string) => {
         <!-- Month link -->
         <BaseLink
           v-else-if="isMonth(item)"
-          :href="`${theme.archiveBaseUrl}/${year}/month/${month}`"
+          :href="`archive/${year}/month/${month}`"
           class="underline hover:brightness-[1.4]"
         >
           {{ item }}

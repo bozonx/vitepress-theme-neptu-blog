@@ -9,7 +9,7 @@ import {
   resolveArticlePreview,
   resolveBodyMarker,
 } from '../../../src/utils/shared/page.ts'
-import type { ExtendedSiteConfig, ThemeConfig } from '../../../src/types.d.ts'
+import type { ThemeConfig } from '../../../src/types.d.ts'
 
 describe('isPost', () => {
   it('returns true for explicit layout post', () => {
@@ -85,49 +85,33 @@ describe('isUtilPage', () => {
 
 describe('isPopularRoute', () => {
   it('detects popular route path', () => {
-    const theme: ThemeConfig = { popularBaseUrl: 'popular' } as any
-    expect(isPopularRoute('/en/popular/1', theme)).toBe(true)
+    expect(isPopularRoute('/en/popular/1')).toBe(true)
   })
 
   it('returns false for non-popular paths', () => {
-    const theme: ThemeConfig = { popularBaseUrl: 'popular' } as any
-    expect(isPopularRoute('/en/post/hello', theme)).toBe(false)
-  })
-
-  it('works with ThemeRef wrapper', () => {
-    const theme = { value: { popularBaseUrl: 'popular' } } as any
-    expect(isPopularRoute('/en/popular/1', theme)).toBe(true)
+    expect(isPopularRoute('/en/post/hello')).toBe(false)
   })
 })
 
 describe('isAuthorPage', () => {
-  const makeConfig = (authorsBaseUrl?: string): ExtendedSiteConfig =>
-    ({
-      userConfig: { themeConfig: { authorsBaseUrl } },
-    }) as ExtendedSiteConfig
-
   it('returns true for author page path', () => {
-    expect(isAuthorPage('en/authors/john/1.md', makeConfig('authors'))).toBe(true)
+    expect(isAuthorPage('en/authors/john/1.md')).toBe(true)
   })
 
   it('returns false for author index page', () => {
-    expect(isAuthorPage('en/authors/index.md', makeConfig('authors'))).toBe(false)
-  })
-
-  it('returns false when authorsBaseUrl is missing', () => {
-    expect(isAuthorPage('en/authors/john/1.md', makeConfig(undefined))).toBe(false)
+    expect(isAuthorPage('en/authors/index.md')).toBe(false)
   })
 
   it('returns false for null filePath', () => {
-    expect(isAuthorPage(null, makeConfig('authors'))).toBe(false)
+    expect(isAuthorPage(null)).toBe(false)
   })
 
   it('returns false for unrelated paths', () => {
-    expect(isAuthorPage('en/post/hello.md', makeConfig('authors'))).toBe(false)
+    expect(isAuthorPage('en/post/hello.md')).toBe(false)
   })
 
   it('matches locale with hyphen', () => {
-    expect(isAuthorPage('zh-CN/authors/john/1.md', makeConfig('authors'))).toBe(true)
+    expect(isAuthorPage('zh-CN/authors/john/1.md')).toBe(true)
   })
 })
 

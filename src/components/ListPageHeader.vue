@@ -37,7 +37,7 @@ const props = defineProps({
 })
 
 const popularBaseUrl = computed(() => {
-  return `${props.baseUrl}/${theme.value.popularBaseUrl}`
+  return `${props.baseUrl}/popular`
 })
 const showPopularPostsSwitch =
   props.showPopularPostsSwitch && theme.value.popularPosts?.enabled

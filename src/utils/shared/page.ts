@@ -1,7 +1,6 @@
-import type { PostFrontmatter, ThemeConfig, ExtendedSiteConfig } from '../../types.d.ts'
+import type { PostFrontmatter, ThemeConfig } from '../../types.d.ts'
 
 export type Frontmatter = PostFrontmatter
-export type ThemeRef = { value: ThemeConfig } | ThemeConfig
 
 const UTIL_LAYOUTS = new Set(['util', 'tag', 'archive', 'author'])
 
@@ -26,29 +25,20 @@ export function isUtilPage(frontmatter: Frontmatter | null | undefined): boolean
   return UTIL_LAYOUTS.has(frontmatter?.layout as string)
 }
 
-export function isPopularRoute(routPath: string, theme: ThemeRef): boolean {
-  const themeValue = ('value' in theme ? theme.value : theme) as ThemeConfig
-  return typeof themeValue.popularBaseUrl === 'string'
-    ? routPath.includes(`/${themeValue.popularBaseUrl}/`)
-    : false
+export function isPopularRoute(routPath: string): boolean {
+  return routPath.includes('/popular/')
 }
 
 function escapeRegExp(str: string): string {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-export function isAuthorPage(filePath: string | null | undefined, siteConfig: ExtendedSiteConfig): boolean {
+export function isAuthorPage(filePath: string | null | undefined): boolean {
   if (!filePath) return false
 
-  const authorsBaseUrl = siteConfig.userConfig?.themeConfig?.authorsBaseUrl
-
-  if (!authorsBaseUrl) return false
-
-  const escaped = escapeRegExp(authorsBaseUrl)
-
   return (
-    !!filePath.match(new RegExp(`^[^/]+/${escaped}/`)) &&
-    !filePath.endsWith(`${authorsBaseUrl}/index.md`)
+    !!filePath.match(/^[^/]+\/authors\//) &&
+    !filePath.endsWith('authors/index.md')
   )
 }
 

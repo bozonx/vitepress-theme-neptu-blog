@@ -5,7 +5,7 @@ import { mockTheme, mockFrontmatter, mockLocaleIndex } from '../mocks/vitepress'
 
 describe('NeptuYears', () => {
   beforeEach(() => {
-    mockTheme.value = { archiveBaseUrl: '/en/archive' }
+    mockTheme.value = {}
     mockFrontmatter.value = { title: 'Archive' }
     mockLocaleIndex.value = 'en'
   })

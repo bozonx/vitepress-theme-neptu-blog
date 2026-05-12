@@ -41,7 +41,7 @@ const allTags = makeTagsList(props.localePosts)
 const tags = allTags
   .map(({ count: _count, ...tag }) => tag)
   .slice(0, theme.value.sidebarTagsCount || 0)
-const allTagsUrl = `/${localeIndex.value}/${theme.value.tagsBaseUrl}`
+const allTagsUrl = `/${localeIndex.value}/tags`
 const showAllTags = allTags.length > (theme.value.sidebarTagsCount || 0)
 const emit = defineEmits(['itemClick'])
 </script>
