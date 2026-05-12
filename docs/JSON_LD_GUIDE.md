@@ -106,7 +106,7 @@ seo:
 ### Globally
 
 ```ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       jsonLd: false,

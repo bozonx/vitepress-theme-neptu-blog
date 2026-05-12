@@ -364,36 +364,39 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
 }
 
 /**
- * Standard entry point for blog configuration.
+ * Synchronous entry point for blog configuration.
  *
  * Calls {@link mergeBlogConfig} to apply all built-in defaults, and additionally
  * emits `console.warn` for commonly missed required fields (`siteUrl`,
  * `locales`).
  *
- * Use this function in your `.vitepress/config.ts`. Use {@link mergeBlogConfig}
- * only when you need a silent merge (tests, multi-step composition).
+ * Prefer {@link defineBlogConfig} for normal usage — it auto-discovers locales.
+ * Use `defineBlogConfigSync` only in tests or when you need a synchronous
+ * merge without locale discovery.
  */
-export function defineBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
+export function defineBlogConfigSync(config: BlogUserConfig): ResolvedBlogConfig {
   warnMissingRequired(config)
 
   return mergeBlogConfig(config)
 }
 
 /**
- * Async entry point for the conventional folder-based blog setup.
+ * Standard async entry point for the conventional folder-based blog setup.
  *
  * If `locales` is omitted or empty, discovers locale folders from `srcDir`
  * using `<srcDir>/<locale>/_site.yaml` or `_site.ts`. Explicit `locales`
  * still win for advanced/manual setups.
+ *
+ * Use this function in your `.vitepress/config.ts`.
  */
-export async function defineBlogConfigWithAutoLocales(
+export async function defineBlogConfig(
   config: BlogUserConfig
 ): Promise<ResolvedBlogConfig> {
   const hasLocales = Boolean(
     config.locales && Object.keys(config.locales).length > 0
   )
 
-  return defineBlogConfig({
+  return defineBlogConfigSync({
     ...config,
     locales: hasLocales ? config.locales : await autoLoadLocales(config),
   })

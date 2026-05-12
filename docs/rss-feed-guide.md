@@ -17,7 +17,7 @@ RSS, Atom, and JSON feeds are generated automatically per locale during the buil
 Control feed output via `themeConfig.feeds`:
 
 ```ts
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     themeConfig: {
       feeds: {
@@ -26,7 +26,6 @@ export default defineConfig(
       },
     },
   })
-)
 ```
 
 ## Frontmatter
@@ -102,7 +101,7 @@ seo:
 ### Globally
 
 ```ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       rss: false,

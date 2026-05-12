@@ -64,10 +64,9 @@ Create `.vitepress/theme/styles.css`:
 Create `.vitepress/config.ts`:
 
 ```ts
-import { defineConfig } from 'vitepress'
 import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     siteUrl: 'https://example.com',
     title: 'My Blog',
@@ -83,7 +82,6 @@ export default defineConfig(
       ],
     },
   })
-)
 ```
 
 Content lives inside locale folders:
@@ -131,7 +129,7 @@ Control what is shown in post list items via the `postList` object:
 | `postList.maxPreviewLength` | `number`  | `300`   | Max length of auto-generated preview text |
 
 ```ts
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     themeConfig: {
       postList: {
@@ -144,7 +142,6 @@ export default defineConfig(
       },
     },
   })
-)
 ```
 
 `postList.maxPreviewLength` only affects preview text generated from post content. A `previewText` value specified in post frontmatter is used as-is.
@@ -154,13 +151,12 @@ export default defineConfig(
 Set `themeConfig.repo` to enable an "Edit this page" button. The theme auto-detects the hosting platform from the URL and generates the correct edit-link pattern.
 
 ```ts
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     themeConfig: {
       repo: 'https://github.com/username/repo',
     },
   })
-)
 ```
 
 Supported platforms: **GitHub**, **GitLab**, **Bitbucket**, **Gitea / Forgejo / Codeberg**.
@@ -291,7 +287,7 @@ For SPA pageview tracking in client-side analytics, see the note in [docs/BUILD_
 ### RSS feed options
 
 ```ts
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     themeConfig: {
       feeds: {
@@ -300,7 +296,6 @@ export default defineConfig(
       },
     },
   })
-)
 ```
 
 See [docs/rss-feed-guide.md](docs/rss-feed-guide.md) for details.
@@ -343,9 +338,10 @@ See [docs/SOCIAL_SHARES.md](docs/SOCIAL_SHARES.md) for the full guide.
 ### Optional VitePress build options
 
 ```ts
-export default defineConfig({
-  metaChunk: true, // smaller initial HTML payloads for large sites
-})
+export default async () =>
+  defineBlogConfig({
+    metaChunk: true, // smaller initial HTML payloads for large sites
+  })
 ```
 
 ## Config Layers
@@ -356,7 +352,7 @@ The theme supports a layered config system that separates developer-owned code f
 - `src/<locale>/_site.yaml` — per-locale overrides
 - `src/<locale>/_authors.yaml` — per-locale author list
 
-Both YAML and TypeScript variants are supported (`.ts` takes precedence). Use `defineBlogConfigWithAutoLocales` to discover locales automatically instead of listing them manually.
+Both YAML and TypeScript variants are supported (`.ts` takes precedence). `defineBlogConfig` discovers locales automatically from `srcDir` folders containing `_site.yaml` or `_site.ts`. You can also list them manually if you prefer.
 
 See [docs/CONFIG_LAYERS.md](docs/CONFIG_LAYERS.md) for the full merge order, `extends` inheritance, editor support, hot reload, and TypeScript helpers.
 
@@ -639,11 +635,12 @@ pnpm add -D @tailwindcss/vite tailwindcss
 ```ts
 // .vitepress/config.ts
 import tailwindcss from '@tailwindcss/vite'
-import { defineConfig } from 'vitepress'
+import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 
-export default defineConfig({
-  vite: { plugins: [tailwindcss()] },
-})
+export default async () =>
+  defineBlogConfig({
+    vite: { plugins: [tailwindcss()] },
+  })
 ```
 
 ### 3. Import theme source in your CSS

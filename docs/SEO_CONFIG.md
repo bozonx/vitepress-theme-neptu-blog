@@ -29,7 +29,7 @@ Everything defaults to `true` (enabled).
 ## Global control
 
 ```ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       og: false,      // disable Open Graph everywhere

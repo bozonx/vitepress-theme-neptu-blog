@@ -69,7 +69,7 @@ If a value depends on **code, env vars, or secrets** → `config.ts`. Otherwise 
 
 | File | Owner | Purpose |
 |------|-------|---------|
-| `.vitepress/config.ts` | Developer | VitePress entry config. Uses `defineBlogConfigWithAutoLocales` for folder-based locale discovery. |
+| `.vitepress/config.ts` | Developer | VitePress entry config. Uses `defineBlogConfig` for folder-based locale discovery. |
 | `src/site.yaml` | Admin | Shared settings for all locales (nav, footer, social shares, etc.). |
 | `src/<locale>/_site.yaml` | Admin | Per-locale overrides and locale-specific metadata. |
 | `src/<locale>/_authors.yaml` | Admin | Per-locale author list. Merged into `themeConfig.authors` by `id`. |
@@ -124,7 +124,7 @@ Locale discovery is developer-owned wiring in `.vitepress/config.ts`. Keep it
 there instead of exposing it through admin YAML:
 
 ```ts
-import { defineBlogConfigWithAutoLocales } from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 
 export default async () => {
   const config = {
@@ -132,11 +132,11 @@ export default async () => {
     // ... other developer-owned settings
   }
 
-  return defineBlogConfigWithAutoLocales(config)
+  return defineBlogConfig(config)
 }
 ```
 
-`defineBlogConfigWithAutoLocales` scans `srcDir` for direct child folders that
+`defineBlogConfig` scans `srcDir` for direct child folders that
 contain `_site.yaml` or `_site.ts` and registers each folder as a VitePress
 locale. Folders starting with `.` or `_` are ignored.
 
@@ -198,15 +198,16 @@ During development, changes to `site.yaml`, `_site.yaml`, or `_authors.yaml` aut
 Enable it by adding the plugin to `.vitepress/config.ts`:
 
 ```ts
-import { createSiteYamlHotReloadPlugin } from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfig, createSiteYamlHotReloadPlugin } from 'vitepress-theme-neptu-blog/configs'
 
-export default defineBlogConfig({
-  vite: {
-    plugins: [
-      createSiteYamlHotReloadPlugin('/absolute/path/to/src'),
-    ],
-  },
-})
+export default async () =>
+  defineBlogConfig({
+    vite: {
+      plugins: [
+        createSiteYamlHotReloadPlugin('/absolute/path/to/src'),
+      ],
+    },
+  })
 ```
 
 The plugin watches all `.yaml` and `.ts` variants of the config files and triggers a server restart on change.

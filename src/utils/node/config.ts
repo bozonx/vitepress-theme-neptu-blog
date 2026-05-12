@@ -132,7 +132,7 @@ async function loadLocaleYamlChain(
  *           → `<srcDir>/<localeIndex>/_site.yaml` extends chain
  *             + `<srcDir>/<localeIndex>/_authors.yaml`
  *
- * Prefer `defineBlogConfigWithAutoLocales` in application code; this function
+ * Prefer `defineBlogConfig` in application code; this function
  * is the lower-level primitive and is re-exported for advanced usage.
  */
 export async function loadBlogLocale(
@@ -259,7 +259,7 @@ export async function loadBlogLocale(
  * locale key for stable build output.
  *
  * Low-level helper for manually composing locale discovery. Most applications
- * should use `defineBlogConfigWithAutoLocales` instead:
+ * should use `defineBlogConfig` instead:
  *
  * ```ts
  * return defineBlogConfig({

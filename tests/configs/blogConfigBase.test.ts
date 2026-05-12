@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import {
   mergeBlogConfig,
   defineBlogConfig,
-  defineBlogConfigWithAutoLocales,
+  defineBlogConfigSync,
 } from '../../src/configs/blogConfigBase.ts'
 import { autoLoadLocales } from '../../src/utils/node/config.ts'
 
@@ -292,9 +292,9 @@ describe('mergeBlogConfig', () => {
   })
 })
 
-describe('defineBlogConfig', () => {
+describe('defineBlogConfigSync', () => {
   it('is a factory that calls mergeBlogConfig', () => {
-    const result = defineBlogConfig({
+    const result = defineBlogConfigSync({
       siteUrl: 'https://example.com',
       locales: { en: { lang: 'en-US' } },
     })
@@ -304,23 +304,23 @@ describe('defineBlogConfig', () => {
 
   it('warns when siteUrl is missing', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    defineBlogConfig({ locales: { en: { lang: 'en-US' } } })
+    defineBlogConfigSync({ locales: { en: { lang: 'en-US' } } })
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('siteUrl'))
     warnSpy.mockRestore()
   })
 
   it('warns when locales are empty', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    defineBlogConfig({ siteUrl: 'https://example.com' })
+    defineBlogConfigSync({ siteUrl: 'https://example.com' })
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('locales'))
     warnSpy.mockRestore()
   })
 
 })
 
-describe('defineBlogConfigWithAutoLocales', () => {
+describe('defineBlogConfig', () => {
   it('discovers locales when they are omitted', async () => {
-    const result = await defineBlogConfigWithAutoLocales({
+    const result = await defineBlogConfig({
       siteUrl: 'https://example.com',
       srcDir: '/src',
     })
@@ -335,7 +335,7 @@ describe('defineBlogConfigWithAutoLocales', () => {
   it('preserves explicit locales', async () => {
     vi.mocked(autoLoadLocales).mockClear()
 
-    const result = await defineBlogConfigWithAutoLocales({
+    const result = await defineBlogConfig({
       siteUrl: 'https://example.com',
       locales: { ru: { lang: 'ru-RU' } },
     })

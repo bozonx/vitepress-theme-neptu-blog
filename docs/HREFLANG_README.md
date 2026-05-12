@@ -59,12 +59,13 @@ For `en/post/hello.md` with locales `en` and `ru`, it generates:
 Example:
 
 ```ts
-export default defineConfig({
-  locales: {
-    en: { lang: 'en-US' },
-    ru: { lang: 'ru-RU' },
-  },
-})
+export default async () =>
+  defineBlogConfig({
+    locales: {
+      en: { lang: 'en-US' },
+      ru: { lang: 'ru-RU' },
+    },
+  })
 ```
 
 ## File structure
@@ -106,7 +107,7 @@ seo:
 ### Globally
 
 ```ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       hreflang: false,

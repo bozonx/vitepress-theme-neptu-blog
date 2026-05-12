@@ -43,13 +43,12 @@ GA_CREDENTIALS_JSON='{"type": "service_account", ...}'
 
 ```ts
 // .vitepress/config.ts
-import { defineConfig } from 'vitepress'
 import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
-export default defineConfig(
+export default async () =>
   defineBlogConfig({
     themeConfig: {
       popularPosts: {
@@ -64,7 +63,6 @@ export default defineConfig(
       },
     },
   })
-)
 ```
 
 ## Build logs

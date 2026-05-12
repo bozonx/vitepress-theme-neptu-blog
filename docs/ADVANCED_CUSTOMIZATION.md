@@ -12,7 +12,7 @@ hooks run **after** the built-in transformers.
 // .vitepress/config.ts
 import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   siteUrl: 'https://example.com',
   locales: { en: { lang: 'en-US' } },
 
@@ -151,7 +151,7 @@ Use `themeConfig.footer` for the default site footer:
 
 ```ts
 // .vitepress/config.ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     footer: {
       message: 'Released under MIT.',
@@ -187,7 +187,7 @@ The footer below every post is controlled by `themeConfig.postFooter` — an ord
 
 ```ts
 // .vitepress/config.ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     postFooter: [
       'author',

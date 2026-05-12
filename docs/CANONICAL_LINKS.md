@@ -32,7 +32,7 @@ To disable automatic canonical links and require explicit frontmatter, set `them
 
 ```ts
 // .vitepress/config.ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       autoCanonical: false,
@@ -115,7 +115,7 @@ seo:
 ### Globally
 
 ```ts
-export default defineBlogConfig({
+export default async () => defineBlogConfig({
   themeConfig: {
     seo: {
       canonical: false,

@@ -8,7 +8,7 @@
 export {
   common as blogCommonConfig,
   defineBlogConfig,
-  defineBlogConfigWithAutoLocales,
+  defineBlogConfigSync,
   mergeBlogConfig,
 } from './blogConfigBase.ts'
 export {

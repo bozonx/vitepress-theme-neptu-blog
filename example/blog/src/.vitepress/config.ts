@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { defineBlogConfigWithAutoLocales } from 'vitepress-theme-neptu-blog/configs'
+import { defineBlogConfig } from 'vitepress-theme-neptu-blog/configs'
 import type { BlogUserConfig, ThemeConfig } from 'vitepress-theme-neptu-blog'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -113,5 +113,5 @@ export default async () => {
 
   }
 
-  return defineBlogConfigWithAutoLocales(config)
+  return defineBlogConfig(config)
 }
