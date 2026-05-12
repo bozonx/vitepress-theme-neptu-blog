@@ -9,10 +9,31 @@
 # - top-level: `lang`, `title`, `titleTemplate`, `description`
 # - everything else nests under `themeConfig:`.
 #
-# Available template substitutions (resolved before YAML parsing):
-#   ${theme.<key>}      — any value from the merged themeConfig
-#   ${t.<key>}          — translation strings
-#   ${localeIndex}      — current locale folder name (e.g. "en")
+# STRING TEMPLATES (resolved before YAML parsing)
+# You can reference dynamic values with ${...} anywhere in this file.
+#
+#   ${theme.<key>}      — any value from the merged themeConfig.
+#                         Use dot-notation for nested keys, e.g.:
+#                         ${theme.donate.url}, ${theme.editLink.text}
+#   ${t.<key>}          — translation strings (from themeConfig.t or
+#                         built-in locale files). Example: ${t.links.donate}
+#   ${localeIndex}      — current locale folder name (e.g. "en").
+#
+# Common theme keys you can reference:
+#   blogTitle, repo, donateIcon, recentIcon, popularIcon, youtubeIcon,
+#   tagsBaseUrl, archiveBaseUrl, popularBaseUrl, recentBaseUrl, authorsBaseUrl
+#   and any other key declared in .vitepress/config.ts or src/site.yaml.
+#
+# Examples:
+#   titleTemplate: ":title | ${theme.blogTitle}"
+#   nav.links: [{ text: "${t.links.donate}", href: "page/donate", icon: "${theme.donateIcon}" }]
+#   sidebar.bottomLinks: [{ text: "YouTube", href: "...", icon: "${theme.youtubeIcon}" }]
+#
+# ICONS
+# Every `icon:` field accepts an Iconify string: "<prefix>:<icon-name>".
+# Browse and search icons at https://icones.es (or https://iconify.design).
+# Popular prefixes used in this theme: fa6-solid, fa6-brands, mdi, solar, bi.
+# Example: icon: "fa6-solid:hand-holding-heart"
 # ---------------------------------------------------------------------------
 lang: 'en-US'
 description: 'Example Blog Description'
