@@ -32,8 +32,6 @@ export type {
   SeoConfig,
   Tag,
   ThemeConfig,
-  UiLocaleConfig,
-  UiLocaleDefinition,
 } from './types.d.ts'
 
 export default {

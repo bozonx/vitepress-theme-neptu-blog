@@ -14,13 +14,18 @@ The theme uses a **stack of config layers** rather than a single monolithic file
 When the theme builds a locale it merges layers in this exact order. A higher layer can override anything from a lower layer.
 
 ```text
-1. blogCommon.themeConfig       (theme defaults)
-2. .vitepress/config.ts          (developer overrides)
-3. src/site.yaml                 (cross-locale admin layer)
-4. built-in UI locale            (theme-provided translations)
-5. uiLocales[*]                  (custom UI locale packs)
-6. src/<locale>/_site.yaml       (per-locale admin layer)
+1. blogCommon.themeConfig            (theme defaults)
+2. built-in content-locale defaults  (blogLocalesBase[<locale>])
+3. .vitepress/config.ts              (developer overrides)
+4. src/site.yaml                     (cross-locale admin layer)
+5. src/<locale>/_site.yaml           (per-locale admin layer)
 ```
+
+The theme assumes **one locale axis**: the interface language always matches
+the content locale (folder under `src/`). Built-in translations come from
+`blogLocalesBase/<locale>.ts`, and any admin override goes into the matching
+`src/<locale>/_site.yaml` under `themeConfig.t` (or `themeConfig.<key>` for
+UI labels such as `langMenuLabel`).
 
 Arrays are **replaced by default**. The only exception is `authors`: entries are merged by `id`, where a child locale can override a parent author and new authors are appended.
 
@@ -36,7 +41,6 @@ Code-bound or environment-driven settings that an admin should not edit:
 - Integrations with secrets or env vars: `themeConfig.popularPosts` (GA4 credentials), analytics scripts in `head`
 - Search provider wiring: `themeConfig.search`
 - Identifiers consumed by other layers: `themeConfig.repo` (referenced from YAML via `${theme.repo}`)
-- Technical extension points: `themeConfig.uiLocale`, `themeConfig.uiLocales`
 - Derived values that need code: anything computed from `process.env`, paths, or runtime conditions
 
 ### `src/site.yaml` — admin, all locales

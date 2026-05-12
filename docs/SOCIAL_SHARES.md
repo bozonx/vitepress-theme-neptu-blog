@@ -77,21 +77,25 @@ In both cases the share block is not rendered.
 
 ## Per-locale overrides
 
-Use `uiLocales` to provide different sets of networks (or different labels) per language:
+Put a locale-specific list (or different labels) inside the matching `src/<locale>/_site.yaml`:
 
-```ts
-themeConfig: {
-  uiLocales: {
-    ru: {
-      extends: 'ru',
-      themeConfig: {
-        socialMediaShares: [
-          { name: 'vk', icon: 'cib:vk', title: 'ВКонтакте', urlTemplate: 'https://vk.com/share.php?url={url}&title={title}', class: 'text-[#0077ff] hover:text-[#0077ff]' },
-          { name: 'telegram', icon: 'logos:telegram', title: 'Телеграм', urlTemplate: 'https://t.me/share/url?url={url}&text={title}' },
-          { name: 'odnoklassniki', icon: 'simple-icons:odnoklassniki', title: 'Одноклассники', urlTemplate: 'https://connect.ok.ru/offer?url={url}&title={title}' },
-        ]
-      }
-    }
-  }
-}
+```yaml
+# src/ru/_site.yaml
+themeConfig:
+  socialMediaShares:
+    - name: vk
+      icon: 'cib:vk'
+      title: 'ВКонтакте'
+      urlTemplate: 'https://vk.com/share.php?url={url}&title={title}'
+      class: 'text-[#0077ff] hover:text-[#0077ff]'
+    - name: telegram
+      icon: 'logos:telegram'
+      title: 'Телеграм'
+      urlTemplate: 'https://t.me/share/url?url={url}&text={title}'
+    - name: odnoklassniki
+      icon: 'simple-icons:odnoklassniki'
+      title: 'Одноклассники'
+      urlTemplate: 'https://connect.ok.ru/offer?url={url}&title={title}'
 ```
+
+The per-locale `_site.yaml` is the highest layer in the merge stack, so it replaces the shared `socialMediaShares` from `src/site.yaml` and any built-in default.

@@ -86,7 +86,7 @@ export default async () => {
     // Keep this block focused on:
     //   - technical wiring that needs code (env vars, derived values)
     //   - integrations the admin should not edit (search provider, analytics)
-    //   - identifiers consumed by other settings (`repo`, `uiLocale`)
+    //   - identifiers consumed by other settings (e.g. `repo`)
     //
     // Admin-editable presentation (nav, sidebar, footer, donate, publisher,
     // authors, socialMediaShares, icons, postList, postFooter, SEO toggles,
@@ -97,22 +97,6 @@ export default async () => {
       // Repository — drives the edit-link footer block and is referenced
       // from YAML via `${theme.repo}`.
       repo: 'https://github.com/your-org/your-blog',
-
-      // UI locale selector — lets readers switch the interface language
-      // independently of the content language. Technical wiring lives here;
-      // user-facing labels can be moved to YAML if desired.
-      uiLocale: { default: 'en', storageKey: 'example-blog-ui-locale' },
-      uiLocales: {
-        en: { themeConfig: { langMenuLabel: 'Interface language' } },
-        // Each locale can extend another and override individual strings.
-        'en-GB': {
-          extends: 'en',
-          label: 'English (UK)',
-          themeConfig: { langMenuLabel: 'Interface language' },
-          t: { viewInAnotherLanguage: 'Read this page in another language' },
-        },
-        ru: { themeConfig: { langMenuLabel: 'Язык интерфейса' } },
-      },
 
       // Posts per page — referenced from code via the exported `PER_PAGE`.
       perPage: PER_PAGE,

@@ -170,14 +170,6 @@
             "text": { "type": "string" }
           }
         },
-        "uiLocale": {
-          "type": "object",
-          "additionalProperties": true,
-          "properties": {
-            "default": { "type": "string" },
-            "storageKey": { "type": "string" }
-          }
-        },
         "t": {
           "type": "object",
           "additionalProperties": true,

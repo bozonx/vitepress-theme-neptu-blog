@@ -19,7 +19,7 @@ vi.mock('../../../src/utils/node/i18n.ts', () => ({
       description: 'Example description',
       themeConfig: {
         donate: { url: 'page/donate' },
-        resolvedUiLabel: props.theme?.langMenuLabel,
+        resolvedLangMenuLabel: props.theme?.langMenuLabel,
         resolvedViewInAnotherLanguage: props.theme?.t?.viewInAnotherLanguage,
         t: { rootCustomKey: 'Root custom value', customKey: 'Custom value' },
       },
@@ -73,7 +73,7 @@ beforeEach(() => {
 })
 
 describe('loadBlogLocale', () => {
-  it('falls back from locale variant to base built-in interface locale', async () => {
+  it('falls back from locale variant to base built-in content locale', async () => {
     const result = await loadBlogLocale('en-US', {
       srcDir: '/src',
       themeConfig: { repo: 'https://github.com/example/repo' },
@@ -90,60 +90,41 @@ describe('loadBlogLocale', () => {
     expect(result.themeConfig!.t!.toBlog).toBeDefined()
   })
 
-  it('applies exact ui locale override for matching content locale on first render', async () => {
-    const result = await loadBlogLocale('en-GB', {
+  it('exposes built-in content-locale defaults to YAML template params', async () => {
+    const result = await loadBlogLocale('en', {
       srcDir: '/src',
-      themeConfig: {
-        repo: 'https://github.com/example/repo',
-        uiLocales: {
-          'en-GB': {
-            extends: 'en',
-            t: { viewInAnotherLanguage: 'Read in another language' },
-            themeConfig: { langMenuLabel: 'UI language' },
-          },
-        },
-      },
-    } as any)
+      themeConfig: { repo: 'https://github.com/example/repo' },
+    })
 
-    expect(result.themeConfig!.langMenuLabel).toBe('UI language')
-    expect(result.themeConfig!.t!.viewInAnotherLanguage).toBe(
-      'Read in another language'
+    // `langMenuLabel` comes from `blogLocalesBase/en.ts` and must be
+    // available to YAML templates via `${theme.langMenuLabel}` and to the
+    // final merged themeConfig.
+    expect(result.themeConfig!.langMenuLabel).toBe('Change language')
+    expect((result.themeConfig as any).resolvedLangMenuLabel).toBe(
+      'Change language'
     )
-    expect((result.themeConfig as any).resolvedUiLabel).toBe('UI language')
-    expect((result.themeConfig as any).resolvedViewInAnotherLanguage).toBe(
-      'Read in another language'
-    )
-  })
-
-  it('passes build-resolved interface translations into site parsing', async () => {
-    await loadBlogLocale('en-GB', {
-      srcDir: '/src',
-      themeConfig: {
-        repo: 'https://github.com/example/repo',
-        uiLocales: {
-          'en-GB': {
-            extends: 'en',
-            t: { viewInAnotherLanguage: 'Read in another language' },
-            themeConfig: { langMenuLabel: 'UI language' },
-          },
-        },
-      },
-    } as any)
-
     expect(parseLocaleSite).toHaveBeenCalledWith(
       '/src',
       expect.objectContaining({
-        localeIndex: 'en-GB',
-        t: expect.objectContaining({
-          viewInAnotherLanguage: 'Read in another language',
-        }),
-        theme: expect.objectContaining({
-          langMenuLabel: 'UI language',
-          t: expect.objectContaining({
-            viewInAnotherLanguage: 'Read in another language',
-          }),
-        }),
+        localeIndex: 'en',
+        theme: expect.objectContaining({ langMenuLabel: 'Change language' }),
       })
+    )
+  })
+
+  it('lets _site.yaml override built-in content-locale translations', async () => {
+    siteMocks['en'] = {
+      themeConfig: {
+        langMenuLabel: 'Language',
+        t: { viewInAnotherLanguage: 'Read in another language' },
+      },
+    }
+
+    const result = await loadBlogLocale('en', { srcDir: '/src' })
+
+    expect(result.themeConfig!.langMenuLabel).toBe('Language')
+    expect(result.themeConfig!.t!.viewInAnotherLanguage).toBe(
+      'Read in another language'
     )
   })
 

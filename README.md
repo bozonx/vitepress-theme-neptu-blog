@@ -175,17 +175,13 @@ themeConfig: {
 }
 ```
 
-To change the button label, override it via `uiLocales`:
+To change the button label, override it in the matching `_site.yaml`:
 
-```ts
-themeConfig: {
-  uiLocales: {
-    en: {
-      extends: 'en',
-      t: { editLink: 'Improve this page' },
-    },
-  },
-}
+```yaml
+# src/en/_site.yaml
+themeConfig:
+  t:
+    editLink: 'Improve this page'
 ```
 
 Disable per-page via frontmatter:
@@ -340,7 +336,7 @@ themeConfig: {
 - `urlTemplate` accepts `{url}` and `{title}` placeholders.
 - You can add any network — Threads, Reddit, Bluesky, Mastodon, etc.
 - Set to `[]` or omit to hide the block entirely.
-- Use `uiLocales` for per-language overrides.
+- Override per language in `src/<locale>/_site.yaml`.
 
 See [docs/SOCIAL_SHARES.md](docs/SOCIAL_SHARES.md) for the full guide.
 

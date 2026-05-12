@@ -15,27 +15,15 @@ export namespace NeptuBlogTheme {
         : T[K]
   }
 
-  export interface UiLocaleConfig {
-    default?: string
-    storageKey?: string
-  }
-
-  export interface UiLocaleDefinition {
-    extends?: string
-    label?: string
-    themeConfig?: DeepPartial<Config>
-    t?: DeepPartial<I18n>
-  }
-
   export type BlogUserConfig = Omit<
     UserConfig<Config>,
     'locales' | 'themeConfig'
   > & {
     /**
-     * `t` accepts a partial object — `mergeBlogConfig` deep-merges it over the
-     * built-in English defaults, so you only need to supply the keys you want
-     * to override globally. Per-locale overrides should use `loadBlogLocale`
-     * or `uiLocales[key].t`.
+     * `t` accepts a partial object — the theme deep-merges it over the
+     * built-in defaults of the current content locale, so you only need to
+     * supply the keys you want to override globally. Per-locale overrides
+     * live in `<srcDir>/<locale>/_site.yaml` under `themeConfig.t`.
      */
     themeConfig?: Partial<Omit<Config, 't'>> & { t?: DeepPartial<I18n> }
     locales?: Record<
@@ -122,8 +110,6 @@ export namespace NeptuBlogTheme {
     autoCanonical?: boolean
     seo?: SeoConfig
     socialMediaShares?: SocialMediaShare[]
-    uiLocale?: UiLocaleConfig
-    uiLocales?: Record<string, UiLocaleDefinition>
 
     t: I18n
 
@@ -398,8 +384,6 @@ export type PostFrontmatter = NeptuBlogTheme.PostFrontmatter
 export type Tag = NeptuBlogTheme.Tag
 export type Author = NeptuBlogTheme.Author
 export type I18n = NeptuBlogTheme.I18n
-export type UiLocaleConfig = NeptuBlogTheme.UiLocaleConfig
-export type UiLocaleDefinition = NeptuBlogTheme.UiLocaleDefinition
 export type LocaleDefinition = NeptuBlogTheme.LocaleDefinition
 export type ExtendedPageData = NeptuBlogTheme.ExtendedPageData
 export type ExtendedSiteConfig = NeptuBlogTheme.ExtendedSiteConfig

@@ -4,15 +4,14 @@ This example uses the theme in its intended locale-first form:
 
 - content lives under `src/en/`
 - `/` redirects to a content locale home page
-- the topbar language switcher changes the UI locale only
-- the post page switcher changes the content locale only when alternate content exists
-- UI locales can exist without matching content trees
+- the topbar language switcher navigates to the same page in another content locale
+- translations are matched via `frontmatter.translations` or same-relative-path fallback
 
 The example config includes:
 
-- built-in English UI
-- built-in Russian UI
-- an admin-defined `en-GB` UI locale that partially extends `en`
+- built-in English locale defaults (labels, translations, social shares)
+- built-in Russian locale defaults
+- per-locale overrides via `src/<locale>/_site.yaml`
 
 ## Run
 

@@ -14,7 +14,6 @@ import { common as blogCommon } from '../../configs/blogConfigBase.ts'
 import blogBaseLocales from '../../configs/blogLocalesBase/index.ts'
 import { resolveEditLinkPattern } from './editLink.ts'
 import type {
-  UiLocaleDefinition,
   LocaleDefinition,
   Author,
   BlogUserConfig,
@@ -57,51 +56,6 @@ function stripThemeAuthors(
         ? { ...siteRest, themeConfig: themeConfigRest }
         : siteRest,
     authors: Array.isArray(themeAuthors) ? (themeAuthors as Author[]) : [],
-  }
-}
-
-function resolveInitialUiLocaleKey(
-  localeIndex: string,
-  uiLocales: Record<string, UiLocaleDefinition> = {},
-  defaultLocale?: string
-): string {
-  if (uiLocales[localeIndex]) return localeIndex
-
-  const baseLocale = localeIndex.split('-')[0]
-  if (baseLocale && uiLocales[baseLocale]) return baseLocale
-
-  if (defaultLocale && uiLocales[defaultLocale]) return defaultLocale
-
-  return resolveBaseLocaleKey(
-    localeIndex,
-    blogBaseLocales as Record<string, unknown>
-  )
-}
-
-function resolveUiLocaleDefinition(
-  localeKey: string,
-  builtIns: Record<string, LocaleDefinition>,
-  uiLocales: Record<string, UiLocaleDefinition> = {},
-  visited = new Set<string>()
-): UiLocaleDefinition {
-  if (visited.has(localeKey)) return {}
-  visited.add(localeKey)
-
-  const builtIn = builtIns[localeKey]
-  const custom = uiLocales[localeKey] || {}
-  const parent = custom.extends
-    ? resolveUiLocaleDefinition(custom.extends, builtIns, uiLocales, visited)
-    : builtIn
-      ? { label: builtIn.label, themeConfig: builtIn.themeConfig, t: builtIn.t }
-      : {}
-
-  return {
-    label: custom.label || parent.label,
-    themeConfig: deepMerge(
-      (parent.themeConfig || {}) as Record<string, unknown>,
-      custom.themeConfig || {}
-    ),
-    t: deepMerge((parent.t || {}) as Record<string, unknown>, custom.t || {}),
   }
 }
 
@@ -172,12 +126,11 @@ async function loadLocaleYamlChain(
  * every admin-editable and developer-provided layer in priority order:
  *
  *   built-in theme defaults (blogCommon)
- *     → config.ts (`BlogUserConfig.themeConfig`)
- *       → `<srcDir>/site.yaml` (cross-locale admin)
- *         → built-in UI locale (`blogLocalesBase[*]`)
- *           → `themeConfig.uiLocales[*]` chain
- *             → `<srcDir>/<localeIndex>/_site.yaml` extends chain
- *               + `<srcDir>/<localeIndex>/_authors.yaml`
+ *     → built-in content-locale defaults (`blogLocalesBase[*]`)
+ *       → config.ts (`BlogUserConfig.themeConfig`)
+ *         → `<srcDir>/site.yaml` (cross-locale admin)
+ *           → `<srcDir>/<localeIndex>/_site.yaml` extends chain
+ *             + `<srcDir>/<localeIndex>/_authors.yaml`
  *
  * Prefer `defineBlogConfigWithAutoLocales` in application code; this function
  * is the lower-level primitive and is re-exported for advanced usage.
@@ -192,16 +145,6 @@ export async function loadBlogLocale(
   >
   const baseLocaleKey = resolveBaseLocaleKey(localeIndex, localeMap)
   const baseLocale = localeMap[baseLocaleKey]
-  const uiLocaleKey = resolveInitialUiLocaleKey(
-    localeIndex,
-    config.themeConfig?.uiLocales || {},
-    config.themeConfig?.uiLocale?.default
-  )
-  const uiLocale = resolveUiLocaleDefinition(
-    uiLocaleKey,
-    localeMap,
-    config.themeConfig?.uiLocales || {}
-  )
 
   // ------------------------------------------------------------------
   // Shared <srcDir>/site.yaml — admin-editable layer applied to every
@@ -227,8 +170,7 @@ export async function loadBlogLocale(
     deepMerge(sharedThemeBaseForTemplate, sharedThemeConfig),
     {
       ...(baseLocale.themeConfig || {}),
-      ...(uiLocale.themeConfig || {}),
-      t: { ...baseLocale.t, ...(uiLocale.t || {}) },
+      t: { ...baseLocale.t },
     }
   )
   const templateParams = {
@@ -280,7 +222,6 @@ export async function loadBlogLocale(
     description: typeof description === 'string' ? description : undefined,
     themeConfig: {
       ...baseLocale.themeConfig,
-      ...(uiLocale.themeConfig || {}),
       ...sharedThemeConfig,
       ...localeThemeConfig,
       editLink: {
@@ -288,14 +229,11 @@ export async function loadBlogLocale(
           ? { pattern: resolveEditLinkPattern(config.themeConfig.repo) }
           : {}),
         ...baseLocale.themeConfig?.editLink,
-        ...(((uiLocale.themeConfig || {}) as Record<string, unknown>)
-          .editLink as Record<string, unknown> | undefined),
         ...(sharedThemeConfig.editLink as Record<string, unknown> | undefined),
         ...(localeThemeConfig.editLink as Record<string, unknown> | undefined),
       } as EditLinkConfig,
       t: {
         ...baseLocale.t,
-        ...(uiLocale.t || {}),
         ...((sharedThemeConfig.t || {}) as Record<string, unknown>),
         ...((localeThemeConfig.t || {}) as Record<string, unknown>),
       } as I18n,
