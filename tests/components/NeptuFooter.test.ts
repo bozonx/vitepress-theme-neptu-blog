@@ -79,4 +79,45 @@ describe('NeptuFooter', () => {
       expect.arrayContaining(['grid', 'grid-cols-1', 'justify-end'])
     )
   })
+
+  it('passes icon, iconClass and class to footer link buttons', () => {
+    mockTheme.value = {
+      footer: {
+        links: [
+          { text: 'RSS', href: '/rss', icon: 'bi:rss-fill', iconClass: 'text-rss', class: 'rss-link' },
+        ],
+      },
+    }
+    const wrapper = mount(NeptuFooter)
+    const btn = wrapper.findComponent({ name: 'NeptuBtn' })
+    expect(btn.props('icon')).toBe('bi:rss-fill')
+    expect(btn.props('iconClass')).toBe('text-rss')
+    expect(btn.classes()).toEqual(expect.arrayContaining(['rss-link', 'underline']))
+  })
+
+  it('hides desktop-only footer links on mobile viewport', () => {
+    mockTheme.value = {
+      footer: {
+        links: [
+          { text: 'Home', href: '/', desktopOnly: true },
+        ],
+      },
+    }
+    const wrapper = mount(NeptuFooter)
+    const li = wrapper.find('li')
+    expect(li.classes()).toContain('max-lg:hidden')
+  })
+
+  it('hides mobile-only footer links on desktop viewport', () => {
+    mockTheme.value = {
+      footer: {
+        links: [
+          { text: 'Home', href: '/', mobileOnly: true },
+        ],
+      },
+    }
+    const wrapper = mount(NeptuFooter)
+    const li = wrapper.find('li')
+    expect(li.classes()).toContain('lg:hidden')
+  })
 })

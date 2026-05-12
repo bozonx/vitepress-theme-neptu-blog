@@ -51,4 +51,21 @@ describe('TopBar', () => {
     })
     expect(wrapper.findComponent({ name: 'SwitchAppearance' }).exists()).toBe(true)
   })
+
+  it('passes iconClass for social links', () => {
+    mockTheme.value = {
+      nav: {
+        links: [],
+        socialLinks: [{ url: 'https://x.com/test', icon: 'x', iconClass: 'text-xl' }],
+      },
+      donate: null,
+      sidebarMenuLabel: 'Menu',
+    }
+    const wrapper = mount(TopBar, {
+      global: { stubs: { NeptuNeptuBtn: NeptuBtnStub, SwitchLang: SwitchLangStub, SwitchAppearance: SwitchAppearanceStub } },
+    })
+    const socialBtns = wrapper.findAllComponents({ name: 'NeptuBtn' }).filter((b) => b.props('icon') === 'x')
+    expect(socialBtns.length).toBe(1)
+    expect(socialBtns[0].props('iconClass')).toBe('text-xl')
+  })
 })

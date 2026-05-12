@@ -255,6 +255,7 @@ export namespace NeptuBlogTheme {
     link: string
     url?: string
     class?: string
+    iconClass?: string
     desktopOnly?: boolean
     mobileOnly?: boolean
   }

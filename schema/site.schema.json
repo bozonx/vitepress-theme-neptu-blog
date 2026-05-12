@@ -209,6 +209,7 @@
         "url": { "type": "string" },
         "title": { "type": "string" },
         "class": { "type": "string" },
+        "iconClass": { "type": "string" },
         "mobileOnly": { "type": "boolean" },
         "desktopOnly": { "type": "boolean" }
       }

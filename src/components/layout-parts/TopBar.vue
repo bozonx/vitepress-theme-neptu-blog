@@ -20,6 +20,7 @@ interface LinkItem {
   text?: string
   href?: string
   icon?: string
+  target?: string
 }
 
 const resolveItemShowClass = (item: LinkItem) => {
@@ -40,6 +41,7 @@ if (theme.value.nav?.donate && theme.value.donate) {
 const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) => ({
   href: item.url || item.link,
   icon: item.icon,
+  iconClass: item.iconClass,
   class: item.class,
   desktopOnly: item.desktopOnly,
   mobileOnly: item.mobileOnly,

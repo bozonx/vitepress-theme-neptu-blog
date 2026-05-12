@@ -42,8 +42,18 @@ const hasMultipleFooterLinks = computed(
           v-for="(item, index) in theme.footer.links"
           :key="item.href + index"
           class="min-w-0"
+          :class="{
+            'max-lg:hidden': item.desktopOnly,
+            'lg:hidden': item.mobileOnly,
+          }"
         >
-          <NeptuBtnLink :text="item.text" :href="item.href" class="underline" />
+          <NeptuBtnLink
+            :text="item.text"
+            :href="item.href"
+            :icon="item.icon"
+            :icon-class="item.iconClass"
+            :class="[item.class, 'underline']"
+          />
         </li>
       </ul>
     </nav>

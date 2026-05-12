@@ -65,4 +65,22 @@ describe('SideBarItems', () => {
     const li = wrapper.find('li')
     expect(li.classes()).not.toContain('hidden')
   })
+
+  it('applies max-lg:hidden for desktop-only items', () => {
+    const wrapper = mount(SideBarItems, {
+      props: { items: [{ text: 'Desktop', href: '/d', desktopOnly: true }], isMobile: false },
+      global: { stubs: { SideBarHeader: SideBarHeaderStub, MenuItem: MenuItemStub } },
+    })
+    const li = wrapper.find('li')
+    expect(li.classes()).toContain('max-lg:hidden')
+  })
+
+  it('applies lg:hidden for mobile-only items', () => {
+    const wrapper = mount(SideBarItems, {
+      props: { items: [{ text: 'Mobile', href: '/m', mobileOnly: true }], isMobile: true },
+      global: { stubs: { SideBarHeader: SideBarHeaderStub, MenuItem: MenuItemStub } },
+    })
+    const li = wrapper.find('li')
+    expect(li.classes()).toContain('lg:hidden')
+  })
 })

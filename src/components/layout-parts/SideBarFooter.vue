@@ -11,6 +11,8 @@ interface SocialLinkItem {
   title?: string
   target?: string
   class?: string
+  desktopOnly?: boolean
+  mobileOnly?: boolean
 }
 
 const props = defineProps<{
@@ -30,6 +32,8 @@ const socialLinks: SocialLinkItem[] = [
     href: item.url || item.link,
     icon: item.icon,
     class: item.class,
+    desktopOnly: item.desktopOnly,
+    mobileOnly: item.mobileOnly,
   })),
 ].filter((item) => Boolean(item.href)) as SocialLinkItem[]
 
@@ -55,7 +59,14 @@ if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
 <template>
   <div :class="['w-full flex pt-6 pb-3 pr-2 pl-2', props.class]">
     <ul v-if="socialLinks.length" class="flex space-x-1">
-      <li v-for="(item, index) in socialLinks" :key="item.href || index">
+      <li
+        v-for="(item, index) in socialLinks"
+        :key="item.href || index"
+        :class="{
+          'max-lg:hidden': item.desktopOnly,
+          'lg:hidden': item.mobileOnly,
+        }"
+      >
         <NeptuBtn :no-bg="true" v-bind="item" :class="[item.class]" />
       </li>
     </ul>

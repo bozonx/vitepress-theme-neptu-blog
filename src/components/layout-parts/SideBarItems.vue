@@ -9,6 +9,8 @@ interface SideBarItem {
   class?: string
   iconClass?: string
   mobile?: boolean
+  mobileOnly?: boolean
+  desktopOnly?: boolean
   text?: string
   title?: string
 }
@@ -22,7 +24,13 @@ const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
       v-for="(item, index) in props.items"
       :key="item.href || item.header || index"
     >
-      <li :class="{ hidden: item.mobile ? !props.isMobile : false }">
+      <li
+        :class="{
+          hidden: item.mobile ? !props.isMobile : false,
+          'max-lg:hidden': item.desktopOnly,
+          'lg:hidden': item.mobileOnly,
+        }"
+      >
         <SideBarHeader
           v-if="item.header"
           :text="item.header"
