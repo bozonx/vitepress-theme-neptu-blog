@@ -4,7 +4,7 @@ import { useData } from 'vitepress'
 import { makeHumanDate } from '../../utils/shared/index.ts'
 import BaseLink from '../BaseLink.vue'
 
-const { page, theme, lang } = useData()
+const { page, lang } = useData()
 const rawDate = page.value.frontmatter.date
 
 // Extract year and month for link generation

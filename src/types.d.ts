@@ -108,7 +108,16 @@ export namespace NeptuBlogTheme {
 
     search?: {
       provider?: string
-      options?: { bodyMarker?: string; [key: string]: unknown }
+      options?: {
+        bodyMarker?: string
+        translations?: {
+          button?: {
+            buttonText?: string
+            buttonAriaLabel?: string
+          }
+        }
+        [key: string]: unknown
+      }
     }
 
     publisher?: { name?: string; url?: string; logo?: string }

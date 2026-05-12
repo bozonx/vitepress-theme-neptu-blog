@@ -15,7 +15,7 @@ interface PostLite {
 }
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { theme, frontmatter, localeIndex } = useData()
+const { frontmatter, localeIndex } = useData()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const yearsList = makeYearsList(localePosts)

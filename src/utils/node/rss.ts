@@ -63,13 +63,6 @@ function normalizeSiteUrl(siteUrl: string): string {
   return siteUrl.replace(/\/+$/, '')
 }
 
-function normalizePathSegment(value: string | undefined): string | undefined {
-  const trimmed = value?.trim()
-  if (!trimmed) return undefined
-
-  return trimmed.replace(/^\/+|\/+$/g, '')
-}
-
 function makeAbsoluteUrl(siteUrl: string, rawPath: string | undefined): string | undefined {
   if (!rawPath) return undefined
   if (/^[a-z\d]+:\/\//i.test(rawPath)) return rawPath

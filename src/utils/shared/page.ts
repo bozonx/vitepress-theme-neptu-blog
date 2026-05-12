@@ -29,10 +29,6 @@ export function isPopularRoute(routPath: string): boolean {
   return routPath.includes('/popular/')
 }
 
-function escapeRegExp(str: string): string {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
 export function isAuthorPage(filePath: string | null | undefined): boolean {
   if (!filePath) return false
 
