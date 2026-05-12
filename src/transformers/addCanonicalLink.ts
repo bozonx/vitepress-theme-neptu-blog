@@ -70,8 +70,8 @@ export function addCanonicalLink({
     const langConfig = siteConfig.site.locales[localeIndex]
     const localeThemeConfig = langConfig?.themeConfig as ThemeConfig | undefined
     const autoCanonical =
-      localeThemeConfig?.autoCanonical ??
-      siteConfig.userConfig.themeConfig?.autoCanonical ??
+      localeThemeConfig?.seo?.autoCanonical ??
+      siteConfig.userConfig.themeConfig?.seo?.autoCanonical ??
       true
 
     let canonicalUrl: string | null = null

@@ -35,7 +35,7 @@ describe('addCanonicalLink', () => {
         : ({
             userConfig: {
               siteUrl: 'https://example.com',
-              themeConfig: { autoCanonical: true },
+              themeConfig: { seo: { autoCanonical: true } },
             },
             site: { locales: {} },
             ...(overrides.siteConfig || {}),
@@ -74,7 +74,7 @@ describe('addCanonicalLink', () => {
       siteConfig: {
         userConfig: {
           siteUrl: 'https://example.com',
-          themeConfig: { autoCanonical: false },
+          themeConfig: { seo: { autoCanonical: false } },
         },
         site: { locales: {} },
       } as any,
@@ -194,9 +194,9 @@ describe('addCanonicalLink', () => {
       siteConfig: {
         userConfig: {
           siteUrl: 'https://example.com',
-          themeConfig: { autoCanonical: false },
+          themeConfig: { seo: { autoCanonical: false } },
         },
-        site: { locales: { en: { themeConfig: { autoCanonical: true } } } },
+        site: { locales: { en: { themeConfig: { seo: { autoCanonical: true } } } } },
       } as any,
     })
     addCanonicalLink(ctx)

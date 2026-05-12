@@ -4,7 +4,7 @@
 
 Canonical links help search engines understand which version of a page is the primary one, preventing duplicate content issues.
 
-By default, every page automatically gets a self-referencing canonical link (via `themeConfig.autoCanonical: true`). You can override this on a per-page basis using the `canonical` field in frontmatter:
+By default, every page automatically gets a self-referencing canonical link (via `themeConfig.seo.autoCanonical: true`). You can override this on a per-page basis using the `canonical` field in frontmatter:
 
 - `canonical: "https://example.com/en/post/post-slug"` — absolute URL
 - `canonical: "self"` — auto-generate a link to the current page
@@ -28,13 +28,15 @@ tags:
 
 ### Disabling auto-canonical
 
-To disable automatic canonical links and require explicit frontmatter, set `themeConfig.autoCanonical: false`:
+To disable automatic canonical links and require explicit frontmatter, set `themeConfig.seo.autoCanonical: false`:
 
 ```ts
 // .vitepress/config.ts
 export default defineBlogConfig({
   themeConfig: {
-    autoCanonical: false,
+    seo: {
+      autoCanonical: false,
+    },
   },
 })
 ```
@@ -83,7 +85,7 @@ canonical: 'self'
 
 ### Without a canonical link (when autoCanonical is disabled)
 
-If `themeConfig.autoCanonical` is set to `false`, pages without an explicit `canonical` field will not emit a `<link rel="canonical">` tag.
+If `themeConfig.seo.autoCanonical` is set to `false`, pages without an explicit `canonical` field will not emit a `<link rel="canonical">` tag.
 
 ```yaml
 ---
@@ -126,7 +128,7 @@ Frontmatter `seo` always overrides the global setting.
 
 ## Technical details
 
-- `themeConfig.autoCanonical` defaults to `true`; every page gets a self-referencing canonical link automatically.
+- `themeConfig.seo.autoCanonical` defaults to `true`; every page gets a self-referencing canonical link automatically.
 - The transformer only runs on locale-prefixed paths (e.g. `/en/`, `/ru/`).
 - Explicit URLs are validated.
 - `"self"` and `"s"` require `siteUrl` to be configured.

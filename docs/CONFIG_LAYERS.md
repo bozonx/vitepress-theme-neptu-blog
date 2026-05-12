@@ -50,7 +50,7 @@ Cross-locale presentation that the content team owns:
 - Branding: `sidebarLogoSrc`, `sidebarLogoHeight`, `sidebarMenuLabel`
 - Layout knobs: `sidebarTagsCount`, `similarPostsCount`, `paginationMaxItems`, `homeBgParallaxOffset`, `externalLinkIcon`, `perPage`
 - Feature blocks: `sidebar`, `nav`, `footer`, `donate`, `publisher`, `authors`, `socialMediaShares`, `postList`, `postFooter`, `editLink`, `feeds`
-- SEO toggles: `seo`, `autoCanonical`, `twitterSite`
+- SEO toggles: `seo`, `twitterSite`
 - Routing: `tagsBaseUrl`, `archiveBaseUrl`, `popularBaseUrl`, `recentBaseUrl`, `authorsBaseUrl`
 - Icon overrides: `donateIcon`, `recentIcon`, `popularIcon`, `byDateIcon`, `authorsIcon`, `rssIcon`, `atomIcon`, `youtubeIcon`, `tagsIcon`
 

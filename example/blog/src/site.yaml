@@ -75,9 +75,9 @@ themeConfig:
   #   jsonLd: true
   #   hreflang: true
   #   canonical: true
+  #   autoCanonical: true
   #   rss: true
   #   maxDescriptionLength: 300
-  # autoCanonical: true
 
   # -------------------------------------------------------------------------
   # Twitter / X card

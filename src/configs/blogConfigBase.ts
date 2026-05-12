@@ -115,7 +115,6 @@ type ResolvedBlogConfig = BlogUserConfig & {
 
 const commonThemeConfig = {
   externalLinkIcon: true,
-  autoCanonical: true,
 
   perPage: 10,
   sidebarTagsCount: 15,
@@ -150,6 +149,7 @@ const commonThemeConfig = {
 
   seo: {
     maxDescriptionLength: 300,
+    autoCanonical: true,
   },
 
   tagsBaseUrl: 'tags',

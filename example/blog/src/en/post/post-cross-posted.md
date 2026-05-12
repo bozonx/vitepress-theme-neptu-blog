@@ -35,7 +35,7 @@ canonical: "https://original-blog.com/en/post/title"
 ## Self-referencing canonical
 
 When you want to force a canonical pointing to the current page itself — useful
-if the global `autoCanonical` option is disabled — use:
+if the global `themeConfig.seo.autoCanonical` option is disabled — use:
 
 ```yaml
 canonical: "self"

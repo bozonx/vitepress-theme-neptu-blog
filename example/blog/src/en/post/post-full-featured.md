@@ -46,8 +46,8 @@ podcasts:
 #   og: false       # Disable Open Graph tags for this page.
 #   jsonLd: false   # Disable JSON-LD structured data.
 
-# Canonical link. Omit this field to use the value of autoCanonical from the
-# global config (which defaults to true — pointing to the page's own URL).
+# Canonical link. Omit this field to use the value of themeConfig.seo.autoCanonical
+# from the global config (which defaults to true — pointing to the page's own URL).
 # Use "self" / "s" to force a self-referencing canonical even when autoCanonical
 # is disabled globally.
 # Use a full URL to point at the original source when cross-posting.

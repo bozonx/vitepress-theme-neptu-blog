@@ -107,7 +107,6 @@ export namespace NeptuBlogTheme {
     blogTitle?: string
     sidebarMenuLabel?: string
 
-    autoCanonical?: boolean
     seo?: SeoConfig
     socialMediaShares?: SocialMediaShare[]
 
@@ -188,6 +187,7 @@ export namespace NeptuBlogTheme {
     jsonLd?: boolean
     hreflang?: boolean
     canonical?: boolean
+    autoCanonical?: boolean
     rss?: boolean
     maxDescriptionLength?: number
     [key: string]: boolean | number | undefined
