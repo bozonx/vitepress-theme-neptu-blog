@@ -131,6 +131,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
+    "ci": "pnpm typecheck && pnpm lint && pnpm test:coverage && pnpm e2e",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test --config e2e/playwright.config.ts",

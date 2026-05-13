@@ -7,18 +7,20 @@ import vueParser from 'vue-eslint-parser'
 import globals from 'globals'
 
 export default defineConfig(
-  { ignores: [
-    '**/dist/**',
-    '**/node_modules/**',
-    '**/example/**',
-    '**/.vitepress/cache/**',
-    '**/.vitepress/dist/**',
-    '**/docs/**',
-    '**/coverage/**',
-    '**/.temp/**',
-    'e2e/playwright-report/**',
-    'e2e/test-results/**',
-  ]},
+  {
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/example/**',
+      '**/.vitepress/cache/**',
+      '**/.vitepress/dist/**',
+      '**/docs/**',
+      '**/coverage/**',
+      '**/.temp/**',
+      'e2e/playwright-report/**',
+      'e2e/test-results/**',
+    ],
+  },
   { linterOptions: { reportUnusedDisableDirectives: true } },
   js.configs.recommended,
   ...tseslint.configs.recommended,
@@ -34,10 +36,7 @@ export default defineConfig(
         __VUE_OPTIONS_API__: 'readonly',
         __VUE_PROD_DEVTOOLS__: 'readonly',
       },
-      parserOptions: {
-        projectService: true,
-        extraFileExtensions: ['.vue'],
-      },
+      parserOptions: { projectService: true, extraFileExtensions: ['.vue'] },
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -71,6 +70,14 @@ export default defineConfig(
       'vue/one-component-per-file': 'off',
       'vue/require-default-prop': 'off',
     },
+  },
+  {
+    files: [
+      'src/components/NeptuAuthor.vue',
+      'src/components/post/PostImage.vue',
+      'src/components/utility/HomeHero.vue',
+    ],
+    rules: { 'vue/no-v-html': 'off' },
   },
   eslintConfigPrettier
 )

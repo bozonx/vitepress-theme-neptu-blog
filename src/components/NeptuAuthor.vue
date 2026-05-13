@@ -3,7 +3,10 @@
     class="author-container flex flex-col md:flex-row gap-x-6 gap-y-1 items-start"
   >
     <!-- Author image -->
-    <figure v-if="author?.image" class="author-image-container w-full mx-auto md:w-[280px] md:shrink-0">
+    <figure
+      v-if="author?.image"
+      class="author-image-container w-full mx-auto md:w-[280px] md:shrink-0"
+    >
       <a :href="author.image" class="lightbox">
         <img
           :src="author.image"
