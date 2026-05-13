@@ -49,6 +49,7 @@ export default defineConfig(
         },
       ],
       'vue/block-lang': ['error', { script: { lang: 'ts' } }],
+      'vue/require-default-prop': 'off',
     },
   },
   {
