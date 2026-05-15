@@ -17,6 +17,10 @@
 # ---------------------------------------------------------------------------
 
 themeConfig:
+  # Site identity (cross-locale fallback). Per-locale `_site.yaml` usually
+  # overrides this with the localized name.
+  # blogTitle: 'My Blog'
+
   # -------------------------------------------------------------------------
   # Branding & layout
   # -------------------------------------------------------------------------
@@ -28,36 +32,6 @@ themeConfig:
   # homeBgParallaxOffset: 300
   # paginationMaxItems: 5
   # externalLinkIcon: true
-
-  # Site identity (cross-locale fallback). Per-locale `_site.yaml` usually
-  # overrides this with the localized name.
-  # blogTitle: 'My Blog'
-
-  # -------------------------------------------------------------------------
-  # Post list card display
-  # -------------------------------------------------------------------------
-  # postList:
-  #   showDate: true
-  #   showTags: true
-  #   showThumbnail: true
-  #   showPreview: true
-  #   showAuthor: true
-  #   maxPreviewLength: 300
-
-  # -------------------------------------------------------------------------
-  # Post footer blocks — reorder or omit to customize.
-  # Available: 'author' | 'donate' | 'comments' | 'social-share' |
-  #            'edit-link' | 'tags' | 'similar' | 'popular-link'
-  # -------------------------------------------------------------------------
-  # postFooter:
-  #   - author
-  #   - donate
-  #   - comments
-  #   - social-share
-  #   - edit-link
-  #   - tags
-  #   - similar
-  #   - popular-link
 
   # -------------------------------------------------------------------------
   # RSS / Atom / JSON feed generation
@@ -96,6 +70,32 @@ themeConfig:
   # atomIcon: 'vscode-icons:file-type-atom'
   # youtubeIcon: 'fa6-brands:youtube'
   # tagsIcon: 'fa6-solid:tag'
+
+  # -------------------------------------------------------------------------
+  # Post list card display
+  # -------------------------------------------------------------------------
+  # postList:
+  #   showDate: true
+  #   showTags: true
+  #   showThumbnail: true
+  #   showPreview: true
+  #   showAuthor: true
+  #   maxPreviewLength: 300
+
+  # -------------------------------------------------------------------------
+  # Post footer blocks — reorder or omit to customize.
+  # Available: 'author' | 'donate' | 'comments' | 'social-share' |
+  #            'edit-link' | 'tags' | 'similar' | 'popular-link'
+  # -------------------------------------------------------------------------
+  # postFooter:
+  #   - author
+  #   - donate
+  #   - comments
+  #   - social-share
+  #   - edit-link
+  #   - tags
+  #   - similar
+  #   - popular-link
 
   # -------------------------------------------------------------------------
   # Edit link (shown in post footer when `repo` is set in config.ts).
