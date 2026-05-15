@@ -56,7 +56,7 @@ themeConfig:
   # -------------------------------------------------------------------------
   # Twitter / X card
   # -------------------------------------------------------------------------
-  # twitterSite: '@your_handle'
+  # twitterSite: '@your_handle'         # Site's Twitter/X handle. Added as twitter:site meta tag on every page.
 
   # -------------------------------------------------------------------------
   # Icon overrides (Iconify icon strings — browse at icon.icones.es).
