@@ -83,8 +83,8 @@ themeConfig:
   # Publisher info — used in the auto-generated JSON-LD for every page.
   # -------------------------------------------------------------------------
   publisher:
-    name: 'Your Blog Name'
-    url: 'https://myblog.org'
+    name: '${theme.blogTitle}'
+    url: '${config.siteUrl}'
   #  logo: 'https://myblog.org/img/logo.png'
 
   # Authors live in the sibling `_authors.yaml` file (merged by `id`).
