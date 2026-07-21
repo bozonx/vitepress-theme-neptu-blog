@@ -1,5 +1,4 @@
 import { vi, afterEach } from 'vitest'
-import { cleanup } from '@testing-library/vue'
 import { ref } from 'vue'
 import {
   mockTheme,
@@ -34,5 +33,5 @@ vi.mock('@iconify/vue', () => ({
 }))
 
 afterEach(() => {
-  cleanup()
+  document.body.innerHTML = ''
 })

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onUnmounted, nextTick } from 'vue'
-import { vOnClickOutside } from '@vueuse/components'
 import { Icon } from '@iconify/vue'
 import NeptuBtn from './NeptuBtn.vue'
+import { useOnClickOutside } from '../composables/useOnClickOutside.ts'
 
 const props = defineProps<{
   dropUp?: boolean | string
@@ -10,6 +10,9 @@ const props = defineProps<{
   title?: string
   noBg?: boolean | string
 }>()
+
+const rootRef = ref<HTMLElement | null>(null)
+useOnClickOutside(rootRef, () => closeList())
 const animationTimeMs = 400
 const mouseLeaveDelayMs = 400
 const menuId = `dropdown-menu-${crypto.randomUUID()}`
@@ -140,7 +143,7 @@ onUnmounted(() => {
 
 <template>
   <div
-    v-on-click-outside="() => closeList()"
+    ref="rootRef"
     class="dropdown-btn inline-block relative"
     @mouseenter="handleWholeMouseEnter"
     @mouseleave="handleWholeMouseLeave"
