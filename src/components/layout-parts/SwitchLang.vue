@@ -19,13 +19,14 @@ const props = defineProps<{ noBg?: boolean | string }>()
     class="switch-lang-btn px-0"
   >
     <template #btn-text>
-      <span class="pt-1" aria-hidden="true">
+      <span class="inline-flex items-center gap-1.5" aria-hidden="true">
         <Icon
           icon="material-symbols:translate"
           width="1.2rem"
           height="1.2rem"
           aria-hidden="true"
         />
+        <span v-if="currentLang.code" class="text-xs font-semibold uppercase leading-none">{{ currentLang.code }}</span>
       </span>
     </template>
     <MenuItem :disabled="true" :title="theme.t.currentLang">

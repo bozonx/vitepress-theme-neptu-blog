@@ -17,6 +17,7 @@ interface LocaleLink {
 interface CurrentLang {
   label?: string
   link: string
+  code: string
 }
 
 interface LocaleSpecificConfig {
@@ -58,6 +59,7 @@ export function useContentLangs(options: { correspondingLink?: boolean } = {}) {
     return {
       label: currentLocale?.label,
       link: `/${localeIndex.value}/`,
+      code: localeIndex.value,
     }
   })
 
