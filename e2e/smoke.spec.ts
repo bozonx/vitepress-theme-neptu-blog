@@ -8,7 +8,7 @@ test('home loads with correct lang and hero', async ({ page }) => {
   await page.goto('/en/')
   await page.waitForSelector('h1')
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US')
-  await expect(page.locator('h1')).toContainText('Example Blog')
+  await expect(page.locator('h1')).toContainText('Neptu Blog Theme')
 })
 
 test('root redirects to locale', async ({ page }) => {
@@ -24,7 +24,7 @@ test('root redirects to locale', async ({ page }) => {
 test('recent posts page loads', async ({ page }) => {
   await page.goto('/en/recent/1')
   await expect(page).toHaveTitle(/Recent/)
-  await expect(page.getByText('Cover Image Options')).toBeVisible()
+  await expect(page.getByText('Full-Featured Post')).toBeVisible()
 })
 
 // ---------------------------------------------------------------------------
@@ -32,7 +32,7 @@ test('recent posts page loads', async ({ page }) => {
 // ---------------------------------------------------------------------------
 
 test('post page loads with content and JSON-LD', async ({ page }) => {
-  await page.goto('/en/post/post-full-featured')
+  await page.goto('/en/post/full-featured')
   await expect(page.locator('h1')).toContainText('Full-Featured Post')
 
   const jsonLd = await page.locator('script[type="application/ld+json"]').textContent()
@@ -45,8 +45,8 @@ test('post page loads with content and JSON-LD', async ({ page }) => {
 // ---------------------------------------------------------------------------
 
 test('about page loads', async ({ page }) => {
-  await page.goto('/en/page/about-blog')
-  await expect(page.locator('h1')).toContainText('About This Blog')
+  await page.goto('/en/page/about')
+  await expect(page.locator('h1')).toContainText('About This Demo')
 })
 
 // ---------------------------------------------------------------------------
@@ -76,9 +76,9 @@ test('archive page loads', async ({ page }) => {
 // ---------------------------------------------------------------------------
 
 test('canonical link present', async ({ page }) => {
-  await page.goto('/en/post/post-full-featured')
+  await page.goto('/en/post/full-featured')
   const canonical = page.locator('link[rel="canonical"]')
-  await expect(canonical).toHaveAttribute('href', /post\/post-full-featured/)
+  await expect(canonical).toHaveAttribute('href', /post\/full-featured/)
 })
 
 test('alternate hreflang links present', async ({ page }) => {
@@ -89,7 +89,7 @@ test('alternate hreflang links present', async ({ page }) => {
 
 test('RSS feed link in head', async ({ page }) => {
   await page.goto('/en/')
-  const rss = page.locator('link[type="application/rss+xml"]')
+  const rss = page.locator('link[type="application/rss+xml"]').first()
   await expect(rss).toHaveAttribute('href', /feed\.rss/)
 })
 

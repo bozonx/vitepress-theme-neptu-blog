@@ -1,10 +1,4 @@
 import { defineConfig, devices } from '@playwright/test'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const exampleDir = path.resolve(__dirname, '../example/blog')
-
 export default defineConfig({
   testDir: '.',
   outputDir: './test-results',
@@ -21,7 +15,7 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
-    command: `cd ${exampleDir} && pnpm build && pnpm exec vitepress preview src --port 4173`,
+    command: 'pnpm docs:build && pnpm --filter vitepress-theme-neptu-blog-docs preview --port 4173',
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

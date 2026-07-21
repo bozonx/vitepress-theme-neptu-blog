@@ -41,6 +41,7 @@ export const postList = {
 export default async () => {
   const config: BlogUserConfig = {
     srcDir: path.resolve(__dirname, '../'),
+    base: process.env.VITEPRESS_BASE || (process.env.GITHUB_ACTIONS ? '/vitepress-theme-neptu-blog/' : '/'),
 
     // -------------------------------------------------------------------------
     // Site identity — absolute public URL with protocol, no trailing slash.
@@ -48,7 +49,7 @@ export default async () => {
     // Used for canonical links, sitemap, RSS feeds, Open Graph, JSON-LD,
     // hreflang, and robots.txt.
     // -------------------------------------------------------------------------
-    siteUrl: 'https://myblog.org',
+    siteUrl: process.env.SITE_URL || 'https://bozonx.github.io/vitepress-theme-neptu-blog',
 
     // tailwindcss() and site-yaml hot-reload are injected automatically.
     // Add other Vite plugins here:

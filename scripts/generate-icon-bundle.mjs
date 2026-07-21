@@ -160,7 +160,7 @@ function scanCodebaseForIcons(dirs) {
 }
 
 // Build merged icon set map
-const scanned = scanCodebaseForIcons(['src', 'example'])
+const scanned = scanCodebaseForIcons(['src', 'docs', 'doc'])
 const iconSets = {}
 
 for (const [prefix, names] of Object.entries(baseIconSets)) {
