@@ -136,7 +136,8 @@
     "test:coverage": "vitest run --coverage",
     "e2e": "playwright test --config e2e/playwright.config.ts",
     "e2e:ui": "playwright test --config e2e/playwright.config.ts --ui",
-    "e2e:report": "playwright show-report e2e/playwright-report"
+    "e2e:report": "playwright show-report e2e/playwright-report",
+    "example:dev": "pnpm --filter vitepress-theme-neptu-blog-example-blog dev"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

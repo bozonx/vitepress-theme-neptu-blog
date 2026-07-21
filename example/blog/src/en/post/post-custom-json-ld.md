@@ -1,22 +1,25 @@
 ---
+
 title: Custom JSON-LD Structured Data
-description: >
+description: &gt;
   The theme generates JSON-LD automatically for every post. Use the jsonLd
   frontmatter field to extend or override the generated schema.
 date: 2025-02-28T14:00:00Z
 authorId: ivan-k
 tags:
-  - seo
-  - json-ld
+
+- seo
+- json-ld
 descrAsPreview: true
 
 # The jsonLd block is YAML that gets merged into the auto-generated schema.
+
 # Use quoted "@type" because @ is not valid bare YAML.
-jsonLd: |
+
+## jsonLd: |
   "@type": TechArticle
   proficiencyLevel: Beginner
   dependencies: VitePress, vitepress-theme-neptu-blog
----
 
 ## How it works
 
@@ -80,3 +83,4 @@ themeConfig: {
   }
 }
 ```
+
