@@ -3,7 +3,10 @@ import { defineComponent, h, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 import { useBreakpoint } from '../../src/composables/useBreakpoint.ts'
 
-vi.mock('vitepress', () => ({ inBrowser: true }))
+vi.mock('vitepress', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('vitepress')>()),
+  inBrowser: true,
+}))
 
 describe('useBreakpoint', () => {
   const originalInnerWidth = window.innerWidth
@@ -87,5 +90,33 @@ describe('useBreakpoint', () => {
     wrapper.unmount()
 
     expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function))
+  })
+
+  it('supports custom window injection for isolated testing', () => {
+    const listeners: Record<string, EventListener> = {}
+    const mockWinObj = {
+      innerWidth: 600,
+      addEventListener: vi.fn((type: string, fn: EventListener) => {
+        listeners[type] = fn
+      }),
+      removeEventListener: vi.fn(),
+    }
+    const mockWin = mockWinObj as unknown as Window
+
+    const TestComp = defineComponent({
+      setup() {
+        const { windowWidth, isMobile } = useBreakpoint(800, mockWin)
+        return () => h('div', `${windowWidth.value}-${isMobile.value}`)
+      },
+    })
+
+    const wrapper = mount(TestComp)
+    expect(wrapper.text()).toBe('600-true')
+
+    mockWinObj.innerWidth = 900
+    listeners.resize?.(new Event('resize'))
+    expect(mockWin.addEventListener).toHaveBeenCalledWith('resize', expect.any(Function))
+    wrapper.unmount()
+    expect(mockWin.removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function))
   })
 })

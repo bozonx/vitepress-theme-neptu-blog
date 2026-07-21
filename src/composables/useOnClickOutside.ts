@@ -1,3 +1,4 @@
+import { inBrowser } from 'vitepress'
 import { onBeforeUnmount, onMounted, type Ref } from 'vue'
 
 /**
@@ -7,7 +8,8 @@ import { onBeforeUnmount, onMounted, type Ref } from 'vue'
  */
 export function useOnClickOutside(
   target: Ref<HTMLElement | null>,
-  handler: (event: PointerEvent) => void
+  handler: (event: PointerEvent) => void,
+  doc?: Document
 ): void {
   const listener = (event: PointerEvent) => {
     const el = target.value
@@ -15,11 +17,17 @@ export function useOnClickOutside(
     handler(event)
   }
 
+  const getDoc = () => doc || (inBrowser ? document : undefined)
+
   onMounted(() => {
-    document.addEventListener('pointerdown', listener, true)
+    const targetDoc = getDoc()
+    if (!targetDoc) return
+    targetDoc.addEventListener('pointerdown', listener, true)
   })
 
   onBeforeUnmount(() => {
-    document.removeEventListener('pointerdown', listener, true)
+    const targetDoc = getDoc()
+    if (!targetDoc) return
+    targetDoc.removeEventListener('pointerdown', listener, true)
   })
 }

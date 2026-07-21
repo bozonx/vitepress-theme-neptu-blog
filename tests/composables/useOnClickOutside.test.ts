@@ -91,4 +91,30 @@ describe('useOnClickOutside', () => {
 
     expect(removeSpy).toHaveBeenCalledWith('pointerdown', expect.any(Function), true)
   })
+
+  it('supports custom document injection for isolated testing', () => {
+    const handler = vi.fn()
+    const customDoc = document.implementation.createHTMLDocument()
+
+    const TestComp = defineComponent({
+      setup() {
+        const target = ref<HTMLElement | null>(null)
+        useOnClickOutside(target, handler, customDoc)
+        return () =>
+          h('div', { id: 'container' }, [
+            h('div', { id: 'inside', ref: target }, 'Inside'),
+          ])
+      },
+    })
+
+    const wrapper = mount(TestComp, { attachTo: customDoc.body })
+    const outsideEl = customDoc.createElement('div')
+    customDoc.body.appendChild(outsideEl)
+
+    const event = new PointerEvent('pointerdown', { bubbles: true })
+    outsideEl.dispatchEvent(event)
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    wrapper.unmount()
+  })
 })

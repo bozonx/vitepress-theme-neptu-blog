@@ -3,27 +3,40 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue'
 
 import { MOBILE_BREAKPOINT } from '../constants.ts'
 
-export function useBreakpoint(breakpoint: number = MOBILE_BREAKPOINT): {
+export function useBreakpoint(
+  breakpoint: number = MOBILE_BREAKPOINT,
+  win?: Window
+): {
   windowWidth: Ref<number>
   isMobile: Ref<boolean>
 } {
   const windowWidth = ref(0)
   const isMobile = ref(true)
 
+  const getWin = () => win || (inBrowser ? window : undefined)
+
   function onResize() {
-    windowWidth.value = window.innerWidth
+    const targetWin = getWin()
+    if (!targetWin) return
+    windowWidth.value = targetWin.innerWidth
     isMobile.value = windowWidth.value < breakpoint
   }
 
-  onMounted(() => {
-    if (!inBrowser) return
+  if (getWin()) {
     onResize()
-    window.addEventListener('resize', onResize)
+  }
+
+  onMounted(() => {
+    const targetWin = getWin()
+    if (!targetWin) return
+    onResize()
+    targetWin.addEventListener('resize', onResize)
   })
 
   onUnmounted(() => {
-    if (!inBrowser) return
-    window.removeEventListener('resize', onResize)
+    const targetWin = getWin()
+    if (!targetWin) return
+    targetWin.removeEventListener('resize', onResize)
   })
 
   return { windowWidth, isMobile }
