@@ -150,9 +150,7 @@ function createPostJsonLd(
     headline: title || '',
     description: description || '',
     url: pageUrl,
-    datePublished: (pageData.frontmatter.date instanceof Date
-      ? pageData.frontmatter.date.toISOString()
-      : pageData.frontmatter.date) as JsonLdValue,
+    datePublished: toIsoDate(pageData.frontmatter.date) as JsonLdValue,
     publisher: publisher as JsonLdValue,
     mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
     inLanguage: lang || '',

@@ -23,7 +23,7 @@ It plays three roles at once:
 | Post frontmatter | Posts tagged [`frontmatter`](../tags/frontmatter/1) |
 | Media embeds | [Media components](../post/media-components) |
 | SEO (OG, JSON-LD, canonical, hreflang) | Posts tagged [`seo`](../tags/seo/1) |
-| Configuration | This `page/*` section: [layers](config-layers), [themes](color-themes), [nav/sidebar/footer](nav-sidebar-footer), [feeds/search](seo-feeds-search) |
+| Configuration | This `page/*` section: [layers](config-layers), [themes & fonts](color-themes), [nav/sidebar/footer](nav-sidebar-footer), [feeds/search](seo-feeds-search), [advanced](advanced) |
 | Layout types | Sidebar: Recent · Popular · Archive · Authors · Tags |
 
 ## Run it locally

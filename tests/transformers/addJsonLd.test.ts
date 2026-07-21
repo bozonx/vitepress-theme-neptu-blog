@@ -139,7 +139,7 @@ describe('addJsonLd', () => {
     expect(json['@type']).toBe('BlogPosting')
     expect(json.headline).toBe('Hello')
     expect(json.url).toBe('https://example.com/en/post/hello')
-    expect(json.datePublished).toBe('2023-01-01')
+    expect(json.datePublished).toBe('2023-01-01T00:00:00.000Z')
     expect(json.inLanguage).toBe('en-US')
     expect(json.author).toEqual({
       '@type': 'Person',

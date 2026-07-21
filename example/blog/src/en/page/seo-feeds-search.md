@@ -23,6 +23,9 @@ At build time the theme emits, for the whole site:
 - **`hreflang`** links between translated pages.
 - **canonical** links.
 
+> **Every one of these can be turned off** — globally in `src/site.yaml` or
+> per-page in a post's frontmatter. See [SEO toggles](#seo-toggles) below.
+
 ## Feeds (RSS / Atom / JSON)
 
 Enabled by default. Links appear in the sidebar (RSS + Atom) and in every page

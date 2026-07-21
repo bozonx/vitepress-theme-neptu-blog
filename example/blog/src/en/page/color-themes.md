@@ -57,6 +57,31 @@ Independent of the color scheme, the theme supports light and dark appearance
 out of the box — try the sun/moon toggle in the top bar. Each scheme defines
 both variants, so no extra configuration is needed.
 
+## Custom fonts
+
+The theme uses the system font stack by default (fastest load, no layout shift).
+To use a custom font, load it in `head` and redefine two CSS variables — nothing
+else needed, the whole theme picks them up:
+
+```ts
+// .vitepress/config.ts — load the font
+head: [
+  ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+  ['link', { href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Fira+Code&display=swap', rel: 'stylesheet' }],
+],
+```
+
+```css
+/* .vitepress/theme/styles.css — apply it */
+:root {
+  --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;   /* body, headings, buttons */
+  --vp-font-family-mono: 'Fira Code', ui-monospace, monospace;   /* code blocks, audio player */
+}
+```
+
+For a headings-only accent, leave `--font-body` alone and target `h1…h6` in
+`styles.css` instead.
+
 ## Home background
 
 This demo also sets a full-bleed hero background on the home layout. That is

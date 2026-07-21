@@ -46,6 +46,7 @@ coverDescr: "Photo by [Alejandro Escamilla](https://unsplash.com/@...) on Unspla
 - [Cover images & lightbox](cover-and-images) — local vs external covers, body images.
 - [Author, video & podcast](author-video-podcast) — author block, video button, podcast dropdown.
 - [Preview & search](preview-and-search) — control list previews and the search index.
+- [Footer, sharing & similar](post-footer-and-sharing) — the block stack below every post.
 
 **Media**
 - [Media components](media-components) — YouTube, local video, audio, file download.
@@ -56,9 +57,10 @@ coverDescr: "Photo by [Alejandro Escamilla](https://unsplash.com/@...) on Unspla
 - [i18n & hreflang](i18n-hreflang) — this post exists in Russian too.
 
 **Configuration** (in the `page/*` section)
-- [Config layers](../page/config-layers) · [Color themes](../page/color-themes) ·
+- [Config layers](../page/config-layers) · [Color themes & fonts](../page/color-themes) ·
   [Nav, sidebar & footer](../page/nav-sidebar-footer) ·
-  [Feeds, search & SEO toggles](../page/seo-feeds-search)
+  [Feeds, search & SEO toggles](../page/seo-feeds-search) ·
+  [Advanced: hooks & external content](../page/advanced)
 
 ## Explore the layouts
 

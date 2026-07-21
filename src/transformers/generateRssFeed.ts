@@ -44,6 +44,8 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
           .map((format) => [format, getFeedUrl(siteUrl, localeIndex, format)])
       )
 
+      const defaultFavicon = `${siteUrl}/img/favicon-32x32.png`
+
       feeds[localeIndex] = new Feed({
         language: locale.lang || localeIndex,
         title: locale.title || '',
@@ -51,13 +53,13 @@ export async function generateRssFeed(config: ExtendedSiteConfig): Promise<void>
         copyright: locale.themeConfig?.footer?.copyright || '',
         id: localeSiteUrl,
         link: localeSiteUrl,
-        favicon: `${siteUrl}/img/favicon-32x32.png`,
+        favicon: defaultFavicon,
         image:
           makeAbsoluteUrl(
             siteUrl,
             locale.themeConfig?.sidebarLogoSrc ||
               config.userConfig?.themeConfig?.sidebarLogoSrc
-          ) || `${siteUrl}/img/favicon-32x32.png`,
+          ) || defaultFavicon,
         generator: 'VitePress Neptu Blog Theme',
         updated: new Date(),
         feedLinks,

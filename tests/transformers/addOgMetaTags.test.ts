@@ -388,10 +388,20 @@ describe('addOgMetaTags', () => {
     expect(ctx.head).toEqual([])
   })
 
-  it('adds meta description tag', () => {
+  it('surfaces description via og/twitter but not a bare meta description', () => {
     const ctx = createContext()
     addOgMetaTags(ctx)
     expect(ctx.head).toContainEqual([
+      'meta',
+      { property: 'og:description', content: 'World' },
+    ])
+    expect(ctx.head).toContainEqual([
+      'meta',
+      { name: 'twitter:description', content: 'World' },
+    ])
+    // The plain <meta name="description"> is owned by addDescriptionMetaTag,
+    // so addOgMetaTags must not emit a duplicate.
+    expect(ctx.head).not.toContainEqual([
       'meta',
       { name: 'description', content: 'World' },
     ])

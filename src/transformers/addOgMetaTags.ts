@@ -109,8 +109,13 @@ export function addOgMetaTags({
     ['name', 'twitter:site', normalizeTwitterHandle(themeConfig.twitterSite)],
     ['name', 'twitter:title', title],
     ['name', 'twitter:description', description],
-    ['name', 'description', description],
   ]
+
+  for (const [code, cfg] of Object.entries(siteConfig.site.locales)) {
+    if (code === localeIndex) continue
+    const altLocale = ((cfg.lang || code) as string).replace(/-/g, '_')
+    tags.push(['property', 'og:locale:alternate', altLocale])
+  }
 
   if (imageUrl) {
     tags.push(['property', 'og:image', imageUrl])

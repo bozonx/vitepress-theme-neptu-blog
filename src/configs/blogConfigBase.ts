@@ -346,7 +346,7 @@ export function mergeBlogConfig(config: BlogUserConfig): ResolvedBlogConfig {
       if (isSeoEnabled('og')) addOgMetaTags(extendedCtx)
       if (!isNoIndex && isSeoEnabled('jsonLd')) addJsonLd(extendedCtx)
       if (!isNoIndex && isSeoEnabled('hreflang')) addHreflang(extendedCtx)
-      if (isSeoEnabled('canonical')) addCanonicalLink(extendedCtx)
+      if (!isNoIndex && isSeoEnabled('canonical')) addCanonicalLink(extendedCtx)
       if (isSeoEnabled('rss')) addRssLinks(extendedCtx)
 
       return config.transformHead ? await config.transformHead(typedCtx) : undefined

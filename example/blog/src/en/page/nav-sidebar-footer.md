@@ -86,6 +86,27 @@ themeConfig:
   rssIcon: 'bi:rss-fill'
 ```
 
+## External links in post content
+
+External links inside your markdown content (not the nav) get an icon appended
+by default, so readers can tell they lead off-site. Toggle that icon globally:
+
+```yaml
+# src/site.yaml
+themeConfig:
+  externalLinkIcon: true   # set false to drop the ↗ icon on external links
+```
+
+Under the hood the theme opens external links in a new tab (`target="_blank"`).
+If you need to change the `rel` attribute (VitePress adds `rel="noreferrer"` by
+default), override `markdown.externalLinks` in `.vitepress/config.ts`:
+
+```ts
+markdown: {
+  externalLinks: { target: '_blank', rel: [] }, // e.g. drop rel="noreferrer"
+}
+```
+
 ## Relative URLs are locale-aware
 
 A relative `href` like `page/about` is automatically prefixed with the current
