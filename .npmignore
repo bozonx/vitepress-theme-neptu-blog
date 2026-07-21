@@ -1,6 +1,5 @@
 src/.vitepress/
 coverage/
-example/
 tests/
 .github/
 .vscode/

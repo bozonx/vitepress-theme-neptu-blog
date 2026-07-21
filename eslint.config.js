@@ -11,7 +11,6 @@ export default defineConfig(
     ignores: [
       '**/dist/**',
       '**/node_modules/**',
-      '**/example/**',
       '**/.vitepress/cache/**',
       '**/.vitepress/dist/**',
       '**/docs/**',

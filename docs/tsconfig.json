@@ -20,11 +20,10 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
-    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "vitepress-theme-neptu-blog": ["../../src/index.ts"],
-      "vitepress-theme-neptu-blog/*": ["../../src/*"]
+      "vitepress-theme-neptu-blog": ["../src/index.ts"],
+      "vitepress-theme-neptu-blog/*": ["../src/*"]
     }
   },
   "include": [
@@ -33,7 +32,7 @@
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/env.d.ts",
-    "../../src/**/*.ts",
-    "../../src/**/*.vue"
+    "../src/**/*.ts",
+    "../src/**/*.vue"
   ]
 }

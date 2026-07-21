@@ -10,7 +10,7 @@ export default defineConfig({
     pool: 'threads',
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/**/*.test.ts'],
-    exclude: ['node_modules/**', 'dist/**', 'example/**', '.vitepress/**'],
+    exclude: ['node_modules/**', 'dist/**', 'docs/**', '.vitepress/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],

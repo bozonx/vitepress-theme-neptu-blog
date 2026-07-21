@@ -4,7 +4,6 @@ import { mount } from '@vue/test-utils'
 import {
   useTranslations,
   TranslationsKey,
-  type TranslationsResult,
 } from '../../src/composables/useTranslations.ts'
 
 const { mockedUseRoute } = vi.hoisted(() => ({
