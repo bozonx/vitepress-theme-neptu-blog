@@ -16,7 +16,9 @@ import './styles/blog-vars.css'
 import './styles/blog-styles.css'
 
 import type { EnhanceAppContext } from 'vitepress'
+import { addCollection } from '@iconify/vue'
 import NeptuLayout from './layouts/NeptuLayout.vue'
+import bundledIcons from './generated/icons-bundle'
 
 export type {
   Author,
@@ -37,6 +39,9 @@ export type {
 export default {
   Layout: NeptuLayout,
   enhanceApp(ctx: EnhanceAppContext) {
+    for (const collection of bundledIcons) {
+      addCollection(collection)
+    }
     ctx.app.component('FileDownload', FileDownload)
     ctx.app.component('AudioFile', AudioFile)
     ctx.app.component('YoutubeVideo', YoutubeVideo)

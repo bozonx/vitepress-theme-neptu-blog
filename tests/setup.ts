@@ -30,6 +30,7 @@ vi.mock('@iconify/vue', () => ({
     props: ['icon'],
     template: '<i class="iconify-stub" :data-icon="icon" />',
   },
+  addCollection: () => true,
 }))
 
 afterEach(() => {

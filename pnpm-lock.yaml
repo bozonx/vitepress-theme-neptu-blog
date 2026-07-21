@@ -60,6 +60,45 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.1(jiti@2.7.0))
+      '@iconify-json/bi':
+        specifier: ^1.2.7
+        version: 1.2.7
+      '@iconify-json/cbi':
+        specifier: ^1.2.47
+        version: 1.2.47
+      '@iconify-json/cib':
+        specifier: ^1.2.3
+        version: 1.2.3
+      '@iconify-json/fa6-brands':
+        specifier: ^1.2.6
+        version: 1.2.6
+      '@iconify-json/fa6-solid':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/logos':
+        specifier: ^1.2.11
+        version: 1.2.11
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.86
+        version: 1.2.86
+      '@iconify-json/mdi':
+        specifier: ^1.2.3
+        version: 1.2.3
+      '@iconify-json/ri':
+        specifier: ^1.2.10
+        version: 1.2.10
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.91
+        version: 1.2.91
+      '@iconify-json/solar':
+        specifier: ^1.2.5
+        version: 1.2.5
+      '@iconify-json/vscode-icons':
+        specifier: ^1.2.67
+        version: 1.2.67
+      '@iconify/utils':
+        specifier: ^3.1.4
+        version: 3.1.4
       '@playwright/test':
         specifier: ^1.60.0
         version: 1.60.0
@@ -162,6 +201,9 @@ packages:
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
+
+  '@antfu/install-pkg@1.1.0':
+    resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -416,11 +458,47 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@iconify-json/simple-icons@1.2.79':
-    resolution: {integrity: sha512-aNyO7Fd1qej9oQfIyohYFRv0lhQLaZ+6UkK1c1qwax0MDPUOZOdq65MlU500kow97pD/W+b2u1And3e25eE24Q==}
+  '@iconify-json/bi@1.2.7':
+    resolution: {integrity: sha512-IPz8WNxmLkH1I9msl+0Q4OnmjjvP4uU0Z61a4i4sqonB6vKSbMGUWuGn8/YuuszlReVj8rf+3gNv5JU8Xoljyg==}
+
+  '@iconify-json/cbi@1.2.47':
+    resolution: {integrity: sha512-m6n5aetQd0uKAfRURgNSpVpndpD7XfC0JiYtUnjOLXMaXxzBlW0XKL3zRxBkULqYbUYOOfMndfBXhXamgPtlKg==}
+
+  '@iconify-json/cib@1.2.3':
+    resolution: {integrity: sha512-MMvRXVTHt82z3bYN19JDAjv/X8OBNC/1B3I334SV/1nyhdPeeyvJZVoI1cGuNqYznBjMnWxKPtIhhiVgGQ1CzQ==}
+
+  '@iconify-json/fa6-brands@1.2.6':
+    resolution: {integrity: sha512-twL3X4KWcxAhbc1vz/mIDsVr+CAItk1/EIfxKUVQtpv6O4eydk5KNYqTZWdvJNHGInUgd6vKg21aWfVgb5DXEg==}
+
+  '@iconify-json/fa6-solid@1.2.4':
+    resolution: {integrity: sha512-LmDNNdJVyvF5mPm1yxWvL8KjCc/E8LzoqnF1LNTVpyY2ZJRUlGOWuPIThdbuFBF2IovgttkIyumhyqfmlHdwKg==}
+
+  '@iconify-json/logos@1.2.11':
+    resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
+
+  '@iconify-json/material-symbols@1.2.86':
+    resolution: {integrity: sha512-/xdMEzGXFWQT+fvB4ppV7GvsiKnxRJdaXJgapuoZzcCkcnQB7BryzZtBq/2Qx2pcQu8eJfLDhesWBJ9RDeYJUA==}
+
+  '@iconify-json/mdi@1.2.3':
+    resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
+
+  '@iconify-json/ri@1.2.10':
+    resolution: {integrity: sha512-WWMhoncVVM+Xmu9T5fgu2lhYRrKTEWhKk3Com0KiM111EeEsRLiASjpsFKnC/SrB6covhUp95r2mH8tGxhgd5Q==}
+
+  '@iconify-json/simple-icons@1.2.91':
+    resolution: {integrity: sha512-plQJHZxzpkIXaeYjJF0Sc9nkzYF32EDX9olx7j1hcKYFaiTrQXbcngZmvzuV0pG6uZPU3ZuA/GIsgxSHOm6jrQ==}
+
+  '@iconify-json/solar@1.2.5':
+    resolution: {integrity: sha512-WMAiNwchU8zhfrySww6KQBRIBbsQ6SvgIu2yA+CHGyMima/0KQwT5MXogrZPJGoQF+1Ye3Qj6K+1CiyNn3YkoA==}
+
+  '@iconify-json/vscode-icons@1.2.67':
+    resolution: {integrity: sha512-/fObxEkBtqK2e1qf1IRjuZ4drWknAnzykdT2ngGAKESf35tCcj0Lx3MdsxYBneE5YbgvsUfOl0hbZ59R5s19vw==}
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
+  '@iconify/utils@3.1.4':
+    resolution: {integrity: sha512-b1S7B1k9ohZ+iNTi2ATxbRYG9fTrJmUT0rc46bvVnNxqNRGW7dyo/vRREwyniI5IRN2RSJHDcm+s3BjWrSAjHw==}
 
   '@iconify/vue@5.0.0':
     resolution: {integrity: sha512-C+KuEWIF5nSBrobFJhT//JS87OZ++QDORB6f2q2Wm6fl2mueSTpFBeBsveK0KW9hWiZ4mNiPjsh6Zs4jjdROSg==}
@@ -1608,6 +1686,9 @@ packages:
     engines: {node: '>=16.x'}
     hasBin: true
 
+  import-meta-resolve@4.2.0:
+    resolution: {integrity: sha512-Iqv2fzaTQN28s/FwZAoFq0ZSs/7hMAHJVX+w8PZl3cY19Pxk6jFFalxQoIfW2826i/fDLXv8IiEZRIT0lDuWcg==}
+
   imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
@@ -2052,6 +2133,9 @@ packages:
 
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
+
+  package-manager-detector@1.8.0:
+    resolution: {integrity: sha512-yQA4H19AmPEoMUeavPMDIe1higySl/gH/yaQrkT/s07Qp+7pp2hYz30N3z2l5BkjVkF9Ow6o0wjJamm2y7Sn0A==}
 
   pagefind@1.5.2:
     resolution: {integrity: sha512-XTUaK0hXMCu2jszWE584JGQT7y284TmMV9l/HX3rnG5uo3rHI/uHU56XTyyyPFjeWEBxECbAi0CaFDJOONtG0Q==}
@@ -2601,6 +2685,11 @@ snapshots:
 
   '@adobe/css-tools@4.4.4': {}
 
+  '@antfu/install-pkg@1.1.0':
+    dependencies:
+      package-manager-detector: 1.8.0
+      tinyexec: 1.1.1
+
   '@babel/code-frame@7.29.0':
     dependencies:
       '@babel/helper-validator-identifier': 7.28.5
@@ -2758,11 +2847,61 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iconify-json/simple-icons@1.2.79':
+  '@iconify-json/bi@1.2.7':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/cbi@1.2.47':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/cib@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa6-brands@1.2.6':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/fa6-solid@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/logos@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-symbols@1.2.86':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ri@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/simple-icons@1.2.91':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/solar@1.2.5':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/vscode-icons@1.2.67':
     dependencies:
       '@iconify/types': 2.0.0
 
   '@iconify/types@2.0.0': {}
+
+  '@iconify/utils@3.1.4':
+    dependencies:
+      '@antfu/install-pkg': 1.1.0
+      '@iconify/types': 2.0.0
+      import-meta-resolve: 4.2.0
 
   '@iconify/vue@5.0.0(vue@3.5.33(typescript@6.0.3))':
     dependencies:
@@ -3984,6 +4123,8 @@ snapshots:
 
   image-size@2.0.2: {}
 
+  import-meta-resolve@4.2.0: {}
+
   imurmurhash@0.1.4: {}
 
   indent-string@4.0.0: {}
@@ -4496,6 +4637,8 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
+  package-manager-detector@1.8.0: {}
+
   pagefind@1.5.2:
     optionalDependencies:
       '@pagefind/darwin-arm64': 1.5.2
@@ -4932,7 +5075,7 @@ snapshots:
       '@docsearch/css': 4.6.2
       '@docsearch/js': 4.6.2
       '@docsearch/sidepanel-js': 4.6.2
-      '@iconify-json/simple-icons': 1.2.79
+      '@iconify-json/simple-icons': 1.2.91
       '@shikijs/core': 3.23.0
       '@shikijs/transformers': 3.23.0
       '@shikijs/types': 3.23.0

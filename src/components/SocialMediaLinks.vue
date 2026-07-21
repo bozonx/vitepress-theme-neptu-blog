@@ -34,10 +34,10 @@ const getIconName = (type: string) => {
     x: 'mdi:twitter', // X (formerly Twitter)
     facebook: 'mdi:facebook',
     instagram: 'mdi:instagram',
-    tiktok: 'mdi:tiktok',
+    tiktok: 'simple-icons:tiktok',
     vk: 'mdi:vk',
     mastodon: 'mdi:mastodon',
-    diaspora: 'mdi:diaspora',
+    diaspora: 'simple-icons:diaspora',
     // bastyon, odysee, threads icons unavailable in @iconify/vue, using fallback
   }
 
