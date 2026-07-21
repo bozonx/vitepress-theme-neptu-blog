@@ -7,16 +7,20 @@ import {
   mockPage,
   mockFrontmatter,
   mockIsDark,
+  mockSite,
+  mockHash,
 } from './mocks/vitepress'
 
 vi.mock('vitepress', () => ({
   inBrowser: true,
   useData: () => ({
+    site: mockSite,
     theme: mockTheme,
     localeIndex: mockLocaleIndex,
     page: mockPage,
     frontmatter: mockFrontmatter,
     isDark: mockIsDark,
+    hash: mockHash,
     lang: 'en',
     title: ref('Test Post'),
   }),

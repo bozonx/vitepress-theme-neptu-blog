@@ -39,3 +39,6 @@ export const mockPage = ref<any>({
 })
 export const mockFrontmatter = ref<any>({})
 export const mockIsDark = ref<any>(false)
+export const mockSite = ref<any>({ locales: {}, cleanUrls: true })
+export const mockHash = ref<any>('')
+

@@ -16,7 +16,13 @@ export default defineConfig({
       reporter: ['text', 'html', 'lcov'],
       reportsDirectory: './coverage',
       include: ['src/**/*.ts', 'src/**/*.vue'],
-      exclude: ['src/**/*.d.ts', 'src/**/index.ts'],
+      exclude: [
+        'src/**/*.d.ts',
+        'src/**/index.ts',
+        'src/generated/**',
+        'src/configs/sharedLocalesBase/**',
+        'src/configs/blogLocalesBase/**',
+      ],
     },
   },
   resolve: {
