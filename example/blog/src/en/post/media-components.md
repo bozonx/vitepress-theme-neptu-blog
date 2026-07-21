@@ -53,7 +53,7 @@ Place the file in `src/public/media/` and reference it with a leading `/media/`.
 Inline audio player with a download link.
 
 <AudioFile
-  url="https://www.w3schools.com/html/horse.mp3"
+  url="/media/horse.mp3"
   filename="Sample audio (horse.mp3)"
 />
 
