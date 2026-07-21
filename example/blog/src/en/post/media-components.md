@@ -68,8 +68,8 @@ Inline audio player with a download link.
 A styled download button for any file.
 
 <FileDownload
-  url="https://www.w3.org/WAI/WCAG21/wcag21.pdf"
-  filename="WCAG 2.1 PDF"
+  url="/media/sample.pdf"
+  filename="Sample PDF"
 />
 
 ### How it's done
