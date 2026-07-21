@@ -1,7 +1,7 @@
 ---
 
 title: Custom JSON-LD Structured Data
-description: &gt;
+description: >
   The theme generates JSON-LD automatically for every post. Use the jsonLd
   frontmatter field to extend or override the generated schema.
 date: 2025-02-28T14:00:00Z
@@ -11,6 +11,7 @@ tags:
 - seo
 - json-ld
 descrAsPreview: true
+---
 
 # The jsonLd block is YAML that gets merged into the auto-generated schema.
 
