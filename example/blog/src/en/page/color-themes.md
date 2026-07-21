@@ -59,9 +59,10 @@ both variants, so no extra configuration is needed.
 
 ## Custom fonts
 
-The theme uses the system font stack by default (fastest load, no layout shift).
-To use a custom font, load it in `head` and redefine two CSS variables — nothing
-else needed, the whole theme picks them up:
+The theme uses a web-safe font stack by default (`Arial, 'Helvetica Neue',
+Helvetica, sans-serif` — fastest load, no layout shift). To use a custom font,
+load it in `head` and redefine two CSS variables — nothing else needed, the
+whole theme picks them up:
 
 ```ts
 // .vitepress/config.ts — load the font

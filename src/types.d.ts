@@ -309,7 +309,16 @@ export namespace NeptuBlogTheme {
     descrAsPreview?: boolean
     jsonLd?: string
     searchIncluded?: boolean
+    /** Podcast platform → episode URL map, rendered as the podcast dropdown. */
     podcasts?: Record<string, string>
+    /** Optional language label shown next to the podcast button, e.g. `EN`. */
+    podcastLang?: string
+    /** External "watch the video" URL rendered as a button at the top of a post. */
+    videoLink?: string
+    /** Optional language label shown next to the video button, e.g. `EN`. */
+    videoLinkLang?: string
+    /** URL of the discussion/comments thread rendered in the post footer. */
+    commentLink?: string
     canonical?: string
     seo?: SeoConfig
     translations?: Record<string, string>
