@@ -2,19 +2,38 @@
 # ---------------------------------------------------------------------------
 # Per-locale authors list. Entries are merged by `id` with any authors
 # declared in `_site.yaml > themeConfig.authors`; same `id` overrides
-# parent/sibling entries. Posts reference authors via the `authorId`
-# frontmatter field.
+# parent/sibling entries. Posts reference an author via the `authorId`
+# frontmatter field, and each author gets a generated listing page at
+# `/en/authors/<id>/1` (see the "Authors" section in the sidebar).
 # ---------------------------------------------------------------------------
+
+# Primary author — used by most demo posts.
 - id: 'ivan-k'
   name: 'Ivan K'
-  description: 'Author and editor of this blog.'
-  image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop'
-  # avatar: "/img/avatar.png"          # square thumbnail (post cards)
-  # imageWidth: 800                    # set both to suppress layout shift. This is real dimensions of the image
-  # imageHeight: 600
-  # twitterHandle: "your_handle"           # Twitter/X username (without @). Used for the twitter:creator meta tag on posts by this author.
-  # aboutUrl: "https://your-personal-site.com"
+  description: 'Maintainer of the theme. Writes most of the demo content you see here.'
+  image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop'
+  imageWidth: 400 # real dimensions of the image — set both to avoid layout shift
+  imageHeight: 400
+  # avatar: '/img/avatar.png'        # optional square thumbnail for post cards
+  twitterHandle: 'neptu_blog' # used for the twitter:creator meta tag on this author's posts
+  aboutUrl: 'https://github.com/bozonx/vitepress-theme-neptu-blog'
   links:
     - type: 'github'
-      url: 'https://github.com/'
-      title: 'GitHub profile'
+      url: 'https://github.com/bozonx/vitepress-theme-neptu-blog'
+      title: 'GitHub'
+    - type: 'website'
+      url: 'https://myblog.org'
+      title: 'Website'
+
+# Second author — exists so the "Authors" listing has more than one entry
+# and you can see how a multi-author blog looks.
+- id: 'maria-editor'
+  name: 'Maria E'
+  description: 'Guest editor. Author of the SEO-focused posts in this demo.'
+  image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop'
+  imageWidth: 400
+  imageHeight: 400
+  links:
+    - type: 'website'
+      url: 'https://example.com'
+      title: 'Website'

@@ -221,7 +221,7 @@ themeConfig:
       #       # class: 'custom-footer-link'
       #       # desktopOnly: false
       #       # mobileOnly: false
-      - text: 'Test JSON-LD'
-        href: 'page/test-json-ld'
-      - text: 'Advanced JSON-LD'
-        href: 'page/test-json-ld-advanced'
+      # Cross-locale fallback footer link (each locale overrides `footer` in
+      # its own `_site.yaml`, so this only applies to locales that don't).
+      - text: 'About'
+        href: 'page/about'

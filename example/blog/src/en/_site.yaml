@@ -53,7 +53,7 @@ themeConfig:
   #     donate: "Donate"
 
   # Blog name. Used for browser tab titles, SEO metadata, and the sidebar heading.
-  blogTitle: 'Example Blog'
+  blogTitle: 'Neptu Blog Theme'
   # Also you can override other fields from category "Branding & layout"
   # like sidebarLogoSrc, sidebarMenuLabel etc
   # Also you can override all other themeConfig fields from src/site.yaml
@@ -189,7 +189,7 @@ themeConfig:
     copyright: 'Copyright © 2026-present Your Name.'
     links:
       - text: '${t.links.aboutBlog}'
-        href: 'page/about-blog'
+        href: 'page/about'
         # icon: "mdi:information-outline"
         # iconClass: "muted"
         # class: "custom-footer-link"

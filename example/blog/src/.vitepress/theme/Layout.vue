@@ -7,8 +7,10 @@ import {
 } from 'vitepress-theme-neptu-blog/components'
 // @ts-expect-error VitePress exposes generated data as a named export.
 import { data as enData } from '../../en/loadPosts.data'
+// @ts-expect-error VitePress exposes generated data as a named export.
+import { data as ruData } from '../../ru/loadPosts.data'
 
-const posts = { en: enData.posts }
+const posts = { en: enData.posts, ru: ruData.posts }
 
 provide('posts', posts)
 

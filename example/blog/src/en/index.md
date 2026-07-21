@@ -13,8 +13,8 @@ import { useData } from 'vitepress'
 const { theme, frontmatter } = useData()
 
 const hero = {
-  firstLine: "Example Blog",
-  secondLine: "A demo of the&nbsp;vitepress&#8209;theme&#8209;neptu&#8209;blog",
+  firstLine: "Neptu Blog Theme",
+  secondLine: "A living demo &mdash; every page documents a&nbsp;feature of the&nbsp;theme",
   img: {
     src: frontmatter.value.heroImg,
     alt: "Example blog logo",
@@ -26,23 +26,35 @@ const hero = {
       primary: true,
     },
     {
-      text: theme.value.t.links.donate,
-      href: theme.value.donate?.url,
-      icon: theme.value.donateIcon,
+      text: 'Read the guide',
+      href: 'post/welcome',
     },
   ],
 }
 </script>
 
 <HomeHero v-bind="hero" />
+
+<UtilPageContent>
+
+## This blog documents itself
+
+Every post and page here is a **live demonstration** of one theme feature, with
+the exact frontmatter or config that produced it shown right below the result.
+Start with the [Welcome guide](post/welcome), then explore by area:
+
+- **Frontmatter** — [full-featured post](post/full-featured) · [cover images & lightbox](post/cover-and-images) · [author, video & podcast](post/author-video-podcast) · [preview & search](post/preview-and-search)
+- **Media components** — [YouTube, video, audio, downloads](post/media-components)
+- **SEO** — [JSON-LD](post/json-ld) · [canonical & cross-posting](post/canonical-crosspost) · [i18n & hreflang](post/i18n-hreflang)
+- **Configuration** — [config layers](page/config-layers) · [color themes](page/color-themes) · [nav, sidebar & footer](page/nav-sidebar-footer) · [feeds, search & SEO toggles](page/seo-feeds-search)
+
+### Every layout type is browsable
+
+The sidebar links to each generated listing layout: **Recent**, **Popular**,
+**Archive** (by year → month), **Authors**, and the **Tags** cloud. Use the
+language switcher in the top bar to jump between English and Russian.
+
+</UtilPageContent>
+
 <HomeTags :header="theme.t.tags" />
 <HomePopularPosts />
-
-<!-- Optional: add a static text block below the hero. -->
-<!-- <UtilPageContent>                                  -->
-<!--                                                    -->
-<!-- ## Welcome                                         -->
-<!--                                                    -->
-<!-- Some introductory text here.                       -->
-<!--                                                    -->
-<!-- </UtilPageContent>                                 -->

@@ -1,11 +1,15 @@
 ---
 title: Links
-description: Our social media profiles and communities.
+description: Demo of a simple standalone page reached from the sidebar bottom links.
 layout: page
 ---
 
 # Links
 
-- [GitHub](https://github.com/)
+This is a plain `layout: page` document, reached from the **sidebar bottom
+links** (`sidebar.bottomLinks` in `_site.yaml`). Use pages like this for any
+static content — about, privacy, contact, link lists.
+
+- [GitHub](https://github.com/bozonx/vitepress-theme-neptu-blog)
 - [YouTube](https://youtube.com/)
 - [Telegram](https://t.me/)
