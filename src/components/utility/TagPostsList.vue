@@ -69,7 +69,7 @@ const sorted = sortPosts(
   />
 
   <div class="mt-8">
-    <NeptuBtnLink :href="`/tags`" :icon="theme.tagsIcon">{{
+    <NeptuBtnLink href="tags" :icon="theme.tagsIcon">{{
       theme.t.allTagsCall
     }}</NeptuBtnLink>
   </div>

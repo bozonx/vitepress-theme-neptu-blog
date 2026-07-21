@@ -93,4 +93,24 @@ describe('TagPostsList', () => {
 
     warnSpy.mockRestore()
   })
+
+  it('passes a locale-relative href to the "all tags" button', () => {
+    const wrapper = mount(TagPostsList, {
+      props: {
+        localePosts: [{ url: '/a', tags: [{ name: 'Vue', slug: 'vue' }] }],
+        curPage: 1,
+        tagName: 'Vue',
+        tagSlug: 'vue',
+      },
+      global: {
+        stubs: {
+          ListPageHeader: ListPageHeaderStub,
+          PreviewList: PreviewListStub,
+          NeptuBtnLink: NeptuBtnLinkStub,
+        },
+      },
+    })
+
+    expect(wrapper.findComponent({ name: 'NeptuBtnLink' }).props('href')).toBe('tags')
+  })
 })
