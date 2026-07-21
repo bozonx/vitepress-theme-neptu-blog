@@ -63,6 +63,14 @@ export default defineConfig(
     },
   },
   {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: { ...globals.node },
+    },
+  },
+  {
     files: ['tests/**'],
     languageOptions: { globals: globals.vitest },
     rules: {

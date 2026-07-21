@@ -13,6 +13,10 @@ describe('loadPostsStats', () => {
     url: '/posts/test-post.html',
     date: '2026-01-01',
     excerpt: 'Test excerpt',
+    frontmatter: {
+      title: 'Test Post',
+      date: '2026-01-01',
+    } as any,
   }
 
   // Generate a real dummy RSA keypair for JWT signing tests
