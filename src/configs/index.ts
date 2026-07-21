@@ -2,7 +2,7 @@
 // Import from `vitepress-theme-neptu-blog/configs` only in your
 // `.vitepress/config.js` and data loaders (Node side).
 //
-// Pulls server-only deps (gray-matter, image-size, remark, googleapis,
+// Pulls server-only deps (gray-matter, image-size, remark,
 // feed, ...). Do not import from .vue / markdown files.
 
 export {
