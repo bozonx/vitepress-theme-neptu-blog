@@ -8,6 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export const PER_PAGE = 10
 
+export const postList = {
+  maxPreviewLength: 300,
+}
+
 export const popularPosts = {
   enabled: Boolean(
     process.env.GA_PROPERTY_ID && process.env.GA_CREDENTIALS_JSON
@@ -19,10 +23,6 @@ export const popularPosts = {
     credentialsJson: process.env.GA_CREDENTIALS_JSON,
   },
 } satisfies NonNullable<ThemeConfig['popularPosts']>
-
-export const postList = {
-  maxPreviewLength: 300,
-}
 
 export default async () => {
   const base = process.env.VITEPRESS_BASE || '/'

@@ -1,11 +1,6 @@
 @import 'tailwindcss';
 @import 'vitepress-theme-neptu-blog/tailwind-source.css';
 
-/* :root { */
-/*   --primary-hue: 115; */
-/*   --layout-hue: 115; */
-/* } */
-
 .home-layout {
   background-image: url('https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?q=80&w=1920&auto=format&fit=crop');
   background-color: #000000;
