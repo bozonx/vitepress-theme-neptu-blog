@@ -2,6 +2,8 @@
 title: Support This Blog
 description: Demo donate page — the target of the donate button in the nav, sidebar, and post footer.
 layout: page
+translations:
+  ru: /ru/page/donate
 ---
 
 # Support This Blog

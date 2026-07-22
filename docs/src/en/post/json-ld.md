@@ -13,6 +13,8 @@ jsonLd: |
   "@type": TechArticle
   proficiencyLevel: Beginner
   dependencies: VitePress, vitepress-theme-neptu-blog
+translations:
+  ru: /ru/post/json-ld
 ---
 
 Open your browser's dev tools on this page and look in `<head>` for a

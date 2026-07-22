@@ -79,12 +79,12 @@ export default defineConfig(
     },
   },
   {
-    files: [
-      'src/components/NeptuAuthor.vue',
-      'src/components/post/PostImage.vue',
-      'src/components/utility/HomeHero.vue',
-    ],
+    files: ['src/components/NeptuAuthor.vue', 'src/components/post/PostImage.vue', 'src/components/utility/HomeHero.vue'],
     rules: { 'vue/no-v-html': 'off' },
+  },
+  {
+    files: ['**/.vitepress/theme/Layout.vue'],
+    rules: { 'vue/multi-word-component-names': 'off' },
   },
   eslintConfigPrettier
 )

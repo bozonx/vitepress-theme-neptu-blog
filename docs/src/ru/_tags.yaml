@@ -2,6 +2,11 @@
 # облако тегов и получить страницу /ru/tags/<slug>/1.
 - name: guide # мета-посты о самом демо
 - name: frontmatter # демонстрация полей frontmatter
+- name: cover # настройки изображения обложки
 - name: media # медиа-компоненты
 - name: seo # SEO-возможности
+- name: json-ld # структурированные данные
+- name: canonical # канонические ссылки / кросспостинг
 - name: i18n # локализация / hreflang
+- name: preview # настройки превью и поиска
+

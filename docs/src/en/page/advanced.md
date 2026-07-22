@@ -4,6 +4,8 @@ description: >
   Extend the theme without forking it — custom transform hooks, a fully custom
   post layout, and syncing content from a CMS or API before build.
 layout: page
+translations:
+  ru: /ru/page/advanced
 ---
 
 # Advanced — Hooks & External Content

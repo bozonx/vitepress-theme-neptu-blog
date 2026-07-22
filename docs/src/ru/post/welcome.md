@@ -13,6 +13,8 @@ coverDescr: "Фото [Alejandro Escamilla](https://unsplash.com/@alejandroescam
 tags:
   - guide
 descrAsPreview: true
+translations:
+  en: /en/post/welcome
 ---
 
 Добро пожаловать! Весь этот сайт — **живое руководство** по теме

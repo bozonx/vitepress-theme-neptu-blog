@@ -2,6 +2,8 @@
 title: О демо
 description: Что это за демо-блог и как использовать его как основу для своего сайта.
 layout: page
+translations:
+  en: /en/page/about
 ---
 
 # О демо

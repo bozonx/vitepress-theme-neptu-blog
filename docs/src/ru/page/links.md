@@ -2,6 +2,8 @@
 title: Ссылки
 description: Пример простой отдельной страницы, доступной из нижних ссылок сайдбара.
 layout: page
+translations:
+  en: /en/page/links
 ---
 
 # Ссылки

@@ -2,6 +2,8 @@
 title: About This Demo
 description: What this example blog is, and how to use it as a starting point for your own site.
 layout: page
+translations:
+  ru: /ru/page/about
 ---
 
 # About This Demo

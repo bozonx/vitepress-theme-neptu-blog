@@ -22,6 +22,8 @@ podcasts:
   spotify: https://open.spotify.com/
   applepodcasts: https://podcasts.apple.com/
   youtube: https://www.youtube.com/
+translations:
+  en: /en/post/full-featured
 ---
 
 Это пост-**«максимум»**: включены все необязательные поля frontmatter, чтобы в

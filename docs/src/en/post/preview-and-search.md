@@ -9,6 +9,8 @@ tags:
   - frontmatter
   - preview
 previewText: "This card's text was set explicitly with previewText — notice it differs from the first paragraph of the post body."
+translations:
+  ru: /ru/post/preview-and-search
 ---
 
 Post-list cards (like the ones on **Recent**, **Tags**, and **Author** pages)

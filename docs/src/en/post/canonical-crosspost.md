@@ -14,6 +14,8 @@ tags:
   - seo
   - canonical
 descrAsPreview: true
+translations:
+  ru: /ru/post/canonical-crosspost
 ---
 
 A **canonical link** tells search engines which URL is the authoritative version

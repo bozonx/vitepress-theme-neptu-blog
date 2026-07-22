@@ -2,6 +2,8 @@
 title: Links
 description: Demo of a simple standalone page reached from the sidebar bottom links.
 layout: page
+translations:
+  ru: /ru/page/links
 ---
 
 # Links

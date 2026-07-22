@@ -13,6 +13,8 @@ coverDescr: "Photo by [Alejandro Escamilla](https://unsplash.com/@alejandroescam
 tags:
   - guide
 descrAsPreview: true
+translations:
+  ru: /ru/post/welcome
 ---
 
 Welcome! This whole site is a **living manual** for

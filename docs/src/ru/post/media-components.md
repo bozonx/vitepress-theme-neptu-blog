@@ -12,6 +12,8 @@ coverAlt: Аудиооборудование и микшерный пульт
 tags:
   - media
 descrAsPreview: true
+translations:
+  en: /en/post/media-components
 ---
 
 Тема регистрирует четыре медиа-компонента глобально, поэтому их можно вставлять

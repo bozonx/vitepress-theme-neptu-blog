@@ -12,6 +12,8 @@ coverAlt: Audio equipment and a mixing board
 tags:
   - media
 descrAsPreview: true
+translations:
+  ru: /ru/post/media-components
 ---
 
 The theme registers four media components globally, so you can drop them into any

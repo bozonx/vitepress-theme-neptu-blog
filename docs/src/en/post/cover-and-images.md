@@ -15,6 +15,8 @@ tags:
   - cover
   - media
 descrAsPreview: true
+translations:
+  ru: /ru/post/cover-and-images
 ---
 
 The image above is this post's **cover**, set entirely from frontmatter. Below,

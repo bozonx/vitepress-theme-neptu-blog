@@ -36,6 +36,8 @@ podcasts:
   spotify: https://open.spotify.com/
   applepodcasts: https://podcasts.apple.com/
   youtube: https://www.youtube.com/
+translations:
+  ru: /ru/post/full-featured
 ---
 
 This is the **kitchen-sink** post. Every optional frontmatter field is turned on
