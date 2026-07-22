@@ -1,6 +1,6 @@
 alex:
-  name: 'Alex Developer'
-  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex'
+  name: 'Ivan Developer'
+  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Ivan1'
   bio: 'Software engineer, open-source enthusiast, and writer.'
   social:
     - icon: 'fa6-brands:github'
