@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vitepress dev src",
     "pagefind": "pagefind --verbose --site ./src/.vitepress/dist --glob '**/*.html'",
-    "build": "vitepress build src && pnpm pagefind",
+    "build": "vitepress build src --base /vitepress-theme-neptu-blog/ && pnpm pagefind",
     "preview": "vitepress preview src --base /vitepress-theme-neptu-blog/",
     "typecheck": "vue-tsc --noEmit"
   },
