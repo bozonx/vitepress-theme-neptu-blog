@@ -26,9 +26,8 @@ const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
     >
       <li
         :class="{
-          hidden: item.mobile ? !props.isMobile : false,
           'max-lg:hidden': item.desktopOnly,
-          'lg:hidden': item.mobileOnly,
+          'lg:hidden': item.mobile || item.mobileOnly,
         }"
       >
         <SideBarHeader

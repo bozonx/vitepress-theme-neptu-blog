@@ -52,7 +52,7 @@ const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) 
   <nav
     :class="[
       'flex w-full py-2 px-2 gap-x-1 top-bar pl-[0.675rem]',
-      props.isMobile && 'fixed z-[1] topbar--mobile bg-[var(--topbar-mobile-bg)] border-b border-[var(--topbar-mobile-border)] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] dark:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.2)]',
+      'max-lg:fixed max-lg:z-[1] max-lg:topbar--mobile max-lg:bg-[var(--topbar-mobile-bg)] max-lg:border-b max-lg:border-[var(--topbar-mobile-border)] max-lg:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.07)] max-lg:dark:shadow-[0px_4px_4px_0px_rgba(0,0,0,0.2)]',
     ]"
   >
     <div class="flex-1 flex gap-x-3">

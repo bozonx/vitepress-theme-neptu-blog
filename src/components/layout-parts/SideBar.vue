@@ -247,7 +247,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :class="{ hidden: !drawerOpen }">
+  <div :class="{ 'max-lg:hidden': !drawerOpen }">
     <div
       ref="drawerRef"
       :role="props.isMobile ? 'dialog' : undefined"

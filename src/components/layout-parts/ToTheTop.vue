@@ -9,6 +9,6 @@ const props = defineProps<{
 </script>
 
 <template>
-  <ToTheTopMobile v-if="props.isMobile" :scroll-y="scrollY" />
-  <ToTheTopDesktop v-else :scroll-y="scrollY" />
+  <ToTheTopMobile class="lg:hidden" :scroll-y="scrollY" />
+  <ToTheTopDesktop class="max-lg:hidden" :scroll-y="scrollY" />
 </template>
