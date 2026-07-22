@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BaseLink from './BaseLink.vue'
 import TagsList from './TagsList.vue'
 
 interface TagItem {
@@ -9,6 +10,7 @@ interface TagItem {
 
 const props = withDefaults(
   defineProps<{
+    postUrl?: string
     date?: string
     localeDate?: string
     tags?: TagItem[]
@@ -29,7 +31,20 @@ const props = withDefaults(
 <template>
   <div v-if="props.thumbnail && props.showThumbnail" class="md:flex w-full">
     <div class="card-item-img-col shrink-0 mr-4">
+      <BaseLink v-if="props.postUrl" :href="props.postUrl" class="block">
+        <img
+          :src="props.thumbnail"
+          :height="coverHeight"
+          :width="coverWidth"
+          loading="lazy"
+          decoding="async"
+          aria-hidden="true"
+          class="card-item-img w-full h-auto rounded-[0.3125rem]"
+          alt=""
+        />
+      </BaseLink>
       <img
+        v-else
         :src="props.thumbnail"
         :height="coverHeight"
         :width="coverWidth"

@@ -2,7 +2,7 @@
 // see https://github.com/vuejs/vitepress/blob/9b1bb4ffc6423ef0f16a213133980fdb6e9bf552/src/client/theme-default/components/VPSwitch.vue
 // and https://github.com/vuejs/vitepress/blob/9b1bb4ffc6423ef0f16a213133980fdb6e9bf552/src/client/theme-default/components/VPSwitchAppearance.vue
 import { useData } from 'vitepress'
-import { inject, ref, watchPostEffect } from 'vue'
+import { inject, computed } from 'vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { isDark } = useData()
@@ -11,10 +11,8 @@ const toggleAppearance = inject('toggle-appearance', () => {
   isDark.value = !isDark.value
 })
 
-const switchTitle = ref('')
-
-watchPostEffect(() => {
-  switchTitle.value = isDark.value
+const switchTitle = computed(() => {
+  return isDark.value
     ? theme.value.lightModeSwitchTitle || 'Switch to light theme'
     : theme.value.darkModeSwitchTitle || 'Switch to dark theme'
 })

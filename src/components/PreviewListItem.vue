@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useData, withBase } from 'vitepress'
+import { useData } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
+import BaseLink from './BaseLink.vue'
 import PreviewWithImage from './PreviewWithImage.vue'
 import type { PostLite } from '../types.d.ts'
 
@@ -29,8 +30,20 @@ const params = computed(() => ({
 </script>
 
 <template>
-  <a :href="props.item.url ? withBase(props.item.url) : '#'" class="card-item preview">
+  <article class="card-item preview">
+    <BaseLink
+      v-if="props.item.url"
+      :href="props.item.url"
+      class="block no-underline text-inherit hover:no-underline"
+    >
+      <h2
+        class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight hover:brightness-125"
+      >
+        {{ props.item.title }}
+      </h2>
+    </BaseLink>
     <h2
+      v-else
       class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight"
     >
       {{ props.item.title }}
@@ -38,6 +51,7 @@ const params = computed(() => ({
 
     <PreviewWithImage
       v-bind="params"
+      :post-url="props.item.url"
       :thumbnail="props.item.thumbnail"
       :cover-height="props.item.coverHeight"
       :cover-width="props.item.coverWidth"
@@ -46,5 +60,5 @@ const params = computed(() => ({
       :show-thumbnail="theme.postList?.showThumbnail ?? true"
       :show-preview="theme.postList?.showPreview ?? true"
     />
-  </a>
+  </article>
 </template>
