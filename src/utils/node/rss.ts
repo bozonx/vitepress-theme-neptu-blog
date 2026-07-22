@@ -5,6 +5,7 @@ import type { ExtendedSiteConfig, PostFrontmatter, Author } from '../../types.d.
 type RssSiteConfig = Partial<Omit<ExtendedSiteConfig, 'userConfig' | 'site'>> & {
   site?: {
     locales?: Record<string, Partial<ExtendedSiteConfig['site']['locales'][string]>>
+    themeConfig?: ExtendedSiteConfig['site']['locales'][string]['themeConfig']
   }
   userConfig?: Partial<ExtendedSiteConfig['userConfig']>
 }
@@ -186,7 +187,7 @@ export function makeAuthorForRss(
     config.site?.locales?.[localeIndex]?.themeConfig?.authors ??
     config.userConfig?.locales?.[localeIndex]?.themeConfig?.authors ??
     config.userConfig?.themeConfig?.authors ??
-    (config as any).site?.themeConfig?.authors
+    config.site?.themeConfig?.authors
 
   if (!Array.isArray(authors)) return
 
