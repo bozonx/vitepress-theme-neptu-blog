@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Navigation & Locales', () => {
   test('language dropdown toggles locale links', async ({ page }) => {
-    await page.goto('/en/recent/1')
+    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
 
     const langBtn = page.locator('.switch-lang-btn').first()
     await expect(langBtn).toBeVisible()
@@ -18,7 +18,7 @@ test.describe('Navigation & Locales', () => {
   })
 
   test('pagination navigates to page 2', async ({ page }) => {
-    await page.goto('/en/recent/1')
+    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
 
     const pagination = page.locator('.neptu-pagination, nav[aria-label="Pagination"]').first()
     if (await pagination.isVisible()) {
@@ -34,7 +34,7 @@ test.describe('Navigation & Locales', () => {
   test('mobile sidebar toggle opens drawer on mobile viewport', async ({ page, isMobile }) => {
     if (!isMobile) return
 
-    await page.goto('/en/recent/1')
+    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
 
     const burgerBtn = page.locator('.top-bar button').first()
     if (await burgerBtn.isVisible()) {

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('SEO & Meta Tags & 404', () => {
   test('canonical and hreflang links are correctly set', async ({ page }) => {
-    await page.goto('/en/')
+    await page.goto('/en/', { waitUntil: 'domcontentloaded' })
 
     const canonical = page.locator('link[rel="canonical"]')
     await expect(canonical).toHaveAttribute('href', /https?:\/\//)
@@ -12,7 +12,7 @@ test.describe('SEO & Meta Tags & 404', () => {
   })
 
   test('JSON-LD schema metadata is valid on post page', async ({ page }) => {
-    await page.goto('/en/post/full-featured')
+    await page.goto('/en/post/full-featured', { waitUntil: 'domcontentloaded' })
 
     const script = page.locator('script[type="application/ld+json"]').first()
     await expect(script).toBeAttached()
@@ -26,7 +26,7 @@ test.describe('SEO & Meta Tags & 404', () => {
   })
 
   test('renders 404 page for non-existent routes', async ({ page }) => {
-    await page.goto('/en/non-existent-page-404-test')
+    await page.goto('/en/non-existent-page-404-test', { waitUntil: 'domcontentloaded' })
     await expect(page.locator('body')).toContainText(/404|Not Found/i)
   })
 })
