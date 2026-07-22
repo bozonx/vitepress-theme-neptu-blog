@@ -5,7 +5,7 @@ import SwitchLang from './SwitchLang.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
-const props = defineProps<{
+defineProps<{
   isMobile?: boolean
 }>()
 const emit = defineEmits<{
