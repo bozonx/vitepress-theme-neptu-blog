@@ -302,7 +302,7 @@ onUnmounted(() => {
             />
           </SideBarGroup>
 
-          <SideBarGroup v-if="sidebarConfig.tags">
+          <SideBarGroup v-if="theme.sidebar?.tags">
             <SideBarTags
               :locale-posts="localePosts"
               @item-click="closeDrawer"
