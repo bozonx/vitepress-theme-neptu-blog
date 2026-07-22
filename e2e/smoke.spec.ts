@@ -56,7 +56,7 @@ test('about page loads', async ({ page }) => {
 test('tags page loads', async ({ page }) => {
   await page.goto('/en/tags/')
   await expect(page).toHaveTitle(/Tags/)
-  await expect(page.getByText('guide').first()).toBeVisible()
+  await expect(page.locator('main').getByText('guide').first()).toBeVisible()
 })
 
 test('authors page loads', async ({ page }) => {
