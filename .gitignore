@@ -2,6 +2,7 @@ dist
 src/.vitepress/cache/
 src/.vitepress/dist/
 .neptu-vault.yaml
+test-results/
 
 # Local env files
 *.local
