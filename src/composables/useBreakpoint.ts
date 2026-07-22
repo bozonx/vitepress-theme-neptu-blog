@@ -11,7 +11,7 @@ export function useBreakpoint(
   isMobile: Ref<boolean>
 } {
   const windowWidth = ref(0)
-  const isMobile = ref(true)
+  const isMobile = ref(false)
 
   const getWin = () => win || (inBrowser ? window : undefined)
 
