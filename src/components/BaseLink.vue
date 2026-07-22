@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Internal component — consumed by other components only.
-import { useData, useRoute } from 'vitepress'
+import { useData, useRoute, withBase } from 'vitepress'
 import { ref, watch, computed } from 'vue'
 import { resolveI18Href, isExternalUrl } from '../utils/shared/index.ts'
 
@@ -18,10 +18,13 @@ const { localeIndex } = useData()
 const route = useRoute()
 const props = defineProps<Props>()
 // Reactive computed properties
-const resolvedHref = computed(() =>
+const i18nHref = computed(() =>
   resolveI18Href(props.href || '', localeIndex.value)
 )
 const isExternal = computed(() => isExternalUrl(props.href))
+const resolvedHref = computed(() =>
+  isExternal.value ? i18nHref.value : withBase(i18nHref.value)
+)
 const tag = computed(() => props.tag || 'a')
 const target = computed(() => {
   if (tag.value === 'a') {
@@ -48,26 +51,27 @@ const normalizePath = (path = '') => {
 const active = ref(checkActive())
 
 function checkActive(): boolean {
+  const targetHref = i18nHref.value
   switch (props.activeCompareMethod) {
     case 'soft':
-      return route.path.startsWith(resolvedHref.value)
+      return route.path.startsWith(targetHref)
 
     case 'pagination': {
       const routeEndsWithDigit = /\d+$/.test(route.path)
 
       if (routeEndsWithDigit) {
-        const hrefEndsWithDigit = /\d+$/.test(resolvedHref.value)
+        const hrefEndsWithDigit = /\d+$/.test(targetHref)
         if (!hrefEndsWithDigit) return false
 
         const normalizedRoutePath = normalizePath(route.path)
-        const normalizedHref = normalizePath(resolvedHref.value)
+        const normalizedHref = normalizePath(targetHref)
         return normalizedRoutePath === normalizedHref
       }
-      return route.path.startsWith(resolvedHref.value)
+      return route.path.startsWith(targetHref)
     }
 
     case 'softPagination': {
-      const normalizedHrefForSoft = normalizePath(resolvedHref.value)
+      const normalizedHrefForSoft = normalizePath(targetHref)
       return route.path.startsWith(normalizedHrefForSoft)
     }
 
@@ -75,10 +79,10 @@ function checkActive(): boolean {
       return false
 
     case 'strict':
-      return route.path === resolvedHref.value
+      return route.path === targetHref
 
     default:
-      return route.path === resolvedHref.value
+      return route.path === targetHref
   }
 }
 

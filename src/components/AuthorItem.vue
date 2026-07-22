@@ -1,6 +1,6 @@
 <template>
   <a
-    :href="`/${localeIndex}/authors/${props.item.id}/1`"
+    :href="withBase(`/${localeIndex}/authors/${props.item.id}/1`)"
     class="card-item author-preview"
   >
     <h2 class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight">{{ props.item.name }}</h2>
@@ -9,7 +9,7 @@
       <!-- Author image -->
       <div v-if="props.item.image" class="card-item-img-col shrink-0 mr-4">
         <img
-          :src="props.item.image"
+          :src="props.item.image.startsWith('/') ? withBase(props.item.image) : props.item.image"
           :height="props.item.imageHeight"
           :width="props.item.imageWidth"
           :alt="props.item.name"
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import { pluralize } from '../utils/shared/index.ts'
 import { useUiTheme } from '../composables/useUiTheme.ts'
 

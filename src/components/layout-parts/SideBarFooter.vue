@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 
 import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
@@ -39,7 +39,7 @@ const socialLinks: SocialLinkItem[] = [
 
 if (theme.value.sidebar?.rssFeed && hasFormat('rss')) {
   socialLinks.push({
-    href: `/${localeIndex.value}/feed.rss`,
+    href: withBase(`/${localeIndex.value}/feed.rss`),
     icon: theme.value.rssIcon,
     title: theme.value.t.links.rssFeed,
     target: '_blank',
@@ -48,7 +48,7 @@ if (theme.value.sidebar?.rssFeed && hasFormat('rss')) {
 
 if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
   socialLinks.push({
-    href: `/${localeIndex.value}/feed.atom`,
+    href: withBase(`/${localeIndex.value}/feed.atom`),
     icon: theme.value.atomIcon,
     title: theme.value.t.links.atomFeed,
     target: '_blank',

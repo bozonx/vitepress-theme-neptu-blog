@@ -16,6 +16,11 @@ vi.mock('vitepress', async (importOriginal) => {
   return {
     ...actual,
     inBrowser: true,
+    withBase: (path: string) => {
+      if (!path || typeof path !== 'string' || !path.startsWith('/')) return path
+      const base = (mockSite.value?.base || '/').replace(/\/+$/, '')
+      return base ? `${base}${path}` : path
+    },
     useData: () => ({
       site: mockSite,
       theme: mockTheme,

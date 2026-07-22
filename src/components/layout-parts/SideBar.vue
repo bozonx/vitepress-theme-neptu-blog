@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import { ref, watch, inject, onUnmounted, computed, nextTick } from 'vue'
 
 import { SIDEBAR_WIDTH } from '../../constants.ts'
@@ -266,12 +266,12 @@ onUnmounted(() => {
       <div>
         <a
           v-if="theme.sidebarLogoSrc"
-          :href="`/${localeIndex}/`"
+          :href="withBase(`/${localeIndex}/`)"
           class="sidebar-logo block"
           :title="theme.t.toHome"
         >
           <img
-            :src="theme.sidebarLogoSrc"
+            :src="theme.sidebarLogoSrc.startsWith('/') ? withBase(theme.sidebarLogoSrc) : theme.sidebarLogoSrc"
             loading="lazy"
             decoding="async"
             width="320"
@@ -287,7 +287,7 @@ onUnmounted(() => {
           "
           class="sidebar-site-title text-sm muted font-bold px-1 pt-[0.35rem] pb-3 pl-[0.65rem]"
         >
-          <a :href="`/${localeIndex}/`" :title="theme.t.toHome">
+          <a :href="withBase(`/${localeIndex}/`)" :title="theme.t.toHome">
             {{ theme.sidebar?.blogTitle || theme.blogTitle }}
           </a>
         </h4>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
 import PreviewWithImage from './PreviewWithImage.vue'
@@ -29,7 +29,7 @@ const params = computed(() => ({
 </script>
 
 <template>
-  <a :href="props.item.url" class="card-item preview">
+  <a :href="props.item.url ? withBase(props.item.url) : '#'" class="card-item preview">
     <h2
       class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight"
     >

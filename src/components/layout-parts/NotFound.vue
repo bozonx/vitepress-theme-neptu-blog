@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 
 const { localeIndex, theme } = useData()
 const pageNotFoundText =
@@ -15,7 +15,7 @@ const toHomeText =
     <div>
       <h1 class="text-white text-4xl">{{ pageNotFoundText }}</h1>
       <div class="text-xl mt-1">
-        <a class="simple-link" :href="`/${localeIndex}/`">{{ toHomeText }}</a>
+        <a class="simple-link" :href="withBase(`/${localeIndex}/`)">{{ toHomeText }}</a>
       </div>
     </div>
   </div>
