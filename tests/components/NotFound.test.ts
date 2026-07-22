@@ -49,4 +49,14 @@ describe('NotFound', () => {
     expect(wrapper.text()).toContain('Fallback Not Found')
     expect(wrapper.find('a').text()).toBe('Fallback Home')
   })
+
+  it('links to "/" when localeIndex is "root" (single-locale site)', () => {
+    mockLocaleIndex.value = 'root'
+    mockTheme.value = {
+      t: { pageNotFound: 'Not found', toHome: 'Home' },
+    }
+    const wrapper = mount(NotFound)
+
+    expect(wrapper.find('a').attributes('href')).toBe('/')
+  })
 })

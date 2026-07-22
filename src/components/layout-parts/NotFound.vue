@@ -6,6 +6,8 @@ const pageNotFoundText =
   theme.value.notFound?.title || theme.value.t?.pageNotFound || 'Page not found'
 const toHomeText =
   theme.value.notFound?.linkText || theme.value.t?.toHome || 'Home'
+// VitePress uses 'root' for the default locale; map it to '/' to avoid '/root/'
+const homeLink = localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const toHomeText =
     <div>
       <h1 class="text-white text-4xl">{{ pageNotFoundText }}</h1>
       <div class="text-xl mt-1">
-        <a class="simple-link" :href="withBase(`/${localeIndex}/`)">{{ toHomeText }}</a>
+        <a class="simple-link" :href="withBase(homeLink)">{{ toHomeText }}</a>
       </div>
     </div>
   </div>
