@@ -150,7 +150,7 @@ onUnmounted(() => {
 <style scoped>
 .video-file {
   border: 1px solid var(--gray-150);
-  background: #ffffff;
+  background: var(--gray-50);
   border-left: 4px solid var(--primary-btn-bg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -190,23 +190,23 @@ onUnmounted(() => {
 
 .error-message {
   color: var(--vp-c-danger-1);
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--vp-c-danger-soft);
+  border: 1px solid var(--vp-c-danger-3, var(--vp-c-danger-soft));
 }
 
 .error-message .iconify {
-  color: #dc2626;
+  color: var(--vp-c-danger-1);
   flex-shrink: 0;
 }
 
 .dark .error-message {
-  background: #7f1d1d;
-  border-color: #dc2626;
-  color: #fca5a5;
+  background: var(--vp-c-danger-soft);
+  border-color: var(--vp-c-danger-3, var(--vp-c-danger-soft));
+  color: var(--vp-c-danger-1);
 }
 
 .dark .error-message .iconify {
-  color: #fca5a5;
+  color: var(--vp-c-danger-1);
 }
 
 @media (max-width: 640px) {

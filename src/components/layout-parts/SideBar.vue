@@ -343,7 +343,7 @@ onUnmounted(() => {
           type="button"
           :title="theme.t.closeMenu"
           :aria-label="theme.t.closeMenu"
-          class="py-6 px-6 cursor-pointer text-gray-300 hover:text-white"
+          class="py-6 px-6 cursor-pointer text-[var(--gray-400)] hover:text-[var(--body-text-color)]"
           @click.prevent.stop="closeDrawer"
         >
           <Icon icon="fa6-solid:xmark" class="text-2xl" aria-hidden="true" />
@@ -372,16 +372,16 @@ onUnmounted(() => {
 }
 
 .sidebar-gradient div {
-  background: rgb(255, 255, 255);
+  background: var(--drawer-bg);
   background: linear-gradient(
     0deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
+    var(--drawer-bg) 0%,
+    transparent 100%
   );
 }
 
 .dark .sidebar-gradient div {
-  background: rgb(17, 24, 39);
+  background: var(--gray-900);
   background: linear-gradient(
     0deg,
     var(--gray-900) 0%,

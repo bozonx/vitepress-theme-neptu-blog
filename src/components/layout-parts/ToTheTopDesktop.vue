@@ -30,7 +30,7 @@ watch(
     'bottom-0 fixed transition-opacity will-change-[opacity] to-the-top-desk',
     !showed && 'hidden',
   ]" :style="{ opacity, 'transition-duration': `${animationMs}ms` }" aria-hidden="true">
-    <div class="mb-9 ml-4 flex gap-x-2 px-2 py-2 cursor-pointer text-[var(--gray-600)] hover:text-black dark:text-[var(--gray-300)] dark:hover:text-white" @click.prevent.stop="handleClick">
+    <div class="mb-9 ml-4 flex gap-x-2 px-2 py-2 cursor-pointer text-[var(--gray-600)] hover:text-[var(--gray-900)] dark:text-[var(--gray-300)] dark:hover:text-[var(--gray-100)]" @click.prevent.stop="handleClick">
       <Icon icon="fa6-solid:arrow-up" width="1.3rem" height="1.3rem" />
       {{ theme.returnToTopLabel }}
     </div>

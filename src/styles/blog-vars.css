@@ -21,7 +21,7 @@
   --body-line-height: 1.75rem;
   --font-size-mobile: 1.125rem;
   --line-height-mobile: 1.75rem;
-  --body-bg: #fff;
+  --body-bg: var(--gray-50);
   --body-text-color: var(--gray-800);
   --util-page-header-color: var(--gray-500);
   /**** TopBar */
@@ -45,10 +45,10 @@
   --backdrop-bg: rgba(0, 0, 0, 0.85);
 
   /**** SwitchAppearance */
-  --switch-appearance-border-color: #c2c2c4;
+  --switch-appearance-border-color: var(--gray-300);
   --switch-appearance-bg-color: rgba(142, 150, 170, 0.14);
-  --switch-appearance-border-color-hover: #3451b2;
-  --switch-appearance-check-bg: #ffffff;
+  --switch-appearance-border-color-hover: var(--primary-btn-bg);
+  --switch-appearance-check-bg: var(--gray-50);
   --switch-appearance-icon-color: rgba(60, 60, 67, 0.78);
 
   /**** Styles of default vitepress template. It is used in search button */
@@ -76,7 +76,7 @@
   --util-page-header-color: var(--gray-400);
   /**** TopBar */
   --topbar-mobile-bg: var(--gray-950);
-  --topbar-mobile-border: #000;
+  --topbar-mobile-border: var(--gray-900);
 
   /**** Buttons */
   --btn-bg: var(--gray-790);
@@ -90,15 +90,15 @@
   --tag-item-bg-active: var(--primary-btn-bg-active);
 
   /**** Sidebar */
-  --drawer-border-color: #000;
+  --drawer-border-color: var(--gray-900);
   --drawer-bg: var(--gray-800);
 
   /**** SwitchAppearance */
   --switch-appearance-icon-color: rgba(255, 255, 245, 0.86);
-  --switch-appearance-border-color: #3c3f44;
+  --switch-appearance-border-color: var(--gray-700);
   --switch-appearance-bg-color: rgba(101, 117, 133, 0.16);
-  --switch-appearance-border-color-hover: #a8b1ff;
-  --switch-appearance-check-bg: #000000;
+  --switch-appearance-border-color-hover: var(--primary-btn-bg);
+  --switch-appearance-check-bg: var(--gray-950);
 
   /**** Styles of default vitepress template. It is used in search button */
   --vp-c-divider: var(--gray-700);

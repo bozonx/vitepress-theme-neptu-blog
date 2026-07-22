@@ -12,10 +12,10 @@ const homeLink = localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`
 
 <template>
   <div
-    class="notfound-page bg-[var(--gray-900)] flex items-center justify-center h-screen"
+    class="notfound-page bg-[var(--body-bg)] flex items-center justify-center h-screen"
   >
     <div>
-      <h1 class="text-white text-4xl">{{ pageNotFoundText }}</h1>
+      <h1 class="text-[var(--body-text-color)] text-4xl">{{ pageNotFoundText }}</h1>
       <div class="text-xl mt-1">
         <a class="simple-link" :href="withBase(homeLink)">{{ toHomeText }}</a>
       </div>

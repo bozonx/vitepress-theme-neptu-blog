@@ -51,11 +51,11 @@
   align-items: center;
   justify-content: center;
   padding: 0 0px 3px 1px;
-  background: #222;
+  background: var(--gray-800);
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  color: #bbb;
+  color: var(--gray-400);
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
 }
 
@@ -89,7 +89,7 @@
 /* Активное состояние модального окна */
 .search-modal.active {
   display: flex;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--backdrop-bg);
 }
 
 /* Классы для анимации появления */
@@ -113,14 +113,14 @@
     background: rgba(0, 0, 0, 0);
   }
   to {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--backdrop-bg);
   }
 }
 
 /* Анимация исчезновения фона модального окна */
 @keyframes modalFadeOut {
   from {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--backdrop-bg);
   }
   to {
     background: rgba(0, 0, 0, 0);

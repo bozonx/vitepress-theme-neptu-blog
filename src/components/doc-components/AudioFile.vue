@@ -567,7 +567,7 @@ onUnmounted(() => {
 .audio-file {
   border: 1px solid var(--gray-150);
   border-left: 3px solid var(--primary-btn-bg);
-  background: #ffffff;
+  background: var(--gray-50);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -692,22 +692,22 @@ onUnmounted(() => {
 /* Error message */
 .error-message {
   color: var(--vp-c-danger-1);
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+  background: var(--vp-c-danger-soft);
+  border: 1px solid var(--vp-c-danger-3, var(--vp-c-danger-soft));
 }
 
 .error-message .iconify {
-  color: #dc2626;
+  color: var(--vp-c-danger-1);
 }
 
 .dark .error-message {
-  background: rgba(127, 29, 29, 0.4);
-  border-color: #dc2626;
-  color: #fca5a5;
+  background: var(--vp-c-danger-soft);
+  border-color: var(--vp-c-danger-3, var(--vp-c-danger-soft));
+  color: var(--vp-c-danger-1);
 }
 
 .dark .error-message .iconify {
-  color: #fca5a5;
+  color: var(--vp-c-danger-1);
 }
 
 /* Animation */

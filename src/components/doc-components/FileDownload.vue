@@ -109,7 +109,7 @@ const fileIcon = computed(() => {
 
 <template>
   <div
-    class="file-download flex items-center justify-between rounded-xl gap-4 transition-transform duration-200 mt-[0.325rem] mb-[0.325rem] p-4 pl-8 border border-[var(--gray-150)] bg-white border-l-4 border-l-[var(--primary-btn-bg)] shadow-[0_1px_3px_rgba(0,0,0,0.1)] dark:bg-[var(--gray-850)] dark:border-[var(--gray-800)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] max-sm:flex-col max-sm:items-stretch max-sm:gap-3 max-sm:p-3 max-sm:pl-6 will-change-[transform]"
+    class="file-download flex items-center justify-between rounded-xl gap-4 transition-transform duration-200 mt-[0.325rem] mb-[0.325rem] p-4 pl-8 border border-[var(--gray-150)] bg-[var(--gray-50)] border-l-4 border-l-[var(--primary-btn-bg)] shadow-[0_1px_3px_rgba(0,0,0,0.1)] dark:bg-[var(--gray-850)] dark:border-[var(--gray-800)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3)] max-sm:flex-col max-sm:items-stretch max-sm:gap-3 max-sm:p-3 max-sm:pl-6 will-change-[transform]"
     :class="props.containerClass"
     role="region"
     :aria-label="`${theme.t.fileDownload.fileDownload}: ${downloadFilename}`"
