@@ -58,10 +58,6 @@ jobs:
       - name: Run E2E tests
         run: pnpm e2e
 
-      - name: Rebuild documentation site for Pages
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        run: pnpm docs:build --base /vitepress-theme-neptu-blog/
-
       - name: Upload Pages artifact
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: actions/upload-pages-artifact@v3
