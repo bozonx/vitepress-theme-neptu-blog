@@ -10,7 +10,7 @@ test.describe('Theme Appearance Switcher', () => {
       await burger.click()
     }
 
-    const switchBtn = page.locator('.VPSwitchAppearance, button[role="switch"]').first()
+    const switchBtn = page.locator('.VPSwitchAppearance:visible').first()
     await expect(switchBtn).toBeVisible()
 
     const html = page.locator('html')

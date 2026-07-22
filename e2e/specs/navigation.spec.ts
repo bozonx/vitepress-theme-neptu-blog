@@ -40,7 +40,7 @@ test.describe('Navigation & Locales', () => {
     const burgerBtn = page.locator('.top-bar button').first()
     if (await burgerBtn.isVisible()) {
       await burgerBtn.click()
-      const sidebar = page.locator('.sidebar, aside, .sidebar-drawer').first()
+      const sidebar = page.locator('.app-drawer').first()
       await expect(sidebar).toBeVisible()
     }
   })
