@@ -32,7 +32,6 @@
     "src/**/*.js",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "e2e/**/*.ts",
     "vitest.config.ts"
   ],
   "exclude": ["node_modules", "dist", "docs"]
