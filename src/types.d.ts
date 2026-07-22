@@ -378,6 +378,7 @@ export namespace NeptuBlogTheme {
     srcDir?: string
     outDir?: string
     site: {
+      base?: string
       locales: Record<
         string,
         LocaleDefinition & { label?: string; themeConfig?: Partial<Config> }

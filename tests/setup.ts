@@ -11,21 +11,25 @@ import {
   mockHash,
 } from './mocks/vitepress'
 
-vi.mock('vitepress', () => ({
-  inBrowser: true,
-  useData: () => ({
-    site: mockSite,
-    theme: mockTheme,
-    localeIndex: mockLocaleIndex,
-    page: mockPage,
-    frontmatter: mockFrontmatter,
-    isDark: mockIsDark,
-    hash: mockHash,
-    lang: 'en',
-    title: ref('Test Post'),
-  }),
-  useRoute: () => mockRoute.value,
-}))
+vi.mock('vitepress', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('vitepress')>()
+  return {
+    ...actual,
+    inBrowser: true,
+    useData: () => ({
+      site: mockSite,
+      theme: mockTheme,
+      localeIndex: mockLocaleIndex,
+      page: mockPage,
+      frontmatter: mockFrontmatter,
+      isDark: mockIsDark,
+      hash: mockHash,
+      lang: 'en',
+      title: ref('Test Post'),
+    }),
+    useRoute: () => mockRoute.value,
+  }
+})
 
 vi.mock('@iconify/vue', () => ({
   Icon: {

@@ -1,4 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
+
+const previewCmd = 'pnpm --filter vitepress-theme-neptu-blog-docs preview --port 4173'
+// On CI the docs are already built by a separate workflow step;
+// locally we build first to ensure the preview server has content to serve.
+const webServerCommand = process.env.CI
+  ? previewCmd
+  : `pnpm docs:build && ${previewCmd}`
+
 export default defineConfig({
   testDir: '.',
   outputDir: './test-results',
@@ -15,9 +23,9 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
   webServer: {
-    command: 'pnpm docs:build && pnpm --filter vitepress-theme-neptu-blog-docs preview --port 4173',
+    command: webServerCommand,
     url: 'http://localhost:4173',
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: 180_000,
   },
 })

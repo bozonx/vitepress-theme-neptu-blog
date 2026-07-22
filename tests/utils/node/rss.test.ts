@@ -51,6 +51,17 @@ describe('validatePostForRss', () => {
   it('handles Date object', () => {
     expect(validatePostForRss({ title: 'Hello', date: new Date('2024-06-01') }, '/hello')).toBe(true)
   })
+
+  it('supports explicit reference date parameter for deterministic testing', () => {
+    const fixedNow = new Date('2025-01-01T12:00:00Z')
+    const validDate = '2025-01-02T06:00:00Z' // 18h in future relative to fixedNow (within 24h limit)
+    const invalidFutureDate = '2025-01-03T12:00:00Z' // 48h in future relative to fixedNow
+
+    expect(validatePostForRss({ title: 'Test', date: validDate }, '/test', fixedNow)).toBe(true)
+    expect(validatePostForRss({ title: 'Test', date: invalidFutureDate }, '/test', fixedNow)).toBe(
+      false
+    )
+  })
 })
 
 describe('createPostGuid', () => {

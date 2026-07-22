@@ -10,7 +10,11 @@ type RssSiteConfig = Partial<Omit<ExtendedSiteConfig, 'userConfig' | 'site'>> & 
 }
 
 /** Validates required frontmatter fields for RSS. */
-export function validatePostForRss(frontmatter: PostFrontmatter, url: string): boolean {
+export function validatePostForRss(
+  frontmatter: PostFrontmatter,
+  url: string,
+  now: Date = new Date()
+): boolean {
   const errors: string[] = []
 
   if (!frontmatter.title) {
@@ -26,7 +30,6 @@ export function validatePostForRss(frontmatter: PostFrontmatter, url: string): b
       errors.push('invalid date format')
     } else {
       // Reject dates too far in the future (1 day tolerance)
-      const now = new Date()
       const futureLimit = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       if (date > futureLimit) {
         errors.push('date is too far in the future')
@@ -181,7 +184,9 @@ export function makeAuthorForRss(
 
   const authors =
     config.site?.locales?.[localeIndex]?.themeConfig?.authors ??
-    config.userConfig?.locales?.[localeIndex]?.themeConfig?.authors
+    config.userConfig?.locales?.[localeIndex]?.themeConfig?.authors ??
+    config.userConfig?.themeConfig?.authors ??
+    (config as any).site?.themeConfig?.authors
 
   if (!Array.isArray(authors)) return
 
