@@ -1,5 +1,12 @@
 <template>
-  <div class="pagefind-search-wrapper" @click="showSearchModal">
+  <div
+    class="pagefind-search-wrapper"
+    role="button"
+    tabindex="0"
+    @click="showSearchModal"
+    @keydown.enter="showSearchModal"
+    @keydown.space.prevent="showSearchModal"
+  >
     <slot />
   </div>
 
@@ -17,10 +24,10 @@
       @click="handleBackdropClick"
     >
       <div class="search-modal-inner-wrapper">
-        <button class="search-modal-close-button">×</button>
+        <button type="button" class="search-modal-close-button" aria-label="Close search">×</button>
         <div class="search-modal-content">
           <div class="search-modal-top-bar">
-            <button class="search-modal-mobile-close-button">×</button>
+            <button type="button" class="search-modal-mobile-close-button" aria-label="Close search">×</button>
           </div>
           <div id="pagefind-search"></div>
         </div>

@@ -31,7 +31,7 @@ const isExternal = computed(
   </BaseLink>
 </template>
 
-<style>
+<style scoped>
 .simple-link {
   color: var(--vp-c-brand-1);
 }

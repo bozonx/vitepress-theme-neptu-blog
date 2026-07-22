@@ -6,20 +6,22 @@ import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 
-// Component props
-const props = defineProps({
-  // Audio file URL
-  url: { type: String, required: true },
-  // If the filename is not detected correctly, specify it manually
-  filename: { type: String, default: '' },
-  // CSS classes
-  containerClass: { type: String, default: '' },
-  // Disable buttons
-  disabled: { type: Boolean, default: false },
-})
+const props = withDefaults(
+  defineProps<{
+    url: string
+    filename?: string
+    containerClass?: string
+    disabled?: boolean
+  }>(),
+  {
+    filename: '',
+    containerClass: '',
+    disabled: false,
+  }
+)
 
 // Button disabled state
-const isDisabled = ref(props.disabled)
+const isDisabled = computed(() => props.disabled)
 
 // Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {

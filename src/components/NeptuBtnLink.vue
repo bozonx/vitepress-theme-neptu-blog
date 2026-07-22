@@ -14,16 +14,16 @@ const props = defineProps<Props>()
   </NeptuBtn>
 </template>
 
-<style>
-.btn-link.active .btn-base-inner {
+<style scoped>
+.btn-link.active :deep(.btn-base-inner) {
   text-decoration: underline;
 }
 
-.btn-link .btn-base.active {
+.btn-link :deep(.btn-base.active) {
   color: var(--gray-400);
 }
 
-.btn-link .btn-base.active .btn-base-inner {
+.btn-link :deep(.btn-base.active .btn-base-inner) {
   text-decoration: none;
 }
 </style>

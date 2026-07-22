@@ -45,10 +45,11 @@ const posts = sorted.slice(0, theme.value.perPage || 0)
 const showMorePosts = localePosts.length > (theme.value.perPage || 0)
 </script>
 
-<style>
+<style scoped>
 /* Frosted glass effect for popular posts */
-.dark .home-popular-posts .card-item,
-.home-popular-posts .card-item {
+:deep(.dark .home-popular-posts .card-item),
+:deep(.home-popular-posts .card-item),
+.home-popular-posts :deep(.card-item) {
   background: rgba(0, 0, 0, 0.27);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
@@ -62,8 +63,9 @@ const showMorePosts = localePosts.length > (theme.value.perPage || 0)
 }
 
 /* Hover effects */
-.dark .home-popular-posts .card-item:hover,
-.home-popular-posts .card-item:hover {
+:deep(.dark .home-popular-posts .card-item:hover),
+:deep(.home-popular-posts .card-item:hover),
+.home-popular-posts :deep(.card-item:hover) {
   background: rgba(0, 0, 0, 0.4);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.4),
@@ -76,7 +78,7 @@ const showMorePosts = localePosts.length > (theme.value.perPage || 0)
   text-shadow: 4px 4px 12px rgba(0, 0, 0, 0.8);
 }
 
-.home-popular-posts .more-posts-btn {
+.home-popular-posts :deep(.more-posts-btn) {
   color: var(--gray-300);
 }
 

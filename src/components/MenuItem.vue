@@ -35,7 +35,7 @@ const iconClass = computed(() => {
   </NeptuBtn>
 </template>
 
-<style>
+<style scoped>
 /**** Lighter Btn for use on lighter background */
 .menu-item:hover {
   filter: brightness(99%);

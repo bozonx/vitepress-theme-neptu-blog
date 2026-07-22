@@ -43,5 +43,7 @@ const tags = allTags
   .slice(0, theme.value.sidebarTagsCount || 0)
 const allTagsUrl = `/${localeIndex.value}/tags`
 const showAllTags = allTags.length > (theme.value.sidebarTagsCount || 0)
-const emit = defineEmits(['itemClick'])
+const emit = defineEmits<{
+  (e: 'itemClick'): void
+}>()
 </script>

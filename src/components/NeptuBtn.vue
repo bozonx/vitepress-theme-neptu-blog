@@ -78,7 +78,7 @@ const btnProps = computed(() => {
   </BaseLink>
 </template>
 
-<style>
+<style scoped>
 .btn-base {
   background: var(--btn-bg);
   color: var(--btn-text);

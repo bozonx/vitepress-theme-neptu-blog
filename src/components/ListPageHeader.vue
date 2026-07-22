@@ -31,14 +31,20 @@ import { useUiTheme } from '../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 
-const props = defineProps({
-  baseUrl: { type: String, required: true },
-  showPopularPostsSwitch: { type: Boolean, default: false },
-})
+const props = withDefaults(
+  defineProps<{
+    baseUrl: string
+    showPopularPostsSwitch?: boolean
+  }>(),
+  {
+    showPopularPostsSwitch: false,
+  }
+)
 
 const popularBaseUrl = computed(() => {
   return `${props.baseUrl}/popular`
 })
-const showPopularPostsSwitch =
-  props.showPopularPostsSwitch && theme.value.popularPosts?.enabled
+const showPopularPostsSwitch = computed(
+  () => props.showPopularPostsSwitch && theme.value.popularPosts?.enabled
+)
 </script>

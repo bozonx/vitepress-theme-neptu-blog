@@ -164,6 +164,7 @@ onUnmounted(() => {
       >
         <!-- Close button -->
         <button
+          type="button"
           class="lightbox-btn lightbox-close"
           :aria-label="locales.close || 'Close'"
           @click="close"
@@ -174,6 +175,7 @@ onUnmounted(() => {
         <!-- Prev button -->
         <button
           v-if="hasMultiple"
+          type="button"
           class="lightbox-btn lightbox-prev"
           :aria-label="locales.prev || 'Previous'"
           @click="prev"
@@ -214,6 +216,7 @@ onUnmounted(() => {
         <!-- Next button -->
         <button
           v-if="hasMultiple"
+          type="button"
           class="lightbox-btn lightbox-next"
           :aria-label="locales.next || 'Next'"
           @click="next"
@@ -230,6 +233,7 @@ onUnmounted(() => {
           <span v-if="hasMultiple">{{ currentIndex + 1 }} / {{ items.length }}</span>
           <button
             v-if="isZoomed"
+            type="button"
             class="lightbox-zoom-level"
             :aria-label="locales.resetZoom || 'Reset zoom'"
             @click="resetZoom"

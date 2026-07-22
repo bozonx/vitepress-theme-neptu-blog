@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import { Icon } from '@iconify/vue'

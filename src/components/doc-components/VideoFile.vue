@@ -6,12 +6,19 @@ import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 
-const props = defineProps({
-  url: { type: String, required: true },
-  filename: { type: String, default: '' },
-  containerClass: { type: String, default: '' },
-  disabled: { type: Boolean, default: false },
-})
+const props = withDefaults(
+  defineProps<{
+    url: string
+    filename?: string
+    containerClass?: string
+    disabled?: boolean
+  }>(),
+  {
+    filename: '',
+    containerClass: '',
+    disabled: false,
+  }
+)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const hasError = ref(false)

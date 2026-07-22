@@ -100,7 +100,6 @@ const runOpenAnimation = async () => {
   })
 }
 
-const sidebarConfig = theme.value.sidebar || {}
 const links = computed<SideBarItem[]>(() => {
   const cfg = theme.value.sidebar || {}
   const items: SideBarItem[] = [...(cfg.links || [])]
