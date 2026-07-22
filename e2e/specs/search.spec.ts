@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Pagefind Search Modal', () => {
   test('opens search modal on click and closes on Escape', async ({ page }) => {
-    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
+    await page.goto('en/recent/1', { waitUntil: 'domcontentloaded' })
 
     const searchBtn = page.locator('.search-input-btn').first()
     await expect(searchBtn).toBeVisible()
@@ -16,7 +16,7 @@ test.describe('Pagefind Search Modal', () => {
   })
 
   test('executes search query and renders results', async ({ page }) => {
-    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
+    await page.goto('en/recent/1', { waitUntil: 'domcontentloaded' })
 
     const searchBtn = page.locator('.search-input-btn').first()
     await searchBtn.click()

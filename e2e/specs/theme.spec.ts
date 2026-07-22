@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Theme Appearance Switcher', () => {
   test('toggles dark mode class on html element', async ({ page, isMobile }) => {
-    await page.goto('/en/recent/1', { waitUntil: 'domcontentloaded' })
+    await page.goto('en/recent/1', { waitUntil: 'domcontentloaded' })
 
     if (isMobile) {
       // On mobile view, open sidebar drawer first to access SwitchAppearance

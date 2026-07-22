@@ -51,7 +51,7 @@ describe('SideBar drawer', () => {
   it('renders mobile drawer closed by default', () => {
     const wrapper = mountSideBar(true)
 
-    expect(wrapper.classes()).toContain('hidden')
+    expect(wrapper.classes()).toContain('max-lg:hidden')
     expect(wrapper.vm.isDrawerOpen()).toBe(false)
   })
 
@@ -65,7 +65,7 @@ describe('SideBar drawer', () => {
     vi.advanceTimersByTime(400)
     await nextTick()
 
-    expect(wrapper.classes()).not.toContain('hidden')
+    expect(wrapper.classes()).not.toContain('max-lg:hidden')
     expect(wrapper.vm.isDrawerOpen()).toBe(true)
   })
 
@@ -78,7 +78,7 @@ describe('SideBar drawer', () => {
     await wrapper.setProps({ isMobile: true })
 
     const drawer = wrapper.find('.app-drawer')
-    expect(wrapper.classes()).toContain('hidden')
+    expect(wrapper.classes()).toContain('max-lg:hidden')
     expect(drawer.attributes('style')).toContain('translate3d(-320px, 0, 0)')
   })
 
@@ -93,7 +93,7 @@ describe('SideBar drawer', () => {
     vi.advanceTimersByTime(400)
     await nextTick()
 
-    expect(wrapper.classes()).toContain('hidden')
+    expect(wrapper.classes()).toContain('max-lg:hidden')
     expect(document.body.style.overflow).toBe('')
   })
 

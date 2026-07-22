@@ -54,7 +54,7 @@ describe('SideBarItems', () => {
       global: { stubs: { SideBarHeader: SideBarHeaderStub, MenuItem: MenuItemStub } },
     })
     const li = wrapper.find('li')
-    expect(li.classes()).toContain('hidden')
+    expect(li.classes()).toContain('lg:hidden')
   })
 
   it('shows mobile items on mobile', () => {

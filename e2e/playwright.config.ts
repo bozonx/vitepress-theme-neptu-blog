@@ -14,7 +14,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { outputFolder: './playwright-report', open: 'never' }]],
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: 'http://127.0.0.1:4173/vitepress-theme-neptu-blog/',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -25,7 +25,7 @@ export default defineConfig({
   ],
   webServer: {
     command: webServerCommand,
-    url: 'http://127.0.0.1:4173',
+    url: 'http://127.0.0.1:4173/vitepress-theme-neptu-blog/',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },
