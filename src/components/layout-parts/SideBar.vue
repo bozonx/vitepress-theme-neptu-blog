@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useData, withBase } from 'vitepress'
+import { useData, withBase, inBrowser } from 'vitepress'
 import { ref, watch, inject, onUnmounted, computed, nextTick } from 'vue'
 
 import { SIDEBAR_WIDTH } from '../../constants.ts'
@@ -36,8 +36,11 @@ const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const animationTimeMs = 400
-const drawerOpen = ref(!props.isMobile)
-const drawerTranslateXPx = ref(props.isMobile ? -SIDEBAR_WIDTH : 0)
+// Default to closed (mobile) so SSR HTML doesn't render the drawer open
+// and intercept clicks before hydration. The watch below with
+// `{ immediate: inBrowser }` sets the correct state on the client.
+const drawerOpen = ref(false)
+const drawerTranslateXPx = ref(-SIDEBAR_WIDTH)
 const backdropOpacity = ref(0)
 const drawerRef = ref<HTMLElement | null>(null)
 let animationTimeout: ReturnType<typeof setTimeout> | null = null
@@ -235,7 +238,8 @@ watch(
     backdropOpacity.value = 0
     setBodyScrollLocked(false)
     previousActiveElement = null
-  }
+  },
+  { immediate: inBrowser }
 )
 
 onUnmounted(() => {
