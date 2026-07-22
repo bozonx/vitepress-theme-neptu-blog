@@ -1,0 +1,9 @@
+alex:
+  name: 'Alex Developer'
+  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex'
+  bio: 'Software engineer, open-source enthusiast, and writer.'
+  social:
+    - icon: 'fa6-brands:github'
+      link: 'https://github.com/'
+    - icon: 'fa6-brands:x-twitter'
+      link: 'https://x.com/'

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../node_modules/vitepress-theme-neptu-blog/schema/site.schema.json
+
+lang: 'en-US'
+description: 'Welcome to my new blog'
+
+themeConfig:
+  blogTitle: 'My Neptu Blog'
+  editLink:
+    text: 'Edit this page on GitHub'
+  donate:
+    postDonateCall: 'If you find this blog helpful, consider supporting it!'
+  publisher:
+    name: '${theme.blogTitle}'
+    url: '${config.siteUrl}'
+  nav:
+    links:
+      - text: 'About'
+        href: 'page/about'
+        icon: 'solar:document-linear'
+  sidebar:
+    bottomLinks:
+      - text: 'About'
+        href: 'page/about'
+        icon: 'mdi:information-outline'
+  footer:
+    message: 'Built with Neptu Blog Theme & VitePress.'
+    copyright: 'Copyright © 2026'

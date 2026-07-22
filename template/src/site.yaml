@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=../node_modules/vitepress-theme-neptu-blog/schema/site.schema.json
+
+themeConfig:
+  postList:
+    showDate: true
+    showTags: true
+    showThumbnail: true
+    showPreview: true
+    showAuthor: true
+    maxPreviewLength: 300
+
+  postFooter:
+    - author
+    - donate
+    - comments
+    - social-share
+    - edit-link
+    - tags
+    - similar
+
+  editLink:
+    pattern: 'https://github.com/your-username/my-blog/edit/main/src/:path'
+
+  donate:
+    url: 'page/donate'
+
+  nav:
+    donate: true
+    socialLinks:
+      - icon: 'fa6-brands:github'
+        link: '${theme.repo}'
+        desktopOnly: true
+
+  sidebar:
+    popular: false
+    recent: true
+    archive: true
+    authors: true
+    tags: true
+    donate: true
+    rssFeed: true
+    atomFeed: true
+    socialLinks:
+      - icon: 'fa6-brands:github'
+        link: '${theme.repo}'
+
+  footer:
+    message: 'Released under the MIT License.'
+    copyright: 'Copyright © 2026-present'
+    links:
+      - text: 'About'
+        href: 'page/about'
