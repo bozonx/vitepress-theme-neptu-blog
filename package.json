@@ -96,7 +96,8 @@
     "./configs/sharedLocalesBase/ru": {
       "types": "./src/configs/sharedLocalesBase/ru.ts",
       "import": "./src/configs/sharedLocalesBase/ru.ts"
-    }
+    },
+    "./src/*": "./src/*"
   },
   "peerDependencies": {
     "tailwindcss": "^4.0.0",
