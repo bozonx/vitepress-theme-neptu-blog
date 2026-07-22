@@ -39,10 +39,9 @@ export const postList = {
 }
 
 export default async () => {
-  const base = process.env.VITEPRESS_BASE || (process.env.GITHUB_ACTIONS ? '/vitepress-theme-neptu-blog/' : '/')
   const config: BlogUserConfig = {
     srcDir: path.resolve(__dirname, '../'),
-    base,
+    base: '/',
 
     // -------------------------------------------------------------------------
     // Site identity — absolute public URL with protocol, no trailing slash.

@@ -51,20 +51,16 @@ jobs:
 
       - name: Build documentation site
         run: pnpm docs:build
-        env:
-          VITEPRESS_BASE: /
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E tests
         run: pnpm e2e
-        env:
-          VITEPRESS_BASE: /
 
       - name: Rebuild documentation site for Pages
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        run: pnpm docs:build
+        run: pnpm docs:build --base /vitepress-theme-neptu-blog/
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
