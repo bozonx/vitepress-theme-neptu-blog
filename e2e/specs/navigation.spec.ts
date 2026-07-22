@@ -7,7 +7,6 @@ test.describe('Navigation & Locales', () => {
     const langBtn = page.locator('.switch-lang-btn').first()
     await expect(langBtn).toBeVisible()
 
-    await langBtn.hover()
     await langBtn.click()
 
     const ruLink = page.locator('.switch-lang-btn a[href*="ru"], a[href*="/ru/"]').first()
