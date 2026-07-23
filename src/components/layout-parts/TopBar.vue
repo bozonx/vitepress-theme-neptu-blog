@@ -80,16 +80,16 @@ const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) 
       </li>
     </ul>
 
-    <div v-if="theme.themeSwitcher">
-      <SwitchTheme :no-bg="true" />
-    </div>
-
     <div>
       <SwitchLang :no-bg="true" />
     </div>
 
     <div class="max-lg:hidden">
       <SwitchAppearance />
+    </div>
+
+    <div v-if="theme.themeSwitcher">
+      <SwitchTheme :no-bg="true" />
     </div>
 
     <ul v-if="socialLinks.length" class="flex space-x-1">
