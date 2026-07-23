@@ -37,16 +37,7 @@
 import { useData, withBase } from 'vitepress'
 import { pluralize } from '../utils/shared/index.ts'
 import { useUiTheme } from '../composables/useUiTheme.ts'
-
-interface AuthorItem {
-  id: string
-  name?: string
-  image?: string
-  imageHeight?: number
-  imageWidth?: number
-  description?: string
-  count?: number
-}
+import type { AuthorItem } from '../types.d.ts'
 
 const props = defineProps<{ item: AuthorItem }>()
 const { localeIndex } = useData()

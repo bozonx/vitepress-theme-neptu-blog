@@ -9,8 +9,8 @@ interface Props {
   name?: string
   count?: number
   slug?: string
-  sizeXl?: boolean | string
-  sizeSm?: boolean | string
+  sizeXl?: boolean
+  sizeSm?: boolean
   activeCompareMethod?:
     | 'soft'
     | 'pagination'

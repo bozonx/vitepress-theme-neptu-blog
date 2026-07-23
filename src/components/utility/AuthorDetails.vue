@@ -7,16 +7,7 @@ import PreviewList from '../PreviewList.vue'
 import { sortPosts, isPopularRoute, pluralize } from '../../utils/shared/index.ts'
 import UtilPageHeader from './UtilPageHeader.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-import type { Author as ThemeAuthor } from '../../types.d.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { Author as ThemeAuthor, PostLite } from '../../types.d.ts'
 
 const props = defineProps<{
   localePosts?: PostLite[]

@@ -1,43 +1,46 @@
 <script setup lang="ts">
-import { useData } from 'vitepress'
 import { useSlots, computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { isExternalUrl } from '../utils/shared/index.ts'
 import BaseLink from './BaseLink.vue'
+import { useUiTheme } from '../composables/useUiTheme.ts'
+
+type ClassValue = string | Record<string, unknown> | unknown[]
 
 interface Props {
-  customClass?: unknown
-  innerClass?: unknown
+  customClass?: ClassValue
+  innerClass?: ClassValue
   href?: string
   target?: string
   disabled?: boolean
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
   icon?: string
   text?: string
-  iconClass?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
-  noBg?: boolean | string
-  primary?: boolean | string
+  iconClass?: ClassValue
+  noBg?: boolean
+  primary?: boolean
   hideExternalIcon?: boolean
 }
 
 const slots = useSlots()
-const { theme } = useData()
+const { theme } = useUiTheme()
 const props = defineProps<Props>()
 const isExternal = computed(() => !props.hideExternalIcon && isExternalUrl(props.href))
 const hasText = computed(() => Boolean(props.text || slots.default))
 const btnProps = computed(() => {
-  const propsObj: Record<string, unknown> = {}
   if (props.href && !props.disabled) {
     // means just link
-    propsObj.tag = 'a'
-    propsObj.href = props.href
-    propsObj.target = props.target
-  } else {
-    // means Button
-    propsObj.tag = 'button'
-    propsObj.disabled = props.disabled
+    return {
+      tag: 'a' as const,
+      href: props.href,
+      target: props.target,
+    }
   }
-  return propsObj
+  // means Button
+  return {
+    tag: 'button' as const,
+    disabled: props.disabled,
+  }
 })
 </script>
 

@@ -1,60 +1,61 @@
 <script setup lang="ts">
 import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 
 import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchTheme from './SwitchTheme.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-
-interface SocialLinkItem {
-  href: string
-  icon?: string
-  title?: string
-  target?: string
-  class?: string
-  desktopOnly?: boolean
-  mobileOnly?: boolean
-}
+import type { SocialLinkItem } from '../../types.d.ts'
 
 const props = defineProps<{
   class?: string
 }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
-const configuredFormats = Array.isArray(theme.value.feeds?.formats)
-  ? (theme.value.feeds!.formats as string[])
-      .filter((format) => typeof format === 'string')
-      .map((format) => format.trim().toLowerCase())
-  : ['rss', 'atom', 'json']
 
-const hasFormat = (format: string) => configuredFormats.includes(format)
-const socialLinks: SocialLinkItem[] = [
-  ...(theme.value.sidebar?.socialLinks || []).map((item) => ({
-    href: item.url || item.link,
-    icon: item.icon,
-    class: item.class,
-    desktopOnly: item.desktopOnly,
-    mobileOnly: item.mobileOnly,
-  })),
-].filter((item) => Boolean(item.href)) as SocialLinkItem[]
+const configuredFormats = computed(() =>
+  Array.isArray(theme.value.feeds?.formats)
+    ? (theme.value.feeds!.formats as string[])
+        .filter((format) => typeof format === 'string')
+        .map((format) => format.trim().toLowerCase())
+    : ['rss', 'atom', 'json']
+)
 
-if (theme.value.sidebar?.rssFeed && hasFormat('rss')) {
-  socialLinks.push({
-    href: withBase(`/${localeIndex.value}/feed.rss`),
-    icon: theme.value.rssIcon,
-    title: theme.value.t.links.rssFeed,
-    target: '_blank',
-  })
-}
+const hasFormat = (format: string) => configuredFormats.value.includes(format)
 
-if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
-  socialLinks.push({
-    href: withBase(`/${localeIndex.value}/feed.atom`),
-    icon: theme.value.atomIcon,
-    title: theme.value.t.links.atomFeed,
-    target: '_blank',
-  })
-}
+const socialLinks = computed<SocialLinkItem[]>(() => {
+  const links: SocialLinkItem[] = [
+    ...(theme.value.sidebar?.socialLinks || []).map((item) => ({
+      href: item.url || item.link,
+      icon: item.icon,
+      class: item.class,
+      iconClass: item.iconClass,
+      desktopOnly: item.desktopOnly,
+      mobileOnly: item.mobileOnly,
+    })),
+  ].filter((item) => Boolean(item.href)) as SocialLinkItem[]
+
+  if (theme.value.sidebar?.rssFeed && hasFormat('rss')) {
+    links.push({
+      href: withBase(`/${localeIndex.value}/feed.rss`),
+      icon: theme.value.rssIcon,
+      title: theme.value.t.links.rssFeed,
+      target: '_blank',
+    })
+  }
+
+  if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
+    links.push({
+      href: withBase(`/${localeIndex.value}/feed.atom`),
+      icon: theme.value.atomIcon,
+      title: theme.value.t.links.atomFeed,
+      target: '_blank',
+    })
+  }
+
+  return links
+})
 </script>
 
 <template>

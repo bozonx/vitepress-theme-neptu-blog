@@ -2,8 +2,10 @@
 import { computed, useAttrs } from 'vue'
 import NeptuBtn from './NeptuBtn.vue'
 
+type ClassValue = string | Record<string, unknown> | unknown[]
+
 interface Props {
-  customClass?: unknown
+  customClass?: ClassValue
 }
 
 const props = defineProps<Props>()
@@ -16,7 +18,7 @@ const iconClass = computed(() => {
     (value && typeof value === 'object')
       ? value
       : 'muted'
-  ) as string | Record<string, boolean> | Array<string | Record<string, boolean>>
+  ) as ClassValue
 })
 </script>
 

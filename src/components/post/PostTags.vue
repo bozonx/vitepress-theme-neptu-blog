@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import { computed } from 'vue'
 import TagsList from '../TagsList.vue'
 import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
 const { theme } = useUiTheme()
-const tags = [...(frontmatter.value.tags || [])].sort((a, b) =>
-  String(a.name).localeCompare(b.name)
+const tags = computed(() =>
+  [...(frontmatter.value.tags || [])].sort((a, b) =>
+    String(a.name).localeCompare(b.name)
+  )
 )
 </script>
 

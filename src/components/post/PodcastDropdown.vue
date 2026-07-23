@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { useData } from 'vitepress'
+import { computed } from 'vue'
 import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import PodcastIcon from './PodcastIcon.vue'
@@ -10,8 +11,8 @@ import type { ThemeConfig, PostFrontmatter } from '../../types.d.ts'
 
 const { frontmatter } = useData<ThemeConfig>()
 const { theme } = useUiTheme()
-const fm = frontmatter.value as PostFrontmatter
-const btnText = theme.value.t.listenPodcast
+const fm = computed(() => frontmatter.value as PostFrontmatter)
+const btnText = computed(() => theme.value.t.listenPodcast)
 </script>
 
 <template>

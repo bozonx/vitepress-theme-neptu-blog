@@ -14,6 +14,7 @@ describe('Author', () => {
       attachTo: document.body,
       props: {
         author: {
+          id: 'john-doe',
           name: 'John Doe',
           image: '/img/john.jpg',
           imageHeight: 200,
@@ -36,6 +37,7 @@ describe('Author', () => {
       attachTo: document.body,
       props: {
         author: {
+          id: 'jane',
           name: 'Jane',
           description: 'Bio text',
           links: [],
@@ -51,6 +53,7 @@ describe('Author', () => {
       attachTo: document.body,
       props: {
         author: {
+          id: 'john',
           name: 'John',
           description: '<p>Hello world</p>',
           links: [],
@@ -65,6 +68,7 @@ describe('Author', () => {
       attachTo: document.body,
       props: {
         author: {
+          id: 'john',
           name: 'John',
           links: [
             { url: 'https://x.com/john', type: 'x', title: 'X' },
@@ -88,6 +92,8 @@ describe('Author', () => {
       attachTo: document.body,
       props: {
         author: {
+          id: 'no-links',
+          name: 'No Links',
           links: [
             { url: '', type: 'x' },
             { type: 'facebook' },

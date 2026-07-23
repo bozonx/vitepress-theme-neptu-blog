@@ -3,6 +3,12 @@ import { ref, computed, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
+import {
+  encodeMediaUrl,
+  downloadFile as downloadFileUtil,
+  extractFilenameFromUrl,
+  getMediaErrorMessage,
+} from '../../utils/shared/media.ts'
 
 const { theme } = useUiTheme()
 
@@ -26,67 +32,32 @@ const errorMessage = ref('')
 
 const downloadFilename = computed(() => {
   if (props.filename) return props.filename
-  return props.url.split('/').pop() || 'video file'
+  return extractFilenameFromUrl(props.url, 'video file')
 })
-
-const encodeVideoUrl = (url: string) => {
-  if (!url) return url
-  try {
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      const urlObj = new URL(url)
-      urlObj.pathname = urlObj.pathname
-        .split('/')
-        .map((seg: string) => (seg ? encodeURIComponent(seg) : seg))
-        .join('/')
-      return urlObj.toString()
-    }
-    return url
-      .split('/')
-      .map((seg) => (seg ? encodeURIComponent(seg) : seg))
-      .join('/')
-  } catch {
-    return url
-  }
-}
 
 const downloadFile = () => {
   if (props.disabled) return
   try {
-    const link = document.createElement('a')
-    link.href = encodeVideoUrl(props.url)
-    link.download = downloadFilename.value
-    link.target = '_blank'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    downloadFileUtil(encodeMediaUrl(props.url), downloadFilename.value)
   } catch {
-    window.open(encodeVideoUrl(props.url), '_blank')
+    window.open(encodeMediaUrl(props.url), '_blank')
   }
 }
 
 const handleError = (event: Event) => {
   hasError.value = true
   const error = (event.target as HTMLVideoElement)?.error
-  if (error) {
-    switch (error.code) {
-      case error.MEDIA_ERR_ABORTED:
-        errorMessage.value = theme.value.t.videoFile.videoPlaybackAborted
-        break
-      case error.MEDIA_ERR_NETWORK:
-        errorMessage.value = theme.value.t.videoFile.networkErrorLoadingVideo
-        break
-      case error.MEDIA_ERR_DECODE:
-        errorMessage.value = theme.value.t.videoFile.videoDecodingError
-        break
-      case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-        errorMessage.value = theme.value.t.videoFile.videoFormatNotSupported
-        break
-      default:
-        errorMessage.value = theme.value.t.videoFile.unknownVideoError
-    }
-  } else {
-    errorMessage.value = theme.value.t.videoFile.errorLoadingVideoFile
-  }
+  errorMessage.value = getMediaErrorMessage(
+    error,
+    {
+      aborted: theme.value.t.videoFile.videoPlaybackAborted,
+      network: theme.value.t.videoFile.networkErrorLoadingVideo,
+      decode: theme.value.t.videoFile.videoDecodingError,
+      notSupported: theme.value.t.videoFile.videoFormatNotSupported,
+      unknown: theme.value.t.videoFile.unknownVideoError,
+    },
+    theme.value.t.videoFile.errorLoadingVideoFile
+  )
 }
 
 onUnmounted(() => {
@@ -132,7 +103,7 @@ onUnmounted(() => {
       <video
         ref="videoRef"
         class="video-element w-full rounded-lg"
-        :src="encodeVideoUrl(props.url)"
+        :src="encodeMediaUrl(props.url)"
         controls
         preload="metadata"
         :aria-label="downloadFilename"

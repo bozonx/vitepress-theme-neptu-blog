@@ -1,17 +1,25 @@
 <script setup lang="ts">
 // Internal component — consumed by other components only.
 import { useData, useRoute, withBase } from 'vitepress'
-import { ref, watch, computed } from 'vue'
+import { computed } from 'vue'
 import { resolveI18Href, isExternalUrl } from '../utils/shared/index.ts'
 
+type ClassValue = string | Record<string, unknown> | unknown[]
+
 interface Props {
-  customClass?: unknown
+  customClass?: ClassValue
   tag?: string
   href?: string
   target?: string
   rel?: string
   disabled?: boolean
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
+}
+
+// Normalize path — removes the trailing numeric segment if path ends with /\d+
+function normalizePath(path = ''): string {
+  const match = path.match(/^(.+\/)\d+$/)
+  return match ? match[1] : path
 }
 
 const { localeIndex } = useData()
@@ -41,16 +49,8 @@ const rel = computed(() => {
   if (props.rel) return props.rel
   return target.value === '_blank' ? 'noopener noreferrer' : undefined
 })
-// Normalize path — removes the trailing numeric segment if path ends with /\d+
-const normalizePath = (path = '') => {
-  // Check if path ends with a slash followed by digits
-  const match = path.match(/^(.+\/)\d+$/)
-  return match ? match[1] : path
-}
 
-const active = ref(checkActive())
-
-function checkActive(): boolean {
+const active = computed(() => {
   const targetHref = i18nHref.value
   switch (props.activeCompareMethod) {
     case 'soft':
@@ -84,14 +84,7 @@ function checkActive(): boolean {
     default:
       return route.path === targetHref
   }
-}
-
-watch(
-  () => route.path,
-  () => {
-    active.value = checkActive()
-  }
-)
+})
 </script>
 
 <template>

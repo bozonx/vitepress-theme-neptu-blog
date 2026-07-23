@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import { computed } from 'vue'
 
 import SimpleLink from '../SimpleLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
+import type { Author } from '../../types.d.ts'
 
 const { frontmatter } = useData()
 const { theme } = useUiTheme()
-interface Author {
-  id: string
-  name?: string
-  aboutUrl?: string
-}
 
-const themeAuthor = frontmatter.value.authorId
-  ? theme.value.authors?.find((item: Author) => item.id === frontmatter.value.authorId)
-  : undefined
-const authorUrl = themeAuthor?.aboutUrl
-  ? themeAuthor.aboutUrl
-  : `/authors/${frontmatter.value.authorId}/1`
+const themeAuthor = computed(() =>
+  frontmatter.value.authorId
+    ? theme.value.authors?.find((item: Author) => item.id === frontmatter.value.authorId)
+    : undefined
+)
+const authorUrl = computed(() =>
+  themeAuthor.value?.aboutUrl
+    ? themeAuthor.value.aboutUrl
+    : `/authors/${frontmatter.value.authorId}/1`
+)
 </script>
 
 <template>

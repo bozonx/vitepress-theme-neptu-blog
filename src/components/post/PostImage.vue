@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
   <figure v-if="props.src">
-    <a :href="props.src" class="lightbox">
+    <a :href="props.src" class="lightbox" :aria-label="props.alt || 'Open image'">
       <img
         :src="props.src"
         :alt="props.alt || undefined"

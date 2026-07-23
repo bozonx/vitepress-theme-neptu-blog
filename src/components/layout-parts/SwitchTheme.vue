@@ -3,16 +3,18 @@ import DropdownButton from '../DropdownButton.vue'
 import MenuItem from '../MenuItem.vue'
 import { Icon } from '@iconify/vue'
 import { useColorTheme } from '../../composables/useColorTheme.ts'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
-const props = defineProps<{ noBg?: boolean | string }>()
+const props = defineProps<{ noBg?: boolean }>()
 const { activeTheme, setColorTheme, colorThemes } = useColorTheme()
+const { theme } = useUiTheme()
 </script>
 
 <template>
   <DropdownButton
     :no-bg="props.noBg"
-    title="Change color theme"
-    aria-label="Change color theme"
+    :title="theme.colorThemeMenuLabel || 'Change color theme'"
+    :aria-label="theme.colorThemeMenuLabel || 'Change color theme'"
     class="switch-theme-btn px-0"
   >
     <template #btn-text>

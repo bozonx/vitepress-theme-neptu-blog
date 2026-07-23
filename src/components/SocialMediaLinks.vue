@@ -16,31 +16,31 @@
 <script setup lang="ts">
 import NeptuBtn from './NeptuBtn.vue'
 
-interface SocialLink {
+interface AuthorSocialLink {
   url: string
   title?: string
   type: string
 }
 
+const SOCIAL_ICON_MAP: Record<string, string> = {
+  site: 'mdi:web',
+  youtube: 'mdi:youtube',
+  x: 'mdi:twitter', // X (formerly Twitter)
+  facebook: 'mdi:facebook',
+  instagram: 'mdi:instagram',
+  tiktok: 'simple-icons:tiktok',
+  vk: 'mdi:vk',
+  mastodon: 'mdi:mastodon',
+  diaspora: 'simple-icons:diaspora',
+  // bastyon, odysee, threads icons unavailable in @iconify/vue, using fallback
+}
+
 defineProps<{
-  links: SocialLink[]
+  links: AuthorSocialLink[]
 }>()
 
 // Resolve the correct icon name based on link type
 const getIconName = (type: string) => {
-  const iconMap: Record<string, string> = {
-    site: 'mdi:web',
-    youtube: 'mdi:youtube',
-    x: 'mdi:twitter', // X (formerly Twitter)
-    facebook: 'mdi:facebook',
-    instagram: 'mdi:instagram',
-    tiktok: 'simple-icons:tiktok',
-    vk: 'mdi:vk',
-    mastodon: 'mdi:mastodon',
-    diaspora: 'simple-icons:diaspora',
-    // bastyon, odysee, threads icons unavailable in @iconify/vue, using fallback
-  }
-
-  return iconMap[type] || iconMap.site // fallback to site if type is unrecognized
+  return SOCIAL_ICON_MAP[type] || SOCIAL_ICON_MAP.site // fallback to site if type is unrecognized
 }
 </script>

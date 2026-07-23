@@ -9,32 +9,15 @@ import SideBarItems from './SideBarItems.vue'
 import { Icon } from '@iconify/vue'
 import SideBarTags from './SideBarTags.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
-
-interface SideBarItem {
-  header?: string
-  href?: string
-  icon?: string
-  class?: string
-  iconClass?: string
-  mobile?: boolean
-  text?: string
-  title?: string
-}
+import type { PostLite, SideBarItem } from '../../types.d.ts'
 
 const props = defineProps<{ isMobile: boolean; localePosts?: PostLite[] }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
-const localePosts = props.localePosts || allPosts[localeIndex.value] || []
+const localePosts = computed(
+  () => props.localePosts || allPosts[localeIndex.value] || []
+)
 const animationTimeMs = 400
 // Default to closed (mobile) so SSR HTML doesn't render the drawer open
 // and intercept clicks before hydration. The watch below with
@@ -272,6 +255,7 @@ onUnmounted(() => {
           :href="withBase(`/${localeIndex}/`)"
           class="sidebar-logo block"
           :title="theme.t.toHome"
+          :aria-label="theme.t.toHome"
         >
           <img
             :src="theme.sidebarLogoSrc.startsWith('/') ? withBase(theme.sidebarLogoSrc) : theme.sidebarLogoSrc"

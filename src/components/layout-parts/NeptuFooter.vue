@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import NeptuBtnLink from "../NeptuBtnLink.vue";
-import { useData } from "vitepress";
-import { computed } from "vue";
+import NeptuBtnLink from '../NeptuBtnLink.vue'
+import { computed } from 'vue'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
-const { theme } = useData();
-const footerLinksCount = computed(() => theme.value.footer?.links?.length || 0);
+const { theme } = useUiTheme()
+const footerLinksCount = computed(() => theme.value.footer?.links?.length || 0)
 const hasMultipleFooterLinks = computed(
   () => footerLinksCount.value > 1
-);
+)
 </script>
 
 <template>

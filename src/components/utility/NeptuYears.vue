@@ -4,15 +4,7 @@ import { inject } from 'vue'
 import { makeYearsList } from '../../list-helpers/listHelpers.ts'
 import ListItemWithBadge from '../ListItemWithBadge.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
 const { frontmatter, localeIndex } = useData()

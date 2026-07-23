@@ -1,72 +1,43 @@
-<script setup lang="ts">
-import { useData } from 'vitepress'
-
-import { makeHumanDate } from '../../utils/shared/index.ts'
-import BaseLink from '../BaseLink.vue'
-
-const { page, lang } = useData()
-const rawDate = page.value.frontmatter.date
-
-// Extract year and month for link generation
-const dateObj = rawDate ? new Date(rawDate) : null
-const year = dateObj ? dateObj.getUTCFullYear() : null
-const month = dateObj ? dateObj.getUTCMonth() + 1 : null
-
-const localeDate = makeHumanDate(rawDate, lang.value || 'en') || ''
+<script lang="ts">
+const EXCLUDED_WORDS = [
+  'de', 'г', 'г.', 'of', 'van', 'der', 'den', 'del',
+  'da', 'di', 'du', 'des', 'von', 'zu', 'zur',
+  'the', 'a', 'an', 'in', 'on', 'at', 'word-break',
+]
 
 // Determine whether a token represents a year
-const isYear = (item: string) => {
-  // Strip non-digit characters for year validation
+function isYear(item: string): boolean {
   const cleanItem = item.replace(/[^\d]/g, '')
   return cleanItem.length === 4 && /^\d{4}$/.test(cleanItem)
 }
 
 // Determine whether a token represents a month name
-const isMonth = (item: string) => {
-  // Exclude prepositions and short tokens
-  const excludedWords = [
-    'de',
-    'г',
-    'г.',
-    'of',
-    'van',
-    'der',
-    'den',
-    'del',
-    'da',
-    'di',
-    'du',
-    'des',
-    'von',
-    'zu',
-    'zur',
-    'van',
-    'den',
-    'der',
-    'des',
-    'del',
-    'da',
-    'di',
-    'du',
-    'of',
-    'the',
-    'a',
-    'an',
-    'in',
-    'on',
-    'at',
-    'word-break',
-  ]
+function isMonth(item: string): boolean {
   const cleanItem = item.replace(/[^\wа-яё]/gi, '').toLowerCase()
-
-  // Ensure it is not a preposition and is long enough
   return (
     cleanItem.length >= 3 &&
-    !excludedWords.includes(cleanItem) &&
+    !EXCLUDED_WORDS.includes(cleanItem) &&
     /^[^\d.\-,]{3,}$/.test(item)
   )
 }
+</script>
 
+<script setup lang="ts">
+import { useData } from 'vitepress'
+import { computed } from 'vue'
+
+import { makeHumanDate } from '../../utils/shared/index.ts'
+import BaseLink from '../BaseLink.vue'
+
+const { page, lang } = useData()
+const rawDate = computed(() => page.value.frontmatter.date)
+
+// Extract year and month for link generation
+const dateObj = computed(() => (rawDate.value ? new Date(rawDate.value) : null))
+const year = computed(() => (dateObj.value ? dateObj.value.getUTCFullYear() : null))
+const month = computed(() => (dateObj.value ? dateObj.value.getUTCMonth() + 1 : null))
+
+const localeDate = computed(() => makeHumanDate(rawDate.value, lang.value || 'en') || '')
 </script>
 
 <template>

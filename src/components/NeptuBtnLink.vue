@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import NeptuBtn from './NeptuBtn.vue'
 
+type ClassValue = string | Record<string, unknown> | unknown[]
+
 interface Props {
-  customClass?: unknown
+  customClass?: ClassValue
 }
 
 const props = defineProps<Props>()

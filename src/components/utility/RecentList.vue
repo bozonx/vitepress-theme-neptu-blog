@@ -3,16 +3,9 @@ import { useData } from 'vitepress'
 import { inject } from 'vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
+import type { PostLite } from '../../types.d.ts'
 
 const { frontmatter, localeIndex } = useData()
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
 
 const props = defineProps<{
   localePosts?: PostLite[]

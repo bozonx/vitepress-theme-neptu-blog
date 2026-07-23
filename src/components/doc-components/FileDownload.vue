@@ -44,6 +44,11 @@ import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
+import {
+  encodeMediaUrl,
+  downloadFile as downloadFileUtil,
+  extractFilenameFromUrl,
+} from '../../utils/shared/media.ts'
 
 const { theme } = useUiTheme()
 
@@ -62,7 +67,7 @@ const downloadFilename = computed(() => {
   }
 
   // Extract full filename with extension from URL
-  return props.url.split('/').pop() || 'file'
+  return extractFilenameFromUrl(props.url, 'file')
 })
 
 const extensionName = computed(() => {
@@ -81,19 +86,10 @@ const downloadFile = async () => {
   if (props.disabled) return
 
   try {
-    // Create a temporary link for downloading
-    const link = document.createElement('a')
-    link.href = props.url
-    link.download = downloadFilename.value
-    link.target = '_blank'
-
-    // Append link to DOM, click it, then remove
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    downloadFileUtil(encodeMediaUrl(props.url), downloadFilename.value)
   } catch {
     // On error, open the file in a new tab
-    window.open(props.url, '_blank')
+    window.open(encodeMediaUrl(props.url), '_blank')
   }
 }
 

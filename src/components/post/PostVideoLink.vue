@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { useData } from 'vitepress'
+import { computed } from 'vue'
 
 import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { frontmatter } = useData()
 const { theme } = useUiTheme()
-const text =
-  theme.value.t.postVideoButton +
-  (frontmatter.value.videoLinkLang
-    ? ` (${frontmatter.value.videoLinkLang})`
-    : '')
+const text = computed(
+  () =>
+    theme.value.t.postVideoButton +
+    (frontmatter.value.videoLinkLang
+      ? ` (${frontmatter.value.videoLinkLang})`
+      : '')
+)
 </script>
 
 <template>

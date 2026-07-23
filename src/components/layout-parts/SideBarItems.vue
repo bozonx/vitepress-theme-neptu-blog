@@ -1,19 +1,7 @@
 <script setup lang="ts">
 import SideBarHeader from './SideBarHeader.vue'
 import MenuItem from '../MenuItem.vue'
-
-interface SideBarItem {
-  header?: string
-  href?: string
-  icon?: string
-  class?: string
-  iconClass?: string
-  mobile?: boolean
-  mobileOnly?: boolean
-  desktopOnly?: boolean
-  text?: string
-  title?: string
-}
+import type { SideBarItem } from '../../types.d.ts'
 
 const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
 </script>
@@ -33,8 +21,6 @@ const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
         <SideBarHeader
           v-if="item.header"
           :text="item.header"
-          :href="item.href"
-          :icon="item.icon"
           :class="item.class"
         />
         <MenuItem v-else v-bind="item" active-compare-method="softPagination" />

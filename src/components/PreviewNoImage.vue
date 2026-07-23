@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import PreviewWithImage from './PreviewWithImage.vue'
-
-interface TagItem {
-  name: string
-  slug?: string
-  count?: number
-}
+import type { TagInfo } from '../types.d.ts'
 
 const props = defineProps<{
   date?: string
   localeDate?: string
-  tags?: TagItem[]
+  tags?: TagInfo[]
   preview?: string
   authorName?: string
 }>()

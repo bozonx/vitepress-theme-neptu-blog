@@ -7,7 +7,7 @@
       v-if="author?.image"
       class="author-image-container w-full mx-auto md:w-[280px] md:shrink-0"
     >
-      <a :href="author.image" class="lightbox">
+      <a :href="author.image" class="lightbox" :aria-label="author?.name || 'Open image'">
         <img
           :src="author.image"
           :alt="author?.name"
@@ -31,15 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import SocialMediaLinks from './SocialMediaLinks.vue'
-
-interface Author {
-  name?: string
-  image?: string
-  imageHeight?: number
-  imageWidth?: number
-  description?: string
-  links?: Array<{ type?: string; url?: string; link?: string; title?: string }>
-}
+import type { Author } from '../types.d.ts'
 
 const props = defineProps<{ author?: Author }>()
 const socialLinks = computed(() =>

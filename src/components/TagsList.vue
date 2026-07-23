@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import TagItem from './TagItem.vue'
-
-interface TagInfo {
-  name?: string
-  slug?: string
-  count?: number
-}
+import type { TagInfo } from '../types.d.ts'
 
 const props = defineProps<{
   tags: TagInfo[]
-  sizeXl?: boolean | string
-  sizeSm?: boolean | string
-  class?: string | Record<string, boolean> | Array<string | Record<string, boolean>>
+  sizeXl?: boolean
+  sizeSm?: boolean
+  class?: string | Record<string, unknown> | unknown[]
   activeCompareMethod?: 'soft' | 'pagination' | 'softPagination' | 'none' | 'strict'
 }>()
 const emit = defineEmits<{

@@ -3,16 +3,19 @@ import { useData } from 'vitepress'
 import { useAttrs, computed } from 'vue'
 import { isExternalUrl } from '../utils/shared/index.ts'
 import BaseLink from './BaseLink.vue'
+import { useUiTheme } from '../composables/useUiTheme.ts'
+
+type ClassValue = string | Record<string, unknown> | unknown[]
 
 interface Props {
-  customClass?: unknown
+  customClass?: ClassValue
   hideExternalIcon?: boolean
 }
 
 const props = defineProps<Props>()
 const $attrs = useAttrs()
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 const isExternal = computed(
   () => !props.hideExternalIcon && isExternalUrl($attrs.href as string | undefined)
 )

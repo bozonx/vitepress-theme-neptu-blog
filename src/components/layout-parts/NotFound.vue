@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { useData, withBase } from 'vitepress'
+import { computed } from 'vue'
 
 const { localeIndex, theme } = useData()
-const pageNotFoundText =
-  theme.value.notFound?.title || theme.value.t?.pageNotFound || 'Page not found'
-const toHomeText =
-  theme.value.notFound?.linkText || theme.value.t?.toHome || 'Home'
+const pageNotFoundText = computed(
+  () => theme.value.notFound?.title || theme.value.t?.pageNotFound || 'Page not found'
+)
+const toHomeText = computed(
+  () => theme.value.notFound?.linkText || theme.value.t?.toHome || 'Home'
+)
 // VitePress uses 'root' for the default locale; map it to '/' to avoid '/root/'
-const homeLink = localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`
+const homeLink = computed(() =>
+  localeIndex.value === 'root' ? '/' : `/${localeIndex.value}/`
+)
 </script>
 
 <template>

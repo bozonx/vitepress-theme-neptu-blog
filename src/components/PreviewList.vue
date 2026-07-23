@@ -2,10 +2,10 @@
 import { computed } from 'vue'
 import PreviewListItem from './PreviewListItem.vue'
 import NeptuPagination from './NeptuPagination.vue'
-import { useData } from 'vitepress'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 import type { PostLite } from '../types.d.ts'
 
-const { theme } = useData()
+const { theme } = useUiTheme()
 
 const props = defineProps<{
   localePosts: PostLite[]

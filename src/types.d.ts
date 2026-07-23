@@ -101,6 +101,7 @@ export namespace NeptuBlogTheme {
     /** Blog/site name. Used as the site title fallback and sidebar title fallback. */
     blogTitle?: string
     sidebarMenuLabel?: string
+    colorThemeMenuLabel?: string
 
     seo?: SeoConfig
     socialMediaShares?: SocialMediaShare[]
@@ -226,6 +227,57 @@ export namespace NeptuBlogTheme {
     links?: NavLink[]
     donate?: boolean
     socialLinks?: SocialLink[]
+  }
+
+  export interface SideBarItem {
+    header?: string
+    href?: string
+    icon?: string
+    class?: string
+    iconClass?: string
+    mobile?: boolean
+    mobileOnly?: boolean
+    desktopOnly?: boolean
+    text?: string
+    title?: string
+  }
+
+  export interface TagInfo {
+    name?: string
+    slug?: string
+    count?: number
+  }
+
+  export interface AuthorItem {
+    id: string
+    name?: string
+    image?: string
+    imageHeight?: number
+    imageWidth?: number
+    description?: string
+    count?: number
+  }
+
+  export interface SocialLinkItem {
+    href: string
+    icon?: string
+    title?: string
+    target?: string
+    class?: string
+    iconClass?: string
+    desktopOnly?: boolean
+    mobileOnly?: boolean
+  }
+
+  export interface LinkItem {
+    desktopOnly?: boolean
+    mobileOnly?: boolean
+    class?: string
+    iconClass?: string
+    text?: string
+    href?: string
+    icon?: string
+    target?: string
   }
 
   export interface SidebarConfig {
@@ -406,3 +458,9 @@ export type BlogUserConfig = NeptuBlogTheme.BlogUserConfig
 export type SeoConfig = NeptuBlogTheme.SeoConfig
 export type NavConfig = NeptuBlogTheme.NavConfig
 export type SidebarConfig = NeptuBlogTheme.SidebarConfig
+export type SideBarItem = NeptuBlogTheme.SideBarItem
+export type TagInfo = NeptuBlogTheme.TagInfo
+export type AuthorItem = NeptuBlogTheme.AuthorItem
+export type SocialLinkItem = NeptuBlogTheme.SocialLinkItem
+export type LinkItem = NeptuBlogTheme.LinkItem
+export type SocialLink = NeptuBlogTheme.SocialLink

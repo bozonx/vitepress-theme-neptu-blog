@@ -5,10 +5,10 @@ import NeptuBtn from './NeptuBtn.vue'
 import { useOnClickOutside } from '../composables/useOnClickOutside.ts'
 
 const props = defineProps<{
-  dropUp?: boolean | string
-  dropLeft?: boolean | string
+  dropUp?: boolean
+  dropLeft?: boolean
   title?: string
-  noBg?: boolean | string
+  noBg?: boolean
 }>()
 
 const rootRef = ref<HTMLElement | null>(null)

@@ -1,8 +1,30 @@
+<script lang="ts">
+// Debounce function for performance optimization
+function debounce(func: (...args: unknown[]) => void, wait: number) {
+  let timeout: ReturnType<typeof setTimeout> | undefined
+  return function executedFunction(...args: unknown[]) {
+    const later = () => {
+      clearTimeout(timeout)
+      func(...args)
+    }
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
+}
+</script>
+
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
 import NeptuBtn from '../NeptuBtn.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
+import {
+  isValidMediaUrl,
+  encodeMediaUrl,
+  downloadFile as downloadFileUtil,
+  extractFilenameFromUrl,
+  getMediaErrorMessage,
+} from '../../utils/shared/media.ts'
 
 const { theme } = useUiTheme()
 
@@ -30,95 +52,26 @@ const downloadFilename = computed(() => {
   }
 
   // Extract full filename with extension from URL
-  return props.url.split('/').pop() || 'audio file'
+  return extractFilenameFromUrl(props.url, 'audio file')
 })
-
-// URL validation for security
-const isValidUrl = (url: unknown) => {
-  if (!url || typeof url !== 'string') {
-    return false
-  }
-
-  try {
-    // Try standard validation first
-    new URL(url)
-    return true
-  } catch {
-    // If standard validation failed, check for relative paths and URLs with spaces
-    // Allow relative paths (starting with /)
-    if (url.startsWith('/')) {
-      return true
-    }
-
-    // Allow URLs with spaces (encoded or not)
-    // Check basic URL structure
-    const urlPattern = /^(https?:\/\/|\.\/|\/|data:|blob:)/i
-    if (urlPattern.test(url)) {
-      return true
-    }
-
-    // Ensure it is not an empty string and contains at least a dot (for files)
-    if (url.includes('.') && url.length > 3) {
-      return true
-    }
-
-    return false
-  }
-}
-
-// URL encoding to handle spaces and special characters correctly
-const encodeAudioUrl = (url: string) => {
-  if (!url) return url
-
-  try {
-    // For full URLs, encode only the filename
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      const urlObj = new URL(url)
-      // Encode only the path, preserving other URL parts
-      urlObj.pathname = urlObj.pathname
-        .split('/')
-        .map((segment: string) => (segment ? encodeURIComponent(segment) : segment))
-        .join('/')
-      return urlObj.toString()
-    }
-
-    // For relative paths, encode the entire path
-    return url
-      .split('/')
-      .map((segment) => (segment ? encodeURIComponent(segment) : segment))
-      .join('/')
-  } catch {
-    // If URL parsing failed, return the original
-    return url
-  }
-}
 
 const downloadFile = async () => {
   if (isDisabled.value) return
 
   try {
     // Validate URL
-    if (!isValidUrl(props.url)) {
+    if (!isValidMediaUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidUrlProvided
       return
     }
 
-    // Create a temporary link for downloading
-    const link = document.createElement('a')
-    link.href = encodeAudioUrl(props.url)
-    link.download = downloadFilename.value
-    link.target = '_blank'
-
-    // Append link to DOM, click it, then remove
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    downloadFileUtil(encodeMediaUrl(props.url), downloadFilename.value)
   } catch {
     hasError.value = true
     errorMessage.value = theme.value.t.audioFile.errorDownloadingFile
     // On error, open the file in a new tab
-    window.open(encodeAudioUrl(props.url), '_blank')
+    window.open(encodeMediaUrl(props.url), '_blank')
   }
 }
 
@@ -134,26 +87,13 @@ const isPlayerVisible = ref(false)
 const isAudioLoaded = ref(false)
 const errorMessage = ref('')
 
-// Debounce function for performance optimization
-const debounce = (func: (...args: unknown[]) => void, wait: number) => {
-  let timeout: ReturnType<typeof setTimeout> | undefined
-  return function executedFunction(...args: unknown[]) {
-    const later = () => {
-      clearTimeout(timeout)
-      func(...args)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-  }
-}
-
 // Audio player control methods
 const togglePlayPause = async () => {
   if (isDisabled.value || hasError.value) return
 
   try {
     // Validate URL before playback
-    if (!isValidUrl(props.url)) {
+    if (!isValidMediaUrl(props.url)) {
       hasError.value = true
       errorMessage.value = theme.value.t.audioFile.invalidAudioUrlProvided
       console.error('Invalid audio URL provided')
@@ -312,28 +252,18 @@ const handleError = (event: Event) => {
   isPlaying.value = false
   isAudioLoaded.value = false
 
-  // Detailed error handling
   const error = (event.target as HTMLAudioElement)?.error
-  if (error) {
-    switch (error.code) {
-      case error.MEDIA_ERR_ABORTED:
-        errorMessage.value = theme.value.t.audioFile.audioPlaybackAborted
-        break
-      case error.MEDIA_ERR_NETWORK:
-        errorMessage.value = theme.value.t.audioFile.networkErrorLoadingAudio
-        break
-      case error.MEDIA_ERR_DECODE:
-        errorMessage.value = theme.value.t.audioFile.audioDecodingError
-        break
-      case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-        errorMessage.value = theme.value.t.audioFile.audioFormatNotSupported
-        break
-      default:
-        errorMessage.value = theme.value.t.audioFile.unknownAudioError
-    }
-  } else {
-    errorMessage.value = theme.value.t.audioFile.errorLoadingAudioFile
-  }
+  errorMessage.value = getMediaErrorMessage(
+    error,
+    {
+      aborted: theme.value.t.audioFile.audioPlaybackAborted,
+      network: theme.value.t.audioFile.networkErrorLoadingAudio,
+      decode: theme.value.t.audioFile.audioDecodingError,
+      notSupported: theme.value.t.audioFile.audioFormatNotSupported,
+      unknown: theme.value.t.audioFile.unknownAudioError,
+    },
+    theme.value.t.audioFile.errorLoadingAudioFile
+  )
 }
 
 // Time formatting
@@ -379,7 +309,7 @@ onUnmounted(() => {
     <!-- Hidden audio element with lazy loading -->
     <audio
       ref="audioRef"
-      :src="isPlayerVisible ? encodeAudioUrl(props.url) : undefined"
+      :src="isPlayerVisible ? encodeMediaUrl(props.url) : undefined"
       :preload="isPlayerVisible ? 'metadata' : 'none'"
       aria-hidden="true"
       @loadedmetadata="handleLoadedMetadata"
@@ -555,7 +485,7 @@ onUnmounted(() => {
       <Icon icon="mdi:alert-circle" class="shrink-0" aria-hidden="true" />
       <span class="flex-1">{{ errorMessage || theme.t.audioFile.errorLoadingAudioFile }}</span>
       <NeptuBtn
-        v-if="!isValidUrl(props.url)"
+        v-if="!isValidMediaUrl(props.url)"
         :aria-label="theme.t.audioFile.retryWithValidUrl"
         icon="mdi:refresh"
         :text="theme.t.audioFile.retry"

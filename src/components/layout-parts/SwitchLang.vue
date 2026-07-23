@@ -7,7 +7,7 @@ import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 const { theme } = useUiTheme()
 const { currentLang, localeLinks } = useContentLangs({ correspondingLink: true })
-const props = defineProps<{ noBg?: boolean | string }>()
+const props = defineProps<{ noBg?: boolean }>()
 </script>
 
 <template>

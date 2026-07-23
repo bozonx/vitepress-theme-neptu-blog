@@ -6,15 +6,7 @@ import ListPageHeader from '../ListPageHeader.vue'
 import { sortPosts, isPopularRoute } from '../../utils/shared/index.ts'
 import NeptuBtnLink from '../NeptuBtnLink.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{
   localePosts?: PostLite[]

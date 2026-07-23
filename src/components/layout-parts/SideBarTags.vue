@@ -23,26 +23,23 @@ import { makeTagsList } from '../../list-helpers/listHelpers.ts'
 import NeptuBtnLink from '../NeptuBtnLink.vue'
 import TagsList from '../TagsList.vue'
 import { useData } from 'vitepress'
+import { computed } from 'vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
 const { localeIndex } = useData()
 const { theme } = useUiTheme()
-const allTags = makeTagsList(props.localePosts)
-const tags = allTags
-  .map(({ count: _count, ...tag }) => tag)
-  .slice(0, theme.value.sidebarTagsCount || 0)
-const allTagsUrl = `/${localeIndex.value}/tags`
-const showAllTags = allTags.length > (theme.value.sidebarTagsCount || 0)
+const allTags = computed(() => makeTagsList(props.localePosts))
+const tags = computed(() =>
+  allTags.value
+    .map(({ count: _count, ...tag }) => tag)
+    .slice(0, theme.value.sidebarTagsCount || 0)
+)
+const allTagsUrl = computed(() => `/${localeIndex.value}/tags`)
+const showAllTags = computed(
+  () => allTags.value.length > (theme.value.sidebarTagsCount || 0)
+)
 const emit = defineEmits<{
   (e: 'itemClick'): void
 }>()

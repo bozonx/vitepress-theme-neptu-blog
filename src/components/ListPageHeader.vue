@@ -5,7 +5,7 @@
     </h1>
 
     <div
-      v-if="showPopularPostsSwitch"
+      v-if="shouldShowPopularSwitch"
       class="flex flex-row items-center gap-1 gap-y-4 list-page-header-switcher max-[460px]:flex-col max-[460px]:items-start"
     >
       <NeptuBtn
@@ -44,7 +44,7 @@ const props = withDefaults(
 const popularBaseUrl = computed(() => {
   return `${props.baseUrl}/popular`
 })
-const showPopularPostsSwitch = computed(
+const shouldShowPopularSwitch = computed(
   () => props.showPopularPostsSwitch && theme.value.popularPosts?.enabled
 )
 </script>

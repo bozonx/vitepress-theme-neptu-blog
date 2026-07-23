@@ -4,15 +4,7 @@ import { inject } from 'vue'
 import UtilPageHeader from './UtilPageHeader.vue'
 import PreviewList from '../PreviewList.vue'
 import { sortPosts } from '../../utils/shared/index.ts'
-
-interface PostLite {
-  url: string
-  title?: string
-  date?: string | number | Date
-  tags?: Array<{ slug?: string; name?: string }>
-  authorId?: string
-  [key: string]: unknown
-}
+import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{
   localePosts?: PostLite[]

@@ -4,6 +4,8 @@ import SwitchAppearance from './SwitchAppearance.vue'
 import SwitchTheme from './SwitchTheme.vue'
 import SwitchLang from './SwitchLang.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
+import { computed } from 'vue'
+import type { LinkItem } from '../../types.d.ts'
 
 const { theme } = useUiTheme()
 defineProps<{
@@ -13,16 +15,6 @@ const emit = defineEmits<{
   (e: 'openSearch'): void
   (e: 'openDrawer'): void
 }>()
-interface LinkItem {
-  desktopOnly?: boolean
-  mobileOnly?: boolean
-  class?: string
-  iconClass?: string
-  text?: string
-  href?: string
-  icon?: string
-  target?: string
-}
 
 const resolveItemShowClass = (item: LinkItem) => {
   if (item.desktopOnly) return 'max-lg:hidden'
@@ -30,23 +22,28 @@ const resolveItemShowClass = (item: LinkItem) => {
   // both
   return ''
 }
-const links: LinkItem[] = [...(theme.value.nav?.links || [])]
-if (theme.value.nav?.donate && theme.value.donate) {
-  links.push({
-    text: theme.value.t.links.donate,
-    href: `${theme.value.donate.url}`,
-    icon: theme.value.donate.icon || theme.value.donateIcon,
-    iconClass: 'donate-icon',
-  })
-}
-const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) => ({
-  href: item.url || item.link,
-  icon: item.icon,
-  iconClass: item.iconClass,
-  class: item.class,
-  desktopOnly: item.desktopOnly,
-  mobileOnly: item.mobileOnly,
-})).filter((item) => Boolean(item.href))
+const links = computed<LinkItem[]>(() => {
+  const result: LinkItem[] = [...(theme.value.nav?.links || [])]
+  if (theme.value.nav?.donate && theme.value.donate) {
+    result.push({
+      text: theme.value.t.links.donate,
+      href: `${theme.value.donate.url}`,
+      icon: theme.value.donate.icon || theme.value.donateIcon,
+      iconClass: 'donate-icon',
+    })
+  }
+  return result
+})
+const socialLinks = computed<LinkItem[]>(() =>
+  (theme.value.nav?.socialLinks || []).map((item) => ({
+    href: item.url || item.link,
+    icon: item.icon,
+    iconClass: item.iconClass,
+    class: item.class,
+    desktopOnly: item.desktopOnly,
+    mobileOnly: item.mobileOnly,
+  })).filter((item) => Boolean(item.href))
+)
 </script>
 
 <template>

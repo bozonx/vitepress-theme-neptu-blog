@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import BaseLink from './BaseLink.vue'
 import TagsList from './TagsList.vue'
-
-interface TagItem {
-  name?: string
-  slug?: string
-  count?: number
-}
+import type { TagInfo } from '../types.d.ts'
 
 const props = withDefaults(
   defineProps<{
     postUrl?: string
     date?: string
     localeDate?: string
-    tags?: TagItem[]
+    tags?: TagInfo[]
     preview?: string
     authorName?: string
     thumbnail?: string

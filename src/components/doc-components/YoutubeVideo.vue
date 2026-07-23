@@ -3,6 +3,7 @@
     <iframe
       class="absolute inset-0 w-full h-full"
       :src="url"
+      title="YouTube video player"
       frameborder="0"
       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
