@@ -58,11 +58,11 @@ watchEffect(() => {
     class="home-layout flex flex-col justify-center items-center w-full min-h-screen transition-[background-position-y] duration-100 ease-out will-change-[background-position]"
     :class="[
       homeTheme,
-      homeBackground === 'none' ? '' : 'bg-no-repeat bg-center bg-fixed',
+      homeBackground === 'none' ? '' : 'bg-no-repeat bg-center bg-fixed bg-cover',
       homeTheme === 'dark' ? 'text-white!' : '',
     ]"
     :style="[
-      homeBackground !== 'none' ? `background-position-y: ${valueY}px; background-size: auto calc(100vh + ${BG_HEIGHT_OFFSET}px);` : '',
+      homeBackground !== 'none' ? `background-position-y: ${valueY}px; background-size: cover;` : '',
       homeBackgroundImage ? `background-image: url(${homeBackgroundImage});` : '',
     ].join(' ')"
   >

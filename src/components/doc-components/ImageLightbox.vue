@@ -24,11 +24,12 @@ const isZoomed = computed(() => Math.abs(scale.value - 1) > 0.01)
 const imgStyle = computed(() => ({
   transform: `translate(${panX.value}px, ${panY.value}px) scale(${scale.value})`,
   transition: isDragging.value ? 'none' : 'transform 0.2s ease',
-  cursor: isZoomed.value ? (isDragging.value ? 'grabbing' : 'grab') : 'default',
+  cursor: isZoomed.value ? (isDragging.value ? 'grabbing' : 'grab') : 'pointer',
 }))
 
 let touchStartX = 0
 let touchStartY = 0
+let hasDragged = false
 
 watch(currentIndex, () => {
   loaded.value = false
@@ -50,6 +51,7 @@ function resetZoom() {
   panX.value = 0
   panY.value = 0
   isDragging.value = false
+  hasDragged = false
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -89,6 +91,8 @@ function onWheel(e: WheelEvent) {
 }
 
 function onMouseDown(e: MouseEvent) {
+  if (e.button !== 0) return
+  hasDragged = false
   if (!isZoomed.value) return
   isDragging.value = true
   dragStartX = e.clientX - panX.value
@@ -98,8 +102,13 @@ function onMouseDown(e: MouseEvent) {
 
 function onMouseMove(e: MouseEvent) {
   if (!isDragging.value) return
-  panX.value = e.clientX - dragStartX
-  panY.value = e.clientY - dragStartY
+  const currentPanX = e.clientX - dragStartX
+  const currentPanY = e.clientY - dragStartY
+  if (Math.abs(currentPanX - panX.value) > 3 || Math.abs(currentPanY - panY.value) > 3) {
+    hasDragged = true
+  }
+  panX.value = currentPanX
+  panY.value = currentPanY
 }
 
 function onMouseUp() {
@@ -111,6 +120,7 @@ function onTouchStart(e: TouchEvent) {
   if (!t) return
   touchStartX = t.clientX
   touchStartY = t.clientY
+  hasDragged = false
 }
 
 function onTouchEnd(e: TouchEvent) {
@@ -119,6 +129,9 @@ function onTouchEnd(e: TouchEvent) {
   if (!t) return
   const dx = t.clientX - touchStartX
   const dy = t.clientY - touchStartY
+  if (Math.abs(dx) >= 10 || Math.abs(dy) >= 10) {
+    hasDragged = true
+  }
   if (Math.abs(dy) > Math.abs(dx)) return
   if (Math.abs(dx) < 50) return
   if (dx < 0) {
@@ -128,7 +141,17 @@ function onTouchEnd(e: TouchEvent) {
   }
 }
 
+function onImageClick(e: MouseEvent) {
+  if (e.button !== 0) return
+  if (hasDragged) {
+    hasDragged = false
+    return
+  }
+  close()
+}
+
 function onBackdropClick(e: MouseEvent) {
+  if (e.button !== 0) return
   if (e.target === e.currentTarget) {
     close()
   }
@@ -202,6 +225,7 @@ onUnmounted(() => {
             :style="imgStyle"
             @load="loaded = true"
             @dblclick="resetZoom"
+            @click="onImageClick"
           />
         </div>
 

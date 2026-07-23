@@ -9,12 +9,14 @@ vi.mock('@iconify/vue', () => ({
   },
 }))
 
+const mockClose = vi.fn()
+
 vi.mock('../../../src/composables/useLightbox.ts', () => ({
   useLightbox: () => ({
     isOpen: ref(true),
     currentIndex: ref(0),
     items: ref([{ src: '/img/test.jpg', alt: 'Test image' }]),
-    close: vi.fn(),
+    close: mockClose,
     next: vi.fn(),
     prev: vi.fn(),
   }),
@@ -53,6 +55,24 @@ describe('ImageLightbox', () => {
     expect(resetZoomButton?.getAttribute('aria-label')).toBe(
       'Сбросить масштаб'
     )
+
+    wrapper.unmount()
+  })
+
+  it('closes when image is clicked with left mouse button', async () => {
+    mockClose.mockClear()
+    document.body.innerHTML = '<div id="modals"></div>'
+
+    const wrapper = mount(ImageLightbox, {
+      attachTo: document.body,
+    })
+
+    const img = document.body.querySelector('.lightbox-img') as HTMLImageElement
+    expect(img).not.toBeNull()
+
+    // Dispatch left click on image
+    img.dispatchEvent(new MouseEvent('click', { button: 0, bubbles: true }))
+    expect(mockClose).toHaveBeenCalledTimes(1)
 
     wrapper.unmount()
   })
