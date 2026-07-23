@@ -7,6 +7,7 @@ import {
   HomeHero,
   HomeTags,
   HomePopularPosts,
+  UtilPageContent,
 } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 

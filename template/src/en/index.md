@@ -5,6 +5,7 @@ layout: home
 import {
   HomeHero,
   HomeTags,
+  UtilPageContent,
 } from 'vitepress-theme-neptu-blog/components'
 import { useData } from 'vitepress'
 
