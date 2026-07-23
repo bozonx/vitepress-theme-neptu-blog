@@ -34,7 +34,7 @@ const params = computed(() => ({
     <BaseLink
       v-if="props.item.url"
       :href="props.item.url"
-      class="block no-underline text-inherit hover:no-underline"
+      class="card-item-title-link block no-underline text-inherit hover:no-underline"
     >
       <h2
         class="card-item-header font-bold mb-3 text-2xl leading-8 tracking-tight hover:brightness-125"

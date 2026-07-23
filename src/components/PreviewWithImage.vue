@@ -68,7 +68,7 @@ const props = withDefaults(
       <TagsList
         v-if="props.showTags"
         :tags="props.tags || []"
-        class="mt-2"
+        class="mt-2 card-item-interactive"
         :size-sm="true"
         :active-compare-method="'softPagination'"
       />
@@ -94,7 +94,7 @@ const props = withDefaults(
       <TagsList
         v-if="props.showTags"
         :tags="props.tags || []"
-        class="flex-1"
+        class="flex-1 card-item-interactive"
         :size-sm="true"
         :active-compare-method="'softPagination'"
       />
