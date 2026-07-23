@@ -1,3 +1,44 @@
+<script lang="ts">
+const FILE_TYPE_ICON_MAP: Record<string, string> = {
+  pdf: 'mdi:file-pdf-box',
+  doc: 'mdi:file-word-box',
+  docx: 'mdi:file-word-box',
+  xls: 'mdi:file-excel-box',
+  xlsx: 'mdi:file-excel-box',
+  ppt: 'mdi:file-powerpoint-box',
+  pptx: 'mdi:file-powerpoint-box',
+  txt: 'mdi:file-document-outline',
+  zip: 'mdi:zip-box',
+  rar: 'mdi:zip-box',
+  '7z': 'mdi:zip-box',
+  jpg: 'mdi:file-image',
+  jpeg: 'mdi:file-image',
+  png: 'mdi:file-image',
+  webp: 'mdi:file-image',
+  avif: 'mdi:file-image',
+  gif: 'mdi:file-image',
+  svg: 'mdi:file-image',
+  mp4: 'mdi:file-video',
+  avi: 'mdi:file-video',
+  mov: 'mdi:file-video',
+  mp3: 'mdi:file-music',
+  wav: 'mdi:file-music',
+  json: 'mdi:code-json',
+  js: 'mdi:language-javascript',
+  ts: 'mdi:language-typescript',
+  html: 'mdi:language-html5',
+  css: 'mdi:language-css3',
+  xml: 'mdi:file-xml-box',
+}
+
+const getFileTypeIcon = (extension: string | undefined) => {
+  if (!extension) {
+    return 'mdi:file'
+  }
+  return FILE_TYPE_ICON_MAP[extension] || 'mdi:file'
+}
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
@@ -13,9 +54,6 @@ const props = defineProps<{
   containerClass?: string
   disabled?: boolean
 }>()
-
-// Button disabled state
-const isDisabled = computed(() => props.disabled)
 
 // Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {
@@ -40,7 +78,7 @@ const extensionName = computed(() => {
 })
 
 const downloadFile = async () => {
-  if (isDisabled.value) return
+  if (props.disabled) return
 
   try {
     // Create a temporary link for downloading
@@ -57,48 +95,6 @@ const downloadFile = async () => {
     // On error, open the file in a new tab
     window.open(props.url, '_blank')
   }
-}
-
-// Resolve icon for file type
-const getFileTypeIcon = (extension: string | undefined) => {
-  // If extension is not defined, return the default icon
-  if (!extension) {
-    return 'mdi:file'
-  }
-
-  const iconMap: Record<string, string> = {
-    pdf: 'mdi:file-pdf-box',
-    doc: 'mdi:file-word-box',
-    docx: 'mdi:file-word-box',
-    xls: 'mdi:file-excel-box',
-    xlsx: 'mdi:file-excel-box',
-    ppt: 'mdi:file-powerpoint-box',
-    pptx: 'mdi:file-powerpoint-box',
-    txt: 'mdi:file-document-outline',
-    zip: 'mdi:zip-box',
-    rar: 'mdi:zip-box',
-    '7z': 'mdi:zip-box',
-    jpg: 'mdi:file-image',
-    jpeg: 'mdi:file-image',
-    png: 'mdi:file-image',
-    webp: 'mdi:file-image',
-    avif: 'mdi:file-image',
-    gif: 'mdi:file-image',
-    svg: 'mdi:file-image',
-    mp4: 'mdi:file-video',
-    avi: 'mdi:file-video',
-    mov: 'mdi:file-video',
-    mp3: 'mdi:file-music',
-    wav: 'mdi:file-music',
-    json: 'mdi:code-json',
-    js: 'mdi:language-javascript',
-    ts: 'mdi:language-typescript',
-    html: 'mdi:language-html5',
-    css: 'mdi:language-css3',
-    xml: 'mdi:file-xml-box',
-  }
-
-  return iconMap[extension] || 'mdi:file'
 }
 
 // Icon to display
@@ -137,7 +133,7 @@ const fileIcon = computed(() => {
 
     <NeptuBtn
       icon="mdi:download"
-      :disabled="isDisabled"
+      :disabled="props.disabled"
       :text="theme.t.fileDownload.downloadFile"
       class="download-btn shrink-0 transition-transform duration-200 hover:-translate-y-px hover:shadow-[0_4px_8px_rgba(0,0,0,0.15)] max-sm:w-full max-sm:justify-center max-sm:order-2 will-change-[transform]"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"

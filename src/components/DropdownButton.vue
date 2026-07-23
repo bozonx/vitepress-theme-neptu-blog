@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted, nextTick } from 'vue'
+import { ref, onUnmounted, nextTick, useId } from 'vue'
 import { Icon } from '@iconify/vue'
 import NeptuBtn from './NeptuBtn.vue'
 import { useOnClickOutside } from '../composables/useOnClickOutside.ts'
@@ -15,7 +15,7 @@ const rootRef = ref<HTMLElement | null>(null)
 useOnClickOutside(rootRef, () => closeList())
 const animationTimeMs = 400
 const mouseLeaveDelayMs = 400
-const menuId = `dropdown-menu-${crypto.randomUUID()}`
+const menuId = `dropdown-menu-${useId()}`
 const listOpen = ref(false)
 const opacity = ref(0)
 const mouseOverWholeEl = ref(false)

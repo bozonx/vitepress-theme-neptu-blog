@@ -1,11 +1,5 @@
-<script setup lang="ts">
-import { Icon } from '@iconify/vue'
-
-const props = defineProps<{
-  name: string
-  alt?: string
-}>()
-const iconifyIcon: Record<string, string> = {
+<script lang="ts">
+const ICONIFY_ICON_MAP: Record<string, string> = {
   site: 'mdi:globe',
   rss: 'mdi:rss',
   castbox: 'simple-icons:castbox',
@@ -23,10 +17,19 @@ const iconifyIcon: Record<string, string> = {
 const width = '1.6rem'
 </script>
 
+<script setup lang="ts">
+import { Icon } from '@iconify/vue'
+
+const props = defineProps<{
+  name: string
+  alt?: string
+}>()
+</script>
+
 <template>
   <Icon
-    v-if="iconifyIcon[props.name]"
-    :icon="iconifyIcon[props.name]"
+    v-if="ICONIFY_ICON_MAP[props.name]"
+    :icon="ICONIFY_ICON_MAP[props.name]"
     :width="width"
     :height="width"
     :alt="props.alt"

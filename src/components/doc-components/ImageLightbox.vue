@@ -97,6 +97,8 @@ function onMouseDown(e: MouseEvent) {
   isDragging.value = true
   dragStartX = e.clientX - panX.value
   dragStartY = e.clientY - panY.value
+  window.addEventListener('mousemove', onMouseMove)
+  window.addEventListener('mouseup', onMouseUp)
   e.preventDefault()
 }
 
@@ -112,7 +114,11 @@ function onMouseMove(e: MouseEvent) {
 }
 
 function onMouseUp() {
-  isDragging.value = false
+  if (isDragging.value) {
+    isDragging.value = false
+    window.removeEventListener('mousemove', onMouseMove)
+    window.removeEventListener('mouseup', onMouseUp)
+  }
 }
 
 function onTouchStart(e: TouchEvent) {
@@ -159,8 +165,6 @@ function onBackdropClick(e: MouseEvent) {
 
 onMounted(() => {
   window.addEventListener('keydown', onKeydown)
-  window.addEventListener('mousemove', onMouseMove)
-  window.addEventListener('mouseup', onMouseUp)
 })
 
 onUnmounted(() => {

@@ -72,7 +72,7 @@ const switchTitle = computed(() => {
   opacity: 1;
 }
 
-.dark .VPSwitchAppearance :deep(.check) {
+.dark .VPSwitchAppearance .check {
   /*rtl:ignore*/
   transform: translateX(18px);
 }
@@ -117,8 +117,7 @@ const switchTitle = computed(() => {
   overflow: hidden;
 }
 
-/* .icon .icon-var { */
-.icon :deep([class^='vpi-']) {
+.icon [class^='vpi-'] {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -127,8 +126,7 @@ const switchTitle = computed(() => {
   color: var(--switch-appearance-icon-color);
 }
 
-/* .dark .icon .icon-var { */
-.dark .icon :deep([class^='vpi-']) {
+.dark .icon [class^='vpi-'] {
   transition: opacity 0.25s !important;
 }
 </style>

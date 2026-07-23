@@ -8,7 +8,7 @@ import type { NeptuBlogTheme } from '../../types.d.ts'
 
 const { title } = useData()
 const { theme } = useUiTheme()
-const siteFullTitle = encodeURIComponent(title.value)
+const siteFullTitle = computed(() => encodeURIComponent(title.value || ''))
 
 interface ShareItem {
   href: string
@@ -26,7 +26,7 @@ const items = computed<ShareItem[]>(() => {
   return socialItems.value.map((item: NeptuBlogTheme.SocialMediaShare) => {
     const href = item.urlTemplate
       .replaceAll('{url}', encodedDocUrl)
-      .replaceAll('{title}', siteFullTitle)
+      .replaceAll('{title}', siteFullTitle.value)
 
     return { href, icon: item.icon, title: item.title, class: item.class }
   })

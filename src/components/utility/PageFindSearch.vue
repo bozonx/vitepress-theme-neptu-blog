@@ -145,6 +145,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  document.body.classList.remove('modal-open')
   document.removeEventListener('keydown', handleKeydown)
   window.removeEventListener('popstate', handlePopState)
 })
