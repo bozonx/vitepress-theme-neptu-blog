@@ -54,6 +54,7 @@ export namespace NeptuBlogTheme {
 
   export interface Config extends DefaultTheme.Config {
     externalLinkIcon?: boolean
+    themeSwitcher?: boolean
     perPage?: number
     sidebarTagsCount?: number
     similarPostsCount?: number

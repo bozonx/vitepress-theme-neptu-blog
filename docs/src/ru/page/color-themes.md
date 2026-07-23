@@ -38,6 +38,21 @@ import 'vitepress-theme-neptu-blog/blue-theme.css'
 // import 'vitepress-theme-neptu-blog/monochrome-theme.css'
 ```
 
+## Динамическое переключение темы (`themeSwitcher`)
+
+Тема поддерживает интерактивный контрол для смены цветовых пресетов в реальном времени (попробуйте иконку палитры в верхнем меню). Выбранная тема автоматически сохраняется в `localStorage`.
+
+Чтобы включить контрол в вашем блоге, установите `themeSwitcher: true` в `themeConfig`:
+
+```ts
+// .vitepress/config.ts
+export default {
+  themeConfig: {
+    themeSwitcher: true, // Включает переключатель палитры в верхней панели
+  }
+}
+```
+
 ## Собственный оттенок (Hue)
 
 Каждая схема управляется двумя CSS-переменными. Чтобы задать собственный оттенок, пропустите импорт темы

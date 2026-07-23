@@ -38,6 +38,21 @@ import 'vitepress-theme-neptu-blog/blue-theme.css'
 // import 'vitepress-theme-neptu-blog/monochrome-theme.css'
 ```
 
+## Dynamic Theme Switcher (`themeSwitcher`)
+
+The theme supports a real-time color theme picker control in the top bar (try the palette icon in the navigation). Selected theme choices are automatically saved to `localStorage`.
+
+To enable this switcher in your blog, set `themeSwitcher: true` in `themeConfig`:
+
+```ts
+// .vitepress/config.ts
+export default {
+  themeConfig: {
+    themeSwitcher: true, // Enables real-time palette selector in the top bar
+  }
+}
+```
+
 ## Custom hue
 
 Every scheme is driven by two CSS variables. To roll your own, skip the theme

@@ -41,6 +41,7 @@ export default async () => {
     themeConfig: {
       repo: 'https://github.com/bozonx/vitepress-theme-neptu-blog',
       perPage: PER_PAGE,
+      themeSwitcher: true,
       search: {
         provider: 'pagefind',
         options: { bodyMarker: 'data-pagefind-body' },

@@ -3,6 +3,7 @@ import { useData, withBase } from 'vitepress'
 
 import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
+import SwitchTheme from './SwitchTheme.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
 interface SocialLinkItem {
@@ -71,7 +72,10 @@ if (theme.value.sidebar?.atomFeed && hasFormat('atom')) {
       </li>
     </ul>
 
-    <div class="flex-1 flex justify-end">
+    <div class="flex-1 flex justify-end items-center gap-1">
+      <div v-if="theme.themeSwitcher" class="lg:hidden">
+        <SwitchTheme :no-bg="true" @click.stop />
+      </div>
       <div class="lg:hidden">
         <SwitchAppearance @click.stop />
       </div>

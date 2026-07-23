@@ -13,6 +13,7 @@ import './styles/vendor/vp-common.css'
 import './styles/vendor/vp-icons.css'
 import './styles/search-modal.css'
 import './styles/blog-vars.css'
+import './styles/themes/theme-presets.css'
 import './styles/blog-styles.css'
 
 import type { EnhanceAppContext } from 'vitepress'

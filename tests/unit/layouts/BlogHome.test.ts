@@ -87,7 +87,7 @@ describe('BlogHome', () => {
     })
 
     const root = wrapper.find('.home-layout')
-    expect(root.attributes('style')).toContain('background-size: cover')
+    expect(root.attributes('style')).toContain('500px')
   })
 
   it('renders named slots', () => {

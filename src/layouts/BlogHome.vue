@@ -62,7 +62,7 @@ watchEffect(() => {
       homeTheme === 'dark' ? 'text-white!' : '',
     ]"
     :style="[
-      homeBackground !== 'none' ? `background-position-y: ${valueY}px; background-size: cover;` : '',
+      homeBackground !== 'none' ? `background-position-y: ${valueY}px; background-size: max(100vw, calc((100vh + ${BG_HEIGHT_OFFSET}px) * 1.78)) calc(100vh + ${BG_HEIGHT_OFFSET}px);` : '',
       homeBackgroundImage ? `background-image: url(${homeBackgroundImage});` : '',
     ].join(' ')"
   >

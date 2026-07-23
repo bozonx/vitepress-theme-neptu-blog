@@ -83,6 +83,7 @@ const baseIconSets = {
     'magnifying-glass',
     'comment-dots',
     'share-nodes',
+    'palette',
   ],
   'fa6-brands': ['youtube', 'x-twitter', 'telegram', 'github-alt', 'github'],
   solar: ['document-linear'],

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NeptuBtn from '../NeptuBtn.vue'
 import SwitchAppearance from './SwitchAppearance.vue'
+import SwitchTheme from './SwitchTheme.vue'
 import SwitchLang from './SwitchLang.vue'
 import { useUiTheme } from '../../composables/useUiTheme.ts'
 
@@ -78,6 +79,10 @@ const socialLinks: LinkItem[] = (theme.value.nav?.socialLinks || []).map((item) 
         />
       </li>
     </ul>
+
+    <div v-if="theme.themeSwitcher">
+      <SwitchTheme :no-bg="true" />
+    </div>
 
     <div>
       <SwitchLang :no-bg="true" />
