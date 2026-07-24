@@ -45,7 +45,9 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { useData, withBase } from 'vitepress'
 import { GLOBAL_MODALS_CONTAINER_ID } from '../../constants.ts'
+import type { ThemeConfig } from '../../types.ts'
 
 declare global {
   interface Window {
@@ -59,6 +61,8 @@ const MODAL_ID = 'search-modal'
 const HISTORY_STATE_KEY = 'neptuPagefindModal'
 const CLOSE_BUTTON_CLASS = 'search-modal-close-button'
 const MOBILE_CLOSE_BUTTON_CLASS = 'search-modal-mobile-close-button'
+
+const { theme } = useData<ThemeConfig>()
 
 const pageFind = ref<InstanceType<typeof window.PagefindUI> | null>(null)
 const isModalOpen = ref(false)
@@ -100,10 +104,15 @@ const showSearchModal = async () => {
   history.pushState({ ...history.state, [HISTORY_STATE_KEY]: true }, '', window.location.href)
 
   if (window.PagefindUI && !pageFind.value) {
+    const customOptions = theme.value?.search?.options || {}
+    const { bodyMarker, ...runtimeOptions } = customOptions as Record<string, unknown>
+
     pageFind.value = new window.PagefindUI({
       element: '#pagefind-search',
+      bundlePath: withBase('/pagefind/'),
       showSubResults: true,
       showImages: true,
+      ...runtimeOptions,
     })
   }
 
