@@ -24,22 +24,36 @@ interface Props {
 
 const slots = useSlots()
 const { theme } = useUiTheme()
-const props = defineProps<Props>()
-const isExternal = computed(() => !props.hideExternalIcon && isExternalUrl(props.href))
-const hasText = computed(() => Boolean(props.text || slots.default))
+const {
+  customClass,
+  innerClass,
+  href,
+  target,
+  disabled = false,
+  activeCompareMethod,
+  icon,
+  text,
+  iconClass,
+  noBg = false,
+  primary = false,
+  hideExternalIcon = false,
+} = defineProps<Props>()
+
+const isExternal = computed(() => !hideExternalIcon && isExternalUrl(href))
+const hasText = computed(() => Boolean(text || slots.default))
 const btnProps = computed(() => {
-  if (props.href && !props.disabled) {
+  if (href && !disabled) {
     // means just link
     return {
       tag: 'a' as const,
-      href: props.href,
-      target: props.target,
+      href,
+      target,
     }
   }
   // means Button
   return {
     tag: 'button' as const,
-    disabled: props.disabled,
+    disabled,
   }
 })
 </script>
@@ -52,19 +66,19 @@ const btnProps = computed(() => {
       hasText ? 'py-2 px-5' : 'p-3',
       'btn-base',
       btnProps.disabled && 'disabled',
-      props.primary && 'btn--primary',
-      props.noBg && 'btn--nobg',
-      props.customClass,
+      primary && 'btn--primary',
+      noBg && 'btn--nobg',
+      customClass,
     ]"
-    :active-compare-method="props.activeCompareMethod"
+    :active-compare-method="activeCompareMethod"
   >
-    <span :class="['flex items-center gap-x-2 btn-base-inner', props.innerClass]">
+    <span :class="['flex items-center gap-x-2 btn-base-inner', innerClass]">
       <span
-        v-if="props.icon"
+        v-if="icon"
         aria-hidden="true"
         class="btn-base__icon-container"
       >
-        <Icon :icon="props.icon" :class="props.iconClass" />
+        <Icon :icon="icon" :class="iconClass" />
       </span>
       <span
         v-if="hasText"
@@ -75,7 +89,7 @@ const btnProps = computed(() => {
           'vp-external-link-icon'
         "
       >
-        <slot>{{ props.text }}</slot>
+        <slot>{{ text }}</slot>
       </span>
     </span>
   </BaseLink>

@@ -20,7 +20,7 @@ const SOCIAL_ICON_MAP: Record<string, string> = {
   // bastyon, odysee, threads icons unavailable in @iconify/vue, using fallback
 }
 
-defineProps<{
+const { links } = defineProps<{
   links: AuthorSocialLink[]
 }>()
 
@@ -31,16 +31,16 @@ const getIconName = (type: string) => {
 </script>
 
 <template>
-  <div class="flex gap-x-2">
-    <NeptuBtn
-      v-for="link in links"
-      :key="link.url"
-      :href="link.url"
-      :title="link.title"
-      :icon="getIconName(link.type)"
-      icon-class="text-2xl"
-      target="_blank"
-      class="social-link"
-    />
-  </div>
+  <ul v-if="links.length" class="flex gap-x-2 list-none p-0 m-0">
+    <li v-for="link in links" :key="link.url">
+      <NeptuBtn
+        :href="link.url"
+        :title="link.title"
+        :icon="getIconName(link.type)"
+        icon-class="text-2xl"
+        target="_blank"
+        class="social-link"
+      />
+    </li>
+  </ul>
 </template>

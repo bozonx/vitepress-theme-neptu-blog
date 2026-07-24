@@ -4,7 +4,12 @@ import { Icon } from '@iconify/vue'
 import NeptuBtn from './NeptuBtn.vue'
 import { useOnClickOutside } from '../composables/useOnClickOutside.ts'
 
-const props = defineProps<{
+const {
+  dropUp = false,
+  dropLeft = false,
+  title,
+  noBg = false,
+} = defineProps<{
   dropUp?: boolean
   dropLeft?: boolean
   title?: string
@@ -162,8 +167,8 @@ onUnmounted(() => {
   >
     <NeptuBtn
       ref="triggerRef"
-      :no-bg="props.noBg"
-      :title="props.title"
+      :no-bg="noBg"
+      :title="title"
       aria-haspopup="menu"
       :aria-expanded="listOpen"
       :aria-controls="menuId"
@@ -185,21 +190,21 @@ onUnmounted(() => {
         </span>
       </span>
     </NeptuBtn>
-    <div
+    <ul
       :id="menuId"
       ref="menuRef"
       role="menu"
       :style="{ opacity, 'transition-duration': `${animationTimeMs}ms` }"
       :class="[
-        `dropdown-list space-y-1 transition-opacity will-change-[opacity] absolute z-100 min-w-[100px] py-[0.4rem] rounded-lg mt-[1px] shadow-[0px_8px_16px_0px_rgba(0,0,0,0.3)] dark:shadow-[0px_8px_16px_0px_rgba(0,0,0,0.5)] bg-[var(--dropdown-list-bg)]`,
-        props.dropUp && 'dropdown--drop-up bottom-full',
-        props.dropLeft && 'dropdown--drop-left right-0',
+        `dropdown-list list-none m-0 space-y-1 transition-opacity will-change-[opacity] absolute z-100 min-w-[100px] py-[0.4rem] rounded-lg mt-[1px] shadow-[0px_8px_16px_0px_rgba(0,0,0,0.3)] dark:shadow-[0px_8px_16px_0px_rgba(0,0,0,0.5)] bg-[var(--dropdown-list-bg)]`,
+        dropUp && 'dropdown--drop-up bottom-full',
+        dropLeft && 'dropdown--drop-left right-0',
         !listOpen && 'hidden',
       ]"
       @click="() => closeList()"
       @keydown="handleMenuKeydown"
     >
       <slot />
-    </div>
+    </ul>
   </div>
 </template>

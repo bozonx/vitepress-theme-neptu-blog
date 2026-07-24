@@ -7,26 +7,32 @@ import type { PostLite } from '../types.d.ts'
 
 const { theme } = useUiTheme()
 
-const props = defineProps<{
+const {
+  localePosts,
+  curPage,
+  perPage: propPerPage,
+  paginationMaxItems,
+  paginationBaseUrl,
+} = defineProps<{
   localePosts: PostLite[]
   curPage: number
   perPage?: number
   paginationMaxItems?: number
   paginationBaseUrl?: string
 }>()
-const perPage = computed(() => props.perPage || theme.value.perPage || 1)
+const perPage = computed(() => propPerPage || theme.value.perPage || 1)
 const start = computed(() =>
-  props.curPage === 1 ? 0 : (props.curPage - 1) * perPage.value
+  curPage === 1 ? 0 : (curPage - 1) * perPage.value
 )
 const items = computed(() =>
-  props.localePosts.slice(start.value, start.value + perPage.value).filter(Boolean)
+  localePosts.slice(start.value, start.value + perPage.value).filter(Boolean)
 )
-const totalPages = computed(() => Math.ceil(props.localePosts.length / perPage.value))
+const totalPages = computed(() => Math.ceil(localePosts.length / perPage.value))
 </script>
 
 <template>
   <div v-if="items.length">
-    <ul>
+    <ul class="list-none p-0 m-0 space-y-4">
       <li
         v-for="item in items"
         :key="item.url"
@@ -40,10 +46,10 @@ const totalPages = computed(() => Math.ceil(props.localePosts.length / perPage.v
 
     <div v-if="totalPages > 1" class="mt-10">
       <NeptuPagination
-        :cur-page="props.curPage"
+        :cur-page="curPage"
         :total-pages="totalPages"
-        :pagination-max-items="props.paginationMaxItems"
-        :pagination-base-url="props.paginationBaseUrl"
+        :pagination-max-items="paginationMaxItems"
+        :pagination-base-url="paginationBaseUrl"
       />
     </div>
   </div>

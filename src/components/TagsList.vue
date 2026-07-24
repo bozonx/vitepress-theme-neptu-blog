@@ -3,7 +3,13 @@ import { computed } from 'vue'
 import TagItem from './TagItem.vue'
 import type { TagInfo } from '../types.d.ts'
 
-const props = defineProps<{
+const {
+  tags,
+  sizeXl = false,
+  sizeSm = false,
+  class: customClass,
+  activeCompareMethod,
+} = defineProps<{
   tags: TagInfo[]
   sizeXl?: boolean
   sizeSm?: boolean
@@ -19,22 +25,22 @@ const sizeClasses: Record<string, string> = {
   sm: 'gap-x-2 gap-y-3',
 }
 const sizeClass = computed(() => {
-  const sizeKey = (props.sizeXl && 'xl') || (props.sizeSm && 'sm') || 'md'
+  const sizeKey = (sizeXl && 'xl') || (sizeSm && 'sm') || 'md'
   return sizeClasses[sizeKey]
 })
 </script>
 
 <template>
   <ul
-    v-if="props.tags.length"
-    :class="['flex flex-wrap', sizeClass, props.class]"
+    v-if="tags.length"
+    :class="['flex flex-wrap list-none p-0 m-0', sizeClass, customClass]"
   >
-    <li v-for="(item, index) in props.tags" :key="item.slug || item.name || index">
+    <li v-for="(item, index) in tags" :key="item.slug || item.name || index">
       <TagItem
         v-bind="item"
-        :size-xl="props.sizeXl"
-        :size-sm="props.sizeSm"
-        :active-compare-method="props.activeCompareMethod"
+        :size-xl="sizeXl"
+        :size-sm="sizeSm"
+        :active-compare-method="activeCompareMethod"
         @click="emit('itemClick')"
       />
     </li>

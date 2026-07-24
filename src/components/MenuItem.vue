@@ -8,7 +8,7 @@ interface Props {
   customClass?: ClassValue
 }
 
-const props = defineProps<Props>()
+const { customClass } = defineProps<Props>()
 const attrs = useAttrs()
 const iconClass = computed(() => {
   const value = attrs.iconClass
@@ -28,7 +28,7 @@ const iconClass = computed(() => {
     role="menuitem"
     :custom-class="[
       'menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]',
-      props.customClass,
+      customClass,
     ]"
     inner-class="menu-item-inner"
     :icon-class="iconClass"

@@ -8,7 +8,7 @@ interface Props {
 }
 
 // Declare only the props handled by this component
-const props = defineProps<Props>()
+const { text, count } = defineProps<Props>()
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const props = defineProps<Props>()
     v-bind="$attrs"
     class="no-underline text-2xl my-5 inline-flex gap-x-2"
   >
-    <span>{{ props.text }}</span>
-    <NeptuBadge v-if="typeof props.count === 'number'" :count="props.count" />
+    <span>{{ text }}</span>
+    <NeptuBadge v-if="typeof count === 'number'" :count="count" />
   </SimpleLink>
 </template>
