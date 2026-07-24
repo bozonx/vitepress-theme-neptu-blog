@@ -24,8 +24,8 @@ themeConfig:
   # -------------------------------------------------------------------------
   # Branding & layout
   # -------------------------------------------------------------------------
-  # sidebarLogoSrc: '/img/logo.png'
-  # sidebarLogoHeight: 40
+  sidebarLogoSrc: '/img/sidebar-logo.jpg'
+  sidebarLogoHeight: 158
   # sidebarMenuLabel: 'Menu'
   # sidebarTagsCount: 15
   # similarPostsCount: 5
