@@ -76,5 +76,35 @@ describe('resolveTranslationsByFilePath', () => {
     expect(zhHK).toBeDefined()
     expect(zhHK.label).toBe('简体中文')
   })
+
+  it('resolves Serbian, Portuguese, French, German, Turkish, Japanese, and Korean locales', () => {
+    const sr = resolveTranslationsByFilePath('sr/page.md')
+    expect(sr.label).toBe('Српски')
+    expect(sr.t.search).toBe('Претрага')
+
+    const pt = resolveTranslationsByFilePath('pt-BR/page.md')
+    expect(pt.label).toBe('Português')
+    expect(pt.t.search).toBe('Buscar')
+
+    const fr = resolveTranslationsByFilePath('fr-FR/page.md')
+    expect(fr.label).toBe('Français')
+    expect(fr.t.search).toBe('Rechercher')
+
+    const de = resolveTranslationsByFilePath('de-DE/page.md')
+    expect(de.label).toBe('Deutsch')
+    expect(de.t.search).toBe('Suchen')
+
+    const tr = resolveTranslationsByFilePath('tr-TR/page.md')
+    expect(tr.label).toBe('Türkçe')
+    expect(tr.t.search).toBe('Ara')
+
+    const ja = resolveTranslationsByFilePath('ja-JP/page.md')
+    expect(ja.label).toBe('日本語')
+    expect(ja.t.search).toBe('検索')
+
+    const ko = resolveTranslationsByFilePath('ko-KR/page.md')
+    expect(ko.label).toBe('한국어')
+    expect(ko.t.search).toBe('검색')
+  })
 })
 
