@@ -106,5 +106,43 @@ describe('resolveTranslationsByFilePath', () => {
     expect(ko.label).toBe('한국어')
     expect(ko.t.search).toBe('검색')
   })
+
+  it('resolves Italian, Polish, Latvian, Dutch, Swedish, Czech, Hindi, Thai, and Hebrew locales', () => {
+    const it = resolveTranslationsByFilePath('it-IT/page.md')
+    expect(it.label).toBe('Italiano')
+    expect(it.t.search).toBe('Cerca')
+
+    const pl = resolveTranslationsByFilePath('pl-PL/page.md')
+    expect(pl.label).toBe('Polski')
+    expect(pl.t.search).toBe('Szukaj')
+
+    const lv = resolveTranslationsByFilePath('lv-LV/page.md')
+    expect(lv.label).toBe('Latviešu')
+    expect(lv.t.search).toBe('Meklēt')
+
+    const nl = resolveTranslationsByFilePath('nl-NL/page.md')
+    expect(nl.label).toBe('Nederlands')
+    expect(nl.t.search).toBe('Zoeken')
+
+    const sv = resolveTranslationsByFilePath('sv-SE/page.md')
+    expect(sv.label).toBe('Svenska')
+    expect(sv.t.search).toBe('Sök')
+
+    const cs = resolveTranslationsByFilePath('cs-CZ/page.md')
+    expect(cs.label).toBe('Čeština')
+    expect(cs.t.search).toBe('Hledat')
+
+    const hi = resolveTranslationsByFilePath('hi-IN/page.md')
+    expect(hi.label).toBe('हिन्दी')
+    expect(hi.t.search).toBe('खोजें')
+
+    const th = resolveTranslationsByFilePath('th-TH/page.md')
+    expect(th.label).toBe('ไทย')
+    expect(th.t.search).toBe('ค้นหา')
+
+    const he = resolveTranslationsByFilePath('he-IL/page.md')
+    expect(he.label).toBe('עברית')
+    expect(he.t.search).toBe('חיפוש')
+  })
 })
 

@@ -67,11 +67,11 @@ Examples:
 
 ## Built-in locale defaults
 
-The theme ships built-in translations for locales under `src/configs/blogLocalesBase/<locale>.ts` (including `en`, `ru`, `es`, `zh`, `sr`, `pt`, `fr`, `de`, `tr`, `ja`, `ko`). Each file is a `LocaleDefinition` with `themeConfig` (UI labels such as `langMenuLabel`, `sidebarMenuLabel`) and `t` (translation strings).
+The theme ships built-in translations for locales under `src/configs/blogLocalesBase/<locale>.ts` (including `en`, `ru`, `es`, `zh`, `sr`, `pt`, `fr`, `de`, `tr`, `ja`, `ko`, `it`, `pl`, `lv`, `nl`, `sv`, `cs`, `hi`, `th`, `he`). Each file is a `LocaleDefinition` with `themeConfig` (UI labels such as `langMenuLabel`, `sidebarMenuLabel`) and `t` (translation strings).
 
 Resolution rule for the built-in layer:
 
-1. Exact key match against the current locale (e.g. `en-GB`, `es-419`, `zh-CN`, `pt-BR`, `fr-FR`, `de-DE`, `sr-RS`).
+1. Exact key match against the current locale (e.g. `en-GB`, `es-419`, `zh-CN`, `pt-BR`, `fr-FR`, `de-DE`, `sr-RS`, `it-IT`, `pl-PL`, `lv-LV`, `nl-NL`, `sv-SE`, `cs-CZ`, `hi-IN`, `th-TH`, `he-IL`).
 2. Base-language match using the part before `-` (e.g. `en` for `en-GB`, `es` for `es-MX`, `zh` for `zh-TW`, `pt` for `pt-PT`).
 3. Special regional fallback (e.g. `es-*` fallback to `es-419`, `zh-*` fallback to `zh-CN`/`zh-Hans` if base key is missing).
 4. Built-in English fallback `en`.

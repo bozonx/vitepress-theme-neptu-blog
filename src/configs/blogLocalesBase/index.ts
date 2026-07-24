@@ -9,6 +9,15 @@ import de from './de.ts'
 import tr from './tr.ts'
 import ja from './ja.ts'
 import ko from './ko.ts'
+import it from './it.ts'
+import pl from './pl.ts'
+import lv from './lv.ts'
+import nl from './nl.ts'
+import sv from './sv.ts'
+import cs from './cs.ts'
+import hi from './hi.ts'
+import th from './th.ts'
+import he from './he.ts'
 
 export default {
   en,
@@ -33,6 +42,24 @@ export default {
   'ja-JP': ja,
   ko,
   'ko-KR': ko,
+  it,
+  'it-IT': it,
+  pl,
+  'pl-PL': pl,
+  lv,
+  'lv-LV': lv,
+  nl,
+  'nl-NL': nl,
+  sv,
+  'sv-SE': sv,
+  cs,
+  'cs-CZ': cs,
+  hi,
+  'hi-IN': hi,
+  th,
+  'th-TH': th,
+  he,
+  'he-IL': he,
 }
 
 
