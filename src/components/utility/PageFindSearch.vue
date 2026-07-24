@@ -105,7 +105,7 @@ const showSearchModal = async () => {
 
   if (window.PagefindUI && !pageFind.value) {
     const customOptions = theme.value?.search?.options || {}
-    const { bodyMarker, ...runtimeOptions } = customOptions as Record<string, unknown>
+    const { bodyMarker: _bodyMarker, ...runtimeOptions } = customOptions as Record<string, unknown>
 
     pageFind.value = new window.PagefindUI({
       element: '#pagefind-search',
