@@ -256,9 +256,8 @@ onUnmounted(() => {
         <div
           v-if="hasMultiple || isZoomed"
           class="lightbox-counter"
-          aria-hidden="true"
         >
-          <span v-if="hasMultiple">{{ currentIndex + 1 }} / {{ items.length }}</span>
+          <span v-if="hasMultiple" aria-hidden="true">{{ currentIndex + 1 }} / {{ items.length }}</span>
           <button
             v-if="isZoomed"
             type="button"

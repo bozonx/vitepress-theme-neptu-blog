@@ -53,5 +53,28 @@ describe('resolveTranslationsByFilePath', () => {
     expect(esES).toBeDefined()
     expect(esES.label).toBe('Español')
   })
+
+  it('resolves Chinese locales (zh, zh-CN, zh-Hans, zh-TW, zh-HK) to Simplified Chinese base locale', () => {
+    const zh = resolveTranslationsByFilePath('zh/page.md')
+    expect(zh).toBeDefined()
+    expect(zh.label).toBe('简体中文')
+    expect(zh.t.search).toBe('搜索')
+
+    const zhCN = resolveTranslationsByFilePath('zh-CN/page.md')
+    expect(zhCN).toBeDefined()
+    expect(zhCN.label).toBe('简体中文')
+
+    const zhHans = resolveTranslationsByFilePath('zh-Hans/page.md')
+    expect(zhHans).toBeDefined()
+    expect(zhHans.label).toBe('简体中文')
+
+    const zhTW = resolveTranslationsByFilePath('zh-TW/page.md')
+    expect(zhTW).toBeDefined()
+    expect(zhTW.label).toBe('简体中文')
+
+    const zhHK = resolveTranslationsByFilePath('zh-HK/page.md')
+    expect(zhHK).toBeDefined()
+    expect(zhHK.label).toBe('简体中文')
+  })
 })
 

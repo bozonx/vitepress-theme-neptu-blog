@@ -15,6 +15,8 @@ export function resolveBaseLocaleKey(
   if (shortLocale && map[shortLocale]) return shortLocale
 
   if (shortLocale === 'es' && map['es-419']) return 'es-419'
+  if (shortLocale === 'zh' && map['zh-CN']) return 'zh-CN'
+  if (shortLocale === 'zh' && map['zh-Hans']) return 'zh-Hans'
 
   return DEFAULT_LOCALE
 }

@@ -67,13 +67,13 @@ Examples:
 
 ## Built-in locale defaults
 
-The theme ships built-in translations for locales under `src/configs/blogLocalesBase/<locale>.ts` (such as `en`, `ru`, and `es` for Latin American Spanish). Each file is a `LocaleDefinition` with `themeConfig` (UI labels such as `langMenuLabel`, `sidebarMenuLabel`) and `t` (translation strings).
+The theme ships built-in translations for locales under `src/configs/blogLocalesBase/<locale>.ts` (such as `en`, `ru`, `es` for Latin American Spanish, and `zh` for Simplified Chinese). Each file is a `LocaleDefinition` with `themeConfig` (UI labels such as `langMenuLabel`, `sidebarMenuLabel`) and `t` (translation strings).
 
 Resolution rule for the built-in layer:
 
-1. Exact key match against the current locale (e.g. `en-GB`, `es-419`).
-2. Base-language match using the part before `-` (e.g. `en` for `en-GB`, `es` for `es-MX`, `es-ES`, `es-AR`).
-3. Special regional fallback (e.g. `es-*` fallback to `es-419` if base `es` is missing).
+1. Exact key match against the current locale (e.g. `en-GB`, `es-419`, `zh-CN`, `zh-Hans`).
+2. Base-language match using the part before `-` (e.g. `en` for `en-GB`, `es` for `es-MX`, `es-ES`, `zh` for `zh-TW`, `zh-HK`).
+3. Special regional fallback (e.g. `es-*` fallback to `es-419`, `zh-*` fallback to `zh-CN`/`zh-Hans` if base key is missing).
 4. Built-in English fallback `en`.
 
 This rule is implemented by `resolveBaseLocaleKey` and is the foundation of the merge stack described in [CONFIG_LAYERS.md](./CONFIG_LAYERS.md).
