@@ -18,6 +18,7 @@ import cs from './cs.ts'
 import hi from './hi.ts'
 import th from './th.ts'
 import he from './he.ts'
+import ar from './ar.ts'
 
 export default {
   en,
@@ -60,6 +61,10 @@ export default {
   'th-TH': th,
   he,
   'he-IL': he,
+  ar,
+  'ar-SA': ar,
+  'ar-EG': ar,
+  'ar-AE': ar,
 }
 
 

@@ -143,6 +143,10 @@ describe('resolveTranslationsByFilePath', () => {
     const he = resolveTranslationsByFilePath('he-IL/page.md')
     expect(he.label).toBe('עברית')
     expect(he.t.search).toBe('חיפוש')
+
+    const ar = resolveTranslationsByFilePath('ar-SA/page.md')
+    expect(ar.label).toBe('العربية')
+    expect(ar.t.search).toBe('بحث')
   })
 })
 
