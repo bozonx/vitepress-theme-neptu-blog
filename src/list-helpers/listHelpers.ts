@@ -119,9 +119,10 @@ export function makeMonthsList(
 
 export function makePostOfMonthList(
   allPosts: PostLite[] = [],
-  year: number | string,
-  month: number | string
+  year?: number | string,
+  month?: number | string
 ): PostLite[] {
+  if (year === undefined || month === undefined) return []
   const curYear = Number(year)
   const curMonth = Number(month)
 

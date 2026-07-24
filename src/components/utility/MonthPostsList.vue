@@ -8,8 +8,8 @@ import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{
   localePosts?: PostLite[]
-  year: string | number
-  month: string | number
+  year?: string | number
+  month?: string | number
 }>()
 const { frontmatter, localeIndex } = useData()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
