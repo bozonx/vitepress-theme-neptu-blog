@@ -14,6 +14,8 @@ export function resolveBaseLocaleKey(
   const shortLocale = localeIndex.split('-')[0]
   if (shortLocale && map[shortLocale]) return shortLocale
 
+  if (shortLocale === 'es' && map['es-419']) return 'es-419'
+
   return DEFAULT_LOCALE
 }
 

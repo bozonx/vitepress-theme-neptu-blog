@@ -34,4 +34,24 @@ describe('resolveTranslationsByFilePath', () => {
     expect(result).toBeDefined()
     expect(result.label).toBe('English')
   })
+
+  it('resolves Spanish locales (es, es-419, es-MX, es-ES) to Spanish base locale', () => {
+    const es = resolveTranslationsByFilePath('es/page.md')
+    expect(es).toBeDefined()
+    expect(es.label).toBe('Español')
+    expect(es.t.search).toBe('Buscar')
+
+    const es419 = resolveTranslationsByFilePath('es-419/page.md')
+    expect(es419).toBeDefined()
+    expect(es419.label).toBe('Español')
+
+    const esMX = resolveTranslationsByFilePath('es-MX/page.md')
+    expect(esMX).toBeDefined()
+    expect(esMX.label).toBe('Español')
+
+    const esES = resolveTranslationsByFilePath('es-ES/page.md')
+    expect(esES).toBeDefined()
+    expect(esES.label).toBe('Español')
+  })
 })
+
