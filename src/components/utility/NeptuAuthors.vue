@@ -4,10 +4,12 @@ import { inject } from 'vue'
 import { makeAuthorsList } from '../../list-helpers/listHelpers.ts'
 import AuthorItem from '../AuthorItem.vue'
 import UtilPageHeader from './UtilPageHeader.vue'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 import type { PostLite } from '../../types.d.ts'
 
 const props = defineProps<{ localePosts?: PostLite[] }>()
-const { frontmatter, theme, localeIndex } = useData()
+const { frontmatter, localeIndex } = useData()
+const { theme } = useUiTheme()
 const allPosts = inject<Record<string, PostLite[]>>('posts', {})
 const localePosts = props.localePosts || allPosts[localeIndex.value] || []
 const authorsList = makeAuthorsList(localePosts, theme.value.authors)

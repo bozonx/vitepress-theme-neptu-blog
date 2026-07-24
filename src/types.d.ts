@@ -221,6 +221,7 @@ export namespace NeptuBlogTheme {
     imageHeight?: number
     imageWidth?: number
     twitterHandle?: string
+    [key: string]: unknown
   }
 
   export interface NavConfig {

@@ -3,7 +3,7 @@ import SideBarHeader from './SideBarHeader.vue'
 import MenuItem from '../MenuItem.vue'
 import type { SideBarItem } from '../../types.d.ts'
 
-const props = defineProps<{ items: SideBarItem[]; isMobile?: boolean }>()
+const props = defineProps<{ items: SideBarItem[] }>()
 </script>
 
 <template>

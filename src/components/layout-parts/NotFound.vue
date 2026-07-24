@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useData, withBase } from 'vitepress'
 import { computed } from 'vue'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
 
-const { localeIndex, theme } = useData()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
 const pageNotFoundText = computed(
   () => theme.value.notFound?.title || theme.value.t?.pageNotFound || 'Page not found'
 )

@@ -285,7 +285,6 @@ onUnmounted(() => {
           <SideBarGroup v-if="links.length">
             <SideBarItems
               :items="links"
-              :is-mobile="props.isMobile"
               @click="closeDrawer"
             />
           </SideBarGroup>
@@ -302,7 +301,6 @@ onUnmounted(() => {
           <SideBarGroup v-if="bottomLinks.length" class="mt-2">
             <SideBarItems
               :items="bottomLinks"
-              :is-mobile="props.isMobile"
               @click="closeDrawer"
             />
           </SideBarGroup>

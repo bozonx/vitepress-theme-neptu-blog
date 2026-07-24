@@ -1,18 +1,3 @@
-<script lang="ts">
-// Debounce function for performance optimization
-function debounce(func: (...args: unknown[]) => void, wait: number) {
-  let timeout: ReturnType<typeof setTimeout> | undefined
-  return function executedFunction(...args: unknown[]) {
-    const later = () => {
-      clearTimeout(timeout)
-      func(...args)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-  }
-}
-</script>
-
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { Icon } from '@iconify/vue'
@@ -25,6 +10,7 @@ import {
   extractFilenameFromUrl,
   getMediaErrorMessage,
 } from '../../utils/shared/media.ts'
+import { debounce } from '../../utils/shared/timer.ts'
 
 const { theme } = useUiTheme()
 
@@ -42,9 +28,6 @@ const props = withDefaults(
   }
 )
 
-// Button disabled state
-const isDisabled = computed(() => props.disabled)
-
 // Computed filename for download (used in the download attribute)
 const downloadFilename = computed(() => {
   if (props.filename) {
@@ -56,7 +39,7 @@ const downloadFilename = computed(() => {
 })
 
 const downloadFile = async () => {
-  if (isDisabled.value) return
+  if (props.disabled) return
 
   try {
     // Validate URL
@@ -89,7 +72,7 @@ const errorMessage = ref('')
 
 // Audio player control methods
 const togglePlayPause = async () => {
-  if (isDisabled.value || hasError.value) return
+  if (props.disabled || hasError.value) return
 
   try {
     // Validate URL before playback
@@ -144,7 +127,7 @@ const hidePlayer = () => {
 }
 
 const seekTo = (time: number) => {
-  if (audioRef.value && !isDisabled.value) {
+  if (audioRef.value && !props.disabled) {
     audioRef.value.currentTime = time
   }
 }
@@ -159,7 +142,7 @@ const setVolume = (newVolume: number | string) => {
 
 // Progress bar click handler
 const handleProgressClick = (event: MouseEvent) => {
-  if (isDisabled.value || !duration.value) return
+  if (props.disabled || !duration.value) return
 
   const progressBar = event.currentTarget as HTMLElement | null
   if (!progressBar) return
@@ -173,7 +156,7 @@ const handleProgressClick = (event: MouseEvent) => {
 
 // Progress bar keyboard handler
 const handleProgressKeydown = (event: KeyboardEvent) => {
-  if (isDisabled.value || !duration.value) return
+  if (props.disabled || !duration.value) return
 
   const step = duration.value * 0.05 // 5% of total duration
   let newTime: number
@@ -347,7 +330,7 @@ onUnmounted(() => {
           v-if="!isPlayerVisible"
           class="play-btn-header"
           :primary="true"
-          :disabled="isDisabled || hasError"
+          :disabled="props.disabled || hasError"
           :title="theme.t.audioFile.playAudio"
           :aria-label="theme.t.audioFile.startAudioPlayback"
           :aria-pressed="isPlaying"
@@ -358,7 +341,7 @@ onUnmounted(() => {
 
         <NeptuBtn
           icon="mdi:download"
-          :disabled="isDisabled"
+          :disabled="props.disabled"
           :text="theme.t.audioFile.downloadFile"
           :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
           @click="downloadFile"
@@ -385,7 +368,7 @@ onUnmounted(() => {
         <!-- Play/pause -->
         <NeptuBtn
           :primary="true"
-          :disabled="isDisabled || hasError"
+          :disabled="props.disabled || hasError"
           :title="isPlaying ? theme.t.audioFile.pauseAudio : theme.t.audioFile.playAudio"
           :aria-label="isPlaying ? theme.t.audioFile.pauseAudioPlayback : theme.t.audioFile.resumeAudioPlayback"
           :aria-pressed="isPlaying"
@@ -396,7 +379,7 @@ onUnmounted(() => {
 
         <!-- Stop -->
         <NeptuBtn
-          :disabled="isDisabled || hasError || !isPlaying"
+          :disabled="props.disabled || hasError || !isPlaying"
           :title="theme.t.audioFile.stopAudio"
           :aria-label="theme.t.audioFile.stopAudioPlayback"
           icon="mdi:stop"

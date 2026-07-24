@@ -133,8 +133,6 @@ const fileIcon = computed(() => {
       :text="theme.t.fileDownload.downloadFile"
       class="download-btn shrink-0 transition-transform duration-200 hover:-translate-y-px hover:shadow-[0_4px_8px_rgba(0,0,0,0.15)] max-sm:w-full max-sm:justify-center max-sm:order-2 will-change-[transform]"
       :aria-label="`${theme.t.fileDownload.downloadFileWithName} ${downloadFilename}`"
-      role="button"
-      tabindex="0"
       @click="downloadFile"
     />
   </div>

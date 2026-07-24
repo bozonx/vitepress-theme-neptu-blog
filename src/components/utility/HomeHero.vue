@@ -1,3 +1,30 @@
+<script setup lang="ts">
+import NeptuBtn from '../NeptuBtn.vue'
+import { useData } from 'vitepress'
+import { useUiTheme } from '../../composables/useUiTheme.ts'
+
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
+interface HeroButton {
+  text?: string
+  href?: string
+  icon?: string
+  primary?: boolean
+}
+
+interface HeroImage {
+  src: string
+  alt?: string
+}
+
+const props = defineProps<{
+  firstLine?: string
+  secondLine?: string
+  buttons?: HeroButton[]
+  img?: HeroImage
+}>()
+</script>
+
 <template>
   <div class="mb-14 md:mb-18 home-hero">
     <div class="flex w-full max-lg:flex-col-reverse gap-x-2 gap-y-6">
@@ -36,31 +63,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-import NeptuBtn from '../NeptuBtn.vue'
-import { useData } from 'vitepress'
-
-const { theme, localeIndex } = useData()
-interface HeroButton {
-  text?: string
-  href?: string
-  icon?: string
-  primary?: boolean
-}
-
-interface HeroImage {
-  src: string
-  alt?: string
-}
-
-const props = defineProps<{
-  firstLine?: string
-  secondLine?: string
-  buttons?: HeroButton[]
-  img?: HeroImage
-}>()
-</script>
 
 <style scoped>
 .home-logo img {

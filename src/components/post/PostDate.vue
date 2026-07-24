@@ -1,32 +1,8 @@
-<script lang="ts">
-const EXCLUDED_WORDS = [
-  'de', 'г', 'г.', 'of', 'van', 'der', 'den', 'del',
-  'da', 'di', 'du', 'des', 'von', 'zu', 'zur',
-  'the', 'a', 'an', 'in', 'on', 'at', 'word-break',
-]
-
-// Determine whether a token represents a year
-function isYear(item: string): boolean {
-  const cleanItem = item.replace(/[^\d]/g, '')
-  return cleanItem.length === 4 && /^\d{4}$/.test(cleanItem)
-}
-
-// Determine whether a token represents a month name
-function isMonth(item: string): boolean {
-  const cleanItem = item.replace(/[^\wа-яё]/gi, '').toLowerCase()
-  return (
-    cleanItem.length >= 3 &&
-    !EXCLUDED_WORDS.includes(cleanItem) &&
-    /^[^\d.\-,]{3,}$/.test(item)
-  )
-}
-</script>
-
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import { computed } from 'vue'
 
-import { makeHumanDate } from '../../utils/shared/index.ts'
+import { makeHumanDate, isYear, isMonth } from '../../utils/shared/index.ts'
 import BaseLink from '../BaseLink.vue'
 
 const { page, lang } = useData()

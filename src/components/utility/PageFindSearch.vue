@@ -208,8 +208,5 @@ onUnmounted(() => {
 })
 
 // Expose show for external usage
-const show = () => {
-  showSearchModal()
-}
-defineExpose({ show })
+defineExpose({ show: showSearchModal })
 </script>

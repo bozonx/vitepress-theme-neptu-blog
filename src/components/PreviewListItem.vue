@@ -4,9 +4,11 @@ import { computed } from 'vue'
 import { makeHumanDate } from '../utils/shared/index.ts'
 import BaseLink from './BaseLink.vue'
 import PreviewWithImage from './PreviewWithImage.vue'
+import { useUiTheme } from '../composables/useUiTheme.ts'
 import type { PostLite } from '../types.d.ts'
 
-const { lang, theme } = useData()
+const { lang } = useData()
+const { theme } = useUiTheme()
 
 const props = defineProps<{ item: PostLite }>()
 function formatPreview(preview: string | undefined): string | undefined {

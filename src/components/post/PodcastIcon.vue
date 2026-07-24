@@ -14,31 +14,36 @@ const ICONIFY_ICON_MAP: Record<string, string> = {
   applepodcasts: 'simple-icons:applepodcasts',
   overcast: 'simple-icons:overcast',
 }
-const width = '1.6rem'
 </script>
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 
-const props = defineProps<{
-  name: string
-  alt?: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    name: string
+    alt?: string
+    width?: string
+  }>(),
+  {
+    width: '1.6rem',
+  }
+)
 </script>
 
 <template>
   <Icon
     v-if="ICONIFY_ICON_MAP[props.name]"
     :icon="ICONIFY_ICON_MAP[props.name]"
-    :width="width"
-    :height="width"
+    :width="props.width"
+    :height="props.width"
     :alt="props.alt"
     aria-hidden="true"
   />
   <template v-else-if="props.name === 'yandexmusic'">
     <svg
-      :width="width"
-      :height="width"
+      :width="props.width"
+      :height="props.width"
       :alt="props.alt"
       aria-hidden="true"
       viewBox="0 0 1500 1497"
@@ -57,8 +62,8 @@ const props = defineProps<{
   </template>
   <template v-else-if="props.name === 'soundstream'">
     <svg
-      :width="width"
-      :height="width"
+      :width="props.width"
+      :height="props.width"
       :alt="props.alt"
       aria-hidden="true"
       viewBox="0 0 1100 1564"
@@ -87,8 +92,8 @@ const props = defineProps<{
   </template>
   <template v-else-if="props.name === 'zvuk'">
     <svg
-      :width="width"
-      :height="width"
+      :width="props.width"
+      :height="props.width"
       :alt="props.alt"
       aria-hidden="true"
       viewBox="0 0 28 28"
@@ -128,8 +133,8 @@ const props = defineProps<{
   </template>
   <template v-else-if="props.name === 'podcastaddiction'">
     <svg
-      :width="width"
-      :height="width"
+      :width="props.width"
+      :height="props.width"
       :alt="props.alt"
       aria-hidden="true"
       viewBox="0 0 1500 1500"

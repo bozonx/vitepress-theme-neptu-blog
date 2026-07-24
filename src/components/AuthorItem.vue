@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { useData, withBase } from 'vitepress'
+import { pluralize } from '../utils/shared/index.ts'
+import { useUiTheme } from '../composables/useUiTheme.ts'
+import type { AuthorItem } from '../types.d.ts'
+
+const props = defineProps<{ item: AuthorItem }>()
+const { localeIndex } = useData()
+const { theme } = useUiTheme()
+</script>
+
 <template>
   <a
     :href="withBase(`/${localeIndex}/authors/${props.item.id}/1`)"
@@ -32,14 +43,3 @@
     </div>
   </a>
 </template>
-
-<script setup lang="ts">
-import { useData, withBase } from 'vitepress'
-import { pluralize } from '../utils/shared/index.ts'
-import { useUiTheme } from '../composables/useUiTheme.ts'
-import type { AuthorItem } from '../types.d.ts'
-
-const props = defineProps<{ item: AuthorItem }>()
-const { localeIndex } = useData()
-const { theme } = useUiTheme()
-</script>
