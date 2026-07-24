@@ -25,6 +25,7 @@ const iconClass = computed(() => {
 <template>
   <NeptuBtn
     v-bind="$attrs"
+    role="menuitem"
     :custom-class="[
       'menu-item w-full border-0! shadow-none! transition-none! transform-none! rounded-none py-2.5 px-[1.125rem]',
       props.customClass,

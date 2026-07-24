@@ -25,6 +25,7 @@ const switchTitle = computed(() => {
       type="button"
       role="switch"
       :title="switchTitle"
+      :aria-label="switchTitle"
       :aria-checked="isDark"
       @click="toggleAppearance"
     >

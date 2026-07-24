@@ -81,15 +81,18 @@ const items = computed(() => {
 </script>
 
 <template>
-  <ul v-if="items.length" class="flex justify-center gap-x-1">
-    <li v-for="item of items" :key="item.href" class="flex align-center">
-      <NeptuBtn
-        :href="item.href"
-        :title="item.title"
-        :text="item.name?.toString()"
-        :icon="item.icon"
-        class="px-4 py-[0.35rem]"
-      />
-    </li>
-  </ul>
+  <nav v-if="items.length" aria-label="Pagination">
+    <ul class="flex justify-center gap-x-1">
+      <li v-for="item of items" :key="item.href" class="flex align-center">
+        <NeptuBtn
+          :href="item.href"
+          :title="item.title"
+          :text="item.name?.toString()"
+          :icon="item.icon"
+          :aria-current="props.curPage === item.name ? 'page' : undefined"
+          class="px-4 py-[0.35rem]"
+        />
+      </li>
+    </ul>
+  </nav>
 </template>

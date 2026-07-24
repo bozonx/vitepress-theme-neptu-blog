@@ -27,12 +27,14 @@ const menuRef = ref<{
 } | null>(null)
 let animationTimeout: ReturnType<typeof setTimeout> | null = null
 let leaveTimeout: ReturnType<typeof setTimeout> | null = null
+let opacityTimeout: ReturnType<typeof setTimeout> | null = null
+let openDelayTimeout: ReturnType<typeof setTimeout> | null = null
 
 const toggleList = () => {
   if (listOpen.value) {
     closeList()
   } else {
-    openList()
+    void openList()
   }
 }
 
@@ -56,8 +58,12 @@ const openList = async (focusPosition?: 'first' | 'last') => {
   if (listOpen.value) return
 
   listOpen.value = true
+  if (opacityTimeout) clearTimeout(opacityTimeout)
   // Run on the next tick to guarantee CSS transition fires
-  setTimeout(() => (opacity.value = Number(listOpen.value)), 50)
+  opacityTimeout = setTimeout(() => {
+    opacity.value = Number(listOpen.value)
+    opacityTimeout = null
+  }, 50)
 
   if (focusPosition) {
     await nextTick()
@@ -83,10 +89,14 @@ const handleWholeMouseEnter = () => {
   mouseOverWholeEl.value = true
 
   if (leaveTimeout) clearTimeout(leaveTimeout)
+  if (openDelayTimeout) clearTimeout(openDelayTimeout)
 
   leaveTimeout = null
   // Run on the next tick
-  setTimeout(openList)
+  openDelayTimeout = setTimeout(() => {
+    openDelayTimeout = null
+    void openList()
+  })
 }
 
 const handleWholeMouseLeave = () => {
@@ -101,7 +111,7 @@ const handleWholeMouseLeave = () => {
   }, mouseLeaveDelayMs)
 }
 
-const handleTriggerKeydown = (event: { key: string; preventDefault: () => void }) => {
+const handleTriggerKeydown = (event: KeyboardEvent) => {
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
@@ -128,7 +138,7 @@ const handleTriggerKeydown = (event: { key: string; preventDefault: () => void }
   }
 }
 
-const handleMenuKeydown = (event: { key: string; preventDefault: () => void }) => {
+const handleMenuKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Escape') {
     event.preventDefault()
     closeList(true)
@@ -138,6 +148,8 @@ const handleMenuKeydown = (event: { key: string; preventDefault: () => void }) =
 onUnmounted(() => {
   if (animationTimeout) clearTimeout(animationTimeout)
   if (leaveTimeout) clearTimeout(leaveTimeout)
+  if (opacityTimeout) clearTimeout(opacityTimeout)
+  if (openDelayTimeout) clearTimeout(openDelayTimeout)
 })
 </script>
 

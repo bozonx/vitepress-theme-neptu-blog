@@ -351,8 +351,6 @@ onUnmounted(() => {
           :title="theme.t.audioFile.playAudio"
           :aria-label="theme.t.audioFile.startAudioPlayback"
           :aria-pressed="isPlaying"
-          role="button"
-          tabindex="0"
           :icon="isLoading ? 'mdi:loading' : 'mdi:play'"
           :icon-class="{ spinning: isLoading }"
           @click="togglePlayPause"
@@ -363,8 +361,6 @@ onUnmounted(() => {
           :disabled="isDisabled"
           :text="theme.t.audioFile.downloadFile"
           :aria-label="`${theme.t.audioFile.downloadAudioFile} ${downloadFilename}`"
-          role="button"
-          tabindex="0"
           @click="downloadFile"
         />
       </div>
@@ -393,8 +389,6 @@ onUnmounted(() => {
           :title="isPlaying ? theme.t.audioFile.pauseAudio : theme.t.audioFile.playAudio"
           :aria-label="isPlaying ? theme.t.audioFile.pauseAudioPlayback : theme.t.audioFile.resumeAudioPlayback"
           :aria-pressed="isPlaying"
-          role="button"
-          tabindex="0"
           :icon="isLoading ? 'mdi:loading' : isPlaying ? 'mdi:pause' : 'mdi:play'"
           :icon-class="{ spinning: isLoading }"
           @click="togglePlayPause"
@@ -405,8 +399,6 @@ onUnmounted(() => {
           :disabled="isDisabled || hasError || !isPlaying"
           :title="theme.t.audioFile.stopAudio"
           :aria-label="theme.t.audioFile.stopAudioPlayback"
-          role="button"
-          tabindex="0"
           icon="mdi:stop"
           @click="stopAudio"
         />
@@ -447,8 +439,6 @@ onUnmounted(() => {
         <NeptuBtn
           :title="theme.t.audioFile.hidePlayerTitle"
           :aria-label="theme.t.audioFile.hidePlayer"
-          role="button"
-          tabindex="0"
           icon="mdi:chevron-up"
           @click="hidePlayer"
         />

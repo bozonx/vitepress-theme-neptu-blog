@@ -19,7 +19,7 @@ const start = computed(() =>
   props.curPage === 1 ? 0 : (props.curPage - 1) * perPage.value
 )
 const items = computed(() =>
-  props.localePosts.slice(start.value, start.value + perPage.value)
+  props.localePosts.slice(start.value, start.value + perPage.value).filter(Boolean)
 )
 const totalPages = computed(() => Math.ceil(props.localePosts.length / perPage.value))
 </script>
@@ -27,16 +27,15 @@ const totalPages = computed(() => Math.ceil(props.localePosts.length / perPage.v
 <template>
   <div v-if="items.length">
     <ul>
-      <template v-for="item in items" :key="item.url">
-        <li
-          v-if="item"
-          :data-popularity-value="
-            theme.popularPosts?.sortBy && item.analyticsStats?.[theme.popularPosts.sortBy]
-          "
-        >
-          <PreviewListItem :item="item" />
-        </li>
-      </template>
+      <li
+        v-for="item in items"
+        :key="item.url"
+        :data-popularity-value="
+          theme.popularPosts?.sortBy && item.analyticsStats?.[theme.popularPosts.sortBy]
+        "
+      >
+        <PreviewListItem :item="item" />
+      </li>
     </ul>
 
     <div v-if="totalPages > 1" class="mt-10">

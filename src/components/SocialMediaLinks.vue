@@ -1,18 +1,3 @@
-<template>
-  <div class="flex gap-x-2">
-    <NeptuBtn
-      v-for="link in links"
-      :key="link.url"
-      :href="link.url"
-      :title="link.title"
-      :icon="getIconName(link.type)"
-      icon-class="text-2xl"
-      target="_blank"
-      class="social-link"
-    />
-  </div>
-</template>
-
 <script setup lang="ts">
 import NeptuBtn from './NeptuBtn.vue'
 
@@ -44,3 +29,18 @@ const getIconName = (type: string) => {
   return SOCIAL_ICON_MAP[type] || SOCIAL_ICON_MAP.site // fallback to site if type is unrecognized
 }
 </script>
+
+<template>
+  <div class="flex gap-x-2">
+    <NeptuBtn
+      v-for="link in links"
+      :key="link.url"
+      :href="link.url"
+      :title="link.title"
+      :icon="getIconName(link.type)"
+      icon-class="text-2xl"
+      target="_blank"
+      class="social-link"
+    />
+  </div>
+</template>
